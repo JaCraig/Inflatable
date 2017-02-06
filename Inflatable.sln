@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{953D527C-1005-4E61-AB3B-A06DCA0E21F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8245DD5-D697-44BD-8A1D-76CFD6AA8383}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Inflatable", "src\Inflatable\Inflatable.xproj", "{E3F8271C-1737-4F13-91DB-C08BF8B834D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6DFD1505-6CAB-4E0A-A517-2C50D9F997CA}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Inflatable.Tests", "test\Inflatable.Tests\Inflatable.Tests.xproj", "{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3F8271C-1737-4F13-91DB-C08BF8B834D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F8271C-1737-4F13-91DB-C08BF8B834D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F8271C-1737-4F13-91DB-C08BF8B834D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F8271C-1737-4F13-91DB-C08BF8B834D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E3F8271C-1737-4F13-91DB-C08BF8B834D6} = {953D527C-1005-4E61-AB3B-A06DCA0E21F3}
+		{D93345A7-86EF-4045-81C2-1F4AFAB44BC3} = {6DFD1505-6CAB-4E0A-A517-2C50D9F997CA}
+	EndGlobalSection
+EndGlobal
