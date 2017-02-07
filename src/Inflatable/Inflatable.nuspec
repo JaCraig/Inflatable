@@ -18,6 +18,7 @@
       <dependency id="Data.Modeler" version="1.0.2" />
       <dependency id="Valkyrie" version="1.0.2" />
       <dependency id="Mirage" version="1.0.3" />
+      <dependency id="Aspectus" version="2.0.5" />
     </dependencies>
   </metadata>
   <files>
