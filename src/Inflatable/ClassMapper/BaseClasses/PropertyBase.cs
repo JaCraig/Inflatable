@@ -49,6 +49,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 throw new ArgumentNullException(nameof(mapping));
             var DataTypeInfo = typeof(DataType).GetTypeInfo();
 
+            Name = expression.PropertyName();
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
             CompiledExpression = expression.Compile();
             Constraints = new List<string>();
@@ -56,11 +57,11 @@ namespace Inflatable.ClassMapper.BaseClasses
             Expression = expression;
             InternalFieldName = "_" + Name + "Derived";
             MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
-            Name = expression.PropertyName();
             Nullable = DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
             ParentMapping = mapping;
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
+            ComputedColumnSpecification = "";
         }
 
         /// <summary>

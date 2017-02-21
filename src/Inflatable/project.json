@@ -15,7 +15,7 @@
     "SQLHelper.DB": "1.0.15",
     "Data.Modeler": "1.0.2",
     "Valkyrie": "1.0.2",
-    "Mirage": "1.0.3",
+    "Mirage": "1.0.7",
     "Aspectus": "2.0.5"
   },
   "frameworks": {

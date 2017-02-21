@@ -1,4 +1,7 @@
 ﻿using Mirage.Generators;
+using Mirage.Generators.Default;
+using Mirage.Generators.Default.Nullable;
+using Mirage.Generators.Nullable;
 using System;
 
 namespace Inflatable.Tests.TestDatabases.SimpleTest
@@ -40,6 +43,54 @@ namespace Inflatable.Tests.TestDatabases.SimpleTest
 
         [LongGenerator]
         public long LongValue { get; set; }
+
+        [NullableBoolGenerator]
+        public bool? NullableBoolValue { get; set; }
+
+        [NullableByteGenerator]
+        public byte? NullableByteValue { get; set; }
+
+        [NullableCharGenerator]
+        public char? NullableCharValue { get; set; }
+
+        [NullableDateTimeGenerator]
+        public DateTime? NullableDateTimeValue { get; set; }
+
+        [NullableDecimalGenerator]
+        public decimal? NullableDecimalValue { get; set; }
+
+        [NullableDoubleGenerator]
+        public double? NullableDoubleValue { get; set; }
+
+        [NullableFloatGenerator]
+        public float? NullableFloatValue { get; set; }
+
+        [NullableGuidGenerator]
+        public Guid? NullableGuidValue { get; set; }
+
+        [NullableIntGenerator]
+        public int? NullableIntValue { get; set; }
+
+        [NullableLongGenerator]
+        public long? NullableLongValue { get; set; }
+
+        [NullableSByteGenerator]
+        public sbyte? NullableSByteValue { get; set; }
+
+        [NullableShortGenerator]
+        public short? NullableShortValue { get; set; }
+
+        [NullableTimeSpanGenerator]
+        public TimeSpan? NullableTimeSpanValue { get; set; }
+
+        [NullableUIntGenerator]
+        public uint? NullableUIntValue { get; set; }
+
+        [NullableULongGenerator]
+        public ulong? NullableULongValue { get; set; }
+
+        [NullableUShortGenerator]
+        public ushort? NullableUShortValue { get; set; }
 
         [SByteGenerator]
         public sbyte SByteValue { get; set; }
