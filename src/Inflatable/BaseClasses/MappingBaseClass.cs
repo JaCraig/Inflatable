@@ -14,10 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.ClassMapper.Default;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
@@ -49,10 +49,10 @@ namespace Inflatable.BaseClasses
             IDProperties = new List<IIDProperty>();
             Order = order;
             Prefix = prefix ?? "";
-            Queries = null;
+            Queries = new Queries();
             ReferenceProperties = new List<IProperty>();
             Suffix = suffix ?? "";
-            tableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.GetName() + Suffix : tableName;
+            TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Inflatable.BaseClasses
         public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType)
         {
             if (string.IsNullOrEmpty(queryString)) throw new ArgumentNullException(nameof(queryString));
-            Queries.Add(queryType, null);
+            Queries.Add(queryType, new Query(databaseCommandType, queryString, queryType));
             return this;
         }
 
