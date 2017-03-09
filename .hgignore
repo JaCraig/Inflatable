@@ -1,0 +1,8 @@
+syntax: glob
+.vs/Inflatable/v14/.suo
+.vs/*
+src/Inflatable/Inflatable.xproj.user
+*/bin/*
+*/obj/*
+*.xproj.user
+*/project.lock.json

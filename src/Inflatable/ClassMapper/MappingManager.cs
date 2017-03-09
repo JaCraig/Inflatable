@@ -59,6 +59,8 @@ namespace Inflatable.ClassMapper
 
         private Vertex<IMapping> GetCurrentNode(Type CurrentType, Vertex<IMapping> PreviousVertex)
         {
+            if (!Mappings.ContainsKey(CurrentType))
+                return PreviousVertex;
             Vertex<IMapping> CurrentVertex = TypeGraph.FirstOrDefault(x => x.Data == Mappings[CurrentType]);
             if (CurrentVertex == null)
                 CurrentVertex = TypeGraph.AddVertex(Mappings[CurrentType]);
