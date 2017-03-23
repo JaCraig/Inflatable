@@ -1,20 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{953D527C-1005-4E61-AB3B-A06DCA0E21F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8245DD5-D697-44BD-8A1D-76CFD6AA8383}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Inflatable", "src\Inflatable\Inflatable.xproj", "{E3F8271C-1737-4F13-91DB-C08BF8B834D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6DFD1505-6CAB-4E0A-A517-2C50D9F997CA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Inflatable.Tests", "test\Inflatable.Tests\Inflatable.Tests.xproj", "{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inflatable", "src\Inflatable\Inflatable.csproj", "{E3F8271C-1737-4F13-91DB-C08BF8B834D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inflatable.Tests", "test\Inflatable.Tests\Inflatable.Tests.csproj", "{D93345A7-86EF-4045-81C2-1F4AFAB44BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
