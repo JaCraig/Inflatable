@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Inflatable.ClassMapper.TypeGraph;
 using Inflatable.Interfaces;
+using Inflatable.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace Inflatable.ClassMapper
 {
@@ -41,65 +41,65 @@ namespace Inflatable.ClassMapper
             {
                 Mappings.Add(Mapping.ObjectType, Mapping);
             }
-            TypeGraph = new Graph<IMapping>();
-            SetupTypeGraph();
+            var TempGenerator = new Generator(Mappings);
+            TypeGraphs = new ConcurrentDictionary<Type, Tree<Type>>();
+            foreach (var Key in Mappings.Keys)
+            {
+                TypeGraphs.Add(Key, TempGenerator.Generate(Key));
+            }
+            ChildTypes = new ListMapping<Type, Type>();
+            ParentTypes = new ListMapping<Type, Type>();
+            var TempConcreteDiscoverer = new DiscoverConcreteTypes(TypeGraphs);
+            var ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
+            foreach (var ConcreteType in ConcreteTypes)
+            {
+                var Parents = TypeGraphs[ConcreteType].ToList();
+                foreach (var Parent in Parents)
+                {
+                    ChildTypes.Add(Parent, ConcreteType);
+                }
+            }
+
+            var MappingMerger = new MergeMappings(Mappings);
+            foreach (var TempTypeGraph in TypeGraphs.Values)
+            {
+                MappingMerger.Merge(TempTypeGraph);
+            }
+
+            ////Merge graph nodes until condensed here.
+
+            foreach (var ConcreteType in ConcreteTypes)
+            {
+                var Parents = TypeGraphs[ConcreteType].ToList();
+                foreach (var Parent in Parents)
+                {
+                    ParentTypes.Add(ConcreteType, Parent);
+                }
+            }
         }
+
+        /// <summary>
+        /// Gets the child types.
+        /// </summary>
+        /// <value>The child types.</value>
+        public ListMapping<Type, Type> ChildTypes { get; private set; }
 
         /// <summary>
         /// Gets or sets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        public IDictionary<Type, IMapping> Mappings { get; set; }
+        public IDictionary<Type, IMapping> Mappings { get; private set; }
+
+        /// <summary>
+        /// Gets the parent types.
+        /// </summary>
+        /// <value>The parent types.</value>
+        public ListMapping<Type, Type> ParentTypes { get; private set; }
 
         /// <summary>
         /// Gets or sets the type graph.
         /// </summary>
         /// <value>The type graph.</value>
-        public Graph<IMapping> TypeGraph { get; set; }
-
-        private Vertex<IMapping> GetCurrentNode(Type CurrentType, Vertex<IMapping> PreviousVertex)
-        {
-            if (!Mappings.ContainsKey(CurrentType))
-                return PreviousVertex;
-            Vertex<IMapping> CurrentVertex = TypeGraph.FirstOrDefault(x => x.Data == Mappings[CurrentType]);
-            if (CurrentVertex == null)
-                CurrentVertex = TypeGraph.AddVertex(Mappings[CurrentType]);
-            if (PreviousVertex != null)
-                TypeGraph.AddEdge(PreviousVertex, CurrentVertex);
-            return CurrentVertex;
-        }
-
-        private void SetupInterfaceNodes(Vertex<IMapping> CurrentVertex, Type CurrentType)
-        {
-            var CurrentInterfaces = CurrentType.GetInterfaces();
-            foreach (var Interface in CurrentInterfaces)
-            {
-                var TempInterfaceVertex = TypeGraph.FirstOrDefault(x => x.Data == Mappings[Interface]);
-                if (TempInterfaceVertex == null && Mappings.Keys.Contains(Interface))
-                {
-                    TempInterfaceVertex = TypeGraph.AddVertex(Mappings[Interface]);
-                    TypeGraph.AddEdge(CurrentVertex, TempInterfaceVertex);
-                }
-            }
-        }
-
-        private void SetupTypeGraph()
-        {
-            foreach (var Key in Mappings.Keys)
-            {
-                var CurrentVertex = TypeGraph.FirstOrDefault(x => x.Data == Mappings[Key]);
-                if (CurrentVertex == null)
-                {
-                    var CurrentType = Key;
-                    while (CurrentType != null)
-                    {
-                        var PreviousVertex = CurrentVertex;
-                        CurrentVertex = GetCurrentNode(CurrentType, PreviousVertex);
-                        SetupInterfaceNodes(CurrentVertex, CurrentType);
-                        CurrentType = CurrentType.GetTypeInfo().BaseType;
-                    }
-                }
-            }
-        }
+        public IDictionary<Type, Tree<Type>> TypeGraphs { get; private set; }
     }
 }

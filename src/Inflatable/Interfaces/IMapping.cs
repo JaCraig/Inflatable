@@ -110,6 +110,12 @@ namespace Inflatable.Interfaces
         string TableName { get; }
 
         /// <summary>
+        /// Copies the specified mapping.
+        /// </summary>
+        /// <param name="mapping">The mapping.</param>
+        void Copy(IMapping mapping);
+
+        /// <summary>
         /// Sets the default query based on query type
         /// </summary>
         /// <param name="queryType">Type of the query.</param>

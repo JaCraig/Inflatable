@@ -8,10 +8,6 @@ namespace Inflatable.Tests.ClassMapper
 {
     public class MappingManagerTests : TestingFixture
     {
-        public MappingManagerTests()
-        {
-        }
-
         [Fact]
         public void Creation()
         {
@@ -19,9 +15,9 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(1, TestObject.Mappings.Count);
             Assert.Equal(typeof(AllReferencesAndID), TestObject.Mappings.First().Key);
             Assert.IsType<AllReferencesAndIDMappingNoDatabase>(TestObject.Mappings.First().Value);
-            Assert.Equal(1, TestObject.TypeGraph.Count());
-            Assert.IsType<AllReferencesAndIDMappingNoDatabase>(TestObject.TypeGraph.First().Data);
-            Assert.Equal(TestObject.Mappings.First().Value, TestObject.TypeGraph.First().Data);
+            Assert.Equal(1, TestObject.TypeGraphs.Count());
+            Assert.Equal(typeof(AllReferencesAndID), TestObject.TypeGraphs.First().Key);
+            Assert.Equal(TestObject.Mappings.First().Key, TestObject.TypeGraphs.First().Key);
         }
     }
 }

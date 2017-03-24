@@ -132,6 +132,46 @@ namespace Inflatable.BaseClasses
         }
 
         /// <summary>
+        /// Copies the specified mapping.
+        /// </summary>
+        /// <param name="mapping">The mapping.</param>
+        public void Copy(IMapping mapping)
+        {
+            foreach (var prop in mapping.ReferenceProperties)
+            {
+                ReferenceProperties.Add(prop.Convert<ClassType>());
+            }
+        }
+
+        /*public class Item<TData, TReturn>
+    {
+        public Expression<Func<TData, TReturn>> Expression { get; set; }
+
+        public Func<TData2, TReturn> Convert<TData2>()
+            where TData2 : TData
+        {
+            ParameterExpression param = System.Linq.Expressions.Expression.Parameter(typeof(TData2));
+            Expression body = new Visitor(param).Visit(Expression.Body);
+            return System.Linq.Expressions.Expression.Lambda<Func<TData2, TReturn>>(body, param).Compile();
+        }
+    }
+
+    public class Visitor : ExpressionVisitor
+    {
+        public Visitor(ParameterExpression parameter)
+        {
+            _parameter = parameter;
+        }
+
+        private ParameterExpression _parameter;
+
+        protected override Expression VisitParameter(ParameterExpression node)
+        {
+            return _parameter;
+        }
+    }*/
+
+        /// <summary>
         /// determines if the mappings are equal
         /// </summary>
         /// <param name="obj"></param>

@@ -210,6 +210,13 @@ namespace Inflatable.ClassMapper.Interfaces
         bool Unique { get; }
 
         /// <summary>
+        /// Converts this instance to the class specified
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <returns>The resulting property</returns>
+        IProperty Convert<TResult>();
+
+        /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)
         /// </summary>
         /// <param name="Object">Object to get the parameter from</param>
