@@ -37,49 +37,15 @@ namespace Inflatable.ClassMapper
         {
             mappings = mappings ?? new List<IMapping>();
             Mappings = new ConcurrentDictionary<Type, IMapping>();
-            foreach (var Mapping in mappings)
-            {
-                Mappings.Add(Mapping.ObjectType, Mapping);
-            }
-            var TempGenerator = new Generator(Mappings);
             TypeGraphs = new ConcurrentDictionary<Type, Tree<Type>>();
-            foreach (var Key in Mappings.Keys)
-            {
-                TypeGraphs.Add(Key, TempGenerator.Generate(Key));
-            }
             ChildTypes = new ListMapping<Type, Type>();
             ParentTypes = new ListMapping<Type, Type>();
-            var TempConcreteDiscoverer = new DiscoverConcreteTypes(TypeGraphs);
-            var ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
-            foreach (var ConcreteType in ConcreteTypes)
-            {
-                var Parents = TypeGraphs[ConcreteType].ToList();
-                foreach (var Parent in Parents)
-                {
-                    ChildTypes.Add(Parent, ConcreteType);
-                }
-            }
-
-            var MappingMerger = new MergeMappings(Mappings);
-            foreach (var TempTypeGraph in TypeGraphs.Values)
-            {
-                MappingMerger.Merge(TempTypeGraph);
-            }
-
-            foreach (var ConcreteType in ConcreteTypes)
-            {
-                var Parents = TypeGraphs[ConcreteType].ToList();
-                foreach (var Parent in Parents)
-                {
-                    ParentTypes.Add(ConcreteType, Parent);
-                }
-            }
-
-            var ReduceMapping = new ReduceMappings(Mappings);
-            foreach (var TempTypeGraph in TypeGraphs.Values)
-            {
-                ReduceMapping.Reduce(TempTypeGraph);
-            }
+            AddMappings(mappings);
+            SetupTypeGraphs();
+            IEnumerable<Type> ConcreteTypes = SetupChildTypes();
+            MergeMappings();
+            SetupParentTypes(ConcreteTypes);
+            ReduceMappings();
         }
 
         /// <summary>
@@ -105,5 +71,89 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The type graph.</value>
         public IDictionary<Type, Tree<Type>> TypeGraphs { get; private set; }
+
+        /// <summary>
+        /// Adds the mappings.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        private void AddMappings(IEnumerable<IMapping> mappings)
+        {
+            foreach (var Mapping in mappings)
+            {
+                Mappings.Add(Mapping.ObjectType, Mapping);
+            }
+        }
+
+        /// <summary>
+        /// Merges the mappings.
+        /// </summary>
+        private void MergeMappings()
+        {
+            var MappingMerger = new MergeMappings(Mappings);
+            foreach (var TempTypeGraph in TypeGraphs.Values)
+            {
+                MappingMerger.Merge(TempTypeGraph);
+            }
+        }
+
+        /// <summary>
+        /// Reduces the mappings.
+        /// </summary>
+        private void ReduceMappings()
+        {
+            var ReduceMapping = new ReduceMappings(Mappings);
+            foreach (var TempTypeGraph in TypeGraphs.Values)
+            {
+                ReduceMapping.Reduce(TempTypeGraph);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the child types.
+        /// </summary>
+        /// <returns>The concrete types found</returns>
+        private IEnumerable<Type> SetupChildTypes()
+        {
+            var TempConcreteDiscoverer = new DiscoverConcreteTypes(TypeGraphs);
+            var ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
+            foreach (var ConcreteType in ConcreteTypes)
+            {
+                var Parents = TypeGraphs[ConcreteType].ToList();
+                foreach (var Parent in Parents)
+                {
+                    ChildTypes.Add(Parent, ConcreteType);
+                }
+            }
+
+            return ConcreteTypes;
+        }
+
+        /// <summary>
+        /// Sets up the parent types.
+        /// </summary>
+        /// <param name="ConcreteTypes">The concrete types.</param>
+        private void SetupParentTypes(IEnumerable<Type> ConcreteTypes)
+        {
+            foreach (var ConcreteType in ConcreteTypes)
+            {
+                var Parents = TypeGraphs[ConcreteType].ToList();
+                foreach (var Parent in Parents)
+                {
+                    ParentTypes.Add(ConcreteType, Parent);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets up the type graphs.
+        /// </summary>
+        private void SetupTypeGraphs()
+        {
+            var TempGenerator = new Generator(Mappings);
+            foreach (var Key in Mappings.Keys)
+            {
+                TypeGraphs.Add(Key, TempGenerator.Generate(Key));
+            }
+        }
     }
 }
