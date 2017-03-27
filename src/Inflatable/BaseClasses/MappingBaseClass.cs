@@ -23,6 +23,7 @@ using Inflatable.QueryProvider.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Inflatable.BaseClasses
 {
@@ -139,37 +140,9 @@ namespace Inflatable.BaseClasses
         {
             foreach (var prop in mapping.ReferenceProperties)
             {
-                ReferenceProperties.Add(prop.Convert<ClassType>());
+                ReferenceProperties.Add(prop.Convert<ClassType>(this));
             }
         }
-
-        /*public class Item<TData, TReturn>
-    {
-        public Expression<Func<TData, TReturn>> Expression { get; set; }
-
-        public Func<TData2, TReturn> Convert<TData2>()
-            where TData2 : TData
-        {
-            ParameterExpression param = System.Linq.Expressions.Expression.Parameter(typeof(TData2));
-            Expression body = new Visitor(param).Visit(Expression.Body);
-            return System.Linq.Expressions.Expression.Lambda<Func<TData2, TReturn>>(body, param).Compile();
-        }
-    }
-
-    public class Visitor : ExpressionVisitor
-    {
-        public Visitor(ParameterExpression parameter)
-        {
-            _parameter = parameter;
-        }
-
-        private ParameterExpression _parameter;
-
-        protected override Expression VisitParameter(ParameterExpression node)
-        {
-            return _parameter;
-        }
-    }*/
 
         /// <summary>
         /// determines if the mappings are equal
@@ -207,6 +180,60 @@ namespace Inflatable.BaseClasses
             var ReturnValue = new ID<ClassType, DataType>(expression, this);
             IDProperties.Add(ReturnValue);
             return ReturnValue;
+        }
+
+        /// <summary>
+        /// Reduces this instance and removes duplicate properties
+        /// </summary>
+        public void Reduce()
+        {
+            for (int x = 0; x < IDProperties.Count; ++x)
+            {
+                var IDProperty1 = IDProperties.ElementAt(x);
+                for (int y = x + 1; y < IDProperties.Count; ++y)
+                {
+                    var IDProperty2 = IDProperties.ElementAt(y);
+                    if (IDProperty1 == IDProperty2)
+                    {
+                        IDProperties.Remove(IDProperty2);
+                        --y;
+                    }
+                }
+            }
+            for (int x = 0; x < ReferenceProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = ReferenceProperties.ElementAt(x);
+                for (int y = x + 1; y < ReferenceProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        ReferenceProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reduces this instance based on parent mapping properties.
+        /// </summary>
+        /// <param name="parentMapping">The parent mapping.</param>
+        public void Reduce(IMapping parentMapping)
+        {
+            for (int x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = parentMapping.ReferenceProperties.ElementAt(x);
+                for (int y = 0; y < ReferenceProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        ReferenceProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
         }
 
         /// <summary>

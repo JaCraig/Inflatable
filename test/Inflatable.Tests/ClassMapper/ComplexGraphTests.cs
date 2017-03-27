@@ -40,9 +40,8 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes.Count);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes[0].Data);
 
-            Assert.Equal(2, TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes.Count);
+            Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes.Count);
             Assert.Equal(typeof(BaseClass1), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Data);
-            Assert.Equal(typeof(IInterface2), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[1].Data);
             Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes.Count);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes[0].Data);
 
@@ -58,8 +57,24 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(1, TestObject.ChildTypes[typeof(IInterface2)].Count());
             Assert.Equal(3, TestObject.ParentTypes.Count);
             Assert.Equal(3, TestObject.ParentTypes[typeof(ConcreteClass1)].Count());
-            Assert.Equal(4, TestObject.ParentTypes[typeof(ConcreteClass2)].Count());
+            Assert.Equal(3, TestObject.ParentTypes[typeof(ConcreteClass2)].Count());
             Assert.Equal(2, TestObject.ParentTypes[typeof(ConcreteClass3)].Count());
+        }
+
+        [Fact]
+        public void DuplicateEntriesReduction()
+        {
+            var TestObject = new MappingManager(new IMapping[] {
+                new BaseClass1Mapping(),
+                new ConcreteClass1Mapping(),
+                new ConcreteClass2Mapping(),
+                new ConcreteClass3Mapping(),
+                new IInterface1Mapping(),
+                new IInterface2Mapping()
+            });
+            Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties.Count);
+            Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties.Count);
+            Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties.Count);
         }
     }
 }

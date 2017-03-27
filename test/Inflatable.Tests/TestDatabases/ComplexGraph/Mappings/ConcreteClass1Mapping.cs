@@ -8,6 +8,8 @@ namespace Inflatable.Tests.TestDatabases.ComplexGraph.Mappings
         public ConcreteClass1Mapping()
         {
             Reference(x => x.Value1);
+            Reference(x => x.Value1);
+            Reference(x => x.Value1);
         }
     }
 }

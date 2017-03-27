@@ -66,8 +66,6 @@ namespace Inflatable.ClassMapper
                 MappingMerger.Merge(TempTypeGraph);
             }
 
-            ////Merge graph nodes until condensed here.
-
             foreach (var ConcreteType in ConcreteTypes)
             {
                 var Parents = TypeGraphs[ConcreteType].ToList();
@@ -75,6 +73,12 @@ namespace Inflatable.ClassMapper
                 {
                     ParentTypes.Add(ConcreteType, Parent);
                 }
+            }
+
+            var ReduceMapping = new ReduceMappings(Mappings);
+            foreach (var TempTypeGraph in TypeGraphs.Values)
+            {
+                ReduceMapping.Reduce(TempTypeGraph);
             }
         }
 

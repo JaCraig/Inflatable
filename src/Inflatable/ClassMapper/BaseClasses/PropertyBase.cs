@@ -216,6 +216,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Converts this instance to the class specified
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="mapping">The mapping.</param>
+        /// <returns>The resulting property</returns>
+        public abstract IProperty Convert<TResult>(IMapping mapping)
+            where TResult : class;
+
+        /// <summary>
         /// Determines if the two objects are equal and returns true if they are, false otherwise
         /// </summary>
         /// <param name="obj">Object to compare to</param>
@@ -317,6 +326,17 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets up the property (used internally)
         /// </summary>
         public abstract void Setup();
+
+        /// <summary>
+        /// Checks if the properties are similar to one another
+        /// </summary>
+        /// <param name="secondProperty">The second property.</param>
+        /// <returns>True if they are similar, false otherwise</returns>
+        public bool Similar(IProperty secondProperty)
+        {
+            return secondProperty.ColumnName == ColumnName
+                && secondProperty.Name == Name;
+        }
 
         /// <summary>
         /// Gets the property as a string

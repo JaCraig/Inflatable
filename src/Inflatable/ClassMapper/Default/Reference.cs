@@ -18,6 +18,7 @@ using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using Inflatable.Utils;
 using System;
 using System.Linq.Expressions;
 
@@ -39,6 +40,36 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mapping">Mapping the StringID is added to</param>
         public Reference(Expression<Func<ClassType, DataType>> expression, IMapping mapping) : base(expression, mapping)
         {
+        }
+
+        /// <summary>
+        /// Converts this instance to the class specified
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="mapping">The mapping.</param>
+        /// <returns>The resulting property</returns>
+        public override IProperty Convert<TResult>(IMapping mapping)
+        {
+            var Result = new ExpressionTypeConverter<ClassType, DataType>
+            {
+                Expression = Expression
+            }.Convert<TResult>();
+            var ReturnObject = new Reference<TResult, DataType>(Result, mapping);
+            if (Index)
+                ReturnObject.IsIndexed();
+            if (ReadOnly)
+                ReturnObject.IsReadOnly();
+            if (Unique)
+                ReturnObject.IsUnique();
+            ReturnObject.WithColumnName(ColumnName);
+            ReturnObject.WithComputedColumnSpecification(ComputedColumnSpecification);
+            foreach (var Constraint in Constraints)
+            {
+                ReturnObject.WithConstraint(Constraint);
+            }
+            ReturnObject.WithDefaultValue(DefaultValue);
+            ReturnObject.WithMaxLength(MaxLength);
+            return ReturnObject;
         }
 
         /// <summary>

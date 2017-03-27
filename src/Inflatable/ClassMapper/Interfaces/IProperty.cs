@@ -213,8 +213,10 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Converts this instance to the class specified
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="mapping">The mapping.</param>
         /// <returns>The resulting property</returns>
-        IProperty Convert<TResult>();
+        IProperty Convert<TResult>(IMapping mapping)
+            where TResult : class;
 
         /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)
@@ -248,5 +250,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Sets up the property (used internally)
         /// </summary>
         void Setup();
+
+        /// <summary>
+        /// Similars the specified reference property2.
+        /// </summary>
+        /// <param name="secondProperty">The second property.</param>
+        /// <returns>True if it is similar, false otherwise.</returns>
+        bool Similar(IProperty secondProperty);
     }
 }
