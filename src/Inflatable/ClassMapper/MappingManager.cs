@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
-using Inflatable.ClassMapper.TypeGraph;
 using Inflatable.Interfaces;
-using Inflatable.Utils;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Inflatable.ClassMapper
 {
@@ -33,127 +33,37 @@ namespace Inflatable.ClassMapper
         /// Initializes a new instance of the <see cref="MappingManager"/> class.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public MappingManager(IEnumerable<IMapping> mappings)
+        /// <param name="sources">The sources.</param>
+        /// <param name="logger">The logger.</param>
+        public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, ILogger logger)
         {
+            Logger = logger ?? Log.Logger;
+            if (Logger == null)
+                throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new List<IMapping>();
-            Mappings = new ConcurrentDictionary<Type, IMapping>();
-            TypeGraphs = new ConcurrentDictionary<Type, Tree<Type>>();
-            ChildTypes = new ListMapping<Type, Type>();
-            ParentTypes = new ListMapping<Type, Type>();
-            AddMappings(mappings);
-            SetupTypeGraphs();
-            IEnumerable<Type> ConcreteTypes = SetupChildTypes();
-            MergeMappings();
-            SetupParentTypes(ConcreteTypes);
-            ReduceMappings();
-        }
-
-        /// <summary>
-        /// Gets the child types.
-        /// </summary>
-        /// <value>The child types.</value>
-        public ListMapping<Type, Type> ChildTypes { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the mappings.
-        /// </summary>
-        /// <value>The mappings.</value>
-        public IDictionary<Type, IMapping> Mappings { get; private set; }
-
-        /// <summary>
-        /// Gets the parent types.
-        /// </summary>
-        /// <value>The parent types.</value>
-        public ListMapping<Type, Type> ParentTypes { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the type graph.
-        /// </summary>
-        /// <value>The type graph.</value>
-        public IDictionary<Type, Tree<Type>> TypeGraphs { get; private set; }
-
-        /// <summary>
-        /// Adds the mappings.
-        /// </summary>
-        /// <param name="mappings">The mappings.</param>
-        private void AddMappings(IEnumerable<IMapping> mappings)
-        {
-            foreach (var Mapping in mappings)
+            Logger.Information("Setting up mapping information");
+            var TempSourceMappings = new ListMapping<Type, IMapping>();
+            mappings.ForEachParallel(x => TempSourceMappings.Add(x.DatabaseConfigType, x));
+            var FinalList = new ConcurrentBag<MappingSource>();
+            TempSourceMappings.Keys.ForEachParallel(Key =>
             {
-                Mappings.Add(Mapping.ObjectType, Mapping);
-            }
+                FinalList.Add(new MappingSource(TempSourceMappings[Key],
+                                                sources.FirstOrDefault(x => x.GetType() == Key),
+                                                logger));
+            });
+            Sources = FinalList;
         }
 
         /// <summary>
-        /// Merges the mappings.
+        /// Gets or sets the logger.
         /// </summary>
-        private void MergeMappings()
-        {
-            var MappingMerger = new MergeMappings(Mappings);
-            foreach (var TempTypeGraph in TypeGraphs.Values)
-            {
-                MappingMerger.Merge(TempTypeGraph);
-            }
-        }
+        /// <value>The logger.</value>
+        public ILogger Logger { get; set; }
 
         /// <summary>
-        /// Reduces the mappings.
+        /// Gets or sets the sources.
         /// </summary>
-        private void ReduceMappings()
-        {
-            var ReduceMapping = new ReduceMappings(Mappings);
-            foreach (var TempTypeGraph in TypeGraphs.Values)
-            {
-                ReduceMapping.Reduce(TempTypeGraph);
-            }
-        }
-
-        /// <summary>
-        /// Sets up the child types.
-        /// </summary>
-        /// <returns>The concrete types found</returns>
-        private IEnumerable<Type> SetupChildTypes()
-        {
-            var TempConcreteDiscoverer = new DiscoverConcreteTypes(TypeGraphs);
-            var ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
-            foreach (var ConcreteType in ConcreteTypes)
-            {
-                var Parents = TypeGraphs[ConcreteType].ToList();
-                foreach (var Parent in Parents)
-                {
-                    ChildTypes.Add(Parent, ConcreteType);
-                }
-            }
-
-            return ConcreteTypes;
-        }
-
-        /// <summary>
-        /// Sets up the parent types.
-        /// </summary>
-        /// <param name="ConcreteTypes">The concrete types.</param>
-        private void SetupParentTypes(IEnumerable<Type> ConcreteTypes)
-        {
-            foreach (var ConcreteType in ConcreteTypes)
-            {
-                var Parents = TypeGraphs[ConcreteType].ToList();
-                foreach (var Parent in Parents)
-                {
-                    ParentTypes.Add(ConcreteType, Parent);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets up the type graphs.
-        /// </summary>
-        private void SetupTypeGraphs()
-        {
-            var TempGenerator = new Generator(Mappings);
-            foreach (var Key in Mappings.Keys)
-            {
-                TypeGraphs.Add(Key, TempGenerator.Generate(Key));
-            }
-        }
+        /// <value>The sources.</value>
+        public IEnumerable<MappingSource> Sources { get; set; }
     }
 }

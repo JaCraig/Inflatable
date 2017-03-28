@@ -1,10 +1,12 @@
 ﻿using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Interfaces;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
+using Serilog;
 using System.Linq;
 using Xunit;
 
@@ -22,7 +24,13 @@ namespace Inflatable.Tests.ClassMapper
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            });
+            },
+            new IDatabase[]{
+                new MockDatabaseMapping()
+            },
+            Canister.Builder.Bootstrapper.Resolve<ILogger>())
+            .Sources
+            .First();
             Assert.Equal(6, TestObject.Mappings.Count);
             Assert.Contains(typeof(BaseClass1), TestObject.Mappings.Keys);
             Assert.Contains(typeof(ConcreteClass1), TestObject.Mappings.Keys);
@@ -71,7 +79,13 @@ namespace Inflatable.Tests.ClassMapper
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            });
+            },
+            new IDatabase[]{
+                new MockDatabaseMapping()
+            },
+            Canister.Builder.Bootstrapper.Resolve<ILogger>())
+            .Sources
+            .First();
             Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties.Count);
             Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties.Count);
             Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties.Count);
