@@ -20,6 +20,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -185,7 +186,8 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Reduces this instance and removes duplicate properties
         /// </summary>
-        public void Reduce()
+        /// <param name="logger">The logger.</param>
+        public void Reduce(ILogger logger)
         {
             for (int x = 0; x < IDProperties.Count; ++x)
             {
@@ -195,6 +197,7 @@ namespace Inflatable.BaseClasses
                     var IDProperty2 = IDProperties.ElementAt(y);
                     if (IDProperty1 == IDProperty2)
                     {
+                        logger.Debug("Found duplicate ID and removing {Name:l} from mapping {Mapping:l}", IDProperty2.Name, ObjectType.Name);
                         IDProperties.Remove(IDProperty2);
                         --y;
                     }
@@ -208,6 +211,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
+                        logger.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -219,7 +223,8 @@ namespace Inflatable.BaseClasses
         /// Reduces this instance based on parent mapping properties.
         /// </summary>
         /// <param name="parentMapping">The parent mapping.</param>
-        public void Reduce(IMapping parentMapping)
+        /// <param name="logger">The logger.</param>
+        public void Reduce(IMapping parentMapping, ILogger logger)
         {
             for (int x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
             {
@@ -229,6 +234,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
+                        logger.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -278,7 +284,7 @@ namespace Inflatable.BaseClasses
         /// <returns>The table name</returns>
         public override string ToString()
         {
-            return TableName;
+            return ObjectType.Name;
         }
     }
 }

@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.Interfaces;
 using Inflatable.Utils;
+using Serilog;
 using System;
 using System.Collections.Generic;
 
@@ -30,10 +31,18 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Initializes a new instance of the <see cref="MergeMappings"/> class.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public MergeMappings(IDictionary<Type, IMapping> mappings)
+        /// <param name="logger">The logger.</param>
+        public MergeMappings(IDictionary<Type, IMapping> mappings, ILogger logger)
         {
+            Logger = logger;
             Mappings = mappings ?? throw new ArgumentNullException(nameof(mappings));
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>The logger.</value>
+        public ILogger Logger { get; set; }
 
         /// <summary>
         /// Gets or sets the mappings.
@@ -80,6 +89,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                 {
                     var MappingParent = Mappings[node.Parent.Data];
                     MappingParent.Copy(Mapping);
+                    Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                     return true;
                 }
             }

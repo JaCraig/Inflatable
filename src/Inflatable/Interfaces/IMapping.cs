@@ -18,6 +18,7 @@ using Inflatable.ClassMapper.Default;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -118,13 +119,15 @@ namespace Inflatable.Interfaces
         /// <summary>
         /// Reduces this instance and removes duplicate properties
         /// </summary>
-        void Reduce();
+        /// <param name="logger">The logger.</param>
+        void Reduce(ILogger logger);
 
         /// <summary>
         /// Reduces this instance based on parent mapping properties.
         /// </summary>
         /// <param name="parentMapping">The parent mapping.</param>
-        void Reduce(IMapping parentMapping);
+        /// <param name="logger">The logger.</param>
+        void Reduce(IMapping parentMapping, ILogger logger);
 
         /// <summary>
         /// Sets the default query based on query type

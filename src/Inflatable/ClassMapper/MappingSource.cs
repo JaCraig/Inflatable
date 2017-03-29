@@ -22,6 +22,7 @@ using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Inflatable.ClassMapper
 {
@@ -53,6 +54,7 @@ namespace Inflatable.ClassMapper
             MergeMappings();
             SetupParentTypes(ConcreteTypes);
             ReduceMappings();
+            RemoveDeadMappings();
         }
 
         /// <summary>
@@ -95,6 +97,32 @@ namespace Inflatable.ClassMapper
         public IDictionary<Type, Tree<Type>> TypeGraphs { get; private set; }
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            Builder.AppendLineFormat("Source: {0}", Source.Name);
+            foreach (var Mapping in Mappings.Values)
+            {
+                Builder.AppendLineFormat("\tMapping: {0}", Mapping);
+                Builder.AppendLine("\t\tIDs:");
+                foreach (var Property in Mapping.IDProperties)
+                {
+                    Builder.AppendLineFormat("\t\t\t{0}", Property);
+                }
+                Builder.AppendLine("\t\tReferences:");
+                foreach (var Property in Mapping.ReferenceProperties)
+                {
+                    Builder.AppendLineFormat("\t\t\t{0}", Property);
+                }
+                Builder.AppendLine();
+            }
+            return Builder.ToString();
+        }
+
+        /// <summary>
         /// Adds the mappings.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
@@ -113,7 +141,7 @@ namespace Inflatable.ClassMapper
         private void MergeMappings()
         {
             Logger.Information("Merging mappings for {Name:l}", Source.Name);
-            var MappingMerger = new MergeMappings(Mappings);
+            var MappingMerger = new MergeMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
                 MappingMerger.Merge(TempTypeGraph);
@@ -126,7 +154,7 @@ namespace Inflatable.ClassMapper
         private void ReduceMappings()
         {
             Logger.Information("Reducing mappings for {Name:l}", Source.Name);
-            var ReduceMapping = new ReduceMappings(Mappings);
+            var ReduceMapping = new ReduceMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
                 ReduceMapping.Reduce(TempTypeGraph);

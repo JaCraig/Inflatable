@@ -17,10 +17,12 @@ limitations under the License.
 using BigBook;
 using Inflatable.Interfaces;
 using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Inflatable.ClassMapper
 {
@@ -41,6 +43,7 @@ namespace Inflatable.ClassMapper
             if (Logger == null)
                 throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new List<IMapping>();
+            bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
             Logger.Information("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
             mappings.ForEachParallel(x => TempSourceMappings.Add(x.DatabaseConfigType, x));
@@ -52,6 +55,16 @@ namespace Inflatable.ClassMapper
                                                 logger));
             });
             Sources = FinalList;
+            if (Debug)
+            {
+                StringBuilder Builder = new StringBuilder();
+                Builder.AppendLine("Final Mappings:");
+                foreach (var Source in Sources)
+                {
+                    Builder.AppendLine(Source.ToString());
+                }
+                Logger.Debug("{Info:l}", Builder.ToString());
+            }
         }
 
         /// <summary>
@@ -65,5 +78,19 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The sources.</value>
         public IEnumerable<MappingSource> Sources { get; set; }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
+        {
+            StringBuilder Builder = new StringBuilder();
+            foreach (var Source in Sources)
+            {
+                Builder.AppendLine(Source.ToString());
+            }
+            return Builder.ToString();
+        }
     }
 }

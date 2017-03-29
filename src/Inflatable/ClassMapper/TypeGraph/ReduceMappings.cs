@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.Interfaces;
 using Inflatable.Utils;
+using Serilog;
 using System;
 using System.Collections.Generic;
 
@@ -30,10 +31,18 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Initializes a new instance of the <see cref="ReduceMappings"/> class.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public ReduceMappings(IDictionary<Type, IMapping> mappings)
+        /// <param name="logger">The logger.</param>
+        public ReduceMappings(IDictionary<Type, IMapping> mappings, ILogger logger)
         {
+            Logger = logger;
             Mappings = mappings ?? throw new ArgumentNullException(nameof(mappings));
         }
+
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>The logger.</value>
+        public ILogger Logger { get; set; }
 
         /// <summary>
         /// Gets or sets the mappings.
@@ -48,13 +57,13 @@ namespace Inflatable.ClassMapper.TypeGraph
         public void Reduce(Tree<Type> typeGraph)
         {
             var Mapping = Mappings[typeGraph.Root.Data];
-            Mapping.Reduce();
+            Mapping.Reduce(Logger);
             foreach (var ParentType in typeGraph.ToList())
             {
                 var ParentMapping = Mappings[ParentType];
                 if (Mapping != ParentMapping)
                 {
-                    Mapping.Reduce(ParentMapping);
+                    Mapping.Reduce(ParentMapping, Logger);
                 }
             }
         }
