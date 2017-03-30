@@ -173,6 +173,7 @@ namespace Inflatable.ClassMapper
             var Items = Mappings.Keys.Where(x => !NeededTypes.Contains(x));
             foreach (var Item in Items)
             {
+                Logger.Information("Removing mapping {Name:l} from manager as mapping has been merged.", Source.Name);
                 Mappings.Remove(Item);
                 TypeGraphs.Remove(Item);
             }
