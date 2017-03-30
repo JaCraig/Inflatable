@@ -31,14 +31,13 @@ namespace Inflatable.Tests.ClassMapper
             Canister.Builder.Bootstrapper.Resolve<ILogger>())
             .Sources
             .First();
-            Assert.Equal(6, TestObject.Mappings.Count);
+            Assert.Equal(5, TestObject.Mappings.Count);
             Assert.Contains(typeof(BaseClass1), TestObject.Mappings.Keys);
             Assert.Contains(typeof(ConcreteClass1), TestObject.Mappings.Keys);
             Assert.Contains(typeof(ConcreteClass2), TestObject.Mappings.Keys);
             Assert.Contains(typeof(ConcreteClass3), TestObject.Mappings.Keys);
             Assert.Contains(typeof(IInterface1), TestObject.Mappings.Keys);
-            Assert.Contains(typeof(IInterface2), TestObject.Mappings.Keys);
-            Assert.Equal(6, TestObject.TypeGraphs.Count());
+            Assert.Equal(5, TestObject.TypeGraphs.Count());
             Assert.Equal(typeof(ConcreteClass1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Data);
             Assert.Equal(typeof(ConcreteClass2), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Data);
             Assert.Equal(typeof(ConcreteClass3), TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Data);

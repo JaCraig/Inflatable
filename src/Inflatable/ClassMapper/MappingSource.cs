@@ -22,6 +22,7 @@ using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Inflatable.ClassMapper
@@ -158,6 +159,22 @@ namespace Inflatable.ClassMapper
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
                 ReduceMapping.Reduce(TempTypeGraph);
+            }
+        }
+
+        private void RemoveDeadMappings()
+        {
+            var NeededTypes = new List<Type>();
+            foreach (var Mapping in Mappings.Keys)
+            {
+                NeededTypes.AddIfUnique(ChildTypes[Mapping]);
+                NeededTypes.AddIfUnique(ParentTypes[Mapping]);
+            }
+            var Items = Mappings.Keys.Where(x => !NeededTypes.Contains(x));
+            foreach (var Item in Items)
+            {
+                Mappings.Remove(Item);
+                TypeGraphs.Remove(Item);
             }
         }
 

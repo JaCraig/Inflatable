@@ -39,7 +39,7 @@ namespace Inflatable.ClassMapper
         /// <param name="logger">The logger.</param>
         public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, ILogger logger)
         {
-            Logger = logger ?? Log.Logger;
+            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger();
             if (Logger == null)
                 throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new List<IMapping>();
