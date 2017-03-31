@@ -141,6 +141,7 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void MergeMappings()
         {
+            if (!Source.Optimize) return;
             Logger.Information("Merging mappings for {Name:l}", Source.Name);
             var MappingMerger = new MergeMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
@@ -154,6 +155,7 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void ReduceMappings()
         {
+            if (!Source.Optimize) return;
             Logger.Information("Reducing mappings for {Name:l}", Source.Name);
             var ReduceMapping = new ReduceMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
@@ -164,6 +166,7 @@ namespace Inflatable.ClassMapper
 
         private void RemoveDeadMappings()
         {
+            if (!Source.Optimize) return;
             var NeededTypes = new List<Type>();
             foreach (var Mapping in Mappings.Keys)
             {

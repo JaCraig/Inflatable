@@ -1,6 +1,6 @@
 ﻿namespace Inflatable.Tests.MockClasses
 {
-    public class SecondMockDatabaseMapping : Inflatable.Interfaces.IDatabase
+    public class SecondMockDatabaseMapping : Interfaces.IDatabase
     {
         public bool Audit => false;
 
@@ -13,5 +13,7 @@
         public bool Update => true;
 
         public bool Writable => true;
+
+        public bool Optimize => true;
     }
 }

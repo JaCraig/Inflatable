@@ -56,5 +56,13 @@ namespace Inflatable.Interfaces
         /// </summary>
         /// <value><c>true</c> if writable; otherwise, <c>false</c>.</value>
         bool Writable { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this source should be optimized automatically.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if it should be optimized; otherwise, <c>false</c>.
+        /// </value>
+        bool Optimize { get; }
     }
 }
