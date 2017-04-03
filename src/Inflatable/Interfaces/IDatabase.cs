@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System.Data.Common;
+
 namespace Inflatable.Interfaces
 {
     /// <summary>
@@ -64,5 +66,13 @@ namespace Inflatable.Interfaces
         ///   <c>true</c> if it should be optimized; otherwise, <c>false</c>.
         /// </value>
         bool Optimize { get; }
+
+        /// <summary>
+        /// Gets the provider.
+        /// </summary>
+        /// <value>
+        /// The provider.
+        /// </value>
+        DbProviderFactory Provider { get; }
     }
 }

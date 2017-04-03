@@ -1,4 +1,7 @@
-﻿namespace Inflatable.Tests.MockClasses
+﻿using System.Data.Common;
+using System.Data.SqlClient;
+
+namespace Inflatable.Tests.MockClasses
 {
     public class MockDatabaseMapping : Interfaces.IDatabase
     {
@@ -15,5 +18,7 @@
         public bool Writable => true;
 
         public bool Optimize => true;
+
+        public DbProviderFactory Provider => SqlClientFactory.Instance;
     }
 }

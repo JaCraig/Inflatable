@@ -15,10 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -397,6 +399,26 @@ namespace Inflatable.ClassMapper.BaseClasses
         {
             MaxLength = maxLength;
             return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+        }
+
+        /// <summary>
+        /// Adds to table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void AddToTable(ITable table)
+        {
+            table.AddColumn(ColumnName,
+                PropertyType.To(DbType.Int32),
+                MaxLength,
+                Nullable,
+                AutoIncrement,
+                Index,
+                true,
+                false,
+                "",
+                "",
+                DefaultValue(),
+                ComputedColumnSpecification);
         }
     }
 }

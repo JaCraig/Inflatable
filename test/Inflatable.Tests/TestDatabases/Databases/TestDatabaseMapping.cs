@@ -1,15 +1,16 @@
-﻿using System.Data.Common;
+﻿using Inflatable.Interfaces;
+using System.Data.Common;
 using System.Data.SqlClient;
 
-namespace Inflatable.Tests.MockClasses
+namespace Inflatable.Tests.TestDatabases.Databases
 {
-    public class SecondMockDatabaseMapping : Interfaces.IDatabase
+    public class TestDatabaseMapping : IDatabase
     {
-        public bool Audit => false;
+        public bool Audit => true;
 
-        public string Name => "SecondMockDatabase";
+        public string Name => "Default";
 
-        public int Order => 2;
+        public int Order => 1;
 
         public bool Readable => true;
 

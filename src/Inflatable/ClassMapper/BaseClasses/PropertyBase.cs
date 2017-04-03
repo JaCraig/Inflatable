@@ -15,10 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -57,7 +59,8 @@ namespace Inflatable.ClassMapper.BaseClasses
             Expression = expression;
             InternalFieldName = "_" + Name + "Derived";
             MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
-            Nullable = DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>);
+            Nullable = typeof(DataType) == typeof(string)
+                || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
             ParentMapping = mapping;
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
@@ -326,6 +329,26 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets up the property (used internally)
         /// </summary>
         public abstract void Setup();
+
+        /// <summary>
+        /// Adds to table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void AddToTable(ITable table)
+        {
+            table.AddColumn(ColumnName,
+                PropertyType.To(DbType.Int32),
+                MaxLength,
+                Nullable,
+                false,
+                Index,
+                false,
+                Unique,
+                "",
+                "",
+                DefaultValue(),
+                ComputedColumnSpecification);
+        }
 
         /// <summary>
         /// Checks if the properties are similar to one another

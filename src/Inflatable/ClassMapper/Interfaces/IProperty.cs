@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using BigBook.Patterns;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -208,6 +209,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
         bool Unique { get; }
+
+        /// <summary>
+        /// Adds this property to the table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        void AddToTable(ITable table);
 
         /// <summary>
         /// Converts this instance to the class specified

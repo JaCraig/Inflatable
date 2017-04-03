@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using BigBook.Patterns;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -153,6 +154,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value>The name of the type.</value>
         string TypeName { get; }
+
+        /// <summary>
+        /// Adds this instance to the table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        void AddToTable(ITable table);
 
         /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)
