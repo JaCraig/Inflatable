@@ -29,6 +29,7 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Empty(TestObject.Queries);
             Assert.Equal("_", TestObject.Suffix);
             Assert.Equal("AllReferencesAndID_", TestObject.TableName);
+            Assert.Equal(0, TestObject.AutoIDProperties.Count);
         }
     }
 }

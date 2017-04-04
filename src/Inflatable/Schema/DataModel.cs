@@ -14,10 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Data.Modeler;
 using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Inflatable.Schema
 {
@@ -26,6 +28,32 @@ namespace Inflatable.Schema
     /// </summary>
     public class DataModel
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataModel" /> class.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="config">The configuration.</param>
+        public DataModel(MappingSource source, IConfiguration config)
+        {
+            Source = source;
+            SourceSpec = DataModeler.CreateSource(Source.Source.Name);
+            var Generator = DataModeler.GetSchemaGenerator(source.Source.Provider);
+            var SourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
+            var OriginalSource = Generator.GetSourceStructure(SourceConnection);
+            SetupTableStructures();
+            GeneratedSchemaChanges = Generator.GenerateSchema(SourceSpec, OriginalSource);
+            if (Source.Source.Update)
+                Generator.Setup(SourceSpec, SourceConnection);
+        }
+
+        /// <summary>
+        /// Gets the generated schema changes.
+        /// </summary>
+        /// <value>
+        /// The generated schema changes.
+        /// </value>
+        public IEnumerable<string> GeneratedSchemaChanges { get; }
+
         /// <summary>
         /// Gets the source.
         /// </summary>
@@ -43,39 +71,56 @@ namespace Inflatable.Schema
         public Data.Modeler.Providers.Interfaces.ISource SourceSpec { get; }
 
         /// <summary>
-        /// Gets the generated schema changes.
+        /// Sets up the foreign keys.
         /// </summary>
-        /// <value>
-        /// The generated schema changes.
-        /// </value>
-        public IEnumerable<string> GeneratedSchemaChanges { get; }
+        private void SetupForeignKeys()
+        {
+            SourceSpec.Tables.ForEach(x => x.SetupForeignKeys());
+        }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataModel" /> class.
+        /// Sets up the tables.
         /// </summary>
-        /// <param name="source">The source.</param>
-        /// <param name="config">The configuration.</param>
-        public DataModel(MappingSource source, IConfiguration config)
+        private void SetupTables()
         {
-            Source = source;
-            SourceSpec = DataModeler.CreateSource(Source.Source.Name);
-            var Generator = DataModeler.GetSchemaGenerator(source.Source.Provider);
-            var SourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
-            var OriginalSource = Generator.GetSourceStructure(SourceConnection);
-            foreach (var Mapping in Source.Mappings)
+            foreach (var Mapping in Source.Mappings.Values.OrderBy(x => x.Order))
             {
-                var Table = SourceSpec.AddTable(Mapping.Value.TableName);
-                foreach (var ID in Mapping.Value.IDProperties)
+                var Table = SourceSpec.AddTable(Mapping.TableName);
+                var Tree = Source.TypeGraphs[Mapping.ObjectType];
+                var ParentMappings = Tree.Root.Nodes.Select(x => Source.Mappings[x.Data]);
+                foreach (var ID in Mapping.IDProperties)
                 {
                     ID.AddToTable(Table);
                 }
-                foreach (var Reference in Mapping.Value.ReferenceProperties)
+                foreach (var ID in Mapping.AutoIDProperties)
+                {
+                    ID.AddToTable(Table);
+                }
+                foreach (var Reference in Mapping.ReferenceProperties)
                 {
                     Reference.AddToTable(Table);
                 }
+                foreach (var ParentMapping in ParentMappings)
+                {
+                    foreach (var ID in ParentMapping.IDProperties)
+                    {
+                        ID.AddToChildTable(Table);
+                    }
+                    foreach (var ID in ParentMapping.AutoIDProperties)
+                    {
+                        ID.AddToChildTable(Table);
+                    }
+                }
             }
-            GeneratedSchemaChanges = Generator.GenerateSchema(SourceSpec, OriginalSource);
-            Generator.Setup(SourceSpec, SourceConnection);
+        }
+
+        /// <summary>
+        /// Sets up the table structures.
+        /// </summary>
+        private void SetupTableStructures()
+        {
+            SetupTables();
+            SetupForeignKeys();
         }
     }
 }

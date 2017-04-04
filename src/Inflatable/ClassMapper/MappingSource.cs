@@ -56,6 +56,7 @@ namespace Inflatable.ClassMapper
             SetupParentTypes(ConcreteTypes);
             ReduceMappings();
             RemoveDeadMappings();
+            SetupAutoIDs();
         }
 
         /// <summary>
@@ -179,6 +180,22 @@ namespace Inflatable.ClassMapper
                 Logger.Information("Removing mapping {Name:l} from manager as mapping has been merged.", Source.Name);
                 Mappings.Remove(Item);
                 TypeGraphs.Remove(Item);
+            }
+        }
+
+        /// <summary>
+        /// Sets up the parent IDs.
+        /// </summary>
+        private void SetupAutoIDs()
+        {
+            if (!Source.Optimize) return;
+            foreach (var CurrentTree in TypeGraphs.Values)
+            {
+                var CurrentMapping = Mappings[CurrentTree.Root.Data];
+                if (CurrentMapping.IDProperties.Count > 0)
+                    continue;
+                Logger.Information("Adding identity key to {Name:l} as one is not defined.", CurrentMapping);
+                CurrentMapping.AddAutoKey();
             }
         }
 

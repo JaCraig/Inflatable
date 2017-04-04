@@ -60,7 +60,8 @@ namespace Inflatable.ClassMapper.BaseClasses
             InternalFieldName = "_" + Name + "Derived";
             MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
             Nullable = typeof(DataType) == typeof(string)
-                || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
+                || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
+                || typeof(DataType) == typeof(byte[]);
             ParentMapping = mapping;
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
@@ -219,6 +220,26 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Adds to table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void AddToTable(ITable table)
+        {
+            table.AddColumn(ColumnName,
+                PropertyType.To(DbType.Int32),
+                MaxLength,
+                Nullable,
+                false,
+                Index,
+                false,
+                Unique,
+                "",
+                "",
+                DefaultValue(),
+                ComputedColumnSpecification);
+        }
+
+        /// <summary>
         /// Converts this instance to the class specified
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
@@ -329,26 +350,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets up the property (used internally)
         /// </summary>
         public abstract void Setup();
-
-        /// <summary>
-        /// Adds to table.
-        /// </summary>
-        /// <param name="table">The table.</param>
-        public void AddToTable(ITable table)
-        {
-            table.AddColumn(ColumnName,
-                PropertyType.To(DbType.Int32),
-                MaxLength,
-                Nullable,
-                false,
-                Index,
-                false,
-                Unique,
-                "",
-                "",
-                DefaultValue(),
-                ComputedColumnSpecification);
-        }
 
         /// <summary>
         /// Checks if the properties are similar to one another

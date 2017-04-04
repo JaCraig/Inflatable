@@ -225,6 +225,46 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Adds to a child table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void AddToChildTable(ITable table)
+        {
+            table.AddColumn(ParentMapping.TableName + ColumnName,
+                PropertyType.To(DbType.Int32),
+                MaxLength,
+                Nullable,
+                false,
+                Index,
+                false,
+                true,
+                ParentMapping.TableName,
+                ColumnName,
+                DefaultValue(),
+                ComputedColumnSpecification);
+        }
+
+        /// <summary>
+        /// Adds to table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        public void AddToTable(ITable table)
+        {
+            table.AddColumn(ColumnName,
+                PropertyType.To(DbType.Int32),
+                MaxLength,
+                Nullable,
+                AutoIncrement,
+                Index,
+                true,
+                false,
+                "",
+                "",
+                DefaultValue(),
+                ComputedColumnSpecification);
+        }
+
+        /// <summary>
         /// Determines if the two objects are equal and returns true if they are, false otherwise
         /// </summary>
         /// <param name="obj">Object to compare to</param>
@@ -399,26 +439,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         {
             MaxLength = maxLength;
             return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
-        }
-
-        /// <summary>
-        /// Adds to table.
-        /// </summary>
-        /// <param name="table">The table.</param>
-        public void AddToTable(ITable table)
-        {
-            table.AddColumn(ColumnName,
-                PropertyType.To(DbType.Int32),
-                MaxLength,
-                Nullable,
-                AutoIncrement,
-                Index,
-                true,
-                false,
-                "",
-                "",
-                DefaultValue(),
-                ComputedColumnSpecification);
         }
     }
 }

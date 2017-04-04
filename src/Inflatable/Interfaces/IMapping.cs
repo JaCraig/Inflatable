@@ -57,6 +57,14 @@ namespace Inflatable.Interfaces
     public interface IMapping
     {
         /// <summary>
+        /// Gets the automatic identifier properties.
+        /// </summary>
+        /// <value>
+        /// The automatic identifier properties.
+        /// </value>
+        ICollection<IAutoIDProperty> AutoIDProperties { get; }
+
+        /// <summary>
         /// Gets the type of the database configuration.
         /// </summary>
         /// <value>The type of the database configuration.</value>
@@ -109,6 +117,11 @@ namespace Inflatable.Interfaces
         /// </summary>
         /// <value>The name of the table.</value>
         string TableName { get; }
+
+        /// <summary>
+        /// Adds an automatic key.
+        /// </summary>
+        void AddAutoKey();
 
         /// <summary>
         /// Copies the specified mapping.

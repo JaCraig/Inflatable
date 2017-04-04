@@ -156,6 +156,12 @@ namespace Inflatable.ClassMapper.Interfaces
         string TypeName { get; }
 
         /// <summary>
+        /// Adds to a child table.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        void AddToChildTable(ITable table);
+
+        /// <summary>
         /// Adds this instance to the table.
         /// </summary>
         /// <param name="table">The table.</param>

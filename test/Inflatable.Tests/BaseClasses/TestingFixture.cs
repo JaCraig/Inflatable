@@ -25,6 +25,8 @@ namespace Inflatable.Tests.BaseClasses
 
         protected string ConnectionString => "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false";
 
+        protected string ConnectionString2 => "Data Source=localhost;Initial Catalog=TestDatabase2;Integrated Security=SSPI;Pooling=false";
+
         protected string DatabaseName => "TestDatabase";
 
         protected string MasterString => "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
@@ -42,6 +44,22 @@ namespace Inflatable.Tests.BaseClasses
                         TempCommand.Open();
                         TempCommand.ExecuteNonQuery();
                     }
+                    catch { }
+                    finally { TempCommand.Close(); }
+                }
+            }
+            using (var TempConnection = SqlClientFactory.Instance.CreateConnection())
+            {
+                TempConnection.ConnectionString = MasterString;
+                using (var TempCommand = TempConnection.CreateCommand())
+                {
+                    try
+                    {
+                        TempCommand.CommandText = "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2";
+                        TempCommand.Open();
+                        TempCommand.ExecuteNonQuery();
+                    }
+                    catch { }
                     finally { TempCommand.Close(); }
                 }
             }
@@ -51,7 +69,8 @@ namespace Inflatable.Tests.BaseClasses
         {
             var dict = new Dictionary<string, string>
                 {
-                    { "ConnectionStrings:Default", ConnectionString }
+                    { "ConnectionStrings:Default", ConnectionString },
+                    { "ConnectionStrings:Default2", ConnectionString2 }
                 };
             Configuration = new ConfigurationBuilder()
                              .AddInMemoryCollection(dict)
@@ -60,20 +79,36 @@ namespace Inflatable.Tests.BaseClasses
 
         private void SetupDatabases()
         {
-            using (var TempConnection = SqlClientFactory.Instance.CreateConnection())
-            {
-                TempConnection.ConnectionString = MasterString;
-                using (var TempCommand = TempConnection.CreateCommand())
-                {
-                    try
-                    {
-                        TempCommand.CommandText = "Create Database TestDatabase";
-                        TempCommand.Open();
-                        TempCommand.ExecuteNonQuery();
-                    }
-                    finally { TempCommand.Close(); }
-                }
-            }
+            //using (var TempConnection = SqlClientFactory.Instance.CreateConnection())
+            //{
+            //    TempConnection.ConnectionString = MasterString;
+            //    using (var TempCommand = TempConnection.CreateCommand())
+            //    {
+            //        try
+            //        {
+            //            TempCommand.CommandText = "Create Database TestDatabase";
+            //            TempCommand.Open();
+            //            TempCommand.ExecuteNonQuery();
+            //        }
+            //        catch { }
+            //        finally { TempCommand.Close(); }
+            //    }
+            //}
+            //using (var TempConnection = SqlClientFactory.Instance.CreateConnection())
+            //{
+            //    TempConnection.ConnectionString = MasterString;
+            //    using (var TempCommand = TempConnection.CreateCommand())
+            //    {
+            //        try
+            //        {
+            //            TempCommand.CommandText = "Create Database TestDatabase2";
+            //            TempCommand.Open();
+            //            TempCommand.ExecuteNonQuery();
+            //        }
+            //        catch { }
+            //        finally { TempCommand.Close(); }
+            //    }
+            //}
         }
 
         private void SetupIoC()

@@ -48,6 +48,7 @@ namespace Inflatable.BaseClasses
         /// <param name="order">The order.</param>
         protected MappingBaseClass(string tableName = "", string suffix = "_", string prefix = "", int order = 10)
         {
+            AutoIDProperties = new List<IAutoIDProperty>();
             IDProperties = new List<IIDProperty>();
             Order = order;
             Prefix = prefix ?? "";
@@ -56,6 +57,14 @@ namespace Inflatable.BaseClasses
             Suffix = suffix ?? "";
             TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
         }
+
+        /// <summary>
+        /// Gets the automatic identifier properties.
+        /// </summary>
+        /// <value>
+        /// The automatic identifier properties.
+        /// </value>
+        public ICollection<IAutoIDProperty> AutoIDProperties { get; private set; }
 
         /// <summary>
         /// Gets the type of the database configuration.
@@ -131,6 +140,14 @@ namespace Inflatable.BaseClasses
         public static bool operator ==(MappingBaseClass<ClassType, DatabaseType> Item1, MappingBaseClass<ClassType, DatabaseType> Item2)
         {
             return Item1.Equals(Item2);
+        }
+
+        /// <summary>
+        /// Adds an automatic key.
+        /// </summary>
+        public void AddAutoKey()
+        {
+            AutoIDProperties.Add(new AutoID(Prefix + "ID" + Suffix, this));
         }
 
         /// <summary>
