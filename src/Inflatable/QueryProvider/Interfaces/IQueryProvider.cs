@@ -34,9 +34,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <returns>
-        /// A batch object
-        /// </returns>
+        /// <returns>A batch object</returns>
         SQLHelper.SQLHelper Batch(IDatabase source);
 
         /// <summary>
@@ -44,9 +42,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <typeparam name="TMappedClass">Class type to create the generator for</typeparam>
         /// <param name="mappingInformation">The mapping information.</param>
-        /// <returns>
-        /// Generator object
-        /// </returns>
+        /// <returns>Generator object</returns>
         IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInformation)
             where TMappedClass : class;
     }

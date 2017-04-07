@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
+
 namespace Inflatable.QueryProvider.Interfaces
 {
     /// <summary>
@@ -23,5 +25,16 @@ namespace Inflatable.QueryProvider.Interfaces
     public interface IGenerator<TMappedClass>
         where TMappedClass : class
     {
+        /// <summary>
+        /// Gets the type of the associated.
+        /// </summary>
+        /// <value>The type of the associated.</value>
+        Type AssociatedType { get; }
+
+        /// <summary>
+        /// Generates the default queries associated with the mapped type.
+        /// </summary>
+        /// <returns>The default queries for the specified type.</returns>
+        Queries GenerateDefaultQueries();
     }
 }
