@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
@@ -85,6 +86,15 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         public void Setup()
         {
+        }
+
+        /// <summary>
+        /// Gets the property as a string
+        /// </summary>
+        /// <returns>The string representation of the property</returns>
+        public override string ToString()
+        {
+            return typeof(long).GetName() + " " + ParentMapping + "." + ColumnName;
         }
     }
 }

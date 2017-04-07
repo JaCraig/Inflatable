@@ -41,7 +41,7 @@ namespace Inflatable.ClassMapper
         public MappingSource(IEnumerable<IMapping> mappings, IDatabase source, ILogger logger)
         {
             Logger = logger;
-            mappings = mappings ?? new List<IMapping>();
+            mappings = mappings ?? new ConcurrentBag<IMapping>();
             Source = source ?? throw new ArgumentNullException(nameof(source));
             Logger.Information("Setting up {Name:l}", source.Name);
             Order = Source.Order;
@@ -114,6 +114,11 @@ namespace Inflatable.ClassMapper
                 {
                     Builder.AppendLineFormat("\t\t\t{0}", Property);
                 }
+                Builder.AppendLine("\t\tAuto IDs:");
+                foreach (var Property in Mapping.AutoIDProperties)
+                {
+                    Builder.AppendLineFormat("\t\t\t{0}", Property);
+                }
                 Builder.AppendLine("\t\tReferences:");
                 foreach (var Property in Mapping.ReferenceProperties)
                 {
@@ -177,7 +182,7 @@ namespace Inflatable.ClassMapper
             var Items = Mappings.Keys.Where(x => !NeededTypes.Contains(x));
             foreach (var Item in Items)
             {
-                Logger.Information("Removing mapping {Name:l} from manager as mapping has been merged.", Source.Name);
+                Logger.Debug("Removing mapping {Name:l} from manager as mapping has been merged.", Source.Name);
                 Mappings.Remove(Item);
                 TypeGraphs.Remove(Item);
             }
@@ -194,7 +199,7 @@ namespace Inflatable.ClassMapper
                 var CurrentMapping = Mappings[CurrentTree.Root.Data];
                 if (CurrentMapping.IDProperties.Count > 0)
                     continue;
-                Logger.Information("Adding identity key to {Name:l} as one is not defined.", CurrentMapping);
+                Logger.Debug("Adding identity key to {Name:l} as one is not defined.", CurrentMapping);
                 CurrentMapping.AddAutoKey();
             }
         }

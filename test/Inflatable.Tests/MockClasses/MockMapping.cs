@@ -2,7 +2,7 @@
 
 namespace Inflatable.Tests.MockClasses
 {
-    public class MockMapping : Inflatable.BaseClasses.MappingBaseClass<AllReferencesAndID, MockDatabaseMapping>
+    public class MockMapping : Inflatable.BaseClasses.MappingBaseClass<AllReferencesAndID, MockDatabaseMappingForMockMapping>
     {
     }
 }

@@ -2,9 +2,10 @@
 using Inflatable.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SQLHelper.ExtensionMethods;
+using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using Xunit;
@@ -16,16 +17,13 @@ namespace Inflatable.Tests.BaseClasses
     {
         public TestingFixture()
         {
-            SetupConfiguration();
             SetupIoC();
             SetupDatabases();
         }
 
-        public IConfigurationRoot Configuration { get; set; }
+        public IConfigurationRoot Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
 
-        protected string ConnectionString => "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false";
-
-        protected string ConnectionString2 => "Data Source=localhost;Initial Catalog=TestDatabase2;Integrated Security=SSPI;Pooling=false";
+        public ILogger Logger => Canister.Builder.Bootstrapper.Resolve<ILogger>();
 
         protected string DatabaseName => "TestDatabase";
 
@@ -33,48 +31,15 @@ namespace Inflatable.Tests.BaseClasses
 
         public void Dispose()
         {
-            using (var TempConnection = SqlClientFactory.Instance.CreateConnection())
+            try
             {
-                TempConnection.ConnectionString = MasterString;
-                using (var TempCommand = TempConnection.CreateCommand())
-                {
-                    try
-                    {
-                        TempCommand.CommandText = "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase";
-                        TempCommand.Open();
-                        TempCommand.ExecuteNonQuery();
-                    }
-                    catch { }
-                    finally { TempCommand.Close(); }
-                }
+                new SQLHelper.SQLHelper(Configuration, SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .CreateBatch()
+                    .AddQuery("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase", CommandType.Text)
+                    .AddQuery("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2", CommandType.Text)
+                    .ExecuteScalar<int>();
             }
-            using (var TempConnection = SqlClientFactory.Instance.CreateConnection())
-            {
-                TempConnection.ConnectionString = MasterString;
-                using (var TempCommand = TempConnection.CreateCommand())
-                {
-                    try
-                    {
-                        TempCommand.CommandText = "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2";
-                        TempCommand.Open();
-                        TempCommand.ExecuteNonQuery();
-                    }
-                    catch { }
-                    finally { TempCommand.Close(); }
-                }
-            }
-        }
-
-        private void SetupConfiguration()
-        {
-            var dict = new Dictionary<string, string>
-                {
-                    { "ConnectionStrings:Default", ConnectionString },
-                    { "ConnectionStrings:Default2", ConnectionString2 }
-                };
-            Configuration = new ConfigurationBuilder()
-                             .AddInMemoryCollection(dict)
-                             .Build();
+            catch { }
         }
 
         private void SetupDatabases()
@@ -120,7 +85,6 @@ namespace Inflatable.Tests.BaseClasses
                                                 .RegisterInflatable()
                                                 .RegisterFileCurator()
                                                 .Build();
-                Container.Register(Configuration, ServiceLifetime.Singleton);
             }
         }
     }

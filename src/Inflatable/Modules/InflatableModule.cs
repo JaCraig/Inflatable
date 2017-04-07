@@ -15,6 +15,10 @@ limitations under the License.
 */
 
 using Canister.Interfaces;
+using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
+using Inflatable.Schema;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Inflatable.Modules
 {
@@ -37,6 +41,10 @@ namespace Inflatable.Modules
         {
             if (bootstrapper == null)
                 return;
+            bootstrapper.RegisterAll<IMapping>();
+            bootstrapper.RegisterAll<IDatabase>();
+            bootstrapper.Register<MappingManager>(ServiceLifetime.Singleton);
+            bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
         }
     }
 }

@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 using System.Collections.Generic;
 
 namespace Inflatable.Schema
@@ -24,8 +25,29 @@ namespace Inflatable.Schema
     /// <summary>
     /// Model manager
     /// </summary>
-    public class ModelManager
+    public class SchemaManager
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SchemaManager" /> class.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        /// <param name="config">The configuration.</param>
+        /// <param name="logger">The logger.</param>
+        public SchemaManager(MappingManager mappings, IConfiguration config, ILogger logger)
+        {
+            Logger = logger;
+            Mappings = mappings;
+            Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger));
+        }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger Logger { get; }
+
         /// <summary>
         /// Gets the mappings.
         /// </summary>
@@ -41,16 +63,5 @@ namespace Inflatable.Schema
         /// The models.
         /// </value>
         public IEnumerable<DataModel> Models { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModelManager" /> class.
-        /// </summary>
-        /// <param name="mappings">The mappings.</param>
-        /// <param name="config">The configuration.</param>
-        public ModelManager(MappingManager mappings, IConfiguration config)
-        {
-            Mappings = mappings;
-            Models = Mappings.Sources.ToList(x => new DataModel(x, config));
-        }
     }
 }

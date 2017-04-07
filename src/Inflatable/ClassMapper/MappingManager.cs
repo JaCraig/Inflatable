@@ -42,7 +42,7 @@ namespace Inflatable.ClassMapper
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger();
             if (Logger == null)
                 throw new ArgumentNullException(nameof(logger));
-            mappings = mappings ?? new List<IMapping>();
+            mappings = mappings ?? new ConcurrentBag<IMapping>();
             bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
             Logger.Information("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();

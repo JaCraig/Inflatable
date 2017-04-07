@@ -3,14 +3,14 @@ using System.Data.SqlClient;
 
 namespace Inflatable.Tests.MockClasses
 {
-    public class SecondMockDatabaseMapping : Interfaces.IDatabase
+    public class MockDatabaseMappingForMockMapping : Interfaces.IDatabase
     {
         public bool Audit => false;
 
-        public string Name => "SecondMockDatabase";
+        public string Name => "MockDatabase";
 
         public bool Optimize => true;
-        public int Order => 2;
+        public int Order => 1;
 
         public DbProviderFactory Provider => SqlClientFactory.Instance;
         public bool Readable => true;
