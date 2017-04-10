@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
-using Inflatable.QueryProvider.Enums;
+using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Interfaces;
-using System;
+using Inflatable.QueryProvider.Providers.SQLServer.Generators;
 
 namespace Inflatable.QueryProvider.Providers.SQLServer
 {
@@ -26,7 +26,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
     /// <seealso cref="Inflatable.QueryProvider.Interfaces.IGenerator{TMappedClass}"/>
-    public class SQLServerGenerator<TMappedClass> : IGenerator<TMappedClass>
+    public class SQLServerGenerator<TMappedClass> : GeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
         /// <summary>
@@ -35,41 +35,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <param name="mappingInformation">The mapping information.</param>
         /// <exception cref="System.ArgumentNullException">mappingInformation</exception>
         public SQLServerGenerator(MappingSource mappingInformation)
+            : base(mappingInformation, new IQueryGenerator[] {
+                new DeleteQuery<TMappedClass>(mappingInformation),
+                new InsertQuery<TMappedClass>(mappingInformation),
+                new UpdateQuery<TMappedClass>(mappingInformation)
+            })
         {
-            MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
-            if (!MappingInformation.Mappings.ContainsKey(AssociatedType))
-                throw new ArgumentException("Mapping not found for type: " + AssociatedType);
-        }
-
-        /// <summary>
-        /// Gets the type of the associated.
-        /// </summary>
-        /// <value>The type of the associated.</value>
-        public Type AssociatedType => typeof(TMappedClass);
-
-        /// <summary>
-        /// Gets the mapping information.
-        /// </summary>
-        /// <value>The mapping information.</value>
-        public MappingSource MappingInformation { get; }
-
-        /// <summary>
-        /// Generates the default queries associated with the mapped type.
-        /// </summary>
-        /// <returns>The default queries for the specified type.</returns>
-        public Queries GenerateDefaultQueries()
-        {
-            if (!MappingInformation.ParentTypes.Keys.Contains(AssociatedType))
-                return new Queries();
-            var Result = new Queries();
-            Result.Add(QueryType.Delete, GenerateDeleteQuery());
-            return Result;
-        }
-
-        private IQuery GenerateDeleteQuery()
-        {
-            var ParentTypes = MappingInformation.ParentTypes[AssociatedType];
-            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
         }
     }
 }

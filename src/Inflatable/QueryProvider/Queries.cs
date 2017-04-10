@@ -174,8 +174,7 @@ namespace Inflatable.QueryProvider
         /// <returns>True if it is removed, false otherwise.</returns>
         public bool Remove(KeyValuePair<QueryType, IQuery> item)
         {
-            IQuery Temp = null;
-            return InternalDictionary.TryRemove(item.Key, out Temp);
+            return InternalDictionary.TryRemove(item.Key, out IQuery Temp);
         }
 
         /// <summary>
@@ -185,8 +184,7 @@ namespace Inflatable.QueryProvider
         /// <returns>True if it is removed, false otherwise.</returns>
         public bool Remove(QueryType key)
         {
-            IQuery Temp = null;
-            return InternalDictionary.TryRemove(key, out Temp);
+            return InternalDictionary.TryRemove(key, out IQuery Temp);
         }
 
         /// <summary>

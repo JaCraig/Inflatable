@@ -53,16 +53,16 @@ namespace Inflatable.Tests.Schema
             Assert.Equal(12, TestModel.GeneratedSchemaChanges.Count());
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [ConcreteClass2_]([ID_] BigInt PRIMARY KEY IDENTITY,[InterfaceValue_] Int NOT NULL,[BaseClass1_ID_] BigInt NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("CREATE TABLE [IInterface1_]([ID_] Int NOT NULL PRIMARY KEY)", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("CREATE TABLE [IInterface1_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [ConcreteClass3_]([ID_] BigInt PRIMARY KEY IDENTITY,[MyUniqueProperty_] Int NOT NULL,[IInterface1_ID_] Int NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE UNIQUE INDEX [Index_IInterface1_ID_1] ON [ConcreteClass3_]([IInterface1_ID_])", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [ConcreteClass1_]([ID_] BigInt PRIMARY KEY IDENTITY,[Value1_] Int NOT NULL,[BaseClass1_ID_] BigInt NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [BaseClass1_]([ID_] BigInt PRIMARY KEY IDENTITY,[BaseClassValue1_] Int NOT NULL,[IInterface1_ID_] Int NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE UNIQUE INDEX [Index_IInterface1_ID_1] ON [BaseClass1_]([IInterface1_ID_])", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("ALTER TABLE [ConcreteClass2_] ADD FOREIGN KEY ([BaseClass1_ID_]) REFERENCES [BaseClass1_]([ID_])", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("ALTER TABLE [ConcreteClass3_] ADD FOREIGN KEY ([IInterface1_ID_]) REFERENCES [IInterface1_]([ID_])", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("ALTER TABLE [ConcreteClass1_] ADD FOREIGN KEY ([BaseClass1_ID_]) REFERENCES [BaseClass1_]([ID_])", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("ALTER TABLE [BaseClass1_] ADD FOREIGN KEY ([IInterface1_ID_]) REFERENCES [IInterface1_]([ID_])", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("ALTER TABLE [ConcreteClass2_] ADD FOREIGN KEY ([BaseClass1_ID_]) REFERENCES [BaseClass1_]([ID_]) ON DELETE CASCADE ON UPDATE CASCADE", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("ALTER TABLE [ConcreteClass3_] ADD FOREIGN KEY ([IInterface1_ID_]) REFERENCES [IInterface1_]([ID_]) ON DELETE CASCADE ON UPDATE CASCADE", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("ALTER TABLE [ConcreteClass1_] ADD FOREIGN KEY ([BaseClass1_ID_]) REFERENCES [BaseClass1_]([ID_]) ON DELETE CASCADE ON UPDATE CASCADE", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("ALTER TABLE [BaseClass1_] ADD FOREIGN KEY ([IInterface1_ID_]) REFERENCES [IInterface1_]([ID_]) ON DELETE CASCADE ON UPDATE CASCADE", TestModel.GeneratedSchemaChanges);
         }
     }
 }

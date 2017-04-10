@@ -241,7 +241,9 @@ namespace Inflatable.ClassMapper.BaseClasses
                 ParentMapping.TableName,
                 ColumnName,
                 DefaultValue(),
-                ComputedColumnSpecification);
+                ComputedColumnSpecification,
+                true,
+                true);
         }
 
         /// <summary>

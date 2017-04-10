@@ -24,11 +24,11 @@ namespace Inflatable.ClassMapper.Default
     /// <summary>
     /// Auto ID
     /// </summary>
-    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IAutoIDProperty" />
+    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IAutoIDProperty"/>
     public class AutoID : IAutoIDProperty
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutoID" /> class.
+        /// Initializes a new instance of the <see cref="AutoID"/> class.
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <param name="parentMapping">The parent mapping.</param>
@@ -41,17 +41,13 @@ namespace Inflatable.ClassMapper.Default
         /// <summary>
         /// Gets the name of the column.
         /// </summary>
-        /// <value>
-        /// The name of the column.
-        /// </value>
+        /// <value>The name of the column.</value>
         public string ColumnName { get; }
 
         /// <summary>
         /// Gets the parent mapping.
         /// </summary>
-        /// <value>
-        /// The parent mapping.
-        /// </value>
+        /// <value>The parent mapping.</value>
         public IMapping ParentMapping { get; }
 
         /// <summary>
@@ -69,7 +65,11 @@ namespace Inflatable.ClassMapper.Default
                 false,
                 true,
                 ParentMapping.TableName,
-                ColumnName);
+                ColumnName,
+                0,
+                "",
+                true,
+                true);
         }
 
         /// <summary>

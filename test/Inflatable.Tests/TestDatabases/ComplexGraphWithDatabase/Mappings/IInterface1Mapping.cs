@@ -8,7 +8,7 @@ namespace Inflatable.Tests.TestDatabases.ComplexGraph.Mappings
     {
         public IInterface1MappingWithDatabase()
         {
-            ID(x => x.ID);
+            ID(x => x.ID).IsAutoIncremented();
         }
     }
 }
