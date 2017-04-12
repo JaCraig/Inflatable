@@ -59,9 +59,7 @@ namespace Inflatable.Interfaces
         /// <summary>
         /// Gets the automatic identifier properties.
         /// </summary>
-        /// <value>
-        /// The automatic identifier properties.
-        /// </value>
+        /// <value>The automatic identifier properties.</value>
         ICollection<IAutoIDProperty> AutoIDProperties { get; }
 
         /// <summary>
@@ -75,6 +73,12 @@ namespace Inflatable.Interfaces
         /// </summary>
         /// <value>The identifier properties.</value>
         ICollection<IIDProperty> IDProperties { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="IMapping"/> should be merged.
+        /// </summary>
+        /// <value><c>true</c> if merge this instance; otherwise, <c>false</c>.</value>
+        bool Merge { get; }
 
         /// <summary>
         /// The object type associated with the mapping

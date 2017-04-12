@@ -38,7 +38,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
             : base(mappingInformation, new IQueryGenerator[] {
                 new DeleteQuery<TMappedClass>(mappingInformation),
                 new InsertQuery<TMappedClass>(mappingInformation),
-                new UpdateQuery<TMappedClass>(mappingInformation)
+                new UpdateQuery<TMappedClass>(mappingInformation),
+                new SelectAllQuery<TMappedClass>(mappingInformation),
+                new SelectAnyQuery<TMappedClass>(mappingInformation)
             })
         {
         }

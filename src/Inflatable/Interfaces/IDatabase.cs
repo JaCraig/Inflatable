@@ -30,16 +30,34 @@ namespace Inflatable.Interfaces
         bool Audit { get; }
 
         /// <summary>
+        /// Gets a value indicating whether to [generate schema changes].
+        /// </summary>
+        /// <value><c>true</c> if the app should [generate schema changes]; otherwise, <c>false</c>.</value>
+        bool GenerateSchemaChanges { get; }
+
+        /// <summary>
         /// Name associated with the database/connection string
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this source should be optimized automatically.
+        /// </summary>
+        /// <value><c>true</c> if it should be optimized; otherwise, <c>false</c>.</value>
+        bool Optimize { get; }
+
+        /// <summary>
         /// Order that this database should be in (if only one database is being used, it is ignored)
         /// </summary>
         /// <value>The order.</value>
         int Order { get; }
+
+        /// <summary>
+        /// Gets the provider.
+        /// </summary>
+        /// <value>The provider.</value>
+        DbProviderFactory Provider { get; }
 
         /// <summary>
         /// Should this database be used to read data?
@@ -58,21 +76,5 @@ namespace Inflatable.Interfaces
         /// </summary>
         /// <value><c>true</c> if writable; otherwise, <c>false</c>.</value>
         bool Writable { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this source should be optimized automatically.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if it should be optimized; otherwise, <c>false</c>.
-        /// </value>
-        bool Optimize { get; }
-
-        /// <summary>
-        /// Gets the provider.
-        /// </summary>
-        /// <value>
-        /// The provider.
-        /// </value>
-        DbProviderFactory Provider { get; }
     }
 }

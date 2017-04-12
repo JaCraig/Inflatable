@@ -38,13 +38,7 @@ namespace Inflatable.Schema
         /// <param name="source">The source.</param>
         /// <param name="config">The configuration.</param>
         /// <param name="logger">The logger.</param>
-        /// <exception cref="ArgumentNullException">
-        /// source
-        /// or
-        /// config
-        /// or
-        /// logger
-        /// </exception>
+        /// <exception cref="ArgumentNullException">source or config or logger</exception>
         public DataModel(MappingSource source, IConfiguration config, ILogger logger)
         {
             if (config == null)
@@ -60,41 +54,31 @@ namespace Inflatable.Schema
         /// <summary>
         /// Gets the generated schema changes.
         /// </summary>
-        /// <value>
-        /// The generated schema changes.
-        /// </value>
+        /// <value>The generated schema changes.</value>
         public IEnumerable<string> GeneratedSchemaChanges { get; private set; }
 
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
+        /// <value>The logger.</value>
         public ILogger Logger { get; }
 
         /// <summary>
         /// Gets the source.
         /// </summary>
-        /// <value>
-        /// The source.
-        /// </value>
+        /// <value>The source.</value>
         public MappingSource Source { get; }
 
         /// <summary>
         /// Gets the source spec.
         /// </summary>
-        /// <value>
-        /// The source spec.
-        /// </value>
+        /// <value>The source spec.</value>
         public ISource SourceSpec { get; }
 
         /// <summary>
         /// Gets the source connection.
         /// </summary>
-        /// <value>
-        /// The source connection.
-        /// </value>
+        /// <value>The source connection.</value>
         private IConnection SourceConnection { get; }
 
         /// <summary>
@@ -103,6 +87,8 @@ namespace Inflatable.Schema
         /// <param name="source">The source.</param>
         private void GenerateSchema(MappingSource source)
         {
+            if (!Source.Source.Update && !Source.Source.GenerateSchemaChanges)
+                return;
             bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
 
             var Generator = DataModeler.GetSchemaGenerator(source.Source.Provider);
@@ -119,11 +105,11 @@ namespace Inflatable.Schema
                 Logger.Debug("Schema changes generated: {GeneratedSchemaChanges}", GeneratedSchemaChanges);
             }
 
-            if (Source.Source.Update)
-            {
-                Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);
-                Generator.Setup(SourceSpec, SourceConnection);
-            }
+            if (!Source.Source.Update)
+                return;
+
+            Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);
+            Generator.Setup(SourceSpec, SourceConnection);
         }
 
         /// <summary>

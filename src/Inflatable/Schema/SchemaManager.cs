@@ -18,6 +18,7 @@ using BigBook;
 using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using System;
 using System.Collections.Generic;
 
 namespace Inflatable.Schema
@@ -28,14 +29,15 @@ namespace Inflatable.Schema
     public class SchemaManager
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SchemaManager" /> class.
+        /// Initializes a new instance of the <see cref="SchemaManager"/> class.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
         /// <param name="config">The configuration.</param>
         /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">logger</exception>
         public SchemaManager(MappingManager mappings, IConfiguration config, ILogger logger)
         {
-            Logger = logger;
+            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             Mappings = mappings;
             Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger));
         }
@@ -43,25 +45,19 @@ namespace Inflatable.Schema
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        /// <value>
-        /// The logger.
-        /// </value>
+        /// <value>The logger.</value>
         public ILogger Logger { get; }
 
         /// <summary>
         /// Gets the mappings.
         /// </summary>
-        /// <value>
-        /// The mappings.
-        /// </value>
+        /// <value>The mappings.</value>
         public MappingManager Mappings { get; }
 
         /// <summary>
         /// Gets the models.
         /// </summary>
-        /// <value>
-        /// The models.
-        /// </value>
+        /// <value>The models.</value>
         public IEnumerable<DataModel> Models { get; }
     }
 }

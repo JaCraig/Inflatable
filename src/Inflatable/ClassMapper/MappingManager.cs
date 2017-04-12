@@ -37,11 +37,10 @@ namespace Inflatable.ClassMapper
         /// <param name="mappings">The mappings.</param>
         /// <param name="sources">The sources.</param>
         /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">logger</exception>
         public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, ILogger logger)
         {
-            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger();
-            if (Logger == null)
-                throw new ArgumentNullException(nameof(logger));
+            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new ConcurrentBag<IMapping>();
             bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
             Logger.Information("Setting up mapping information");

@@ -14,27 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using Inflatable.Sessions;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-namespace Inflatable.Aspect.Interfaces
+namespace Inflatable.Sessions
 {
     /// <summary>
-    /// ORM object interface
+    /// Class for an individual session
     /// </summary>
-    public interface IORMObject : INotifyPropertyChanged
+    public class Session
     {
-        /// <summary>
-        /// Gets the properties changed.
-        /// </summary>
-        /// <value>The properties changed.</value>
-        IList<string> PropertiesChanged0 { get; set; }
-
-        /// <summary>
-        /// ORM session that this item came from (used for lazy loading)
-        /// </summary>
-        /// <value>The ORM session object.</value>
-        Session Session0 { get; set; }
     }
 }

@@ -46,7 +46,9 @@ namespace Inflatable.BaseClasses
         /// <param name="suffix">The suffix.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="order">The order.</param>
-        protected MappingBaseClass(string tableName = "", string suffix = "_", string prefix = "", int order = 10)
+        /// <param name="merge">if set to <c>true</c> [merge] this mapping when possible.</param>
+        protected MappingBaseClass(string tableName = "", string suffix = "_", string prefix = "",
+            int order = 10, bool merge = false)
         {
             AutoIDProperties = new List<IAutoIDProperty>();
             IDProperties = new List<IIDProperty>();
@@ -56,14 +58,13 @@ namespace Inflatable.BaseClasses
             ReferenceProperties = new List<IProperty>();
             Suffix = suffix ?? "";
             TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
+            Merge = merge;
         }
 
         /// <summary>
         /// Gets the automatic identifier properties.
         /// </summary>
-        /// <value>
-        /// The automatic identifier properties.
-        /// </value>
+        /// <value>The automatic identifier properties.</value>
         public ICollection<IAutoIDProperty> AutoIDProperties { get; private set; }
 
         /// <summary>
@@ -77,6 +78,13 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <value>The identifier properties.</value>
         public ICollection<IIDProperty> IDProperties { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="T:Inflatable.Interfaces.IMapping"/>
+        /// should be merged.
+        /// </summary>
+        /// <value><c>true</c> if merge this instance; otherwise, <c>false</c>.</value>
+        public bool Merge { get; }
 
         /// <summary>
         /// The object type associated with the mapping

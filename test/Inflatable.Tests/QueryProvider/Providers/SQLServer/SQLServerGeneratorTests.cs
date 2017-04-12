@@ -46,7 +46,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings);
             var Queries = Result.GenerateDefaultQueries();
-            Assert.Equal(3, Queries.Count);
+            Assert.Equal(5, Queries.Count);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Queries[QueryType.Delete].QueryString);
 
             Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;
@@ -74,6 +74,16 @@ INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo]
 INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
 WHERE [dbo].[IInterface1_].[ID_]=@ID;
 ", Queries[QueryType.Update].QueryString);
+
+            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass1_].[Value1_] AS [Value1]
+FROM [dbo].[ConcreteClass1_]
+INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Queries[QueryType.All].QueryString);
+
+            Assert.Equal(@"SELECT TOP 1 [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass1_].[Value1_] AS [Value1]
+FROM [dbo].[ConcreteClass1_]
+INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Queries[QueryType.Any].QueryString);
         }
 
         [Fact]
@@ -91,7 +101,7 @@ WHERE [dbo].[IInterface1_].[ID_]=@ID;
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings);
             var Queries = Result.GenerateDefaultQueries();
-            Assert.Equal(3, Queries.Count);
+            Assert.Equal(5, Queries.Count);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Queries[QueryType.Delete].QueryString);
 
             Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;
@@ -119,6 +129,16 @@ INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo]
 INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
 WHERE [dbo].[IInterface1_].[ID_]=@ID;
 ", Queries[QueryType.Update].QueryString);
+
+            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass2_].[InterfaceValue_] AS [InterfaceValue]
+FROM [dbo].[ConcreteClass2_]
+INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Queries[QueryType.All].QueryString);
+
+            Assert.Equal(@"SELECT TOP 1 [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass2_].[InterfaceValue_] AS [InterfaceValue]
+FROM [dbo].[ConcreteClass2_]
+INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Queries[QueryType.Any].QueryString);
         }
 
         [Fact]
@@ -136,7 +156,7 @@ WHERE [dbo].[IInterface1_].[ID_]=@ID;
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings);
             var Queries = Result.GenerateDefaultQueries();
-            Assert.Equal(3, Queries.Count);
+            Assert.Equal(5, Queries.Count);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Queries[QueryType.Delete].QueryString);
 
             Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;
@@ -153,6 +173,14 @@ FROM [dbo].[ConcreteClass3_]
 INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
 WHERE [dbo].[IInterface1_].[ID_]=@ID;
 ", Queries[QueryType.Update].QueryString);
+
+            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[ConcreteClass3_].[MyUniqueProperty_] AS [MyUniqueProperty]
+FROM [dbo].[ConcreteClass3_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Queries[QueryType.All].QueryString);
+
+            Assert.Equal(@"SELECT TOP 1 [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[ConcreteClass3_].[MyUniqueProperty_] AS [MyUniqueProperty]
+FROM [dbo].[ConcreteClass3_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Queries[QueryType.Any].QueryString);
         }
     }
 }

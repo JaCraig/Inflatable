@@ -14,9 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,11 +38,12 @@ namespace Inflatable.QueryProvider
         /// Initializes a new instance of the <see cref="QueryProviderManager"/> class.
         /// </summary>
         /// <param name="providers">The providers.</param>
-        /// <param name="mappingInfo">The mapping information.</param>
-        /// <exception cref="System.ArgumentNullException">mappingInfo or providers</exception>
-        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, MappingSource mappingInfo)
+        /// <param name="logger">The logger.</param>
+        /// <exception cref="ArgumentNullException">providers</exception>
+        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger logger)
         {
-            MappingInfo = mappingInfo ?? throw new ArgumentNullException(nameof(mappingInfo));
+            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
+            IsDebug = Logger.IsEnabled(LogEventLevel.Debug);
             providers = providers ?? throw new ArgumentNullException(nameof(providers));
             Providers = new ConcurrentDictionary<DbProviderFactory, Interfaces.IQueryProvider>();
             foreach (var Provider in providers.Where(x => !x.GetType().GetTypeInfo().Assembly.FullName.ToUpper().Contains("INFLATABLE")))
@@ -56,16 +60,22 @@ namespace Inflatable.QueryProvider
         }
 
         /// <summary>
-        /// Gets the mapping information.
+        /// Gets the logger.
         /// </summary>
-        /// <value>The mapping information.</value>
-        public MappingSource MappingInfo { get; }
+        /// <value>The logger.</value>
+        public ILogger Logger { get; }
 
         /// <summary>
         /// Gets the providers.
         /// </summary>
         /// <value>The providers.</value>
         public IDictionary<DbProviderFactory, Interfaces.IQueryProvider> Providers { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether debug level logging is turned on.
+        /// </summary>
+        /// <value><c>true</c> if debug level logging is turned on; otherwise, <c>false</c>.</value>
+        private bool IsDebug { get; }
 
         /// <summary>
         /// Creates a batch.
@@ -80,6 +90,8 @@ namespace Inflatable.QueryProvider
                 throw new ArgumentNullException(nameof(source));
             if (!Providers.TryGetValue(source.Provider, out Interfaces.IQueryProvider QueryProvider))
                 throw new ArgumentException("Provider not found: " + source.Provider);
+            if (IsDebug)
+                Logger.Debug("Creating batch for data source {SourceName:l}", source.Name);
             return QueryProvider.Batch(source);
         }
 
@@ -87,18 +99,21 @@ namespace Inflatable.QueryProvider
         /// Creates a query generator.
         /// </summary>
         /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-        /// <param name="provider">The provider.</param>
+        /// <param name="mappingInfo">The mapping information.</param>
         /// <returns>The requested query generator</returns>
-        /// <exception cref="System.ArgumentNullException">provider</exception>
-        /// <exception cref="System.ArgumentException">Provider not found: provider name</exception>
-        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(DbProviderFactory provider)
+        /// <exception cref="ArgumentNullException">mappingInfo</exception>
+        /// <exception cref="ArgumentException">Provider not found</exception>
+        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInfo)
             where TMappedClass : class
         {
-            if (provider == null)
-                throw new ArgumentNullException(nameof(provider));
+            if (mappingInfo == null)
+                throw new ArgumentNullException(nameof(mappingInfo));
+            var provider = mappingInfo.Source.Provider;
             if (!Providers.TryGetValue(provider, out Interfaces.IQueryProvider QueryProvider))
                 throw new ArgumentException("Provider not found: " + provider);
-            return QueryProvider.CreateGenerator<TMappedClass>(MappingInfo);
+            if (IsDebug)
+                Logger.Debug("Creating generator for type {TypeName:l}", typeof(TMappedClass).GetName());
+            return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);
         }
     }
 }

@@ -17,6 +17,7 @@ limitations under the License.
 using Canister.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 using Inflatable.Schema;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,8 +44,10 @@ namespace Inflatable.Modules
                 return;
             bootstrapper.RegisterAll<IMapping>();
             bootstrapper.RegisterAll<IDatabase>();
+            bootstrapper.RegisterAll<QueryProvider.Interfaces.IQueryProvider>();
             bootstrapper.Register<MappingManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
+            bootstrapper.Register<QueryProviderManager>(ServiceLifetime.Singleton);
         }
     }
 }

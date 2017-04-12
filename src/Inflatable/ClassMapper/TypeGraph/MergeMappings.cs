@@ -71,27 +71,29 @@ namespace Inflatable.ClassMapper.TypeGraph
 
         private bool MergeNode(TreeNode<Type> node)
         {
-            if (node.Nodes.Count > 0)
+            for (int x = 0; x < node.Nodes.Count; ++x)
             {
-                for (int x = 0; x < node.Nodes.Count; ++x)
+                if (MergeNode(node.Nodes[x]))
                 {
-                    if (MergeNode(node.Nodes[x]))
-                    {
-                        node.Nodes[x].Remove();
-                        --x;
-                    }
+                    node.Nodes[x].Remove();
+                    --x;
                 }
             }
-            if (node.Nodes.Count == 0)
+            var Mapping = Mappings[node.Data];
+            if (node.Nodes.Count == 0 && Mapping.IDProperties.Count == 0)
             {
-                var Mapping = Mappings[node.Data];
-                if (Mapping.IDProperties.Count == 0)
-                {
-                    var MappingParent = Mappings[node.Parent.Data];
-                    MappingParent.Copy(Mapping);
-                    Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
-                    return true;
-                }
+                var MappingParent = Mappings[node.Parent.Data];
+                MappingParent.Copy(Mapping);
+                Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                return true;
+            }
+            if (Mapping.Merge)
+            {
+                var MappingParent = Mappings[node.Parent.Data];
+                MappingParent.Copy(Mapping);
+                node.Parent.Nodes.AddRange(node.Nodes);
+                Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                return true;
             }
             return false;
         }
