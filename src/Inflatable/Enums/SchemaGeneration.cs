@@ -14,15 +14,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using System;
-
 namespace Inflatable.Enums
 {
-    [Flags]
+    /// <summary>
+    /// Schema generation enum
+    /// </summary>
     public enum SchemaGeneration
     {
+        /// <summary>
+        /// Do not update or generate schema changes.
+        /// </summary>
         NoGeneration = 0x0,
+
+        /// <summary>
+        /// Generate schema changes only.
+        /// </summary>
         GenerateSchemaChanges = 0x1,
+
+        /// <summary>
+        /// Update the schema of the source
+        /// </summary>
         UpdateSchema = 0x2
     }
 }

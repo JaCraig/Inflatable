@@ -1,22 +1,23 @@
-﻿using System.Data.Common;
+﻿using Inflatable.DataSource;
+using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace Inflatable.Tests.MockClasses
 {
     public class MockDatabaseMapping : Interfaces.IDatabase
     {
-        public bool Audit => false;
-
         public string Name => "MockDatabase";
 
-        public bool Optimize => true;
         public int Order => 1;
 
         public DbProviderFactory Provider => SqlClientFactory.Instance;
-        public bool Readable => true;
 
-        public bool Update => false;
-
-        public bool Writable => true;
+        public Options SourceOptions => new Options
+        {
+            Optimize = true,
+            Access = Enums.SourceAccess.Read | Enums.SourceAccess.Write,
+            Audit = false,
+            SchemaUpdate = Enums.SchemaGeneration.NoGeneration
+        };
     }
 }

@@ -15,38 +15,28 @@ limitations under the License.
 */
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using Valkyrie;
 
-namespace Inflatable.Interfaces
+namespace Inflatable.Enums
 {
     /// <summary>
-    /// Object interface
+    /// Source access
     /// </summary>
-    public interface IObject<IDType>
+    [Flags]
+    public enum SourceAccess
     {
         /// <summary>
-        /// Is this item active?
+        /// No access
         /// </summary>
-        bool Active { get; set; }
+        None = 0x0,
 
         /// <summary>
-        /// Date created
+        /// Read access
         /// </summary>
-        [Required]
-        [Between("1/1/1900", "1/1/2100", "Date created is not valid")]
-        DateTime DateCreated { get; set; }
+        Read = 0x1,
 
         /// <summary>
-        /// Date last modified
+        /// Write access
         /// </summary>
-        [Required]
-        [Between("1/1/1900", "1/1/2100", "Date modified is not valid")]
-        DateTime DateModified { get; set; }
-
-        /// <summary>
-        /// ID
-        /// </summary>
-        IDType ID { get; set; }
+        Write = 0x2
     }
 }

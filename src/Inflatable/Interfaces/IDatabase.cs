@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.DataSource;
 using System.Data.Common;
 
 namespace Inflatable.Interfaces
@@ -24,28 +25,10 @@ namespace Inflatable.Interfaces
     public interface IDatabase
     {
         /// <summary>
-        /// Determines if audit tables are generated
-        /// </summary>
-        /// <value><c>true</c> if audit; otherwise, <c>false</c>.</value>
-        bool Audit { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether to [generate schema changes].
-        /// </summary>
-        /// <value><c>true</c> if the app should [generate schema changes]; otherwise, <c>false</c>.</value>
-        bool GenerateSchemaChanges { get; }
-
-        /// <summary>
         /// Name associated with the database/connection string
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this source should be optimized automatically.
-        /// </summary>
-        /// <value><c>true</c> if it should be optimized; otherwise, <c>false</c>.</value>
-        bool Optimize { get; }
 
         /// <summary>
         /// Order that this database should be in (if only one database is being used, it is ignored)
@@ -60,21 +43,9 @@ namespace Inflatable.Interfaces
         DbProviderFactory Provider { get; }
 
         /// <summary>
-        /// Should this database be used to read data?
+        /// Gets the source options.
         /// </summary>
-        /// <value><c>true</c> if readable; otherwise, <c>false</c>.</value>
-        bool Readable { get; }
-
-        /// <summary>
-        /// Should the structure of the database be updated?
-        /// </summary>
-        /// <value><c>true</c> if update; otherwise, <c>false</c>.</value>
-        bool Update { get; }
-
-        /// <summary>
-        /// Should this database be used to write data?
-        /// </summary>
-        /// <value><c>true</c> if writable; otherwise, <c>false</c>.</value>
-        bool Writable { get; }
+        /// <value>The source options.</value>
+        Options SourceOptions { get; }
     }
 }
