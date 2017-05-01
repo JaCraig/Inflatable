@@ -19,6 +19,7 @@ using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.Schema;
+using Inflatable.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Inflatable.Modules
@@ -48,6 +49,7 @@ namespace Inflatable.Modules
             bootstrapper.Register<MappingManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<QueryProviderManager>(ServiceLifetime.Singleton);
+            bootstrapper.Register<Session>(ServiceLifetime.Singleton);
         }
     }
 }

@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.TypeGraph;
+using Inflatable.Enums;
 using Inflatable.Interfaces;
 using Inflatable.Utils;
 using Serilog;
@@ -60,10 +61,28 @@ namespace Inflatable.ClassMapper
         }
 
         /// <summary>
+        /// Gets a value indicating whether this instance can be read.
+        /// </summary>
+        /// <value><c>true</c> if this instance can be read; otherwise, <c>false</c>.</value>
+        public bool CanRead => Source?.SourceOptions?.Access.HasFlag(SourceAccess.Read) ?? false;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance can be written to.
+        /// </summary>
+        /// <value><c>true</c> if this instance can be written to; otherwise, <c>false</c>.</value>
+        public bool CanWrite => Source?.SourceOptions?.Access.HasFlag(SourceAccess.Write) ?? false;
+
+        /// <summary>
         /// Gets the child types.
         /// </summary>
         /// <value>The child types.</value>
         public ListMapping<Type, Type> ChildTypes { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to [generate schema].
+        /// </summary>
+        /// <value><c>true</c> if you should [generate schema]; otherwise, <c>false</c>.</value>
+        public bool GenerateSchema => Source?.SourceOptions?.SchemaUpdate.HasFlag(SchemaGeneration.GenerateSchemaChanges) ?? false;
 
         /// <summary>
         /// Logger for the system
@@ -97,6 +116,54 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The type graph.</value>
         public IDictionary<Type, Tree<Type>> TypeGraphs { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to [update schema].
+        /// </summary>
+        /// <value><c>true</c> if you should [update schema]; otherwise, <c>false</c>.</value>
+        public bool UpdateSchema => Source?.SourceOptions?.SchemaUpdate.HasFlag(SchemaGeneration.UpdateSchema) ?? false;
+
+        /// <summary>
+        /// Gets the child mappings.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <returns>The IMapping list associated with the object type.</returns>
+        public IEnumerable<IMapping> GetChildMappings<TObject>()
+        {
+            var ObjectType = typeof(TObject);
+            return GetChildMappings(ObjectType);
+        }
+
+        /// <summary>
+        /// Gets the child mappings.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <returns>The IMapping list associated with the object type.</returns>
+        public IEnumerable<IMapping> GetChildMappings(Type objectType)
+        {
+            return ChildTypes.ContainsKey(objectType) ? ChildTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
+        }
+
+        /// <summary>
+        /// Gets the parent mappings.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <returns>The IMapping list associated with the object type.</returns>
+        public IEnumerable<IMapping> GetParentMapping<TObject>()
+        {
+            var ObjectType = typeof(TObject);
+            return GetParentMapping(ObjectType);
+        }
+
+        /// <summary>
+        /// Gets the parent mappings.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <returns>The IMapping list associated with the object type.</returns>
+        public IEnumerable<IMapping> GetParentMapping(Type objectType)
+        {
+            return ParentTypes.ContainsKey(objectType) ? ParentTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
+        }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

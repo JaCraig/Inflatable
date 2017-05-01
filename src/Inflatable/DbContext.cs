@@ -16,6 +16,9 @@ limitations under the License.
 
 namespace Inflatable
 {
+    /// <summary>
+    /// Db context static class
+    /// </summary>
     public static class DbContext
     {
     }

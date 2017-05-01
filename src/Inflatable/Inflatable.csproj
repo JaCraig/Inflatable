@@ -32,12 +32,12 @@
 
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.4.0" />
-    <PackageReference Include="SQLHelper.DB" Version="1.0.18" />
+    <PackageReference Include="SQLHelper.DB" Version="1.0.19" />
     <PackageReference Include="Data.Modeler" Version="1.0.4" />
     <PackageReference Include="Valkyrie" Version="1.0.4" />
     <PackageReference Include="Mirage" Version="1.0.8" />
     <PackageReference Include="Aspectus" Version="2.0.5" />
-    <PackageReference Include="BigBook" Version="1.0.9" />
+    <PackageReference Include="BigBook" Version="1.0.11" />
   </ItemGroup>
 
 </Project>

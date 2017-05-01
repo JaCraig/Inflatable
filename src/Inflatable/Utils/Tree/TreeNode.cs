@@ -93,8 +93,10 @@ namespace Inflatable.Utils
         /// <returns>The resulting list.</returns>
         public List<TData> ToList()
         {
-            List<TData> ReturnList = new List<TData>();
-            ReturnList.Add(Data);
+            List<TData> ReturnList = new List<TData>
+            {
+                Data
+            };
             foreach (var Node in Nodes)
             {
                 ReturnList.AddRange(Node.ToList());

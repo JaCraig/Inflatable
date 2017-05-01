@@ -18,7 +18,6 @@ using BigBook;
 using Data.Modeler;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper;
-using Inflatable.Enums;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -88,8 +87,8 @@ namespace Inflatable.Schema
         /// <param name="source">The source.</param>
         private void GenerateSchema(MappingSource source)
         {
-            if (!Source.Source.SourceOptions.SchemaUpdate.HasFlag(SchemaGeneration.UpdateSchema)
-                && !Source.Source.SourceOptions.SchemaUpdate.HasFlag(SchemaGeneration.GenerateSchemaChanges))
+            if (!Source.UpdateSchema
+                && !Source.GenerateSchema)
                 return;
             bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
 
@@ -107,7 +106,7 @@ namespace Inflatable.Schema
                 Logger.Debug("Schema changes generated: {GeneratedSchemaChanges}", GeneratedSchemaChanges);
             }
 
-            if (!Source.Source.SourceOptions.SchemaUpdate.HasFlag(SchemaGeneration.UpdateSchema))
+            if (!Source.UpdateSchema)
                 return;
 
             Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);

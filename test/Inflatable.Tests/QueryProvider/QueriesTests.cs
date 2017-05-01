@@ -10,8 +10,10 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Add()
         {
-            var TestObject = new Queries();
-            TestObject.Add(QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete));
+            var TestObject = new Queries
+            {
+                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+            };
             Assert.Equal(1, TestObject.Count);
             Assert.Equal(1, TestObject.Keys.Count);
             Assert.Equal(1, TestObject.Values.Count);
@@ -20,8 +22,10 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Clear()
         {
-            var TestObject = new Queries();
-            TestObject.Add(QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete));
+            var TestObject = new Queries
+            {
+                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+            };
             TestObject.Clear();
             Assert.Equal(0, TestObject.Count);
             Assert.Empty(TestObject.Keys);
@@ -31,8 +35,10 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void ContainsKey()
         {
-            var TestObject = new Queries();
-            TestObject.Add(QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete));
+            var TestObject = new Queries
+            {
+                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+            };
             Assert.True(TestObject.ContainsKey(QueryType.Delete));
             Assert.False(TestObject.ContainsKey(QueryType.Insert));
         }
@@ -50,8 +56,10 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Index()
         {
-            var TestObject = new Queries();
-            TestObject.Add(QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete));
+            var TestObject = new Queries
+            {
+                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+            };
             var QueryObject = TestObject[QueryType.Delete];
             Assert.Equal(CommandType.Text, QueryObject.DatabaseCommandType);
             Assert.Equal("ASDF", QueryObject.QueryString);
@@ -61,8 +69,10 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Remove()
         {
-            var TestObject = new Queries();
-            TestObject.Add(QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete));
+            var TestObject = new Queries
+            {
+                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+            };
             TestObject.Remove(QueryType.Delete);
             Assert.Equal(0, TestObject.Count);
             Assert.Empty(TestObject.Keys);
