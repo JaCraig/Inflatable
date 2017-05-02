@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using System;
 using System.Data.Common;
 
 namespace Inflatable.QueryProvider.Interfaces
@@ -45,5 +46,13 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <returns>Generator object</returns>
         IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInformation)
             where TMappedClass : class;
+
+        /// <summary>
+        /// Creates a generator object.
+        /// </summary>
+        /// <param name="mappingType">Type of the mapping.</param>
+        /// <param name="mappingInfo">The mapping information.</param>
+        /// <returns>Generator object</returns>
+        IGenerator CreateGenerator(Type mappingType, MappingSource mappingInfo);
     }
 }

@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -36,9 +37,10 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <param name="mappings">The mappings.</param>
         /// <param name="sources">The sources.</param>
+        /// <param name="queryProvider">The query provider.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">logger</exception>
-        public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, ILogger logger)
+        public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, QueryProviderManager queryProvider, ILogger logger)
         {
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new ConcurrentBag<IMapping>();
@@ -51,6 +53,7 @@ namespace Inflatable.ClassMapper
             {
                 FinalList.Add(new MappingSource(TempSourceMappings[Key],
                                                 sources.FirstOrDefault(x => x.GetType() == Key),
+                                                queryProvider,
                                                 logger));
             });
             Sources = FinalList;

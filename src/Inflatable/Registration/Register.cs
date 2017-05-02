@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook.Registration;
 using Canister.Interfaces;
 using Data.Modeler.Registration;
+using FileCurator.Registration;
 using System.Reflection;
 
 namespace Inflatable.Registration
@@ -34,6 +35,7 @@ namespace Inflatable.Registration
         public static IBootstrapper RegisterInflatable(this IBootstrapper bootstrapper)
         {
             return bootstrapper.AddAssembly(typeof(Registration).GetTypeInfo().Assembly)
+                               .RegisterFileCurator()
                                .RegisterDataModeler()
                                .RegisterBigBookOfDataTypes();
         }

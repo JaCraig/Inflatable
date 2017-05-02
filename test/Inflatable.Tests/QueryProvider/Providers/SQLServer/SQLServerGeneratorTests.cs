@@ -1,5 +1,6 @@
 ﻿using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
@@ -25,6 +26,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
@@ -43,6 +45,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings);
             var Queries = Result.GenerateDefaultQueries();
@@ -98,6 +101,7 @@ INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings);
             var Queries = Result.GenerateDefaultQueries();
@@ -153,6 +157,7 @@ INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings);
             var Queries = Result.GenerateDefaultQueries();

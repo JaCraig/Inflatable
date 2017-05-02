@@ -18,6 +18,8 @@ using BigBook;
 using Inflatable.ClassMapper.TypeGraph;
 using Inflatable.Enums;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
+using Inflatable.QueryProvider.Enums;
 using Inflatable.Utils;
 using Serilog;
 using System;
@@ -38,9 +40,12 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <param name="mappings">Mappings associated with the source</param>
         /// <param name="source">Database source</param>
+        /// <param name="queryProvider">The query provider.</param>
         /// <param name="logger">Logging object</param>
-        public MappingSource(IEnumerable<IMapping> mappings, IDatabase source, ILogger logger)
+        /// <exception cref="ArgumentNullException">queryProvider or source</exception>
+        public MappingSource(IEnumerable<IMapping> mappings, IDatabase source, QueryProviderManager queryProvider, ILogger logger)
         {
+            QueryProvider = queryProvider ?? throw new ArgumentNullException(nameof(queryProvider));
             Logger = logger;
             mappings = mappings ?? new ConcurrentBag<IMapping>();
             Source = source ?? throw new ArgumentNullException(nameof(source));
@@ -58,6 +63,7 @@ namespace Inflatable.ClassMapper
             ReduceMappings();
             RemoveDeadMappings();
             SetupAutoIDs();
+            SetupQueries(ConcreteTypes);
         }
 
         /// <summary>
@@ -105,6 +111,12 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The parent types.</value>
         public ListMapping<Type, Type> ParentTypes { get; private set; }
+
+        /// <summary>
+        /// Gets the query provider.
+        /// </summary>
+        /// <value>The query provider.</value>
+        public QueryProviderManager QueryProvider { get; }
 
         /// <summary>
         /// Source info
@@ -237,6 +249,9 @@ namespace Inflatable.ClassMapper
             }
         }
 
+        /// <summary>
+        /// Removes the dead mappings.
+        /// </summary>
         private void RemoveDeadMappings()
         {
             if (!Source.SourceOptions.Optimize) return;
@@ -266,7 +281,7 @@ namespace Inflatable.ClassMapper
                 var CurrentMapping = Mappings[CurrentTree.Root.Data];
                 if (CurrentMapping.IDProperties.Count > 0)
                     continue;
-                Logger.Debug("Adding identity key to {Name:l} as one is not defined.", CurrentMapping);
+                Logger.Debug("Adding identity key to {Name:l} in {Source:l} as one is not defined.", CurrentMapping, Source.Name);
                 CurrentMapping.AddAutoKey();
             }
         }
@@ -305,6 +320,47 @@ namespace Inflatable.ClassMapper
                 foreach (var Parent in Parents)
                 {
                     ParentTypes.Add(ConcreteType, Parent);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets up the default queries.
+        /// </summary>
+        /// <param name="concreteTypes">The concrete types.</param>
+        private void SetupQueries(IEnumerable<Type> concreteTypes)
+        {
+            Logger.Information("Setting up default queries.");
+            var QueryTypes = new QueryType[]
+            {
+                QueryType.All,
+                QueryType.Any,
+                QueryType.Delete,
+                QueryType.Insert,
+                QueryType.Update
+            };
+            foreach (var ConcreteType in concreteTypes)
+            {
+                var Generator = QueryProvider.CreateGenerator(ConcreteType, this);
+                var Queries = Generator.GenerateDefaultQueries();
+                foreach (var TempQueryType in QueryTypes)
+                {
+                    if (!Mappings[ConcreteType].Queries.ContainsKey(TempQueryType) && !string.IsNullOrEmpty(Queries[TempQueryType].QueryString))
+                    {
+                        Mappings[ConcreteType].SetQuery(TempQueryType, Queries[TempQueryType].QueryString, Queries[TempQueryType].DatabaseCommandType);
+
+                        Logger.Debug("Adding default query of type {Type:l} for {Name:l} in source {Source:l}",
+                            Enum.GetName(typeof(QueryType), TempQueryType),
+                            ConcreteType.GetName(),
+                            Source.Name);
+                    }
+                    else if (string.IsNullOrEmpty(Queries[TempQueryType].QueryString))
+                    {
+                        Logger.Debug("Could not generate default query of type {Type:l} for {Name:l} in source {Source:l}",
+                            Enum.GetName(typeof(QueryType), TempQueryType),
+                            ConcreteType.GetName(),
+                            Source.Name);
+                    }
                 }
             }
         }

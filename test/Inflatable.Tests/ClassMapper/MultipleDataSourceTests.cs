@@ -1,5 +1,7 @@
 ﻿using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
+using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.MultipleDataSources.Mappings;
@@ -22,6 +24,7 @@ namespace Inflatable.Tests.ClassMapper
                 new MockDatabaseMapping(),
                 new SecondMockDatabaseMapping()
             },
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
 
             Assert.Equal(2, TestObject.Sources.Count());

@@ -22,8 +22,15 @@ namespace Inflatable.QueryProvider.Interfaces
     /// Generator interface
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    public interface IGenerator<TMappedClass>
+    public interface IGenerator<TMappedClass> : IGenerator
         where TMappedClass : class
+    {
+    }
+
+    /// <summary>
+    /// Generator interface
+    /// </summary>
+    public interface IGenerator
     {
         /// <summary>
         /// Gets the type of the associated.

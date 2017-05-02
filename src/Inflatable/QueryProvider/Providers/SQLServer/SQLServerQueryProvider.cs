@@ -71,5 +71,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         {
             return new SQLServerGenerator<TMappedClass>(mappingInformation);
         }
+
+        /// <summary>
+        /// Creates a generator object.
+        /// </summary>
+        /// <param name="mappingType">Type of the mapping.</param>
+        /// <param name="mappingInfo">The mapping information.</param>
+        /// <returns>Generator object</returns>
+        public IGenerator CreateGenerator(Type mappingType, MappingSource mappingInfo)
+        {
+            return (IGenerator)Activator.CreateInstance(typeof(SQLServerGenerator<>).MakeGenericType(mappingType), new object[] { mappingInfo });
+        }
     }
 }

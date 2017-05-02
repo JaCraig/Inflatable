@@ -1,5 +1,6 @@
 ﻿using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
@@ -34,6 +35,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
