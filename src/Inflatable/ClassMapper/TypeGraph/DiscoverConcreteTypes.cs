@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.Utils;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,7 +49,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <returns>The concrete types of the mapping tree</returns>
         public IEnumerable<Type> FindConcreteTypes()
         {
-            List<Type> Result = new List<Type>();
+            ConcurrentBag<Type> Result = new ConcurrentBag<Type>();
             for (int x = 0; x < TypeTrees.Keys.Count; ++x)
             {
                 var KeyToCheck = TypeTrees.Keys.ElementAt(x);

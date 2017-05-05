@@ -23,6 +23,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -38,9 +39,12 @@ namespace Inflatable.Aspect
         /// </summary>
         /// <param name="assemblies">The assemblies the aspect needs to use.</param>
         /// <param name="classManager">The class manager.</param>
+        /// <param name="startMethodHelpers">The start method helpers.</param>
+        /// <exception cref="System.ArgumentNullException">classManager</exception>
         /// <exception cref="ArgumentNullException">classManager</exception>
-        public ORMAspect(ORMAspectAssemblies assemblies, MappingManager classManager)
+        public ORMAspect(ORMAspectAssemblies assemblies, MappingManager classManager, IEnumerable<IStartMethodHelper> startMethodHelpers)
         {
+            StartMethodHelpers = startMethodHelpers ?? new List<IStartMethodHelper>();
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
             assemblies = assemblies ?? new ORMAspectAssemblies();
             AssembliesUsing.Add(assemblies.Assemblies);
@@ -65,6 +69,12 @@ namespace Inflatable.Aspect
         /// List of interfaces that need to be injected by this aspect
         /// </summary>
         public ICollection<Type> InterfacesUsing => new Type[] { typeof(IORMObject) };
+
+        /// <summary>
+        /// Gets the start method helpers.
+        /// </summary>
+        /// <value>The start method helpers.</value>
+        public IEnumerable<IStartMethodHelper> StartMethodHelpers { get; }
 
         /// <summary>
         /// Using statements that the aspect requires
@@ -115,32 +125,36 @@ namespace Inflatable.Aspect
             return "";
         }
 
+        /// <summary>
+        /// Used to insert code at the end of the method
+        /// </summary>
+        /// <param name="method">Overridding Method</param>
+        /// <param name="baseType">Base type</param>
+        /// <param name="returnValueName">Local holder for the value returned by the function</param>
+        /// <returns>The code to insert</returns>
         public string SetupEndMethod(MethodInfo method, Type baseType, string returnValueName)
         {
             if (!method.Name.StartsWith("get_", StringComparison.Ordinal))
                 return "";
-            var Builder = new StringBuilder();
-
-            if (ClassManager[baseType] != null && method.Name.StartsWith("get_", StringComparison.Ordinal))
+            foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
             {
-                foreach (IMapping Mapping in ClassManager[baseType])
-                {
-                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
-                    if (Property != null)
-                    {
-                        if (Property is IManyToOne || Property is IMap)
-                            Builder.AppendLine(SetupSingleProperty(ReturnValueName, Property));
-                        else if (Property is IIEnumerableManyToOne || Property is IManyToMany
-                            || Property is IIListManyToMany || Property is IIListManyToOne
-                            || Property is ICollectionManyToMany || Property is ICollectionManyToOne)
-                            Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
-                        else if (Property is IListManyToMany || Property is IListManyToOne)
-                            Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
-                        return Builder.ToString();
-                    }
-                }
+                var Mapping = Source.Mappings[baseType];
+                //var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
+                //if (Property != null)
+                //{
+                //    var Builder = new StringBuilder();
+                //    if (Property is IManyToOne || Property is IMap)
+                //        Builder.AppendLine(SetupSingleProperty(ReturnValueName, Property));
+                //    else if (Property is IIEnumerableManyToOne || Property is IManyToMany
+                //        || Property is IIListManyToMany || Property is IIListManyToOne
+                //        || Property is ICollectionManyToMany || Property is ICollectionManyToOne)
+                //        Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
+                //    else if (Property is IListManyToMany || Property is IListManyToOne)
+                //        Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
+                //    return Builder.ToString();
+                //}
             }
-            return Builder.ToString();
+            return "";
         }
 
         /// <summary>
@@ -154,6 +168,11 @@ namespace Inflatable.Aspect
             return "var Exception=CaughtException;";
         }
 
+        /// <summary>
+        /// Sets up the interfaces.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The code required to set them up.</returns>
         public string SetupInterfaces(Type type)
         {
             var Builder = new StringBuilder();
@@ -182,27 +201,30 @@ public event PropertyChangedEventHandler PropertyChanged
         Handler(this, new PropertyChangedEventArgs(propertyName));
 }");
             }
-            Builder.AppendLine(SetupFields(type);
+            Builder.AppendLine(SetupFields(type));
             return Builder.ToString();
         }
 
+        /// <summary>
+        /// Used to insert code at the beginning of the method
+        /// </summary>
+        /// <param name="method">Overridding Method</param>
+        /// <param name="baseType">Base type</param>
+        /// <returns>The code to insert</returns>
         public string SetupStartMethod(MethodInfo method, Type baseType)
         {
-            var Builder = new StringBuilder();
-            if (Mapper[BaseType] != null && Method.Name.StartsWith("set_", StringComparison.Ordinal))
+            if (!method.Name.StartsWith("set_", StringComparison.Ordinal))
+                return "";
+            foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
             {
-                foreach (IMapping Mapping in Mapper[BaseType])
+                var Mapping = Source.Mappings[baseType];
+                var Builder = new StringBuilder();
+                foreach (var Helper in StartMethodHelpers)
                 {
-                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("set_", ""));
-                    if (Fields.Contains(Property))
-                    {
-                        Builder.AppendLineFormat("{0}=value;", Property.DerivedFieldName);
-                    }
-                    if (Property != null)
-                        Builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
+                    Helper.Setup(method, Mapping, Builder);
                 }
             }
-            return Builder.ToString();
+            return "";
         }
 
         private static string SetupIEnumerableProperty(string returnValueName, IProperty property)
@@ -275,20 +297,18 @@ public event PropertyChangedEventHandler PropertyChanged
             return Builder.ToString();
         }
 
-        private string SetupFields(Type type)
+        private string SetupReferenceFields(Type type)
         {
-            Fields = new List<IProperty>();
+            ReferenceFields = new List<IProperty>();
             var Builder = new StringBuilder();
-            if (Mapper[type] != null)
+            foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
             {
-                foreach (IMapping Mapping in Mapper[type])
+                var Mapping = Source.Mappings[type];
+                foreach (IProperty Property in Mapping.ReferenceProperties.Where(x => !ReferenceFields.Contains(x)))
                 {
-                    foreach (IProperty Property in Mapping.Properties.Where(x => !Fields.Contains(x)))
-                    {
-                        Fields.Add(Property);
-                        Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.DerivedFieldName);
-                        Builder.AppendLineFormat("private bool {0};", Property.DerivedFieldName + "Loaded");
-                    }
+                    ReferenceFields.Add(Property);
+                    Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.InternalFieldName);
+                    Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
                 }
             }
             return Builder.ToString();

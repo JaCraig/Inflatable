@@ -57,13 +57,13 @@ namespace Inflatable.ClassMapper
             ParentTypes = new ListMapping<Type, Type>();
             AddMappings(mappings);
             SetupTypeGraphs();
-            IEnumerable<Type> ConcreteTypes = SetupChildTypes();
+            SetupChildTypes();
             MergeMappings();
-            SetupParentTypes(ConcreteTypes);
+            SetupParentTypes();
             ReduceMappings();
             RemoveDeadMappings();
             SetupAutoIDs();
-            SetupQueries(ConcreteTypes);
+            SetupQueries();
         }
 
         /// <summary>
@@ -83,6 +83,12 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The child types.</value>
         public ListMapping<Type, Type> ChildTypes { get; private set; }
+
+        /// <summary>
+        /// Gets the concrete types.
+        /// </summary>
+        /// <value>The concrete types.</value>
+        public IEnumerable<Type> ConcreteTypes { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether to [generate schema].
@@ -290,11 +296,11 @@ namespace Inflatable.ClassMapper
         /// Sets up the child types.
         /// </summary>
         /// <returns>The concrete types found</returns>
-        private IEnumerable<Type> SetupChildTypes()
+        private void SetupChildTypes()
         {
             Logger.Information("Setting up child type discovery for {Name:l}", Source.Name);
             var TempConcreteDiscoverer = new DiscoverConcreteTypes(TypeGraphs);
-            var ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
+            ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
             foreach (var ConcreteType in ConcreteTypes)
             {
                 var Parents = TypeGraphs[ConcreteType].ToList();
@@ -303,15 +309,13 @@ namespace Inflatable.ClassMapper
                     ChildTypes.Add(Parent, ConcreteType);
                 }
             }
-
-            return ConcreteTypes;
         }
 
         /// <summary>
         /// Sets up the parent types.
         /// </summary>
         /// <param name="ConcreteTypes">The concrete types.</param>
-        private void SetupParentTypes(IEnumerable<Type> ConcreteTypes)
+        private void SetupParentTypes()
         {
             Logger.Information("Setting up parent type discovery for {Name:l}", Source.Name);
             foreach (var ConcreteType in ConcreteTypes)
@@ -327,8 +331,7 @@ namespace Inflatable.ClassMapper
         /// <summary>
         /// Sets up the default queries.
         /// </summary>
-        /// <param name="concreteTypes">The concrete types.</param>
-        private void SetupQueries(IEnumerable<Type> concreteTypes)
+        private void SetupQueries()
         {
             Logger.Information("Setting up default queries.");
             var QueryTypes = new QueryType[]
@@ -339,7 +342,7 @@ namespace Inflatable.ClassMapper
                 QueryType.Insert,
                 QueryType.Update
             };
-            foreach (var ConcreteType in concreteTypes)
+            foreach (var ConcreteType in ConcreteTypes)
             {
                 var Generator = QueryProvider.CreateGenerator(ConcreteType, this);
                 var Queries = Generator.GenerateDefaultQueries();
