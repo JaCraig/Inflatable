@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using System;
+
 namespace Inflatable.Aspect.Interfaces
 {
     /// <summary>
@@ -21,5 +23,12 @@ namespace Inflatable.Aspect.Interfaces
     /// </summary>
     public interface IInterfaceImplementationHelper
     {
+        /// <summary>
+        /// Setups the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="aspect">The aspect.</param>
+        /// <returns>The resulting code in string format.</returns>
+        string Setup(Type type, ORMAspect aspect);
     }
 }

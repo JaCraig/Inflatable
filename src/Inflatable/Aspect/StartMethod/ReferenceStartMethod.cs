@@ -33,15 +33,15 @@ namespace Inflatable.Aspect.StartMethod
         /// Sets up the specified method.
         /// </summary>
         /// <param name="method">The method.</param>
-        /// <param name="Mapping">The mapping.</param>
-        /// <param name="Builder">The builder.</param>
-        public void Setup(MethodInfo method, IMapping Mapping, StringBuilder Builder)
+        /// <param name="mapping">The mapping.</param>
+        /// <param name="builder">The builder.</param>
+        public void Setup(MethodInfo method, IMapping mapping, StringBuilder builder)
         {
-            var Property = Mapping.ReferenceProperties.FirstOrDefault(x => x.Name == method.Name.Replace("set_", ""));
+            var Property = mapping.ReferenceProperties.FirstOrDefault(x => x.Name == method.Name.Replace("set_", ""));
             if (Property == null)
                 return;
-            Builder.AppendLineFormat("{0}=value;", Property.InternalFieldName);
-            Builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
+            builder.AppendLineFormat("{0}=value;", Property.InternalFieldName);
+            builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
         }
     }
 }

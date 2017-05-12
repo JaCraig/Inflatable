@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.Interfaces;
 using System.Reflection;
 using System.Text;
 
@@ -25,11 +26,12 @@ namespace Inflatable.Aspect.Interfaces
     public interface IEndMethodHelper
     {
         /// <summary>
-        /// Sets up the end of the specified method.
+        /// Setups the specified return value name.
         /// </summary>
+        /// <param name="returnValueName">Name of the return value.</param>
         /// <param name="method">The method.</param>
         /// <param name="mapping">The mapping.</param>
         /// <param name="builder">The builder.</param>
-        void Setup(MethodInfo method, Inflatable.Interfaces.IMapping mapping, StringBuilder builder);
+        void Setup(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder);
     }
 }

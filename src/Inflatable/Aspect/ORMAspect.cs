@@ -32,6 +32,7 @@ namespace Inflatable.Aspect
     /// <summary>
     /// ORM Aspect
     /// </summary>
+    /// <seealso cref="IAspect"/>
     public class ORMAspect : IAspect
     {
         /// <summary>
@@ -40,16 +41,27 @@ namespace Inflatable.Aspect
         /// <param name="assemblies">The assemblies the aspect needs to use.</param>
         /// <param name="classManager">The class manager.</param>
         /// <param name="startMethodHelpers">The start method helpers.</param>
+        /// <param name="interfaceImplementationHelpers">The interface implementation helpers.</param>
+        /// <param name="endMethodHelpers">The end method helpers.</param>
         /// <exception cref="System.ArgumentNullException">classManager</exception>
-        /// <exception cref="ArgumentNullException">classManager</exception>
-        public ORMAspect(ORMAspectAssemblies assemblies, MappingManager classManager, IEnumerable<IStartMethodHelper> startMethodHelpers)
+        public ORMAspect(ORMAspectAssembliesBase assemblies,
+            MappingManager classManager,
+            IEnumerable<IStartMethodHelper> startMethodHelpers,
+            IEnumerable<IInterfaceImplementationHelper> interfaceImplementationHelpers,
+            IEnumerable<IEndMethodHelper> endMethodHelpers)
         {
+            AssembliesUsing = new List<MetadataReference>();
+            EndMethodHelpers = endMethodHelpers ?? new List<IEndMethodHelper>();
+            InterfaceImplementationHelpers = interfaceImplementationHelpers ?? new List<IInterfaceImplementationHelper>();
             StartMethodHelpers = startMethodHelpers ?? new List<IStartMethodHelper>();
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
-            assemblies = assemblies ?? new ORMAspectAssemblies();
+            assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
             AssembliesUsing.Add(assemblies.Assemblies);
-            AssembliesUsing.Add(MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.Add(MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(Dynamo).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(Object).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(MulticastDelegate).GetTypeInfo().Assembly.Location));
             IDFields = new List<IIDProperty>();
             ReferenceFields = new List<IProperty>();
         }
@@ -66,9 +78,33 @@ namespace Inflatable.Aspect
         public MappingManager ClassManager { get; }
 
         /// <summary>
+        /// Gets the end method helpers.
+        /// </summary>
+        /// <value>The end method helpers.</value>
+        public IEnumerable<IEndMethodHelper> EndMethodHelpers { get; }
+
+        /// <summary>
+        /// Gets or sets the identifier fields that have been completed already.
+        /// </summary>
+        /// <value>The identifier fields that have been completed already.</value>
+        public List<IIDProperty> IDFields { get; set; }
+
+        /// <summary>
+        /// Gets the interface implementation helpers.
+        /// </summary>
+        /// <value>The interface implementation helpers.</value>
+        public IEnumerable<IInterfaceImplementationHelper> InterfaceImplementationHelpers { get; }
+
+        /// <summary>
         /// List of interfaces that need to be injected by this aspect
         /// </summary>
         public ICollection<Type> InterfacesUsing => new Type[] { typeof(IORMObject) };
+
+        /// <summary>
+        /// The reference fields that have been completed already.
+        /// </summary>
+        /// <value>The reference fields that have been completed already.</value>
+        public List<IProperty> ReferenceFields { get; set; }
 
         /// <summary>
         /// Gets the start method helpers.
@@ -85,20 +121,9 @@ namespace Inflatable.Aspect
             "Inflatable.Sessions",
             "BigBook",
             "System.Collections.Generic",
-            "System.ComponentModel"
+            "System.ComponentModel",
+            "System.Runtime.CompilerServices"
         };
-
-        /// <summary>
-        /// Gets or sets the identifier fields that have been completed already.
-        /// </summary>
-        /// <value>The identifier fields that have been completed already.</value>
-        private List<IIDProperty> IDFields { get; set; }
-
-        /// <summary>
-        /// The reference fields that have been completed already.
-        /// </summary>
-        /// <value>The reference fields that have been completed already.</value>
-        private List<IProperty> ReferenceFields { get; set; }
 
         /// <summary>
         /// Used to hook into the object once it has been created
@@ -136,25 +161,33 @@ namespace Inflatable.Aspect
         {
             if (!method.Name.StartsWith("get_", StringComparison.Ordinal))
                 return "";
+            var Builder = new StringBuilder();
             foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
             {
-                var Mapping = Source.Mappings[baseType];
-                //var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
-                //if (Property != null)
-                //{
-                //    var Builder = new StringBuilder();
-                //    if (Property is IManyToOne || Property is IMap)
-                //        Builder.AppendLine(SetupSingleProperty(ReturnValueName, Property));
-                //    else if (Property is IIEnumerableManyToOne || Property is IManyToMany
-                //        || Property is IIListManyToMany || Property is IIListManyToOne
-                //        || Property is ICollectionManyToMany || Property is ICollectionManyToOne)
-                //        Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
-                //    else if (Property is IListManyToMany || Property is IListManyToOne)
-                //        Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
-                //    return Builder.ToString();
-                //}
+                foreach (var ParentType in Source.ParentTypes[baseType])
+                {
+                    var Mapping = Source.Mappings[ParentType];
+                    foreach (var Helper in EndMethodHelpers)
+                    {
+                        Helper.Setup(returnValueName, method, Mapping, Builder);
+                    }
+                }
             }
-            return "";
+            return Builder.ToString();
+            //var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
+            //if (Property != null)
+            //{
+            //    var Builder = new StringBuilder();
+            //    if (Property is IManyToOne || Property is IMap)
+            //        Builder.AppendLine(SetupSingleProperty(ReturnValueName, Property));
+            //    else if (Property is IIEnumerableManyToOne || Property is IManyToMany
+            //        || Property is IIListManyToMany || Property is IIListManyToOne
+            //        || Property is ICollectionManyToMany || Property is ICollectionManyToOne)
+            //        Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
+            //    else if (Property is IListManyToMany || Property is IListManyToOne)
+            //        Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
+            //    return Builder.ToString();
+            //}
         }
 
         /// <summary>
@@ -176,32 +209,10 @@ namespace Inflatable.Aspect
         public string SetupInterfaces(Type type)
         {
             var Builder = new StringBuilder();
-            Builder.AppendLine(@"public Session Session0{ get; set; }");
-            Builder.AppendLine(@"public IList<string> PropertiesChanged0{ get; set; }");
-            if (!type.Is<INotifyPropertyChanged>())
+            foreach (var InterfaceHelper in InterfaceImplementationHelpers)
             {
-                Builder.AppendLine(@"private PropertyChangedEventHandler propertyChanged_;
-public event PropertyChangedEventHandler PropertyChanged
-{
-    add
-    {
-        propertyChanged_-=value;
-        propertyChanged_+=value;
-    }
-
-    remove
-    {
-        propertyChanged_-=value;
-    }
-}");
-                Builder.AppendLine(@"private void NotifyPropertyChanged0([CallerMemberName]string propertyName="""")
-{
-    var Handler = propertyChanged_;
-    if (Handler != null)
-        Handler(this, new PropertyChangedEventArgs(propertyName));
-}");
+                Builder.AppendLine(InterfaceHelper.Setup(type, this));
             }
-            Builder.AppendLine(SetupFields(type));
             return Builder.ToString();
         }
 
@@ -215,100 +226,16 @@ public event PropertyChangedEventHandler PropertyChanged
         {
             if (!method.Name.StartsWith("set_", StringComparison.Ordinal))
                 return "";
+            var Builder = new StringBuilder();
             foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
             {
-                var Mapping = Source.Mappings[baseType];
-                var Builder = new StringBuilder();
-                foreach (var Helper in StartMethodHelpers)
+                foreach (var ParentType in Source.ParentTypes[baseType])
                 {
-                    Helper.Setup(method, Mapping, Builder);
-                }
-            }
-            return "";
-        }
-
-        private static string SetupIEnumerableProperty(string returnValueName, IProperty property)
-        {
-            Contract.Requires<ArgumentNullException>(property != null, "Property");
-            Contract.Requires<ArgumentNullException>(property.Mapping != null, "Property.Mapping");
-            Contract.Requires<ArgumentNullException>(property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
-            var Builder = new StringBuilder();
-            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.DerivedFieldName + "Loaded")
-                .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
-                        property.DerivedFieldName,
-                        property.Mapping.ObjectType.GetName(),
-                        property.Type.GetName(),
-                        property.Name)
-                .AppendLineFormat("{0}=true;", property.DerivedFieldName + "Loaded")
-                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", property.DerivedFieldName, property.Type.GetName(), property.Name)
-                .AppendLineFormat("((ObservableList<{1}>){0}).ForEach(TempObject => {{ ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x); }});", property.DerivedFieldName, property.Type.GetName())
-                .AppendLine("}")
-                .AppendLineFormat("{0}={1};",
-                    returnValueName,
-                    property.DerivedFieldName);
-            return Builder.ToString();
-        }
-
-        private static string SetupListProperty(string returnValueName, IProperty property)
-        {
-            Contract.Requires<ArgumentNullException>(property != null, "Property");
-            Contract.Requires<ArgumentNullException>(property.Mapping != null, "Property.Mapping");
-            Contract.Requires<ArgumentNullException>(property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
-            var Builder = new StringBuilder();
-            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.DerivedFieldName + "Loaded")
-                .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\").ToList();",
-                        property.DerivedFieldName,
-                        property.Mapping.ObjectType.GetName(),
-                        property.Type.GetName(),
-                        property.Name)
-                .AppendLineFormat("{0}=true;", property.DerivedFieldName + "Loaded")
-                .AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", property.Name)
-                .AppendLine("}")
-                .AppendLineFormat("{0}={1};",
-                    returnValueName,
-                    property.DerivedFieldName);
-            return Builder.ToString();
-        }
-
-        private static string SetupSingleProperty(string returnValueName, IProperty property)
-        {
-            Contract.Requires<ArgumentNullException>(property != null, "Property");
-            Contract.Requires<ArgumentNullException>(property.Mapping != null, "Property.Mapping");
-            Contract.Requires<ArgumentNullException>(property.Mapping.ObjectType != null, "Property.Mapping.ObjectType");
-            var Builder = new StringBuilder();
-            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.DerivedFieldName + "Loaded")
-                .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
-                        property.DerivedFieldName,
-                        property.Mapping.ObjectType.GetName(),
-                        property.Type.GetName(),
-                        property.Name)
-                .AppendLineFormat("{0}=true;", property.DerivedFieldName + "Loaded")
-                .AppendLineFormat("if({0}!=null)", property.DerivedFieldName)
-                .AppendLine("{")
-                .AppendLineFormat("({0} as INotifyPropertyChanged).PropertyChanged+=(x,y)=>NotifyPropertyChanged0(\"{1}\");", property.DerivedFieldName, property.Name)
-                .AppendLine("}")
-                .AppendLine("}")
-                .AppendLineFormat("{0}={1};",
-                    returnValueName,
-                    property.DerivedFieldName);
-            return Builder.ToString();
-        }
-
-        private string SetupReferenceFields(Type type)
-        {
-            ReferenceFields = new List<IProperty>();
-            var Builder = new StringBuilder();
-            foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
-            {
-                var Mapping = Source.Mappings[type];
-                foreach (IProperty Property in Mapping.ReferenceProperties.Where(x => !ReferenceFields.Contains(x)))
-                {
-                    ReferenceFields.Add(Property);
-                    Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.InternalFieldName);
-                    Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
+                    var Mapping = Source.Mappings[ParentType];
+                    foreach (var Helper in StartMethodHelpers)
+                    {
+                        Helper.Setup(method, Mapping, Builder);
+                    }
                 }
             }
             return Builder.ToString();

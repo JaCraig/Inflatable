@@ -15,6 +15,8 @@ limitations under the License.
 */
 
 using Canister.Interfaces;
+using Inflatable.Aspect;
+using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
@@ -50,6 +52,10 @@ namespace Inflatable.Modules
             bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<QueryProviderManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<Session>(ServiceLifetime.Singleton);
+            bootstrapper.RegisterAll<ORMAspectAssembliesBase>(ServiceLifetime.Singleton);
+            bootstrapper.RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton);
+            bootstrapper.RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton);
+            bootstrapper.RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton);
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Inflatable.Tests.Sessions
             InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
         }
 
+        public Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
         public MappingManager InternalMappingManager { get; set; }
 
         public QueryProviderManager InternalQueryProviderManager { get; set; }
@@ -42,7 +43,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersAndNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             var Results = TestObject.All<AllReferencesAndID>();
             Assert.Empty(Results);
         }
@@ -50,7 +51,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Results = TestObject.All<AllReferencesAndID>();
             Assert.Equal(3, Results.Count());
@@ -59,7 +60,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void Creation()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             Assert.NotNull(TestObject);
         }
 

@@ -38,14 +38,17 @@ namespace Inflatable.Sessions
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="schemaManager">The schema manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <exception cref="System.ArgumentNullException">
         /// mappingManager or schemaManager or queryProviderManager
         /// </exception>
-        public Session(MappingManager mappingManager, SchemaManager schemaManager, QueryProviderManager queryProviderManager)
+        public Session(MappingManager mappingManager, SchemaManager schemaManager, QueryProviderManager queryProviderManager, Aspectus.Aspectus aopManager)
         {
+            AOPManager = aopManager ?? throw new System.ArgumentNullException(nameof(aopManager));
             MappingManager = mappingManager ?? throw new System.ArgumentNullException(nameof(mappingManager));
             SchemaManager = schemaManager ?? throw new System.ArgumentNullException(nameof(schemaManager));
             QueryProviderManager = queryProviderManager ?? throw new System.ArgumentNullException(nameof(queryProviderManager));
+            AOPManager.Setup(MappingManager.Sources.SelectMany(x => x.ConcreteTypes).ToArray());
         }
 
         /// <summary>
@@ -62,6 +65,12 @@ namespace Inflatable.Sessions
         /// The schema manager
         /// </summary>
         private SchemaManager SchemaManager;
+
+        /// <summary>
+        /// Gets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        public Aspectus.Aspectus AOPManager { get; }
 
         /// <summary>
         /// Returns all items that match the criteria

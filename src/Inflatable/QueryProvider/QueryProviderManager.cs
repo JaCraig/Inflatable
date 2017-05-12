@@ -112,7 +112,7 @@ namespace Inflatable.QueryProvider
             if (!Providers.TryGetValue(provider, out Interfaces.IQueryProvider QueryProvider))
                 throw new ArgumentException("Provider not found: " + provider);
             if (IsDebug)
-                Logger.Debug("Creating generator for type {TypeName:l} in {SourceName;l}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
+                Logger.Debug("Creating generator for type {TypeName:l} in {SourceName:l}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
             return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);
         }
 
@@ -132,7 +132,7 @@ namespace Inflatable.QueryProvider
             if (!Providers.TryGetValue(provider, out Interfaces.IQueryProvider QueryProvider))
                 throw new ArgumentException("Provider not found: " + provider);
             if (IsDebug)
-                Logger.Debug("Creating query generator for type {TypeName:l} in {SourceName;l}", mappingType.GetName(), mappingInfo.Source.Name);
+                Logger.Debug("Creating query generator for type {TypeName:l} in {SourceName:l}", mappingType.GetName(), mappingInfo.Source.Name);
             return QueryProvider.CreateGenerator(mappingType, mappingInfo);
         }
     }

@@ -19,37 +19,28 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Inflatable.Aspect
 {
     /// <summary>
     /// Holds the ORM aspect's assemblies that it requires.
     /// </summary>
-    public class ORMAspectAssemblies
+    public abstract class ORMAspectAssembliesBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ORMAspectAssemblies"/> class.
+        /// Initializes a new instance of the <see cref="ORMAspectAssembliesBase"/> class.
         /// </summary>
-        /// <param name="assemblies">The assemblies.</param>
-        /// <exception cref="ArgumentNullException">assemblies</exception>
-        public ORMAspectAssemblies(IEnumerable<MetadataReference> assemblies)
+        protected ORMAspectAssembliesBase()
+            : this(new FileInfo(typeof(object).GetTypeInfo().Assembly.Location).Directory.FullName)
         {
-            Assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ORMAspectAssemblies"/> class.
-        /// </summary>
-        public ORMAspectAssemblies()
-        {
-            Assemblies = new List<MetadataReference>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ORMAspectAssemblies"/> class.
+        /// Initializes a new instance of the <see cref="ORMAspectAssembliesBase"/> class.
         /// </summary>
         /// <param name="directory">The directory to search for assemblies.</param>
-        public ORMAspectAssemblies(string directory)
+        protected ORMAspectAssembliesBase(string directory)
         {
             if (string.IsNullOrEmpty(directory))
                 throw new ArgumentNullException(nameof(directory));
@@ -205,13 +196,14 @@ namespace Inflatable.Aspect
 "api-ms-win-core-comm-l1-1-0.dll",
 "api-ms-win-core-com-private-l1-1-0.dll",
 "api-ms-win-core-com-l1-1-0.dll",
-"API-MS-Win-Base-Util-L1-1-0.dll"
+"API-MS-Win-Base-Util-L1-1-0.dll",
+"Microsoft.DiaSymReader.Native.amd64.dll"
         };
 
         /// <summary>
         /// Gets the assemblies.
         /// </summary>
         /// <value>The assemblies.</value>
-        public IEnumerable<MetadataReference> Assemblies { get; }
+        public List<MetadataReference> Assemblies { get; }
     }
 }

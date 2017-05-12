@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.Interfaces;
 using System.Reflection;
 using System.Text;
 
@@ -30,6 +31,6 @@ namespace Inflatable.Aspect.Interfaces
         /// <param name="method">The method.</param>
         /// <param name="mapping">The mapping.</param>
         /// <param name="builder">The builder.</param>
-        void Setup(MethodInfo method, Inflatable.Interfaces.IMapping mapping, StringBuilder builder);
+        void Setup(MethodInfo method, IMapping mapping, StringBuilder builder);
     }
 }
