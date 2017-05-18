@@ -48,8 +48,13 @@ namespace Inflatable.Sessions
             MappingManager = mappingManager ?? throw new System.ArgumentNullException(nameof(mappingManager));
             SchemaManager = schemaManager ?? throw new System.ArgumentNullException(nameof(schemaManager));
             QueryProviderManager = queryProviderManager ?? throw new System.ArgumentNullException(nameof(queryProviderManager));
-            AOPManager.Setup(MappingManager.Sources.SelectMany(x => x.ConcreteTypes).ToArray());
         }
+
+        /// <summary>
+        /// Gets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        private Aspectus.Aspectus AOPManager;
 
         /// <summary>
         /// The mapping manager
@@ -65,12 +70,6 @@ namespace Inflatable.Sessions
         /// The schema manager
         /// </summary>
         private SchemaManager SchemaManager;
-
-        /// <summary>
-        /// Gets the aop manager.
-        /// </summary>
-        /// <value>The aop manager.</value>
-        public Aspectus.Aspectus AOPManager { get; }
 
         /// <summary>
         /// Returns all items that match the criteria

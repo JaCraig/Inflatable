@@ -314,7 +314,6 @@ namespace Inflatable.ClassMapper
         /// <summary>
         /// Sets up the parent types.
         /// </summary>
-        /// <param name="ConcreteTypes">The concrete types.</param>
         private void SetupParentTypes()
         {
             Logger.Information("Setting up parent type discovery for {Name:l}", Source.Name);

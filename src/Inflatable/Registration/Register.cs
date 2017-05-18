@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using Aspectus.ExtensionMethods;
 using BigBook.Registration;
 using Canister.Interfaces;
 using Data.Modeler.Registration;
@@ -38,8 +37,7 @@ namespace Inflatable.Registration
             return bootstrapper.AddAssembly(typeof(Registration).GetTypeInfo().Assembly)
                                .RegisterFileCurator()
                                .RegisterDataModeler()
-                               .RegisterBigBookOfDataTypes()
-                               .RegisterAspectus();
+                               .RegisterBigBookOfDataTypes();
         }
     }
 }
