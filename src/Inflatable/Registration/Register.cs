@@ -18,6 +18,7 @@ using BigBook.Registration;
 using Canister.Interfaces;
 using Data.Modeler.Registration;
 using FileCurator.Registration;
+using Holmes.Registration;
 using System.Reflection;
 
 namespace Inflatable.Registration
@@ -37,7 +38,8 @@ namespace Inflatable.Registration
             return bootstrapper.AddAssembly(typeof(Registration).GetTypeInfo().Assembly)
                                .RegisterFileCurator()
                                .RegisterDataModeler()
-                               .RegisterBigBookOfDataTypes();
+                               .RegisterBigBookOfDataTypes()
+                               .RegisterHolmes();
         }
     }
 }

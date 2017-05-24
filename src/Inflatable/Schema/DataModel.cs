@@ -21,6 +21,8 @@ using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
+using SQLHelper.HelperClasses;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
