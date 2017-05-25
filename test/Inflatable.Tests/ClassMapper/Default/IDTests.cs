@@ -18,8 +18,8 @@ namespace Inflatable.Tests.ClassMapper.Default
         [Fact]
         public void Creation()
         {
-            var MappingObject = new MockMapping();
-            var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
+            var TempMappingObject = new MockMapping();
+            var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, TempMappingObject);
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -32,7 +32,7 @@ namespace Inflatable.Tests.ClassMapper.Default
             Assert.Equal(0, TestObject.MaxLength);
             Assert.Equal("ID", TestObject.Name);
             Assert.False(TestObject.Nullable);
-            Assert.Same(MappingObject, TestObject.ParentMapping);
+            Assert.Same(TempMappingObject, TestObject.ParentMapping);
             Assert.Equal(typeof(int), TestObject.PropertyType);
             Assert.False(TestObject.ReadOnly);
             Assert.Equal("System.Int32", TestObject.TypeName);

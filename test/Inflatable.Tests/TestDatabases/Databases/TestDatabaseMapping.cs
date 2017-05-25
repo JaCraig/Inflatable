@@ -18,7 +18,8 @@ namespace Inflatable.Tests.TestDatabases.Databases
             Optimize = true,
             Access = Enums.SourceAccess.Read | Enums.SourceAccess.Write,
             Audit = true,
-            SchemaUpdate = Enums.SchemaGeneration.UpdateSchema
+            SchemaUpdate = Enums.SchemaGeneration.UpdateSchema,
+            Analysis = Enums.SchemaAnalysis.ApplyAnalysis
         };
     }
 }

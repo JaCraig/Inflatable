@@ -30,6 +30,12 @@ namespace Inflatable.DataSource
         public SourceAccess Access { get; set; }
 
         /// <summary>
+        /// The level the system should update/generate analysis for you.
+        /// </summary>
+        /// <value>The level the system should update/generate analysis for you.</value>
+        public SchemaAnalysis Analysis { get; set; }
+
+        /// <summary>
         /// Determines if audit tables are generated
         /// </summary>
         /// <value><c>true</c> if audit; otherwise, <c>false</c>.</value>

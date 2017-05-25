@@ -67,6 +67,12 @@ namespace Inflatable.ClassMapper
         }
 
         /// <summary>
+        /// Gets a value indicating whether to [apply analysis].
+        /// </summary>
+        /// <value><c>true</c> if you should [apply analysis]; otherwise, <c>false</c>.</value>
+        public bool ApplyAnalysis => Source?.SourceOptions?.Analysis.HasFlag(SchemaAnalysis.ApplyAnalysis) ?? false;
+
+        /// <summary>
         /// Gets a value indicating whether this instance can be read.
         /// </summary>
         /// <value><c>true</c> if this instance can be read; otherwise, <c>false</c>.</value>
@@ -89,6 +95,12 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The concrete types.</value>
         public IEnumerable<Type> ConcreteTypes { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether to [generate analysis].
+        /// </summary>
+        /// <value><c>true</c> if you should [generate analysis]; otherwise, <c>false</c>.</value>
+        public bool GenerateAnalysis => Source?.SourceOptions?.Analysis.HasFlag(SchemaAnalysis.GenerateAnalysis) ?? false;
 
         /// <summary>
         /// Gets a value indicating whether to [generate schema].

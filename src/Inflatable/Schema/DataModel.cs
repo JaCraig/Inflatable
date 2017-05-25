@@ -25,6 +25,7 @@ using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Inflatable.Schema
@@ -51,6 +52,7 @@ namespace Inflatable.Schema
             SourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
             SourceSpec = DataModeler.CreateSource(SourceConnection.DatabaseName);
             GenerateSchema(source);
+            AnalyzeSchema();
         }
 
         /// <summary>
@@ -82,6 +84,34 @@ namespace Inflatable.Schema
         /// </summary>
         /// <value>The source connection.</value>
         private IConnection SourceConnection { get; }
+
+        /// <summary>
+        /// Analyze the schema.
+        /// </summary>
+        private void AnalyzeSchema()
+        {
+            if (!Source.ApplyAnalysis
+                && !Source.GenerateAnalysis)
+                return;
+            Logger.Information("Analyzing {Info:l} for suggestions.", SourceConnection.DatabaseName);
+            var Results = Holmes.Sherlock.Analyze(SourceConnection);
+            var Batch = new SQLHelper.SQLHelper(SourceConnection);
+            foreach (var Result in Results)
+            {
+                Logger.Information("Finding: {Info:l}", Result.Text);
+                Logger.Information("Metrics: {Data:l}", Result.Metrics);
+                Logger.Information("Suggested Fix: {Fix:l}", Result.Fix);
+                if (Source.ApplyAnalysis && string.IsNullOrEmpty(Result.Fix))
+                {
+                    Batch.AddQuery(Result.Fix, CommandType.Text);
+                }
+            }
+            if (Source.ApplyAnalysis)
+            {
+                Logger.Information("Applying fixes for {Info:l}.", SourceConnection.DatabaseName);
+                Batch.ExecuteScalar<int>();
+            }
+        }
 
         /// <summary>
         /// Generates the schema.
