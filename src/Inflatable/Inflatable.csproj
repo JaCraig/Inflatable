@@ -31,15 +31,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FileCurator" Version="1.0.10" />
-    <PackageReference Include="Holmes" Version="1.0.7" />
+    <PackageReference Include="FileCurator" Version="1.0.15" />
+    <PackageReference Include="Holmes" Version="1.0.8" />
     <PackageReference Include="Serilog" Version="2.4.0" />
-    <PackageReference Include="SQLHelper.DB" Version="1.0.28" />
-    <PackageReference Include="Data.Modeler" Version="1.0.11" />
+    <PackageReference Include="SQLHelper.DB" Version="1.0.33" />
+    <PackageReference Include="Data.Modeler" Version="1.0.13" />
+    <PackageReference Include="sundial.core" Version="1.0.8" />
     <PackageReference Include="Valkyrie" Version="1.0.6" />
-    <PackageReference Include="Mirage" Version="1.0.9" />
+    <PackageReference Include="Mirage" Version="1.0.10" />
     <PackageReference Include="Aspectus" Version="2.0.14" />
-    <PackageReference Include="BigBook" Version="1.0.14" />
+    <PackageReference Include="BigBook" Version="1.0.21" />
   </ItemGroup>
 
 </Project>

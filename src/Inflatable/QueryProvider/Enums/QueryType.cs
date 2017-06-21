@@ -27,6 +27,11 @@ namespace Inflatable.QueryProvider.Enums
         Insert,
 
         /// <summary>
+        /// The insert bulk
+        /// </summary>
+        InsertBulk,
+
+        /// <summary>
         /// The update
         /// </summary>
         Update,

@@ -18,6 +18,7 @@ using BigBook;
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -224,6 +225,13 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <returns>The resulting property</returns>
         IProperty Convert<TResult>(IMapping mapping)
             where TResult : class;
+
+        /// <summary>
+        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="objectValue">The object value.</param>
+        /// <returns>The parameter version of the property</returns>
+        IParameter GetAsParameter(object objectValue);
 
         /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)

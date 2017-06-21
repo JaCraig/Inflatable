@@ -18,6 +18,8 @@ using BigBook;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using SQLHelper.HelperClasses;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -259,6 +261,20 @@ namespace Inflatable.ClassMapper.BaseClasses
             if (((object)SecondObj) == null)
                 return false;
             return this == SecondObj;
+        }
+
+        /// <summary>
+        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="objectValue"></param>
+        /// <returns>The parameter version of the property</returns>
+        public IParameter GetAsParameter(object objectValue)
+        {
+            var ParamValue = (DataType)GetParameter(objectValue);
+            var TempParameter = ParamValue as string;
+            if (PropertyType == typeof(string))
+                return new StringParameter(Name, TempParameter);
+            return new Parameter<DataType>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
         }
 
         /// <summary>

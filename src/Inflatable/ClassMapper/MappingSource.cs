@@ -351,7 +351,8 @@ namespace Inflatable.ClassMapper
                 QueryType.Any,
                 QueryType.Delete,
                 QueryType.Insert,
-                QueryType.Update
+                QueryType.Update,
+                QueryType.InsertBulk
             };
             foreach (var ConcreteType in ConcreteTypes)
             {

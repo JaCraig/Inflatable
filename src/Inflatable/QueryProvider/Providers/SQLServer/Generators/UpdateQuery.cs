@@ -55,7 +55,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         public override IQuery GenerateQuery()
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateUpdateQuery(TypeGraph.Root), QueryType.Insert);
+            return new Query(CommandType.Text, GenerateUpdateQuery(TypeGraph.Root), QueryType);
         }
 
         /// <summary>

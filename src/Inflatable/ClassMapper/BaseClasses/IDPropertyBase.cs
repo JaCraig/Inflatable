@@ -18,6 +18,8 @@ using BigBook;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using SQLHelper.HelperClasses;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -58,6 +60,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ComputedColumnSpecification = "";
             DefaultValue = () => default(DataType);
             Expression = expression;
+            SetAction = Expression.PropertySetter<ClassType, DataType>().Compile();
             InternalFieldName = "_" + Name + "Derived";
             MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
             ParentMapping = mapping;
@@ -165,6 +168,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
         public bool Unique { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the expression used to set the value.
+        /// </summary>
+        /// <value>The set expression.</value>
+        protected Action<ClassType, DataType> SetAction { get; set; }
 
         /// <summary>
         /// != operator
@@ -280,6 +289,20 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="objectValue"></param>
+        /// <returns>The parameter version of the property</returns>
+        public IParameter GetAsParameter(object objectValue)
+        {
+            var ParamValue = (DataType)GetParameter(objectValue);
+            var TempParameter = ParamValue as string;
+            if (PropertyType == typeof(string))
+                return new StringParameter(Name, TempParameter);
+            return new Parameter<DataType>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
+        }
+
+        /// <summary>
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
@@ -378,6 +401,18 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets up the property (used internally)
         /// </summary>
         public abstract void Setup();
+
+        /// <summary>
+        /// Sets the property's value for the object sent in.
+        /// </summary>
+        /// <param name="objectToSet">The object to set.</param>
+        /// <param name="propertyValue">The property value.</param>
+        public void SetValue(object objectToSet, object propertyValue)
+        {
+            var TempObject = objectToSet as ClassType;
+            var TempPropertyValue = (DataType)propertyValue;
+            SetAction(TempObject, TempPropertyValue);
+        }
 
         /// <summary>
         /// Gets the property as a string

@@ -18,6 +18,7 @@ using BigBook;
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -168,6 +169,13 @@ namespace Inflatable.ClassMapper.Interfaces
         void AddToTable(ITable table);
 
         /// <summary>
+        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="objectValue">Object to get the parameter from</param>
+        /// <returns>The parameter version of the property</returns>
+        IParameter GetAsParameter(object objectValue);
+
+        /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)
         /// </summary>
         /// <param name="Object">Object to get the parameter from</param>
@@ -199,5 +207,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Sets up the property (used internally)
         /// </summary>
         void Setup();
+
+        /// <summary>
+        /// Sets the property's value for the object sent in.
+        /// </summary>
+        /// <param name="objectToSet">The object to set.</param>
+        /// <param name="propertyValue">The property value.</param>
+        void SetValue(object objectToSet, object propertyValue);
     }
 }

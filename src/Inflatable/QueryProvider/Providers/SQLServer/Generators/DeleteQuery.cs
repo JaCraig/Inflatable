@@ -73,7 +73,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
                         GetTableName(Mapping),
                         Mapping.IDProperties.ToString(x => GetColumnName(x) + "=" + GetParameterName(x), " AND "));
             }
-            return new Query(CommandType.Text, Builder.ToString(), QueryType.Delete);
+            return new Query(CommandType.Text, Builder.ToString(), QueryType);
         }
     }
 }

@@ -27,18 +27,18 @@ using System.Text;
 namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
 {
     /// <summary>
-    /// Insert query generator
+    /// Insert bulk query generator
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
     /// <seealso cref="BaseClasses.QueryGeneratorBaseClass{TMappedClass}"/>
-    public class InsertQuery<TMappedClass> : QueryGeneratorBaseClass<TMappedClass>
+    public class InsertBulkQuery<TMappedClass> : QueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertQuery{TMappedClass}"/> class.
+        /// Initializes a new instance of the <see cref="InsertBulkQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        public InsertQuery(MappingSource mappingInformation)
+        public InsertBulkQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
         }
@@ -47,7 +47,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         /// Gets the type of the query.
         /// </summary>
         /// <value>The type of the query.</value>
-        public override QueryType QueryType => QueryType.Insert;
+        public override QueryType QueryType => QueryType.InsertBulk;
 
         /// <summary>
         /// Generates the insert query.
@@ -118,7 +118,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             //ID Properties to pass to the next set of queries
             foreach (var IDProperty in Mapping.IDProperties)
             {
-                DeclareProperties.AppendLine("DECLARE " + GetParentParameterName(IDProperty) + " AS " + GetParameterType(IDProperty) + ";");
                 SetProperties.AppendLine("SET " + GetParentParameterName(IDProperty) + "=" + (IDProperty.AutoIncrement ? "SCOPE_IDENTITY()" : GetParameterName(IDProperty)) + ";");
                 if (IDProperty.AutoIncrement)
                 {
@@ -129,7 +128,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             //Auto ID properties to pass to the next set of queries
             foreach (var AutoIDProperty in Mapping.AutoIDProperties)
             {
-                DeclareProperties.AppendLine("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType(AutoIDProperty) + ";");
                 SetProperties.AppendLine("SET " + GetParentParameterName(AutoIDProperty) + "=SCOPE_IDENTITY();");
             }
 

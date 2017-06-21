@@ -1,4 +1,5 @@
-﻿using Inflatable.ClassMapper;
+﻿using BigBook;
+using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -9,9 +10,11 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Inflatable.Tests.Sessions
@@ -32,36 +35,195 @@ namespace Inflatable.Tests.Sessions
 
             var TempQueryProvider = new SQLServerQueryProvider(Configuration);
             InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+
+            CacheManager = Canister.Builder.Bootstrapper.Resolve<BigBook.Caching.Manager>();
+            CacheManager.Cache().Clear();
         }
 
         public Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
+        public BigBook.Caching.Manager CacheManager { get; set; }
         public MappingManager InternalMappingManager { get; set; }
 
         public QueryProviderManager InternalQueryProviderManager { get; set; }
         public SchemaManager InternalSchemaManager { get; set; }
 
         [Fact]
-        public void AllNoParametersAndNoDataInDatabase()
+        public async Task AllNoParametersAndNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
-            var Results = TestObject.All<AllReferencesAndID>();
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
             Assert.Empty(Results);
         }
 
         [Fact]
-        public void AllNoParametersWithDataInDatabase()
+        public async Task AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
             SetupData();
-            var Results = TestObject.All<AllReferencesAndID>();
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
             Assert.Equal(3, Results.Count());
+        }
+
+        [Fact]
+        public async Task AnyNoParametersAndNoDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var Result = await TestObject.AnyAsync<AllReferencesAndID>();
+            Assert.Null(Result);
+        }
+
+        [Fact]
+        public async Task AnyNoParametersWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.AnyAsync<AllReferencesAndID>();
+            Assert.Equal(new DateTime(2008, 1, 1), Result.DateTimeValue);
         }
 
         [Fact]
         public void Creation()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
             Assert.NotNull(TestObject);
+        }
+
+        [Fact]
+        public async Task DeleteWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.AnyAsync<AllReferencesAndID>();
+            await TestObject.DeleteAsync(Result);
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.Equal(2, Results.Count());
+        }
+
+        [Fact]
+        public async Task DeleteWithNoDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var Result = await TestObject.AnyAsync<AllReferencesAndID>();
+            await TestObject.DeleteAsync(Result);
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.Empty(Results);
+        }
+
+        [Fact]
+        public async Task InsertMultipleObjects()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result1 = new AllReferencesAndID
+            {
+                BoolValue = false,
+                ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                ByteValue = 34,
+                CharValue = 'a',
+                DateTimeValue = new DateTime(2000, 1, 1)
+            };
+            var Result2 = new AllReferencesAndID
+            {
+                BoolValue = false,
+                ByteArrayValue = new byte[] { 5, 6, 7, 8 },
+                ByteValue = 34,
+                CharValue = 'b',
+                DateTimeValue = new DateTime(2000, 1, 1)
+            };
+            var Result3 = new AllReferencesAndID
+            {
+                BoolValue = false,
+                ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                ByteValue = 34,
+                CharValue = 'c',
+                DateTimeValue = new DateTime(2000, 1, 1)
+            };
+            await TestObject.InsertAsync(Result1, Result2, Result3);
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.Equal(6, Results.Count());
+            Assert.True(Results.Any(x => x.ID == Result1.ID
+            && !x.BoolValue
+            && x.ByteValue == 34
+            && x.CharValue == 'a'
+            && x.DateTimeValue == new DateTime(2000, 1, 1)));
+            Assert.True(Results.Any(x => x.ID == Result2.ID
+            && !x.BoolValue
+            && x.ByteValue == 34
+            && x.CharValue == 'b'
+            && x.DateTimeValue == new DateTime(2000, 1, 1)));
+            Assert.True(Results.Any(x => x.ID == Result3.ID
+            && !x.BoolValue
+            && x.ByteValue == 34
+            && x.CharValue == 'c'
+            && x.DateTimeValue == new DateTime(2000, 1, 1)));
+        }
+
+        [Fact]
+        public async Task InsertSingleObject()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = new AllReferencesAndID
+            {
+                BoolValue = false,
+                ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                ByteValue = 34,
+                CharValue = 'a',
+                DateTimeValue = new DateTime(2000, 1, 1)
+            };
+            await TestObject.InsertAsync(Result);
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.Equal(4, Results.Count());
+            Assert.True(Results.Any(x => x.ID == Result.ID
+            && !x.BoolValue
+            && x.ByteValue == 34
+            && x.CharValue == 'a'
+            && x.DateTimeValue == new DateTime(2000, 1, 1)));
+        }
+
+        [Fact]
+        public async Task UpdateMultipleWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            var UpdatedResults = Results.ForEach(x => { x.CharValue = 'p'; }).ToArray();
+            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.True(Results.All(x => x.CharValue == 'p'));
+        }
+
+        [Fact]
+        public async Task UpdateNullWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            Assert.Equal(0, await TestObject.UpdateAsync<AllReferencesAndID>(null));
+        }
+
+        [Fact]
+        public async Task UpdateWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.AnyAsync<AllReferencesAndID>();
+            Result.CharValue = 'p';
+            Assert.Equal(1, await TestObject.UpdateAsync(Result));
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.True(Results.Any(x => x.CharValue == 'p'));
+        }
+
+        [Fact]
+        public async Task UpdateWithNoDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var Result = new AllReferencesAndID()
+            {
+                CharValue = 'p'
+            };
+            Assert.Equal(0, await TestObject.UpdateAsync(Result));
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.Empty(Results);
         }
 
         private void SetupData()
@@ -91,7 +253,7 @@ namespace Inflatable.Tests.Sessions
      VALUES
            (1
            ,1
-           ,2
+           ,1
            ,'a'
            ,'1/1/2008'
            ,13.2
@@ -171,7 +333,7 @@ namespace Inflatable.Tests.Sessions
      VALUES
            (1
            ,1
-           ,2
+           ,3
            ,'a'
            ,'1/1/2008'
            ,13.2
