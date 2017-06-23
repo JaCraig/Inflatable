@@ -22,8 +22,12 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
+using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -182,12 +186,13 @@ namespace Inflatable.Sessions
         /// Deletes the specified object.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="objectToDelete">The object to delete.</param>
+        /// <param name="objectsToDelete">The object to delete.</param>
         /// <returns>The number of rows that were deleted across all sources.</returns>
-        public async Task<int> DeleteAsync<TObject>(TObject objectToDelete)
+        public async Task<int> DeleteAsync<TObject>(params TObject[] objectsToDelete)
             where TObject : class
         {
-            if (objectToDelete == null)
+            objectsToDelete = (objectsToDelete ?? new TObject[0]).Where(x => x != null).ToArray();
+            if (objectsToDelete.Length == 0)
                 return 0;
             Cache.RemoveByTag(typeof(TObject).GetName());
             var ReturnValue = 0;
@@ -199,12 +204,118 @@ namespace Inflatable.Sessions
                     var ParentMappings = Source.GetParentMapping(typeof(TObject));
                     var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
                     var Query = Mapping.Queries[QueryType.Delete];
-                    var IDParameters = IDProperties.ForEach(x => x.GetAsParameter(objectToDelete)).ToArray();
-                    Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, IDParameters);
+                    for (int x = 0; x < objectsToDelete.Length; ++x)
+                    {
+                        var IDParameters = IDProperties.ForEach(y => y.GetAsParameter(objectsToDelete[x])).ToArray();
+                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, IDParameters);
+                    }
                 }
                 ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
             }
             return ReturnValue;
+        }
+
+        /// <summary>
+        /// Executes the specified command and returns items of a specific type.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects</returns>
+        /// <exception cref="System.ArgumentException"></exception>
+        public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
+            where TObject : class
+        {
+            parameters = parameters ?? new IParameter[0];
+            List<IParameter> Parameters = ConvertParameters(parameters);
+            string KeyName = command;
+            Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
+            if (Cache.ContainsKey(KeyName))
+            {
+                return GetListCached<TObject>(KeyName);
+            }
+            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            if (Source == null)
+                throw new ArgumentException($"Source not found {connection}");
+            var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
+            var ReturnValue = new List<Dynamo>();
+            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            Batch.AddQuery((Command, ResultList, Result) =>
+            {
+                int ResultListCount = ResultList.Count;
+                for (int x = 0; x < ResultListCount; ++x)
+                {
+                    CopyOrAdd(Result, IDProperties, ResultList[x]);
+                }
+            },
+            ReturnValue,
+            command,
+            type,
+            Parameters.ToArray());
+            await Batch.RemoveDuplicateCommands().ExecuteAsync();
+
+            Cache.Add(KeyName, ReturnValue, new string[] { typeof(TObject).GetName() });
+            return ConvertValues<TObject>(ReturnValue);
+        }
+
+        /// <summary>
+        /// Executes the specified command and returns items of a specific type.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects</returns>
+        /// <exception cref="System.ArgumentException"></exception>
+        public async Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
+        {
+            parameters = parameters ?? new IParameter[0];
+            List<IParameter> Parameters = ConvertParameters(parameters);
+            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            if (Source == null)
+                throw new ArgumentException($"Source not found {connection}");
+            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            Batch.AddQuery(command,
+            type,
+            Parameters.ToArray());
+            return (await Batch.RemoveDuplicateCommands().ExecuteAsync())[0];
+        }
+
+        /// <summary>
+        /// Executes the specified command and returns the first item of a specific type.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects</returns>
+        /// <exception cref="System.ArgumentException"></exception>
+        public async Task<TObject> ExecuteScalarAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
+        {
+            parameters = parameters ?? new IParameter[0];
+            List<IParameter> Parameters = ConvertParameters(parameters);
+            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            if (Source == null)
+                throw new ArgumentException($"Source not found {connection}");
+            var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
+            var ReturnValue = new List<Dynamo>();
+            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            Batch.AddQuery((Command, ResultList, Result) =>
+            {
+                int ResultListCount = ResultList.Count;
+                for (int x = 0; x < ResultListCount; ++x)
+                {
+                    CopyOrAdd(Result, IDProperties, ResultList[x]);
+                }
+            },
+            ReturnValue,
+            command,
+            type,
+            Parameters.ToArray());
+            return await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<TObject>();
         }
 
         /// <summary>
@@ -286,6 +397,23 @@ namespace Inflatable.Sessions
                 ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
             }
             return ReturnValue;
+        }
+
+        private static List<IParameter> ConvertParameters(object[] parameters)
+        {
+            var Parameters = new List<IParameter>();
+            foreach (object CurrentParameter in parameters)
+            {
+                var TempParameter = CurrentParameter as string;
+                if (CurrentParameter == null)
+                    Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), null));
+                else if (TempParameter != null)
+                    Parameters.Add(new StringParameter(Parameters.Count().ToString(CultureInfo.InvariantCulture), TempParameter));
+                else
+                    Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), CurrentParameter));
+            }
+
+            return Parameters;
         }
 
         /// <summary>

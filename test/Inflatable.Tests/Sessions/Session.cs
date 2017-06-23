@@ -89,6 +89,17 @@ namespace Inflatable.Tests.Sessions
         }
 
         [Fact]
+        public async Task DeleteMultipleWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = (await TestObject.AllAsync<AllReferencesAndID>()).ElementsBetween(1, 3).ToArray();
+            await TestObject.DeleteAsync(Result);
+            var Results = await TestObject.AllAsync<AllReferencesAndID>();
+            Assert.Equal(1, Results.Count());
+        }
+
+        [Fact]
         public async Task DeleteWithDataInDatabase()
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
@@ -107,6 +118,43 @@ namespace Inflatable.Tests.Sessions
             await TestObject.DeleteAsync(Result);
             var Results = await TestObject.AllAsync<AllReferencesAndID>();
             Assert.Empty(Results);
+        }
+
+        [Fact]
+        public async Task Execute()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT * FROM AllReferencesAndID_ WHERE ID_=@0",
+                CommandType.Text,
+                "Default",
+                2);
+            Assert.Equal(1, Result.Count());
+            Assert.Equal(2, Result.First().ID);
+        }
+
+        [Fact]
+        public async Task ExecuteDynamic()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.ExecuteAsync("SELECT * FROM AllReferencesAndID_ WHERE ID_=@0",
+                CommandType.Text,
+                "Default",
+                2);
+            Assert.Equal(1, Result.Count());
+            Assert.Equal(2, (long)Result.First().ID_);
+        }
+
+        [Fact]
+        public async Task ExecuteScalar()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AllReferencesAndID_",
+                CommandType.Text,
+                "Default");
+            Assert.Equal(3, Result);
         }
 
         [Fact]
