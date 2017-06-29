@@ -14,7 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.QueryProvider.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Inflatable.QueryProvider.Interfaces
 {
@@ -37,6 +39,12 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <value>The type of the associated.</value>
         Type AssociatedType { get; }
+
+        /// <summary>
+        /// Gets the query generators.
+        /// </summary>
+        /// <value>The query generators.</value>
+        IDictionary<QueryType, IQueryGenerator> QueryGenerators { get; }
 
         /// <summary>
         /// Generates the default queries associated with the mapped type.

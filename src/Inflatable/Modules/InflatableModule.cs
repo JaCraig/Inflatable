@@ -19,6 +19,7 @@ using Inflatable.Aspect;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.Schema;
 using Inflatable.Sessions;
@@ -56,6 +57,7 @@ namespace Inflatable.Modules
             bootstrapper.RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton);
             bootstrapper.RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton);
             bootstrapper.RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton);
+            bootstrapper.Register(typeof(QueryTranslator<>));
         }
     }
 }

@@ -128,6 +128,13 @@ namespace Inflatable.Interfaces
         void AddAutoKey();
 
         /// <summary>
+        /// Determines whether the mapping contains a property.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns><c>true</c> if the mapping contains the specified property; otherwise, <c>false</c>.</returns>
+        bool ContainsProperty(string propertyName);
+
+        /// <summary>
         /// Copies the specified mapping.
         /// </summary>
         /// <param name="mapping">The mapping.</param>

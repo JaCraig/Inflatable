@@ -15,9 +15,11 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Inflatable.QueryProvider.BaseClasses
 {
@@ -39,7 +41,8 @@ namespace Inflatable.QueryProvider.BaseClasses
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
             if (!MappingInformation.Mappings.ContainsKey(AssociatedType))
                 throw new ArgumentException("Mapping not found for type: " + AssociatedType);
-            QueryGenerators = queryGenerators ?? throw new ArgumentNullException(nameof(queryGenerators));
+            queryGenerators = queryGenerators ?? throw new ArgumentNullException(nameof(queryGenerators));
+            QueryGenerators = queryGenerators.ToDictionary(x => x.QueryType);
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the query generators.
         /// </summary>
         /// <value>The query generators.</value>
-        public IEnumerable<IQueryGenerator> QueryGenerators { get; }
+        public IDictionary<QueryType, IQueryGenerator> QueryGenerators { get; }
 
         /// <summary>
         /// Generates the default queries associated with the mapped type.
@@ -71,7 +74,7 @@ namespace Inflatable.QueryProvider.BaseClasses
             var Result = new Queries();
             foreach (var QueryGenerator in QueryGenerators)
             {
-                Result.Add(QueryGenerator.QueryType, QueryGenerator.GenerateQuery());
+                Result.Add(QueryGenerator.Key, QueryGenerator.Value.GenerateQuery());
             }
             return Result;
         }

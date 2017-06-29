@@ -19,6 +19,7 @@ using BigBook.Caching.Interfaces;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
+using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
@@ -230,7 +231,7 @@ namespace Inflatable.Sessions
         {
             parameters = parameters ?? new IParameter[0];
             List<IParameter> Parameters = ConvertParameters(parameters);
-            string KeyName = command;
+            string KeyName = command + "_" + connection;
             Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
             if (Cache.ContainsKey(KeyName))
             {
@@ -281,6 +282,44 @@ namespace Inflatable.Sessions
             type,
             Parameters.ToArray());
             return (await Batch.RemoveDuplicateCommands().ExecuteAsync())[0];
+        }
+
+        /// <summary>
+        /// Executes the specified command and returns items of a specific type.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="queries">The queries to run.</param>
+        /// <returns>The resulting data</returns>
+        public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
+            where TObject : class
+        {
+            string KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
+            queries.Values
+                .SelectMany(x => x.Parameters)
+                .Distinct()
+                .ForEach(x =>
+                {
+                    KeyName = x.AddParameter(KeyName);
+                });
+            if (Cache.ContainsKey(KeyName))
+            {
+                return GetListCached<TObject>(KeyName);
+            }
+            List<Dynamo> Results = new List<Dynamo>();
+            foreach (var Source in queries)
+            {
+                var IDProperties = Source.Key.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
+                var IndividualQueryResults = await ExecuteAsync(Source.Value.ToString(),
+                    CommandType.Text,
+                    Source.Key.Source.Name,
+                    Source.Value.Parameters.ToArray());
+                foreach (var Item in IndividualQueryResults)
+                {
+                    CopyOrAdd(Results, IDProperties, Item);
+                }
+            }
+            Cache.Add(KeyName, Results, new string[] { typeof(TObject).GetName() });
+            return ConvertValues<TObject>(Results);
         }
 
         /// <summary>
@@ -404,8 +443,11 @@ namespace Inflatable.Sessions
             var Parameters = new List<IParameter>();
             foreach (object CurrentParameter in parameters)
             {
+                var TempQueryParameter = CurrentParameter as IParameter;
                 var TempParameter = CurrentParameter as string;
-                if (CurrentParameter == null)
+                if (TempQueryParameter != null)
+                    Parameters.Add(TempQueryParameter);
+                else if (CurrentParameter == null)
                     Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), null));
                 else if (TempParameter != null)
                     Parameters.Add(new StringParameter(Parameters.Count().ToString(CultureInfo.InvariantCulture), TempParameter));

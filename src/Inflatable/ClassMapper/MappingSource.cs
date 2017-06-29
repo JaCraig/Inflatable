@@ -46,7 +46,7 @@ namespace Inflatable.ClassMapper
         public MappingSource(IEnumerable<IMapping> mappings, IDatabase source, QueryProviderManager queryProvider, ILogger logger)
         {
             QueryProvider = queryProvider ?? throw new ArgumentNullException(nameof(queryProvider));
-            Logger = logger;
+            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new ConcurrentBag<IMapping>();
             Source = source ?? throw new ArgumentNullException(nameof(source));
             Logger.Information("Setting up {Name:l}", source.Name);

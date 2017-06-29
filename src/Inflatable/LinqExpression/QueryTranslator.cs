@@ -14,11 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.ClassMapper;
+using Inflatable.LinqExpression.HelperClasses;
+using Inflatable.LinqExpression.WhereClauses;
+using Inflatable.LinqExpression.WhereClauses.Interfaces;
+using Inflatable.QueryProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Reflection;
 
 namespace Inflatable.LinqExpression
 {
@@ -26,62 +31,62 @@ namespace Inflatable.LinqExpression
     /// Query translator
     /// </summary>
     /// <seealso cref="ExpressionVisitor"/>
-    public class QueryTranslator : ExpressionVisitor
+    public class QueryTranslator<TObject> : ExpressionVisitor
+        where TObject : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QueryTranslator"/> class.
+        /// Initializes a new instance of the <see cref="QueryTranslator{TObject}"/> class.
         /// </summary>
-        public QueryTranslator()
+        /// <param name="mappingManager">The mapping manager.</param>
+        /// <param name="queryProviderManager">The query provider manager.</param>
+        /// <exception cref="ArgumentNullException">mappingManager or queryProviderManager</exception>
+        public QueryTranslator(MappingManager mappingManager,
+            QueryProviderManager queryProviderManager)
         {
-            Builder = new StringBuilder();
+            MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
+            QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
+            Builders = new Dictionary<MappingSource, QueryData<TObject>>();
         }
 
         /// <summary>
-        /// The binary operators
+        /// Gets the mapping manager.
         /// </summary>
-        private IDictionary<ExpressionType, string> BinaryOperators = new Dictionary<ExpressionType, string>
-        {
-            [ExpressionType.And] = " AND ",
-            [ExpressionType.Or] = " OR ",
-            [ExpressionType.Equal] = " = ",
-            [ExpressionType.NotEqual] = " <> ",
-            [ExpressionType.LessThan] = " < ",
-            [ExpressionType.LessThanOrEqual] = " <= ",
-            [ExpressionType.GreaterThan] = " > ",
-            [ExpressionType.GreaterThanOrEqual] = " >= "
-        };
-
-        private IDictionary<TypeCode, Func<object, string>> ConstantConverters = new Dictionary<TypeCode, Func<object, string>>
-        {
-            [TypeCode.Boolean] = x => (bool)x ? "1" : "0",
-            [TypeCode.String] = x => "'" + x + "'",
-            [TypeCode.Object] = x => throw new NotSupportedException($"The constant for ‘{x}’ is not supported"))
-        };
+        /// <value>The mapping manager.</value>
+        public MappingManager MappingManager { get; }
 
         /// <summary>
-        /// The unary operators
+        /// Gets the query provider manager.
         /// </summary>
-        private IDictionary<ExpressionType, string> UnaryOperators = new Dictionary<ExpressionType, string>
-        {
-            [ExpressionType.Not] = " NOT "
-        };
+        /// <value>The query provider manager.</value>
+        public QueryProviderManager QueryProviderManager { get; }
 
         /// <summary>
         /// Gets the builder.
         /// </summary>
         /// <value>The builder.</value>
-        private StringBuilder Builder { get; set; }
+        private Dictionary<MappingSource, QueryData<TObject>> Builders { get; set; }
+
+        private IOperator CurrentClause { get; set; }
 
         /// <summary>
         /// Translates the specified expression.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The resulting query string.</returns>
-        public string Translate(Expression expression)
+        public IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
         {
-            Builder = new StringBuilder();
+            expression = Evaluator.PartialEval(expression);
+            Builders = new Dictionary<MappingSource, QueryData<TObject>>();
+            foreach (var Source in MappingManager.Sources)
+            {
+                Builders.Add(Source, new QueryData<TObject>(Source));
+            }
             Visit(expression);
-            return Builder.ToString();
+            foreach (var Key in Builders.Keys)
+            {
+                Builders[Key].WhereClause.Optimize(Key);
+            }
+            return Builders;
         }
 
         /// <summary>
@@ -95,12 +100,10 @@ namespace Inflatable.LinqExpression
         /// <exception cref="System.NotSupportedException"></exception>
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            if (!BinaryOperators.ContainsKey(node.NodeType))
-                throw new NotSupportedException($"The unary operator '{node.NodeType}' is not supported.");
-            Builder.Append(" (");
             Visit(node.Left);
-            Builder.Append(BinaryOperators[node.NodeType]);
+            var LeftSide = CurrentClause;
             Visit(node.Right);
+            CurrentClause = new BinaryOperator(LeftSide, CurrentClause, node.NodeType);
             return node;
         }
 
@@ -111,20 +114,9 @@ namespace Inflatable.LinqExpression
         /// <returns>The expression</returns>
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            IQueryable TempQuery = node.Value as IQueryable;
-            if (TempQuery != null)
-            {
-                Builder.Append("SELECT * FROM ");
-                Builder.Append(TempQuery.ElementType.Name);
+            if (node.Value is IQueryable)
                 return node;
-            }
-            if (node.Value == null)
-            {
-                Builder.Append("NULL");
-                return node;
-            }
-            var TypeCode = Type.GetTypeCode(node.Value.GetType());
-            Builder.Append(ConstantConverters.ContainsKey(TypeCode) ? ConstantConverters[TypeCode](node.Value) : node.Value);
+            CurrentClause = new Constant(node.Value);
             return node;
         }
 
@@ -135,9 +127,10 @@ namespace Inflatable.LinqExpression
         /// <returns>The node</returns>
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter)
+            var TempProperty = node.Member as PropertyInfo;
+            if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter && TempProperty != null)
             {
-                Builder.Append(node.Member.Name);
+                CurrentClause = new Property(TempProperty);
                 return node;
             }
             throw new NotSupportedException($"The member '{node.Member.Name}' is not supported.");
@@ -156,11 +149,13 @@ namespace Inflatable.LinqExpression
         {
             if (node.Method.DeclaringType == typeof(Queryable) && node.Method.Name == "Where")
             {
-                Builder.Append("SELECT * FROM (");
                 Visit(node.Arguments[0]);
-                Builder.Append(") AS T WHERE ");
                 LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
                 Visit(lambda.Body);
+                foreach (var Source in Builders.Keys)
+                {
+                    Builders[Source].WhereClause.Combine(CurrentClause.Copy());
+                }
                 return node;
             }
             throw new NotSupportedException($"The method '{node.Method.Name}' is not supported.");
@@ -177,10 +172,8 @@ namespace Inflatable.LinqExpression
         /// <exception cref="System.NotSupportedException"></exception>
         protected override Expression VisitUnary(UnaryExpression node)
         {
-            if (!UnaryOperators.ContainsKey(node.NodeType))
-                throw new NotSupportedException($"The unary operator '{node.NodeType}' is not supported.");
-            Builder.Append(UnaryOperators[node.NodeType]);
             Visit(node.Operand);
+            CurrentClause = new UnaryOperator(CurrentClause, node.NodeType, node.Type);
             return node;
         }
 
