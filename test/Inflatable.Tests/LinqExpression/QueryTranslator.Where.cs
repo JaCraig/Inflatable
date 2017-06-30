@@ -19,10 +19,9 @@ namespace Inflatable.Tests.LinqExpression
                                  .Where(x => x.ByteValue > 14)
                                  .Where(x => x.IntValue < LocalVariable);
             var Data = TestObject.Translate(TestQuery.Expression);
+            Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE (((BoolValue = 0) AND ((ByteValue) > 14)) AND (IntValue < 45))", Result.WhereClause.ToString());
-            Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default2")];
-            Assert.Equal("", Result.WhereClause.ToString());
         }
 
         [Fact]
@@ -32,10 +31,9 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => x.BoolValue == false || x.ByteValue > 14);
             var Data = TestObject.Translate(TestQuery.Expression);
+            Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE ((BoolValue = 0) OR ((ByteValue) > 14))", Result.WhereClause.ToString());
-            Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default2")];
-            Assert.Equal("", Result.WhereClause.ToString());
         }
 
         [Fact]
@@ -45,10 +43,9 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => !(x.BoolValue == false || x.ByteValue > 14));
             var Data = TestObject.Translate(TestQuery.Expression);
+            Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE ((BoolValue <> 0) AND ((ByteValue) <= 14))", Result.WhereClause.ToString());
-            Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default2")];
-            Assert.Equal("", Result.WhereClause.ToString());
         }
 
         [Fact]
@@ -58,10 +55,9 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => x.BoolValue);
             var Data = TestObject.Translate(TestQuery.Expression);
+            Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE (BoolValue = 1)", Result.WhereClause.ToString());
-            Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default2")];
-            Assert.Equal("", Result.WhereClause.ToString());
         }
 
         [Fact]
@@ -71,10 +67,9 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => !x.BoolValue);
             var Data = TestObject.Translate(TestQuery.Expression);
+            Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE (BoolValue <> 1)", Result.WhereClause.ToString());
-            Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default2")];
-            Assert.Equal("", Result.WhereClause.ToString());
         }
     }
 }

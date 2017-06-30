@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.HelperClasses;
+using Inflatable.LinqExpression.Select;
 using Inflatable.LinqExpression.WhereClauses;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using Inflatable.QueryProvider;
@@ -46,6 +47,10 @@ namespace Inflatable.LinqExpression
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Builders = new Dictionary<MappingSource, QueryData<TObject>>();
+            foreach (var Source in MappingManager.Sources.Where(x => x.Mappings.ContainsKey(typeof(TObject))))
+            {
+                Builders.Add(Source, new QueryData<TObject>(Source));
+            }
         }
 
         /// <summary>
@@ -76,11 +81,6 @@ namespace Inflatable.LinqExpression
         public IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
         {
             expression = Evaluator.PartialEval(expression);
-            Builders = new Dictionary<MappingSource, QueryData<TObject>>();
-            foreach (var Source in MappingManager.Sources)
-            {
-                Builders.Add(Source, new QueryData<TObject>(Source));
-            }
             Visit(expression);
             foreach (var Key in Builders.Keys)
             {
@@ -147,14 +147,34 @@ namespace Inflatable.LinqExpression
         /// <exception cref="System.NotSupportedException"></exception>
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node.Method.DeclaringType == typeof(Queryable) && node.Method.Name == "Where")
+            if (node.Method.DeclaringType == typeof(Queryable))
             {
-                Visit(node.Arguments[0]);
-                LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                Visit(lambda.Body);
-                foreach (var Source in Builders.Keys)
+                if (node.Method.Name == "Where")
                 {
-                    Builders[Source].WhereClause.Combine(CurrentClause.Copy());
+                    Visit(node.Arguments[0]);
+                    LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    Visit(lambda.Body);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        Builders[Source].WhereClause.Combine(CurrentClause.Copy());
+                    }
+                }
+                else if (node.Method.Name == "Select")
+                {
+                    LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
+                    foreach (var Source in Builders.Keys.Where(x => x.Mappings.ContainsKey(typeof(TObject))))
+                    {
+                        var Mapping = Source.Mappings[typeof(TObject)];
+                        var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                        foreach (var Column in Columns)
+                        {
+                            if (Mapping.ContainsProperty(Column.Name) || ParentMappings.Any(x => x.ContainsProperty(Column.Name)))
+                            {
+                                Builders[Source].SelectValues.Add(Column);
+                            }
+                        }
+                    }
                 }
                 return node;
             }

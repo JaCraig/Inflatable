@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.LinqExpression;
 using Inflatable.QueryProvider.Enums;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,12 @@ namespace Inflatable.QueryProvider.Interfaces
     public interface IGenerator<TMappedClass> : IGenerator
         where TMappedClass : class
     {
+        /// <summary>
+        /// Converts the linq query.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The result</returns>
+        IQuery ConvertLinqQuery(QueryData<TMappedClass> data);
     }
 
     /// <summary>

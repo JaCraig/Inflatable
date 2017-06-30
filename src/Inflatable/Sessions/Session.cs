@@ -308,9 +308,11 @@ namespace Inflatable.Sessions
             List<Dynamo> Results = new List<Dynamo>();
             foreach (var Source in queries)
             {
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source.Key);
+                var ResultingQuery = Generator.ConvertLinqQuery(Source.Value);
                 var IDProperties = Source.Key.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
-                var IndividualQueryResults = await ExecuteAsync(Source.Value.ToString(),
-                    CommandType.Text,
+                var IndividualQueryResults = await ExecuteAsync(ResultingQuery.QueryString,
+                    ResultingQuery.DatabaseCommandType,
                     Source.Key.Source.Name,
                     Source.Value.Parameters.ToArray());
                 foreach (var Item in IndividualQueryResults)

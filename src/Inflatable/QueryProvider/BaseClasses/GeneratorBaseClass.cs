@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using Inflatable.LinqExpression;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
@@ -36,8 +37,14 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <param name="queryGenerators">The query generators.</param>
-        protected GeneratorBaseClass(MappingSource mappingInformation, IEnumerable<IQueryGenerator> queryGenerators)
+        /// <param name="linqQueryGenerator">The linq query generator.</param>
+        /// <exception cref="ArgumentNullException">
+        /// linqQueryGenerator or mappingInformation or queryGenerators
+        /// </exception>
+        /// <exception cref="ArgumentException">Mapping not found for type: " + AssociatedType</exception>
+        protected GeneratorBaseClass(MappingSource mappingInformation, IEnumerable<IQueryGenerator> queryGenerators, ILinqQueryGenerator<TMappedClass> linqQueryGenerator)
         {
+            LinqQueryGenerator = linqQueryGenerator ?? throw new ArgumentNullException(nameof(linqQueryGenerator));
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
             if (!MappingInformation.Mappings.ContainsKey(AssociatedType))
                 throw new ArgumentException("Mapping not found for type: " + AssociatedType);
@@ -52,6 +59,12 @@ namespace Inflatable.QueryProvider.BaseClasses
         public Type AssociatedType => typeof(TMappedClass);
 
         /// <summary>
+        /// Gets the linq query generator.
+        /// </summary>
+        /// <value>The linq query generator.</value>
+        public ILinqQueryGenerator<TMappedClass> LinqQueryGenerator { get; }
+
+        /// <summary>
         /// Gets the mapping information.
         /// </summary>
         /// <value>The mapping information.</value>
@@ -62,6 +75,16 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <value>The query generators.</value>
         public IDictionary<QueryType, IQueryGenerator> QueryGenerators { get; }
+
+        /// <summary>
+        /// Converts the linq query.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The result</returns>
+        public IQuery ConvertLinqQuery(QueryData<TMappedClass> data)
+        {
+            return LinqQueryGenerator.GenerateQuery(data);
+        }
 
         /// <summary>
         /// Generates the default queries associated with the mapped type.

@@ -111,6 +111,8 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <param name="mappingSource">The mapping source.</param>
         public IOperator Optimize(MappingSource mappingSource)
         {
+            if (InternalOperator == null)
+                return this;
             InternalOperator = mappingSource.Mappings.ContainsKey(ObjectType) ?
                 InternalOperator.Optimize(mappingSource) :
                 null;
