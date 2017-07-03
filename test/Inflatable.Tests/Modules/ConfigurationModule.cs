@@ -13,6 +13,9 @@ namespace Inflatable.Tests.Modules
 
         protected string ConnectionString2 => "Data Source=localhost;Initial Catalog=TestDatabase2;Integrated Security=SSPI;Pooling=false";
 
+        protected string MockDatabaseConnectionString => "Data Source=localhost;Initial Catalog=MockDatabase;Integrated Security=SSPI;Pooling=false";
+        protected string MockDatabaseForMockMappingConnectionString => "Data Source=localhost;Initial Catalog=MockDatabaseForMockMapping;Integrated Security=SSPI;Pooling=false";
+
         public void Load(IBootstrapper bootstrapper)
         {
             if (bootstrapper == null)
@@ -20,7 +23,9 @@ namespace Inflatable.Tests.Modules
             var dict = new Dictionary<string, string>
                 {
                     { "ConnectionStrings:Default", ConnectionString },
-                    { "ConnectionStrings:Default2", ConnectionString2 }
+                    { "ConnectionStrings:Default2", ConnectionString2 },
+                    { "ConnectionStrings:MockDatabase",MockDatabaseConnectionString },
+                    { "ConnectionStrings:MockDatabaseForMockMapping",MockDatabaseForMockMappingConnectionString }
                 };
             var Configuration = new ConfigurationBuilder()
                              .AddInMemoryCollection(dict)

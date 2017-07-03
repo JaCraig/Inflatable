@@ -141,6 +141,13 @@ namespace Inflatable.Interfaces
         void Copy(IMapping mapping);
 
         /// <summary>
+        /// Gets the name of the column based on property name.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The column name.</returns>
+        string GetColumnName(string propertyName);
+
+        /// <summary>
         /// Reduces this instance and removes duplicate properties
         /// </summary>
         /// <param name="logger">The logger.</param>

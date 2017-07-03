@@ -20,7 +20,7 @@ namespace Inflatable.Tests.LinqExpression
             Assert.Equal(1, TestObject.Parameters.Count);
             Assert.Equal(DbType.Int32, TestObject.Parameters[0].DatabaseType);
             Assert.Equal(ParameterDirection.Input, TestObject.Parameters[0].Direction);
-            Assert.Equal("MockDatabase0", TestObject.Parameters[0].ID);
+            Assert.Equal("MockDatabaseForMockMapping0", TestObject.Parameters[0].ID);
             Assert.Equal(1, TestObject.Parameters[0].InternalValue);
             Assert.Equal("@", TestObject.Parameters[0].ParameterStarter);
         }

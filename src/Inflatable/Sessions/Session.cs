@@ -290,7 +290,7 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="queries">The queries to run.</param>
         /// <returns>The resulting data</returns>
-        public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
+        public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
             string KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
@@ -306,19 +306,18 @@ namespace Inflatable.Sessions
                 return GetListCached<TObject>(KeyName);
             }
             List<Dynamo> Results = new List<Dynamo>();
-            foreach (var Source in queries)
+            bool FirstRun = true;
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null)
+                                          .OrderBy(x => x.Key.Order))
             {
-                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source.Key);
-                var ResultingQuery = Generator.ConvertLinqQuery(Source.Value);
-                var IDProperties = Source.Key.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
-                var IndividualQueryResults = await ExecuteAsync(ResultingQuery.QueryString,
-                    ResultingQuery.DatabaseCommandType,
-                    Source.Key.Source.Name,
-                    Source.Value.Parameters.ToArray());
-                foreach (var Item in IndividualQueryResults)
-                {
-                    CopyOrAdd(Results, IDProperties, Item);
-                }
+                await GenerateQueryAsync(Results, FirstRun, Source);
+                FirstRun = false;
+            }
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator == null)
+                                          .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source);
+                FirstRun = false;
             }
             Cache.Add(KeyName, Results, new string[] { typeof(TObject).GetName() });
             return ConvertValues<TObject>(Results);
@@ -460,6 +459,17 @@ namespace Inflatable.Sessions
             return Parameters;
         }
 
+        private static void Copy(List<Dynamo> returnValue, IEnumerable<IIDProperty> idProperties, Dynamo item)
+        {
+            if (item == null || returnValue == null)
+                return;
+
+            var Value = returnValue.FirstOrDefault(x => idProperties.All(y => y.GetValue(x).Equals(y.GetValue(item))));
+            if (Value == null)
+                return;
+            item.CopyTo(Value);
+        }
+
         /// <summary>
         /// Copies the item to the result list or adds it.
         /// </summary>
@@ -505,6 +515,37 @@ namespace Inflatable.Sessions
         {
             ReturnValue = ReturnValue ?? new List<Dynamo>();
             return ReturnValue.ForEachParallel(x => ConvertValue<TObject>(x));
+        }
+
+        /// <summary>
+        /// Generates the query asynchronous.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="results">The results.</param>
+        /// <param name="firstRun">if set to <c>true</c> [first run].</param>
+        /// <param name="source">The source.</param>
+        /// <returns>The results of the query on the source</returns>
+        private async Task GenerateQueryAsync<TObject>(List<Dynamo> results, bool firstRun, KeyValuePair<MappingSource, QueryData<TObject>> source)
+            where TObject : class
+        {
+            var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
+            var ResultingQuery = Generator.ConvertLinqQuery(source.Value);
+            var IDProperties = source.Key.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
+            var IndividualQueryResults = await ExecuteAsync(ResultingQuery.QueryString,
+                ResultingQuery.DatabaseCommandType,
+                source.Key.Source.Name,
+                source.Value.Parameters.ToArray());
+            foreach (var Item in IndividualQueryResults)
+            {
+                if (firstRun)
+                {
+                    CopyOrAdd(results, IDProperties, Item);
+                }
+                else
+                {
+                    Copy(results, IDProperties, Item);
+                }
+            }
         }
 
         /// <summary>

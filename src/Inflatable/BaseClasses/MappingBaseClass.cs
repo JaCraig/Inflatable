@@ -196,6 +196,22 @@ namespace Inflatable.BaseClasses
         }
 
         /// <summary>
+        /// Gets the name of the column based on property name.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The column name.</returns>
+        public string GetColumnName(string propertyName)
+        {
+            var IDProperty = IDProperties.FirstOrDefault(x => x.Name == propertyName);
+            if (IDProperty != null)
+                return IDProperty.ColumnName;
+            var ReferenceProperty = ReferenceProperties.FirstOrDefault(x => x.Name == propertyName);
+            if (ReferenceProperty != null)
+                return ReferenceProperty.ColumnName;
+            return "";
+        }
+
+        /// <summary>
         /// Gets the mapping's hash code
         /// </summary>
         /// <returns>Hash code for the mapping</returns>

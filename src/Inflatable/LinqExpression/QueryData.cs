@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.LinqExpression.OrderBy;
 using Inflatable.LinqExpression.WhereClauses;
 using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
@@ -44,6 +45,7 @@ namespace Inflatable.LinqExpression
             SelectValues = new List<PropertyInfo>();
             Parameters = new List<IParameter>();
             WhereClause = new WhereClause<TObject>(null);
+            OrderByValues = new List<OrderByClause>();
         }
 
         /// <summary>
@@ -51,6 +53,12 @@ namespace Inflatable.LinqExpression
         /// </summary>
         /// <value>The type of the object.</value>
         public Type ObjectType => typeof(TObject);
+
+        /// <summary>
+        /// Gets the order by values.
+        /// </summary>
+        /// <value>The order by values.</value>
+        public IList<OrderByClause> OrderByValues { get; }
 
         /// <summary>
         /// Gets the parameters.
@@ -104,7 +112,7 @@ namespace Inflatable.LinqExpression
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause}";
+            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues : "")}";
         }
     }
 }

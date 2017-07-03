@@ -18,13 +18,11 @@ using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.HelperClasses;
 using Inflatable.LinqExpression.Select;
 using Inflatable.LinqExpression.WhereClauses;
-using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using Inflatable.QueryProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Inflatable.LinqExpression
 {
@@ -47,7 +45,7 @@ namespace Inflatable.LinqExpression
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Builders = new Dictionary<MappingSource, QueryData<TObject>>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.Mappings.ContainsKey(typeof(TObject))))
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.Mappings.ContainsKey(typeof(TObject))))
             {
                 Builders.Add(Source, new QueryData<TObject>(Source));
             }
@@ -71,8 +69,6 @@ namespace Inflatable.LinqExpression
         /// <value>The builder.</value>
         private Dictionary<MappingSource, QueryData<TObject>> Builders { get; set; }
 
-        private IOperator CurrentClause { get; set; }
-
         /// <summary>
         /// Translates the specified expression.
         /// </summary>
@@ -80,60 +76,12 @@ namespace Inflatable.LinqExpression
         /// <returns>The resulting query string.</returns>
         public IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
         {
-            expression = Evaluator.PartialEval(expression);
             Visit(expression);
             foreach (var Key in Builders.Keys)
             {
                 Builders[Key].WhereClause.Optimize(Key);
             }
             return Builders;
-        }
-
-        /// <summary>
-        /// Visits the children of the <see cref="T:System.Linq.Expressions.BinaryExpression"/>.
-        /// </summary>
-        /// <param name="node">The expression to visit.</param>
-        /// <returns>
-        /// The modified expression, if it or any subexpression was modified; otherwise, returns the
-        /// original expression.
-        /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
-        protected override Expression VisitBinary(BinaryExpression node)
-        {
-            Visit(node.Left);
-            var LeftSide = CurrentClause;
-            Visit(node.Right);
-            CurrentClause = new BinaryOperator(LeftSide, CurrentClause, node.NodeType);
-            return node;
-        }
-
-        /// <summary>
-        /// Visits the constant.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns>The expression</returns>
-        protected override Expression VisitConstant(ConstantExpression node)
-        {
-            if (node.Value is IQueryable)
-                return node;
-            CurrentClause = new Constant(node.Value);
-            return node;
-        }
-
-        /// <summary>
-        /// Visits the member.
-        /// </summary>
-        /// <param name="node">The node.</param>
-        /// <returns>The node</returns>
-        protected override Expression VisitMember(MemberExpression node)
-        {
-            var TempProperty = node.Member as PropertyInfo;
-            if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter && TempProperty != null)
-            {
-                CurrentClause = new Property(TempProperty);
-                return node;
-            }
-            throw new NotSupportedException($"The member '{node.Member.Name}' is not supported.");
         }
 
         /// <summary>
@@ -151,16 +99,19 @@ namespace Inflatable.LinqExpression
             {
                 if (node.Method.Name == "Where")
                 {
+                    node = (MethodCallExpression)Evaluator.PartialEval(node);
                     Visit(node.Arguments[0]);
                     LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                    Visit(lambda.Body);
+                    var CurrentClause = new WhereVisitor().WhereProjection(lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
                         Builders[Source].WhereClause.Combine(CurrentClause.Copy());
                     }
+                    return node;
                 }
-                else if (node.Method.Name == "Select")
+                if (node.Method.Name == "Select")
                 {
+                    Visit(node.Arguments[0]);
                     LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
                     var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
                     foreach (var Source in Builders.Keys.Where(x => x.Mappings.ContainsKey(typeof(TObject))))
@@ -175,26 +126,10 @@ namespace Inflatable.LinqExpression
                             }
                         }
                     }
+                    return node;
                 }
-                return node;
             }
             throw new NotSupportedException($"The method '{node.Method.Name}' is not supported.");
-        }
-
-        /// <summary>
-        /// Visits the children of the <see cref="T:System.Linq.Expressions.UnaryExpression"/>.
-        /// </summary>
-        /// <param name="node">The expression to visit.</param>
-        /// <returns>
-        /// The modified expression, if it or any subexpression was modified; otherwise, returns the
-        /// original expression.
-        /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
-        protected override Expression VisitUnary(UnaryExpression node)
-        {
-            Visit(node.Operand);
-            CurrentClause = new UnaryOperator(CurrentClause, node.NodeType, node.Type);
-            return node;
         }
 
         /// <summary>

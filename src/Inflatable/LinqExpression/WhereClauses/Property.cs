@@ -60,6 +60,12 @@ namespace Inflatable.LinqExpression.WhereClauses
         public Type TypeCode { get; }
 
         /// <summary>
+        /// Gets or sets the column.
+        /// </summary>
+        /// <value>The column.</value>
+        private string Column { get; set; }
+
+        /// <summary>
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
@@ -86,8 +92,16 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             var Mapping = mappingSource.Mappings[InternalProperty.DeclaringType];
             var ParentMappings = mappingSource.GetParentMapping(InternalProperty.DeclaringType);
-            if (!Mapping.ContainsProperty(InternalProperty.Name) && !ParentMappings.Any(x => x.ContainsProperty(InternalProperty.Name)))
-                return null;
+            if (!Mapping.ContainsProperty(InternalProperty.Name))
+            {
+                var ParentMapping = ParentMappings.FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
+                if (ParentMapping == null)
+                    return null;
+                Column = ParentMapping.GetColumnName(InternalProperty.Name);
+            }
+            else
+                Column = Mapping.GetColumnName(InternalProperty.Name);
+
             if (InternalProperty.PropertyType == typeof(bool) && Parent as BinaryOperator == null)
             {
                 return new BinaryOperator(this, new Constant(true), ExpressionType.Equal);
@@ -101,7 +115,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return InternalProperty.Name;
+            return string.IsNullOrEmpty(Column) ? InternalProperty.Name : Column;
         }
     }
 }

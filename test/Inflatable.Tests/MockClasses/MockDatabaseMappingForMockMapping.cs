@@ -6,9 +6,9 @@ namespace Inflatable.Tests.MockClasses
 {
     public class MockDatabaseMappingForMockMapping : Interfaces.IDatabase
     {
-        public string Name => "MockDatabase";
+        public string Name => "MockDatabaseForMockMapping";
 
-        public int Order => 1;
+        public int Order => 2;
 
         public DbProviderFactory Provider => SqlClientFactory.Instance;
 
@@ -17,7 +17,7 @@ namespace Inflatable.Tests.MockClasses
             Optimize = true,
             Access = Enums.SourceAccess.Read | Enums.SourceAccess.Write,
             Audit = false,
-            SchemaUpdate = Enums.SchemaGeneration.NoGeneration
+            SchemaUpdate = Enums.SchemaGeneration.UpdateSchema
         };
     }
 }

@@ -8,7 +8,7 @@ namespace Inflatable.Tests.MockClasses
     {
         public string Name => "SecondMockDatabase";
 
-        public int Order => 2;
+        public int Order => 3;
 
         public DbProviderFactory Provider => SqlClientFactory.Instance;
 
