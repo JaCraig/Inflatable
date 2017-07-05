@@ -16,6 +16,8 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.HelperClasses;
+using Inflatable.LinqExpression.OrderBy;
+using Inflatable.LinqExpression.OrderBy.Enums;
 using Inflatable.LinqExpression.Select;
 using Inflatable.LinqExpression.WhereClauses;
 using Inflatable.QueryProvider;
@@ -114,7 +116,7 @@ namespace Inflatable.LinqExpression
                     Visit(node.Arguments[0]);
                     LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
                     var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
-                    foreach (var Source in Builders.Keys.Where(x => x.Mappings.ContainsKey(typeof(TObject))))
+                    foreach (var Source in Builders.Keys)
                     {
                         var Mapping = Source.Mappings[typeof(TObject)];
                         var ParentMappings = Source.GetParentMapping(typeof(TObject));
@@ -125,6 +127,60 @@ namespace Inflatable.LinqExpression
                                 Builders[Source].SelectValues.Add(Column);
                             }
                         }
+                    }
+                    return node;
+                }
+                if (node.Method.Name == "ThenBy"
+                    || node.Method.Name == "OrderBy"
+                    || node.Method.Name == "OrderByDescending"
+                    || node.Method.Name == "ThenByDescending")
+                {
+                    Visit(node.Arguments[0]);
+                    LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        var Mapping = Source.Mappings[typeof(TObject)];
+                        var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                        foreach (var Column in Columns)
+                        {
+                            if (Mapping.ContainsProperty(Column.Name) || ParentMappings.Any(x => x.ContainsProperty(Column.Name)))
+                            {
+                                Builders[Source].OrderByValues.Add(new OrderByClause(Builders[Source].OrderByValues.Count,
+                                    Column,
+                                    node.Method.Name.Contains("Descending") ? Direction.Descending : Direction.Ascending));
+                            }
+                        }
+                    }
+                    return node;
+                }
+                if (node.Method.Name == "Distinct")
+                {
+                    Visit(node.Arguments[0]);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        Builders[Source].Distinct = true;
+                    }
+                    return node;
+                }
+                if (node.Method.Name == "First"
+                    || node.Method.Name == "FirstOrDefault"
+                    || node.Method.Name == "Single"
+                    || node.Method.Name == "SingleOrDefault")
+                {
+                    Visit(node.Arguments[0]);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        Builders[Source].Top = 1;
+                    }
+                    return node;
+                }
+                if (node.Method.Name == "Take")
+                {
+                    Visit(node.Arguments[0]);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        Builders[Source].Top = (int)(node.Arguments[1] as ConstantExpression).Value;
                     }
                     return node;
                 }

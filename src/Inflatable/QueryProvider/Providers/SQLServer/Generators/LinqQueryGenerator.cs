@@ -19,6 +19,7 @@ using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.LinqExpression;
+using Inflatable.LinqExpression.OrderBy.Enums;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
@@ -191,6 +192,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             return "[dbo].[" + parentMapping.TableName + "]";
         }
 
+        /// <summary>
+        /// Generates from clause.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
         private string GenerateFromClause(Utils.TreeNode<Type> node)
         {
             StringBuilder Result = new StringBuilder();
@@ -217,6 +223,35 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             return Result.ToString();
         }
 
+        /// <summary>
+        /// Generates the order by clause.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        private string GenerateOrderByClause(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
+        {
+            StringBuilder Builder = new StringBuilder();
+            string Splitter = "";
+            if (data.OrderByValues.Count == 0)
+                return "";
+            Builder.Append("ORDER BY ");
+            foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
+            {
+                Builder.Append(Splitter)
+                       .Append(Column.Property.Name)
+                       .Append(Column.Direction == Direction.Descending ? " DESC" : "");
+                Splitter = ",";
+            }
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Generates the parameter list.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         private string GenerateParameterList(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
             StringBuilder Result = new StringBuilder();
@@ -245,12 +280,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             return Result.ToString();
         }
 
+        /// <summary>
+        /// Generates the select query.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
         private string GenerateSelectQuery(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
             StringBuilder Builder = new StringBuilder();
             StringBuilder ParameterList = new StringBuilder();
             StringBuilder FromClause = new StringBuilder();
             StringBuilder WhereClause = new StringBuilder();
+            StringBuilder OrderByClause = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Get From Clause
@@ -263,8 +305,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             //Get Where Clause
             WhereClause.Append(GenerateWhereClause(node, data));
 
+            OrderByClause.Append(GenerateOrderByClause(node, data));
+
             //Generate final query
-            Builder.Append($"SELECT {ParameterList}\r\nFROM {FromClause} {WhereClause}".Trim() + ";");
+            Builder.Append($"SELECT{(data.Distinct ? " DISTINCT" : "")}{(data.Top > 0 ? $" TOP {data.Top}" : "")} {ParameterList}" +
+                $"FROM {FromClause}" +
+                $"{WhereClause}" +
+                $"{OrderByClause}".Trim() + ";");
             return Builder.ToString();
         }
 

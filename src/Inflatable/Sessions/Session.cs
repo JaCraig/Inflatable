@@ -129,7 +129,7 @@ namespace Inflatable.Sessions
                     Query.DatabaseCommandType,
                     parameters);
                 }
-                await Batch.RemoveDuplicateCommands().ExecuteAsync();
+                await Batch.ExecuteAsync();
             }
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(TObject).GetName() });
             return ConvertValues<TObject>(ReturnValue);
@@ -173,7 +173,7 @@ namespace Inflatable.Sessions
                     Query.DatabaseCommandType,
                     parameters);
                 }
-                await Batch.RemoveDuplicateCommands().ExecuteAsync();
+                await Batch.ExecuteAsync();
             }
             var FirstItem = ReturnValue.FirstOrDefault();
             if (FirstItem != null)
@@ -255,7 +255,7 @@ namespace Inflatable.Sessions
             command,
             type,
             Parameters.ToArray());
-            await Batch.RemoveDuplicateCommands().ExecuteAsync();
+            await Batch.ExecuteAsync();
 
             Cache.Add(KeyName, ReturnValue, new string[] { typeof(TObject).GetName() });
             return ConvertValues<TObject>(ReturnValue);
@@ -281,7 +281,7 @@ namespace Inflatable.Sessions
             Batch.AddQuery(command,
             type,
             Parameters.ToArray());
-            return (await Batch.RemoveDuplicateCommands().ExecuteAsync())[0];
+            return (await Batch.ExecuteAsync())[0];
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Inflatable.Sessions
             command,
             type,
             Parameters.ToArray());
-            return await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<TObject>();
+            return await Batch.ExecuteScalarAsync<TObject>();
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace Inflatable.Sessions
                         Query = Mapping.Queries[QueryType.InsertBulk];
                     }
                 }
-                await Batch.RemoveDuplicateCommands().ExecuteAsync();
+                await Batch.ExecuteAsync();
             }
             return objectsToInsert;
         }
@@ -461,9 +461,10 @@ namespace Inflatable.Sessions
 
         private static void Copy(List<Dynamo> returnValue, IEnumerable<IIDProperty> idProperties, Dynamo item)
         {
-            if (item == null || returnValue == null)
+            if (item == null
+                || returnValue == null
+                || idProperties.Count() == 0)
                 return;
-
             var Value = returnValue.FirstOrDefault(x => idProperties.All(y => y.GetValue(x).Equals(y.GetValue(item))));
             if (Value == null)
                 return;
@@ -480,7 +481,11 @@ namespace Inflatable.Sessions
         {
             if (item == null || returnValue == null)
                 return;
-
+            if (idProperties.Count() == 0)
+            {
+                returnValue.Add(item);
+                return;
+            }
             var Value = returnValue.FirstOrDefault(x => idProperties.All(y => y.GetValue(x).Equals(y.GetValue(item))));
             if (Value == null)
                 returnValue.Add(item);

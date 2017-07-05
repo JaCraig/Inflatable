@@ -49,6 +49,12 @@ namespace Inflatable.LinqExpression
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="QueryData{TObject}"/> is distinct.
+        /// </summary>
+        /// <value><c>true</c> if distinct; otherwise, <c>false</c>.</value>
+        public bool Distinct { get; set; }
+
+        /// <summary>
         /// Gets the type of the object.
         /// </summary>
         /// <value>The type of the object.</value>
@@ -77,6 +83,12 @@ namespace Inflatable.LinqExpression
         /// </summary>
         /// <value>The source.</value>
         public MappingSource Source { get; }
+
+        /// <summary>
+        /// Gets or sets the top.
+        /// </summary>
+        /// <value>The top.</value>
+        public int Top { get; set; }
 
         /// <summary>
         /// Gets the where clause.
@@ -112,7 +124,7 @@ namespace Inflatable.LinqExpression
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues : "")}";
+            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
         }
     }
 }
