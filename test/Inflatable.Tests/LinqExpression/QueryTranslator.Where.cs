@@ -22,7 +22,7 @@ namespace Inflatable.Tests.LinqExpression
             var Data = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE (((BoolValue_ = @1) AND ((ByteValue_) > @2)) AND (IntValue_ < @3))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE ((([dbo].[AllReferencesAndID_].[BoolValue_] = @1) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) > @2)) AND ([dbo].[AllReferencesAndID_].[IntValue_] < @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
             Assert.Equal("1", Parameters[0].ID);
             Assert.Equal(false, Parameters[0].InternalValue);
@@ -44,7 +44,7 @@ namespace Inflatable.Tests.LinqExpression
             var Data = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE ((BoolValue_ = @1) OR ((ByteValue_) > @3))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] = @1) OR (([dbo].[AllReferencesAndID_].[ByteValue_]) > @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
             Assert.Equal("1", Parameters[0].ID);
             Assert.Equal(false, Parameters[0].InternalValue);
@@ -63,7 +63,7 @@ namespace Inflatable.Tests.LinqExpression
             var Data = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE ((BoolValue_ <> @1) AND ((ByteValue_) <= @3))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] <> @1) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) <= @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
             Assert.Equal("1", Parameters[0].ID);
             Assert.Equal(false, Parameters[0].InternalValue);
@@ -82,7 +82,7 @@ namespace Inflatable.Tests.LinqExpression
             var Data = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE (BoolValue_ = @0)", Result.WhereClause.ToString());
+            Assert.Equal("WHERE ([dbo].[AllReferencesAndID_].[BoolValue_] = @0)", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
             Assert.Equal("0", Parameters[0].ID);
             Assert.Equal(true, Parameters[0].InternalValue);
@@ -98,7 +98,7 @@ namespace Inflatable.Tests.LinqExpression
             var Data = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(3, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE (BoolValue_ <> @0)", Result.WhereClause.ToString());
+            Assert.Equal("WHERE ([dbo].[AllReferencesAndID_].[BoolValue_] <> @0)", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
             Assert.Equal("0", Parameters[0].ID);
             Assert.Equal(true, Parameters[0].InternalValue);

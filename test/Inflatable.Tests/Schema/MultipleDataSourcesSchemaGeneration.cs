@@ -48,7 +48,7 @@ namespace Inflatable.Tests.Schema
             Assert.Equal(0, TestModel.SourceSpec.Views.Count);
             Assert.Equal(2, TestModel.GeneratedSchemaChanges.Count());
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("CREATE TABLE [SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource1Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource1Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
 
             TestModel = TestObject.Models.First(x => x.Source.Source.Name == "Default2");
             Assert.Equal("Default2", TestModel.Source.Source.Name);
@@ -62,7 +62,7 @@ namespace Inflatable.Tests.Schema
             Assert.Equal(0, TestModel.SourceSpec.Views.Count);
             Assert.Equal(2, TestModel.GeneratedSchemaChanges.Count());
             Assert.Contains("CREATE DATABASE [TestDatabase2]", TestModel.GeneratedSchemaChanges);
-            Assert.Contains("CREATE TABLE [SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource2Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
+            Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource2Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
         }
     }
 }

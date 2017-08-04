@@ -112,6 +112,12 @@ namespace Inflatable.Interfaces
         ICollection<IProperty> ReferenceProperties { get; }
 
         /// <summary>
+        /// Gets the name of the schema.
+        /// </summary>
+        /// <value>The name of the schema.</value>
+        string SchemaName { get; }
+
+        /// <summary>
         /// Suffix used for defining properties/table name
         /// </summary>
         /// <value>The suffix.</value>

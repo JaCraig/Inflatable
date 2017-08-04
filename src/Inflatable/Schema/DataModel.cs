@@ -55,6 +55,22 @@ namespace Inflatable.Schema
             AnalyzeSchema();
         }
 
+        private static string[] DefaultSchemas = {
+            "dbo",
+            "guest",
+            "INFORMATION_SCHEMA",
+            "sys",
+            "db_owner",
+            "db_accessadmin",
+            "db_securityadmin",
+            "db_ddladmin",
+            "db_backupoperator",
+            "db_datareader",
+            "db_datawriter",
+            "db_denydatareader",
+            "db_denydatawriter"
+        };
+
         /// <summary>
         /// Gets the generated schema changes.
         /// </summary>
@@ -162,7 +178,9 @@ namespace Inflatable.Schema
             Logger.Information("Setting up table structure for {Info:l}", SourceConnection.DatabaseName);
             foreach (var Mapping in Source.Mappings.Values.OrderBy(x => x.Order))
             {
-                var Table = SourceSpec.AddTable(Mapping.TableName);
+                if (!DefaultSchemas.Contains(Mapping.SchemaName))
+                    SourceSpec.Schemas.AddIfUnique(Mapping.SchemaName);
+                var Table = SourceSpec.AddTable(Mapping.TableName, Mapping.SchemaName);
                 var Tree = Source.TypeGraphs[Mapping.ObjectType];
                 var ParentMappings = Tree.Root.Nodes.ForEach(x => Source.Mappings[x.Data]);
                 foreach (var ID in Mapping.IDProperties)

@@ -34,8 +34,8 @@
     <PackageReference Include="FileCurator" Version="1.0.15" />
     <PackageReference Include="Holmes" Version="1.0.10" />
     <PackageReference Include="Serilog" Version="2.5.0" />
-    <PackageReference Include="SQLHelper.DB" Version="1.0.33" />
-    <PackageReference Include="Data.Modeler" Version="1.0.16" />
+    <PackageReference Include="SQLHelper.DB" Version="1.0.34" />
+    <PackageReference Include="Data.Modeler" Version="1.0.17" />
     <PackageReference Include="sundial.core" Version="1.0.8" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="1.0.6" />

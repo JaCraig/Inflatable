@@ -44,13 +44,15 @@ namespace Inflatable.BaseClasses
         /// Initializes a new instance of the <see cref="MappingBaseClass{ClassType, DatabaseType}"/> class.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
+        /// <param name="schemaName">Name of the schema.</param>
         /// <param name="suffix">The suffix.</param>
         /// <param name="prefix">The prefix.</param>
         /// <param name="order">The order.</param>
         /// <param name="merge">if set to <c>true</c> [merge] this mapping when possible.</param>
-        protected MappingBaseClass(string tableName = "", string suffix = "_", string prefix = "",
+        protected MappingBaseClass(string tableName = "", string schemaName = "dbo", string suffix = "_", string prefix = "",
             int order = 10, bool merge = false)
         {
+            SchemaName = schemaName;
             AutoIDProperties = new List<IAutoIDProperty>();
             IDProperties = new List<IIDProperty>();
             Order = order;
@@ -116,6 +118,12 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <value>The reference properties.</value>
         public ICollection<IProperty> ReferenceProperties { get; private set; }
+
+        /// <summary>
+        /// Gets the name of the schema.
+        /// </summary>
+        /// <value>The name of the schema.</value>
+        public string SchemaName { get; private set; }
 
         /// <summary>
         /// Suffix used for defining properties/table name
@@ -205,10 +213,10 @@ namespace Inflatable.BaseClasses
         {
             var IDProperty = IDProperties.FirstOrDefault(x => x.Name == propertyName);
             if (IDProperty != null)
-                return IDProperty.ColumnName;
+                return "[" + SchemaName + "].[" + TableName + "].[" + IDProperty.ColumnName + "]";
             var ReferenceProperty = ReferenceProperties.FirstOrDefault(x => x.Name == propertyName);
             if (ReferenceProperty != null)
-                return ReferenceProperty.ColumnName;
+                return "[" + SchemaName + "].[" + TableName + "].[" + ReferenceProperty.ColumnName + "]";
             return "";
         }
 

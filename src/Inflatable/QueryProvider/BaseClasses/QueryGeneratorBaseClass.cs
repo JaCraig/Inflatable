@@ -183,7 +183,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <returns>The name of the table</returns>
         protected string GetTableName(IMapping parentMapping)
         {
-            return "[dbo].[" + parentMapping.TableName + "]";
+            return "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]";
         }
     }
 }
