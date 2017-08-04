@@ -47,7 +47,7 @@ namespace Inflatable.Sessions
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="aopManager">The aop manager.</param>
         /// <param name="cacheManager">The cache manager.</param>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// cacheManager or aopManager or mappingManager or schemaManager or queryProviderManager
         /// </exception>
         public Session(MappingManager mappingManager,
@@ -56,12 +56,12 @@ namespace Inflatable.Sessions
             Aspectus.Aspectus aopManager,
             BigBook.Caching.Manager cacheManager)
         {
-            cacheManager = cacheManager ?? throw new System.ArgumentNullException(nameof(cacheManager));
+            cacheManager = cacheManager ?? throw new ArgumentNullException(nameof(cacheManager));
             Cache = cacheManager.Cache();
-            AOPManager = aopManager ?? throw new System.ArgumentNullException(nameof(aopManager));
-            MappingManager = mappingManager ?? throw new System.ArgumentNullException(nameof(mappingManager));
-            SchemaManager = schemaManager ?? throw new System.ArgumentNullException(nameof(schemaManager));
-            QueryProviderManager = queryProviderManager ?? throw new System.ArgumentNullException(nameof(queryProviderManager));
+            AOPManager = aopManager ?? throw new ArgumentNullException(nameof(aopManager));
+            MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
+            SchemaManager = schemaManager ?? throw new ArgumentNullException(nameof(schemaManager));
+            QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
         }
 
         /// <summary>

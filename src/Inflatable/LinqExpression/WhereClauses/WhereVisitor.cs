@@ -30,11 +30,31 @@ namespace Inflatable.LinqExpression.WhereClauses
     public class WhereVisitor : ExpressionVisitor
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="WhereVisitor"/> class.
+        /// </summary>
+        /// <param name="count">The count.</param>
+        public WhereVisitor(int count)
+        {
+            Count = count;
+        }
+
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>The count.</value>
+        public int Count { get; private set; }
+
+        /// <summary>
         /// Gets or sets the current clause.
         /// </summary>
         /// <value>The current clause.</value>
         private IOperator CurrentClause { get; set; }
 
+        /// <summary>
+        /// Wheres the projection.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        /// <returns>The current clause</returns>
         public IOperator WhereProjection(Expression expression)
         {
             Visit(expression);
@@ -68,7 +88,8 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             if (node.Value is IQueryable)
                 return node;
-            CurrentClause = new Constant(node.Value);
+            CurrentClause = new Constant(node.Value, Count);
+            ++Count;
             return node;
         }
 
@@ -82,7 +103,8 @@ namespace Inflatable.LinqExpression.WhereClauses
             var TempProperty = node.Member as PropertyInfo;
             if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter && TempProperty != null)
             {
-                CurrentClause = new Property(TempProperty);
+                CurrentClause = new Property(TempProperty, Count);
+                ++Count;
                 return node;
             }
             throw new NotSupportedException($"The member '{node.Member.Name}' is not supported.");

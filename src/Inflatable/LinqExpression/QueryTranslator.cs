@@ -72,6 +72,12 @@ namespace Inflatable.LinqExpression
         private Dictionary<MappingSource, QueryData<TObject>> Builders { get; set; }
 
         /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>The count.</value>
+        private int Count { get; set; }
+
+        /// <summary>
         /// Translates the specified expression.
         /// </summary>
         /// <param name="expression">The expression.</param>
@@ -82,6 +88,10 @@ namespace Inflatable.LinqExpression
             foreach (var Key in Builders.Keys)
             {
                 Builders[Key].WhereClause.Optimize(Key);
+                foreach (var Parameter in Builders[Key].WhereClause.GetParameters())
+                {
+                    Builders[Key].Parameters.Add(Parameter);
+                }
             }
             return Builders;
         }
@@ -104,7 +114,8 @@ namespace Inflatable.LinqExpression
                     node = (MethodCallExpression)Evaluator.PartialEval(node);
                     Visit(node.Arguments[0]);
                     LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                    var CurrentClause = new WhereVisitor().WhereProjection(lambda.Body);
+                    var CurrentClause = new WhereVisitor(Count).WhereProjection(lambda.Body);
+                    ++Count;
                     foreach (var Source in Builders.Keys)
                     {
                         Builders[Source].WhereClause.Combine(CurrentClause.Copy());

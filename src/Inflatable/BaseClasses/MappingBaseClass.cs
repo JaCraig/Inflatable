@@ -21,6 +21,7 @@ using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Serilog;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -315,11 +316,13 @@ namespace Inflatable.BaseClasses
         /// <param name="queryType">Type of the query.</param>
         /// <param name="queryString">The query string.</param>
         /// <param name="databaseCommandType">Type of the database command.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns>This</returns>
-        public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType)
+        /// <exception cref="ArgumentNullException">queryString</exception>
+        public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters)
         {
             if (string.IsNullOrEmpty(queryString)) throw new ArgumentNullException(nameof(queryString));
-            Queries.Add(queryType, new Query(databaseCommandType, queryString, queryType));
+            Queries.Add(queryType, new Query(databaseCommandType, queryString, queryType, parameters));
             return this;
         }
 

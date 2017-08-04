@@ -67,7 +67,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         public IQuery GenerateQuery(QueryData<TMappedClass> data)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType.All);
+            return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType.All, data.Parameters.ToArray());
         }
 
         /// <summary>

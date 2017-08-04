@@ -15,10 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
+using SQLHelper.HelperClasses;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Inflatable.LinqExpression.WhereClauses
@@ -33,26 +37,34 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Initializes a new instance of the <see cref="Constant"/> class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public Constant(object value)
+        /// <param name="count">The count.</param>
+        public Constant(object value, int count)
         {
+            Count = count;
             Value = value;
             if (value != null)
                 TypeCode = Value.GetType();
         }
 
+        ///// <summary>
+        ///// The constant converters
+        ///// </summary>
+        //private readonly IDictionary<Type, Func<object, int, string>> ConstantConverters = new Dictionary<Type, Func<object, int, string>>
+        //{
+        //    [typeof(bool)] = (x, y) => "@" + y.ToString(),
+        //    [typeof(string)] = (x, y) => "@" + y.ToString(),
+        //    [typeof(DateTime)] = (x, y) => "@" + y.ToString(),
+        //    [typeof(char)] = (x, y) => "@" + y.ToString(),
+        //    [typeof(TimeSpan)] = (x, y) => "@" + y.ToString(),
+        //    [typeof(DateTimeOffset)] = (x, y) => "@" + y.ToString(),
+        //    [typeof(object)] = (x, y) => throw new NotSupportedException($"The constant for ‘{x}’ is not supported")
+        //};
+
         /// <summary>
-        /// The constant converters
+        /// Gets the count.
         /// </summary>
-        private readonly IDictionary<Type, Func<object, string>> ConstantConverters = new Dictionary<Type, Func<object, string>>
-        {
-            [typeof(bool)] = x => (bool)x ? "1" : "0",
-            [typeof(string)] = x => "'" + x + "'",
-            [typeof(DateTime)] = x => "'" + x + "'",
-            [typeof(char)] = x => "'" + x + "'",
-            [typeof(TimeSpan)] = x => "'" + x + "'",
-            [typeof(DateTimeOffset)] = x => "'" + x + "'",
-            [typeof(object)] = x => throw new NotSupportedException($"The constant for ‘{x}’ is not supported")
-        };
+        /// <value>The count.</value>
+        public int Count { get; }
 
         /// <summary>
         /// Gets or sets the parent.
@@ -78,7 +90,29 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>A copy of this instance.</returns>
         public IOperator Copy()
         {
-            return new Constant(Value);
+            return new Constant(Value, Count);
+        }
+
+        /// <summary>
+        /// Gets the parameters associated with the operator.
+        /// </summary>
+        /// <returns>A list of parameters associated with the operator.</returns>
+        public List<IParameter> GetParameters()
+        {
+            List<IParameter> ReturnValue = new List<IParameter>();
+            if (Value == null)
+            {
+                ReturnValue.Add(new Parameter<object>(Count.ToString(), null));
+            }
+            else if (Value as string != null)
+            {
+                ReturnValue.Add(new StringParameter(Count.ToString(), Value as string));
+            }
+            else
+            {
+                ReturnValue.Add(new Parameter<object>(Count.ToString(), Value.GetType().To(DbType.Int32), Value));
+            }
+            return ReturnValue;
         }
 
         /// <summary>
@@ -110,7 +144,7 @@ namespace Inflatable.LinqExpression.WhereClauses
                 return "SELECT * FROM " + TempQuery.ElementType.Name;
             if (Value == null)
                 return "NULL";
-            return ConstantConverters.ContainsKey(TypeCode) ? ConstantConverters[TypeCode](Value) : Value.ToString();
+            return "@" + Count;// ConstantConverters.ContainsKey(TypeCode) ? ConstantConverters[TypeCode](Value, Count) : Value.ToString();
         }
     }
 }

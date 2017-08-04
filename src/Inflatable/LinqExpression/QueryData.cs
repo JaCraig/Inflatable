@@ -18,11 +18,9 @@ using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.OrderBy;
 using Inflatable.LinqExpression.WhereClauses;
-using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Reflection;
 
 namespace Inflatable.LinqExpression
@@ -95,28 +93,6 @@ namespace Inflatable.LinqExpression
         /// </summary>
         /// <value>The where clause.</value>
         public WhereClause<TObject> WhereClause { get; }
-
-        /// <summary>
-        /// Adds the parameter.
-        /// </summary>
-        /// <param name="parameter">The parameter.</param>
-        /// <returns>This</returns>
-        public QueryData<TObject> AddParameter(object parameter)
-        {
-            if (parameter == null)
-            {
-                Parameters.Add(new Parameter<object>(Source.Source.Name + Parameters.Count, null));
-            }
-            else if (parameter as string != null)
-            {
-                Parameters.Add(new StringParameter(Source.Source.Name + Parameters.Count, parameter as string));
-            }
-            else
-            {
-                Parameters.Add(new Parameter<object>(Source.Source.Name + Parameters.Count, parameter.GetType().To(DbType.Int32), parameter));
-            }
-            return this;
-        }
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

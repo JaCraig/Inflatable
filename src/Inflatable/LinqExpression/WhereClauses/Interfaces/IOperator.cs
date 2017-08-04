@@ -15,7 +15,9 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace Inflatable.LinqExpression.WhereClauses.Interfaces
 {
@@ -41,6 +43,12 @@ namespace Inflatable.LinqExpression.WhereClauses.Interfaces
         /// </summary>
         /// <returns>A copy of this instance.</returns>
         IOperator Copy();
+
+        /// <summary>
+        /// Gets the parameters associated with the operator.
+        /// </summary>
+        /// <returns>A list of parameters associated with the operator.</returns>
+        List<IParameter> GetParameters();
 
         /// <summary>
         /// Does a logical negation of the operator.

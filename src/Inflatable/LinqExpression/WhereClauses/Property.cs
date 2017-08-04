@@ -17,7 +17,9 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -34,12 +36,20 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Initializes a new instance of the <see cref="Property"/> class.
         /// </summary>
         /// <param name="property">The property.</param>
+        /// <param name="count">The count.</param>
         /// <exception cref="ArgumentNullException">property</exception>
-        public Property(PropertyInfo property)
+        public Property(PropertyInfo property, int count)
         {
+            Count = count;
             InternalProperty = property ?? throw new ArgumentNullException(nameof(property));
             TypeCode = InternalProperty.PropertyType;
         }
+
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>The count.</value>
+        public int Count { get; }
 
         /// <summary>
         /// Gets the property.
@@ -71,7 +81,16 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>A copy of this instance.</returns>
         public IOperator Copy()
         {
-            return new Property(InternalProperty);
+            return new Property(InternalProperty, Count);
+        }
+
+        /// <summary>
+        /// Gets the parameters associated with the operator.
+        /// </summary>
+        /// <returns>A list of parameters associated with the operator.</returns>
+        public List<IParameter> GetParameters()
+        {
+            return new List<IParameter>();
         }
 
         /// <summary>
@@ -104,7 +123,7 @@ namespace Inflatable.LinqExpression.WhereClauses
 
             if (InternalProperty.PropertyType == typeof(bool) && Parent as BinaryOperator == null)
             {
-                return new BinaryOperator(this, new Constant(true), ExpressionType.Equal);
+                return new BinaryOperator(this, new Constant(true, Count), ExpressionType.Equal);
             }
             return this;
         }

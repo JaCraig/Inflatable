@@ -19,6 +19,7 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Serilog;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -166,8 +167,9 @@ namespace Inflatable.Interfaces
         /// <param name="queryType">Type of the query.</param>
         /// <param name="queryString">The query string.</param>
         /// <param name="databaseCommandType">Type of the database command.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns>This</returns>
-        IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType);
+        IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters);
 
         /// <summary>
         /// Sets up the mapping

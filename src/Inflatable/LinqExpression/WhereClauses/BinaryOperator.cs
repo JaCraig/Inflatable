@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -133,6 +134,18 @@ namespace Inflatable.LinqExpression.WhereClauses
         public IOperator Copy()
         {
             return new BinaryOperator(Left.Copy(), Right.Copy(), Operator);
+        }
+
+        /// <summary>
+        /// Gets the parameters associated with the operator.
+        /// </summary>
+        /// <returns>A list of parameters associated with the operator.</returns>
+        public List<IParameter> GetParameters()
+        {
+            List<IParameter> ReturnValue = new List<IParameter>();
+            ReturnValue.AddRange(Left.GetParameters());
+            ReturnValue.AddRange(Right.GetParameters());
+            return ReturnValue;
         }
 
         /// <summary>
