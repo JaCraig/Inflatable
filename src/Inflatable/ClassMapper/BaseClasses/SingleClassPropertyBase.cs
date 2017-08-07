@@ -62,6 +62,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Gets a value indicating whether this is cascade.
+        /// </summary>
+        /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
+        public bool Cascade { get; protected set; }
+
+        /// <summary>
         /// Gets the name of the column.
         /// </summary>
         /// <value>The name of the column.</value>
@@ -116,8 +122,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public string TypeName { get; protected set; }
 
         /// <summary>
-        /// Gets a value indicating whether this <see
-        /// cref="T:Inflatable.ClassMapper.Interfaces.IMapProperty"/> is unique.
+        /// Gets a value indicating whether this is unique.
         /// </summary>
         /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
         public bool Unique { get; protected set; }
@@ -199,10 +204,20 @@ namespace Inflatable.ClassMapper.BaseClasses
                                 x.ColumnName,
                                 "",
                                 "",
-                                true,
-                                true,
-                                false);
+                                Cascade,
+                                Cascade,
+                                !Cascade);
             });
+        }
+
+        /// <summary>
+        /// Cascades changes to the mapped instance.
+        /// </summary>
+        /// <returns>This</returns>
+        public ReturnType CascadeChanges()
+        {
+            Cascade = true;
+            return (ReturnType)((IMapProperty<ClassType, DataType, ReturnType>)this);
         }
 
         /// <summary>

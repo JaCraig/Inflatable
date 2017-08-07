@@ -38,14 +38,10 @@ namespace Inflatable.Aspect.EndMethod
         /// <param name="builder">The builder.</param>
         public void Setup(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder)
         {
-            var Property = mapping.IDProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
+            var Property = mapping.MapProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
             if (Property == null)
                 return;
-            return;
-            //if(!(Property is Map))
-            // return;
-            var Builder = new StringBuilder();
-            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
+            builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
                         Property.InternalFieldName,

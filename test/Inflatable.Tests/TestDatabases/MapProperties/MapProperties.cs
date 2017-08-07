@@ -11,6 +11,6 @@ namespace Inflatable.Tests.TestDatabases.MapProperties
         [IntGenerator]
         public int ID { get; set; }
 
-        public AllReferencesAndID MappedClass { get; set; }
+        public virtual AllReferencesAndID MappedClass { get; set; }
     }
 }

@@ -101,6 +101,12 @@ namespace Inflatable.Aspect
         public ICollection<Type> InterfacesUsing => new Type[] { typeof(IORMObject) };
 
         /// <summary>
+        /// Gets or sets the map fields.
+        /// </summary>
+        /// <value>The map fields.</value>
+        public List<IMapProperty> MapFields { get; set; }
+
+        /// <summary>
         /// The reference fields that have been completed already.
         /// </summary>
         /// <value>The reference fields that have been completed already.</value>

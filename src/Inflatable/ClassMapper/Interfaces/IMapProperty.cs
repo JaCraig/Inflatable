@@ -38,6 +38,12 @@ namespace Inflatable.ClassMapper.Interfaces
         where ReturnType : IMapProperty<ClassType, DataType, ReturnType>
     {
         /// <summary>
+        /// Cascades changes to the mapped instance.
+        /// </summary>
+        /// <returns>This</returns>
+        ReturnType CascadeChanges();
+
+        /// <summary>
         /// Determines whether this instance is unique.
         /// </summary>
         /// <returns>this</returns>
@@ -89,6 +95,12 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <seealso cref="IFluentInterface"/>
     public interface IMapProperty
     {
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="IMapProperty"/> is cascade.
+        /// </summary>
+        /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
+        bool Cascade { get; }
+
         /// <summary>
         /// Gets the name of the column.
         /// </summary>

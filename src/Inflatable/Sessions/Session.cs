@@ -405,6 +405,127 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TData">The type of the data.</typeparam>
+        /// <param name="objectToLoadProperty">The object to load property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The appropriate property value</returns>
+        public IList<TData> LoadProperties<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+            where TObject : class
+            where TData : class
+        {
+            string KeyName = typeof(TObject).GetName() + "_LoadProperty_" + propertyName + "_";
+            var Sources = MappingManager.Sources.Where(x => x.Mappings.ContainsKey(typeof(TObject)));
+            foreach (var Mapping in Sources.ForEach(x => x.Mappings[typeof(TObject)]))
+            {
+            }
+            parameters = parameters ?? new IParameter[0];
+            string KeyName = typeof(TObject).GetName() + "_All_" + parameters.ToString(x => x.ToString(), "_");
+            parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
+            if (Cache.ContainsKey(KeyName))
+            {
+                return GetListCached<TObject>(KeyName);
+            }
+            var ReturnValue = new List<Dynamo>();
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead).OrderBy(x => x.Order))
+            {
+                var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                foreach (var Mapping in Source.GetChildMappings<TObject>())
+                {
+                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
+                    var Query = Mapping.Queries[QueryType.All];
+                    Batch.AddQuery((Command, ResultList, Result) =>
+                    {
+                        int ResultListCount = ResultList.Count;
+                        for (int x = 0; x < ResultListCount; ++x)
+                        {
+                            CopyOrAdd(Result, IDProperties, ResultList[x]);
+                        }
+                    },
+                    ReturnValue,
+                    Query.QueryString,
+                    Query.DatabaseCommandType,
+                    parameters);
+                }
+                await Batch.ExecuteAsync();
+            }
+            Cache.Add(KeyName, ReturnValue, new string[] { typeof(TObject).GetName() });
+            return ConvertValues<TObject>(ReturnValue);
+
+            ExecuteAsync("", CommandType.Text,)
+            var ReturnValue = new System.Collections.Generic.List<Dynamo>();
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
+                if (Mapping != null)
+                {
+                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
+                    if (Property != null)
+                    {
+                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
+                            .LoadProperty<DataType>(Object, Property)
+                            .Execute()[0])
+                        {
+                            var IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
+                            CopyOrAdd(ReturnValue, IDProperty, Item);
+                        }
+                    }
+                }
+            }
+            if (ReturnValue.Count == 0)
+                return new ObservableList<DataType>();
+            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
+            {
+                IMapping ObjectMapping = MapperProvider[typeof(ObjectType), Source];
+                IMapping Mapping = MapperProvider[typeof(DataType), Source];
+                if (Mapping != null)
+                {
+                    IProperty ObjectProperty = ObjectMapping == null ? null : ObjectMapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
+                    if (ObjectProperty == null)
+                    {
+                        var IDProperty = Mapping.IDProperties.FirstOrDefault();
+                        IParameter Parameter = null;
+                        int Counter = 0;
+                        foreach (Dynamo Item in ReturnValue)
+                        {
+                            if (IDProperty.GetParameter(Item) != null)
+                            {
+                                Parameter = Parameter == null ? (IParameter)new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix) : (IParameter)new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix));
+                                ++Counter;
+                            }
+                        }
+                        if (Parameter != null)
+                        {
+                            foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).All(Parameter).Execute()[0])
+                            {
+                                CopyOrAdd(ReturnValue, IDProperty, Item);
+                            }
+                        }
+                    }
+                }
+            }
+            return ConvertValues<DataType>(ReturnValue).ToObservableList(x => x);
+        }
+
+        /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TData">The type of the data.</typeparam>
+        /// <param name="objectToLoadProperty">The object to load property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The appropriate property value</returns>
+        public TData LoadProperty<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+            where TObject : class
+            where TData : class
+        {
+            return LoadProperties<TObject, TData>(objectToLoadProperty, propertyName).FirstOrDefault();
+        }
+
+        /// <summary>
         /// Updates the specified object.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>

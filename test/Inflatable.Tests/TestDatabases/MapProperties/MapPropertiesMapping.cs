@@ -7,7 +7,7 @@ namespace Inflatable.Tests.TestDatabases.MapProperties
     {
         public MapPropertiesMapping()
         {
-            ID(x => x.ID);
+            ID(x => x.ID).IsAutoIncremented();
             Reference(x => x.BoolValue);
             Map(x => x.MappedClass);
         }
