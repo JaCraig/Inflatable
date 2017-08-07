@@ -20,6 +20,7 @@ using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace Inflatable.ClassMapper.Interfaces
@@ -36,6 +37,11 @@ namespace Inflatable.ClassMapper.Interfaces
         where DataType : class
         where ReturnType : IMapProperty<ClassType, DataType, ReturnType>
     {
+        /// <summary>
+        /// Determines whether this instance is unique.
+        /// </summary>
+        /// <returns>this</returns>
+        ReturnType IsUnique();
     }
 
     /// <summary>
@@ -126,6 +132,12 @@ namespace Inflatable.ClassMapper.Interfaces
         string TypeName { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="IMapProperty"/> is unique.
+        /// </summary>
+        /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
+        bool Unique { get; }
+
+        /// <summary>
         /// Adds this property to the table.
         /// </summary>
         /// <param name="table">The table.</param>
@@ -145,7 +157,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <param name="objectValue">The object value.</param>
         /// <returns>The parameter version of the property</returns>
-        IParameter GetAsParameter(object objectValue);
+        IEnumerable<IParameter> GetAsParameter(object objectValue);
 
         /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)
@@ -178,7 +190,8 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
-        void Setup();
+        /// <param name="mappings">The mappings.</param>
+        void Setup(MappingSource mappings);
 
         /// <summary>
         /// Similars the specified reference property2.

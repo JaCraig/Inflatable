@@ -221,6 +221,11 @@ namespace Inflatable.ClassMapper
                 {
                     Builder.AppendLineFormat("\t\t\t{0}", Property);
                 }
+                Builder.AppendLine("\t\tMap:");
+                foreach (var Property in Mapping.MapProperties)
+                {
+                    Builder.AppendLineFormat("\t\t\t{0}", Property);
+                }
                 Builder.AppendLine();
             }
             return Builder.ToString();

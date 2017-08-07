@@ -121,6 +121,12 @@ namespace Inflatable.ClassMapper.Interfaces
         IList<string> Constraints { get; }
 
         /// <summary>
+        /// Gets a value indicating whether this <see cref="IIDProperty"/> is index.
+        /// </summary>
+        /// <value><c>true</c> if index; otherwise, <c>false</c>.</value>
+        bool Index { get; }
+
+        /// <summary>
         /// Gets the name of the internal field.
         /// </summary>
         /// <value>The name of the internal field.</value>
@@ -137,6 +143,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value>The name.</value>
         string Name { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="IIDProperty"/> is nullable.
+        /// </summary>
+        /// <value><c>true</c> if nullable; otherwise, <c>false</c>.</value>
+        bool Nullable { get; }
 
         /// <summary>
         /// Gets the parent mapping.

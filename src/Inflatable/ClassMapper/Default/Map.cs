@@ -18,8 +18,10 @@ using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using Inflatable.Utils;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Inflatable.ClassMapper.Default
@@ -43,27 +45,59 @@ namespace Inflatable.ClassMapper.Default
         {
             if (typeof(DataType).Is(typeof(IEnumerable)))
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
-            WithColumnName(typeof(DataType).Name + "_" + Name + "_ID");
         }
 
-        public override IProperty Convert<TResult>(IMapping mapping)
+        /// <summary>
+        /// Converts this instance to the class specified
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="mapping">The mapping.</param>
+        /// <returns>The resulting property</returns>
+        public override IMapProperty Convert<TResult>(IMapping mapping)
         {
-            throw new NotImplementedException();
+            var Result = new ExpressionTypeConverter<ClassType, DataType>
+            {
+                Expression = Expression
+            }.Convert<TResult>();
+            var ReturnObject = new Map<TResult, DataType>(Result, mapping);
+            return ReturnObject;
         }
 
+        /// <summary>
+        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="Object">Object to get the parameter from</param>
+        /// <returns>The parameter version of the property</returns>
         public override object GetParameter(object Object)
         {
-            throw new NotImplementedException();
+            return GetValue(Object);
         }
 
+        /// <summary>
+        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="Object">Object to get the parameter from</param>
+        /// <returns>The parameter version of the property</returns>
         public override object GetParameter(Dynamo Object)
         {
-            throw new NotImplementedException();
+            return GetValue(Object);
         }
 
-        public override void Setup()
+        /// <summary>
+        /// Sets up the property (used internally)
+        /// </summary>
+        /// <param name="mappings"></param>
+        public override void Setup(MappingSource mappings)
         {
-            throw new NotImplementedException();
+            var TempForeignMapping = mappings.Mappings[typeof(DataType)];
+            if (TempForeignMapping.IDProperties.Any())
+            {
+                ForeignMapping = TempForeignMapping;
+                return;
+            }
+            ForeignMapping = mappings.GetParentMapping<DataType>().FirstOrDefault(x => x.IDProperties.Any());
+            if (ForeignMapping == null)
+                throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
         }
     }
 }

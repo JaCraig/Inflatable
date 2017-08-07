@@ -44,6 +44,15 @@ namespace Inflatable.Interfaces
         ID<ClassType, DataType> ID<DataType>(Expression<Func<ClassType, DataType>> expression);
 
         /// <summary>
+        /// Sets a property as a map type.
+        /// </summary>
+        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The map object</returns>
+        Map<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> expression)
+            where DataType : class;
+
+        /// <summary>
         /// Sets a property as a reference type
         /// </summary>
         /// <typeparam name="DataType">Data type</typeparam>
@@ -74,6 +83,12 @@ namespace Inflatable.Interfaces
         /// </summary>
         /// <value>The identifier properties.</value>
         ICollection<IIDProperty> IDProperties { get; }
+
+        /// <summary>
+        /// Gets the map properties.
+        /// </summary>
+        /// <value>The map properties.</value>
+        ICollection<IMapProperty> MapProperties { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IMapping"/> should be merged.

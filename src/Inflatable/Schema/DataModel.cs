@@ -185,24 +185,34 @@ namespace Inflatable.Schema
                 var ParentMappings = Tree.Root.Nodes.ForEach(x => Source.Mappings[x.Data]);
                 foreach (var ID in Mapping.IDProperties)
                 {
+                    ID.Setup();
                     ID.AddToTable(Table);
                 }
                 foreach (var ID in Mapping.AutoIDProperties)
                 {
+                    ID.Setup();
                     ID.AddToTable(Table);
                 }
                 foreach (var Reference in Mapping.ReferenceProperties)
                 {
+                    Reference.Setup();
                     Reference.AddToTable(Table);
+                }
+                foreach (var Map in Mapping.MapProperties)
+                {
+                    Map.Setup(Source);
+                    Map.AddToTable(Table);
                 }
                 foreach (var ParentMapping in ParentMappings)
                 {
                     foreach (var ID in ParentMapping.IDProperties)
                     {
+                        ID.Setup();
                         ID.AddToChildTable(Table);
                     }
                     foreach (var ID in ParentMapping.AutoIDProperties)
                     {
+                        ID.Setup();
                         ID.AddToChildTable(Table);
                     }
                 }

@@ -62,6 +62,7 @@ namespace Inflatable.BaseClasses
             Suffix = suffix ?? "";
             TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
             Merge = merge;
+            MapProperties = new List<IMapProperty>();
         }
 
         /// <summary>
@@ -81,6 +82,12 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <value>The identifier properties.</value>
         public ICollection<IIDProperty> IDProperties { get; private set; }
+
+        /// <summary>
+        /// Gets the map properties.
+        /// </summary>
+        /// <value>The map properties.</value>
+        public ICollection<IMapProperty> MapProperties { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Inflatable.Interfaces.IMapping"/>
@@ -175,7 +182,8 @@ namespace Inflatable.BaseClasses
         public bool ContainsProperty(string propertyName)
         {
             return IDProperties.Any(x => x.Name == propertyName)
-                    || ReferenceProperties.Any(x => x.Name == propertyName);
+                    || ReferenceProperties.Any(x => x.Name == propertyName)
+                    || MapProperties.Any(x => x.Name == propertyName);
         }
 
         /// <summary>
@@ -187,6 +195,10 @@ namespace Inflatable.BaseClasses
             foreach (var prop in mapping.ReferenceProperties)
             {
                 ReferenceProperties.Add(prop.Convert<ClassType>(this));
+            }
+            foreach (var prop in mapping.MapProperties)
+            {
+                MapProperties.Add(prop.Convert<ClassType>(this));
             }
         }
 
@@ -245,6 +257,22 @@ namespace Inflatable.BaseClasses
         }
 
         /// <summary>
+        /// Sets a property as a map type.
+        /// </summary>
+        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The map object</returns>
+        /// <exception cref="ArgumentNullException">expression</exception>
+        public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
+            where DataType : class
+        {
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            var ReturnValue = new Map<ClassType, DataType>(expression, this);
+            MapProperties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
         /// Reduces this instance and removes duplicate properties
         /// </summary>
         /// <param name="logger">The logger.</param>
@@ -278,6 +306,20 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
+            for (int x = 0; x < MapProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = MapProperties.ElementAt(x);
+                for (int y = x + 1; y < MapProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = MapProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        MapProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -297,6 +339,20 @@ namespace Inflatable.BaseClasses
                     {
                         logger.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
+            for (int x = 0; x < parentMapping.MapProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = parentMapping.MapProperties.ElementAt(x);
+                for (int y = x + 1; y < MapProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = MapProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
                 }
