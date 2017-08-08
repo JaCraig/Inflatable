@@ -25,21 +25,8 @@ namespace Inflatable.QueryProvider.Interfaces
     /// Generator interface
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    public interface IGenerator<TMappedClass> : IGenerator
+    public interface IGenerator<TMappedClass>
         where TMappedClass : class
-    {
-        /// <summary>
-        /// Converts the linq query.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns>The result</returns>
-        IQuery ConvertLinqQuery(QueryData<TMappedClass> data);
-    }
-
-    /// <summary>
-    /// Generator interface
-    /// </summary>
-    public interface IGenerator
     {
         /// <summary>
         /// Gets the type of the associated.
@@ -51,12 +38,28 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Gets the query generators.
         /// </summary>
         /// <value>The query generators.</value>
-        IDictionary<QueryType, IQueryGenerator> QueryGenerators { get; }
+        IDictionary<QueryType, IQueryGenerator<TMappedClass>> QueryGenerators { get; }
 
         /// <summary>
-        /// Generates the default queries associated with the mapped type.
+        /// Generates the declarations needed for the query.
         /// </summary>
-        /// <returns>The default queries for the specified type.</returns>
-        Queries GenerateDefaultQueries();
+        /// <param name="type">The type.</param>
+        /// <returns>The resulting declarations.</returns>
+        IQuery GenerateDeclarations(QueryType type);
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns>The resulting query</returns>
+        IQuery GenerateQuery(QueryData<TMappedClass> data);
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns>The resulting queries.</returns>
+        IQuery GenerateQuery(QueryType type, TMappedClass queryObject);
     }
 }

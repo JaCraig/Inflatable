@@ -16,9 +16,12 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using SQLHelper.HelperClasses.Interfaces;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -40,6 +43,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         public DeleteQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
+            GenerateQuery();
+            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
+
+            IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
         }
 
         /// <summary>
@@ -49,10 +56,51 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         public override QueryType QueryType => QueryType.Delete;
 
         /// <summary>
+        /// Gets or sets the identifier properties.
+        /// </summary>
+        /// <value>The identifier properties.</value>
+        private IEnumerable<IIDProperty> IDProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the query text.
+        /// </summary>
+        /// <value>The query text.</value>
+        private string QueryText { get; set; }
+
+        /// <summary>
+        /// Generates the declarations needed for the query.
+        /// </summary>
+        /// <returns>The resulting declarations.</returns>
+        public override IQuery GenerateDeclarations()
+        {
+            return new Query(CommandType.Text, "", QueryType);
+        }
+
+        /// <summary>
         /// Generates a delete query.
         /// </summary>
+        /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery()
+        public override IQuery GenerateQuery(TMappedClass queryObject)
+        {
+            var ParentTypes = MappingInformation.ParentTypes[AssociatedType];
+            return new Query(CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject));
+        }
+
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns>The parameters</returns>
+        private IParameter[] GenerateParameters(TMappedClass queryObject)
+        {
+            return IDProperties.ForEach(x => x.GetAsParameter(queryObject)).ToArray();
+        }
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        private void GenerateQuery()
         {
             var ParentTypes = MappingInformation.ParentTypes[AssociatedType];
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
@@ -73,7 +121,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
                         GetTableName(Mapping),
                         Mapping.IDProperties.ToString(x => GetColumnName(x) + "=" + GetParameterName(x), " AND "));
             }
-            return new Query(CommandType.Text, Builder.ToString(), QueryType);
+            QueryText = Builder.ToString();
         }
     }
 }

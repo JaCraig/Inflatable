@@ -16,10 +16,9 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
-using Inflatable.ClassMapper.Interfaces;
-using Inflatable.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.LinqExpression.OrderBy.Enums;
+using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
@@ -34,7 +33,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
     /// <seealso cref="Interfaces.ILinqQueryGenerator{TMappedClass}"/>
-    public class LinqQueryGenerator<TMappedClass> : ILinqQueryGenerator<TMappedClass>
+    public class LinqQueryGenerator<TMappedClass> : LinqQueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
         /// <summary>
@@ -43,153 +42,34 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         /// <param name="mappingInformation">The mapping information.</param>
         /// <exception cref="System.ArgumentNullException">mappingInformation</exception>
         public LinqQueryGenerator(MappingSource mappingInformation)
+            : base(mappingInformation)
         {
-            MappingInformation = mappingInformation ?? throw new System.ArgumentNullException(nameof(mappingInformation));
         }
 
         /// <summary>
-        /// Gets the type of the associated.
+        /// Gets the type of the query.
         /// </summary>
-        /// <value>The type of the associated.</value>
-        public Type AssociatedType => typeof(TMappedClass);
+        /// <value>The type of the query.</value>
+        public override QueryType QueryType => QueryType.LinqQuery;
 
         /// <summary>
-        /// Gets the mapping information.
+        /// Generates the declarations needed for the query.
         /// </summary>
-        /// <value>The mapping information.</value>
-        public MappingSource MappingInformation { get; }
+        /// <returns>The resulting declarations.</returns>
+        public override IQuery GenerateDeclarations()
+        {
+            return new Query(CommandType.Text, "", QueryType);
+        }
 
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        public IQuery GenerateQuery(QueryData<TMappedClass> data)
+        public override IQuery GenerateQuery(QueryData<TMappedClass> data)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType.LinqQuery, data.Parameters.ToArray());
-        }
-
-        /// <summary>
-        /// Gets the name of the column.
-        /// </summary>
-        /// <param name="idProperty">The identifier property.</param>
-        /// <returns>The column name</returns>
-        protected string GetColumnName(IIDProperty idProperty)
-        {
-            return GetTableName(idProperty.ParentMapping) + ".[" + idProperty.ColumnName + "]";
-        }
-
-        /// <summary>
-        /// Gets the name of the column.
-        /// </summary>
-        /// <param name="idProperty">The identifier property.</param>
-        /// <returns>The column name</returns>
-        protected string GetColumnName(IAutoIDProperty idProperty)
-        {
-            return GetTableName(idProperty.ParentMapping) + ".[" + idProperty.ColumnName + "]";
-        }
-
-        /// <summary>
-        /// Gets the name of the column.
-        /// </summary>
-        /// <param name="referenceProperty">The reference property.</param>
-        /// <returns>The column name</returns>
-        protected string GetColumnName(IProperty referenceProperty)
-        {
-            return GetTableName(referenceProperty.ParentMapping) + ".[" + referenceProperty.ColumnName + "]";
-        }
-
-        /// <summary>
-        /// Gets the name of the parameter.
-        /// </summary>
-        /// <param name="idProperty">The identifier property.</param>
-        /// <returns>The parameter name</returns>
-        protected string GetParameterName(IIDProperty idProperty)
-        {
-            return "@" + idProperty.Name;
-        }
-
-        /// <summary>
-        /// Gets the name of the parameter.
-        /// </summary>
-        /// <param name="referenceProperty">The reference property.</param>
-        /// <returns>The parameter name</returns>
-        protected string GetParameterName(IProperty referenceProperty)
-        {
-            return "@" + referenceProperty.Name;
-        }
-
-        /// <summary>
-        /// Gets the type of the parameter.
-        /// </summary>
-        /// <param name="autoIDProperty">The automatic identifier property.</param>
-        /// <returns>The parameter type name</returns>
-        protected string GetParameterType(IAutoIDProperty autoIDProperty)
-        {
-            return "BIGINT";
-        }
-
-        /// <summary>
-        /// Gets the type of the parameter.
-        /// </summary>
-        /// <param name="iDProperty">The i d property.</param>
-        /// <returns>The parameter type name</returns>
-        protected string GetParameterType(IIDProperty iDProperty)
-        {
-            return iDProperty.PropertyType.To(SqlDbType.Int).ToString().ToUpper();
-        }
-
-        /// <summary>
-        /// Gets the name of the parent column.
-        /// </summary>
-        /// <param name="childMapping">The child mapping.</param>
-        /// <param name="autoIDProperty">The automatic identifier property.</param>
-        /// <returns>The parent column name</returns>
-        protected string GetParentColumnName(IMapping childMapping, IAutoIDProperty autoIDProperty)
-        {
-            return GetTableName(childMapping) + ".[" + autoIDProperty.ParentMapping.TableName + autoIDProperty.ColumnName + "]";
-        }
-
-        /// <summary>
-        /// Gets the name of the parent column.
-        /// </summary>
-        /// <param name="childMapping">The child mapping.</param>
-        /// <param name="iDProperty">The i d property.</param>
-        /// <returns>The parent column name</returns>
-        protected string GetParentColumnName(IMapping childMapping, IIDProperty iDProperty)
-        {
-            return GetTableName(childMapping) + ".[" + iDProperty.ParentMapping.TableName + iDProperty.ColumnName + "]";
-        }
-
-        /// <summary>
-        /// Gets the name of the parent parameter.
-        /// </summary>
-        /// <param name="autoIDProperty">The automatic identifier property.</param>
-        /// <returns>The parent parameter name</returns>
-        protected string GetParentParameterName(IAutoIDProperty autoIDProperty)
-        {
-            return "@" + autoIDProperty.ParentMapping.TableName + autoIDProperty.ColumnName + "Temp";
-        }
-
-        /// <summary>
-        /// Gets the name of the parent parameter.
-        /// </summary>
-        /// <param name="iDProperty">The i d property.</param>
-        /// <returns>The parent parameter name</returns>
-        protected string GetParentParameterName(IIDProperty iDProperty)
-        {
-            return "@" + iDProperty.ParentMapping.TableName + iDProperty.Name + "_Temp";
-        }
-
-        /// <summary>
-        /// Gets the name of the table.
-        /// </summary>
-        /// <param name="parentMapping">The parent mapping.</param>
-        /// <returns>The name of the table</returns>
-        protected string GetTableName(IMapping parentMapping)
-        {
-            return "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]";
+            return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType, data.Parameters.ToArray());
         }
 
         /// <summary>

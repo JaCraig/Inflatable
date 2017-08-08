@@ -37,19 +37,19 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <param name="queryGenerators">The query generators.</param>
-        /// <param name="linqQueryGenerator">The linq query generator.</param>
         /// <exception cref="ArgumentNullException">
         /// linqQueryGenerator or mappingInformation or queryGenerators
         /// </exception>
-        /// <exception cref="ArgumentException">Mapping not found for type: " + AssociatedType</exception>
-        protected GeneratorBaseClass(MappingSource mappingInformation, IEnumerable<IQueryGenerator> queryGenerators, ILinqQueryGenerator<TMappedClass> linqQueryGenerator)
+        /// <exception cref="ArgumentException">Mapping not found for type: AssociatedType</exception>
+        protected GeneratorBaseClass(MappingSource mappingInformation,
+            IEnumerable<IQueryGenerator<TMappedClass>> queryGenerators)
         {
-            LinqQueryGenerator = linqQueryGenerator ?? throw new ArgumentNullException(nameof(linqQueryGenerator));
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
             if (!MappingInformation.Mappings.ContainsKey(AssociatedType))
                 throw new ArgumentException("Mapping not found for type: " + AssociatedType);
             queryGenerators = queryGenerators ?? throw new ArgumentNullException(nameof(queryGenerators));
             QueryGenerators = queryGenerators.ToDictionary(x => x.QueryType);
+            LinqQueryGenerator = (ILinqQueryGenerator<TMappedClass>)queryGenerators.FirstOrDefault(x => x.QueryType == QueryType.LinqQuery);
         }
 
         /// <summary>
@@ -74,32 +74,37 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the query generators.
         /// </summary>
         /// <value>The query generators.</value>
-        public IDictionary<QueryType, IQueryGenerator> QueryGenerators { get; }
+        public IDictionary<QueryType, IQueryGenerator<TMappedClass>> QueryGenerators { get; }
 
         /// <summary>
-        /// Converts the linq query.
+        /// Generates the declarations needed for the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The resulting declarations.</returns>
+        public IQuery GenerateDeclarations(QueryType type)
+        {
+            return QueryGenerators[type].GenerateDeclarations();
+        }
+
+        /// <summary>
+        /// Generates the query.
         /// </summary>
         /// <param name="data">The data.</param>
-        /// <returns>The result</returns>
-        public IQuery ConvertLinqQuery(QueryData<TMappedClass> data)
+        /// <returns>The resulting query</returns>
+        public IQuery GenerateQuery(QueryData<TMappedClass> data)
         {
             return LinqQueryGenerator.GenerateQuery(data);
         }
 
         /// <summary>
-        /// Generates the default queries associated with the mapped type.
+        /// Generates the query.
         /// </summary>
-        /// <returns>The default queries for the specified type.</returns>
-        public Queries GenerateDefaultQueries()
+        /// <param name="type">The type.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns>The resulting queries.</returns>
+        public IQuery GenerateQuery(QueryType type, TMappedClass queryObject)
         {
-            if (!MappingInformation.ParentTypes.Keys.Contains(AssociatedType))
-                return new Queries();
-            var Result = new Queries();
-            foreach (var QueryGenerator in QueryGenerators)
-            {
-                Result.Add(QueryGenerator.Key, QueryGenerator.Value.GenerateQuery());
-            }
-            return Result;
+            return QueryGenerators[type].GenerateQuery(queryObject);
         }
     }
 }

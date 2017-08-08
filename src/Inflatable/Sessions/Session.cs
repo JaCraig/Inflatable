@@ -422,7 +422,7 @@ namespace Inflatable.Sessions
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 foreach (var Mapping in Source.GetChildMappings<TObject>())
                 {
-                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                    var ParentMappings = Source.GetParentMapping(typeof(TData));
                     var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
                     var Property = Mapping.MapProperties.FirstOrDefault(x => x.Name == propertyName);
                     if (Property == null)
@@ -591,7 +591,7 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
-            var ResultingQuery = Generator.ConvertLinqQuery(source.Value);
+            var ResultingQuery = Generator.GenerateQuery(source.Value);
             var IDProperties = source.Key.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var IndividualQueryResults = await ExecuteAsync(ResultingQuery.QueryString,
                 ResultingQuery.DatabaseCommandType,

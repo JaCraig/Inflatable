@@ -14,22 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using Inflatable.LinqExpression;
-
-namespace Inflatable.QueryProvider.Interfaces
+namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 {
-    /// <summary>
-    /// Linq query generator
-    /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface ILinqQueryGenerator<TObject> : IQueryGenerator<TObject>
-        where TObject : class
+    public class LoadPropertiesQuery
     {
-        /// <summary>
-        /// Generates the query.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns>The resulting query</returns>
-        IQuery GenerateQuery(QueryData<TObject> data);
     }
 }

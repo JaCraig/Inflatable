@@ -44,6 +44,16 @@ namespace Inflatable.QueryProvider.Enums
         /// <summary>
         /// The load property
         /// </summary>
-        LoadProperty
+        LoadProperty,
+
+        /// <summary>
+        /// The joins delete
+        /// </summary>
+        JoinsDelete,
+
+        /// <summary>
+        /// The joins save
+        /// </summary>
+        JoinsSave
     }
 }

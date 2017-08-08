@@ -28,7 +28,7 @@ namespace Inflatable.QueryProvider.BaseClasses
     /// <summary>
     /// Generator base class
     /// </summary>
-    public abstract class QueryGeneratorBaseClass<TMappedClass> : IQueryGenerator
+    public abstract class QueryGeneratorBaseClass<TMappedClass> : IQueryGenerator<TMappedClass>
         where TMappedClass : class
     {
         /// <summary>
@@ -59,10 +59,17 @@ namespace Inflatable.QueryProvider.BaseClasses
         public abstract QueryType QueryType { get; }
 
         /// <summary>
+        /// Generates the declarations needed for the query.
+        /// </summary>
+        /// <returns>The resulting declarations.</returns>
+        public abstract IQuery GenerateDeclarations();
+
+        /// <summary>
         /// Generates the query.
         /// </summary>
+        /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public abstract IQuery GenerateQuery();
+        public abstract IQuery GenerateQuery(TMappedClass queryObject);
 
         /// <summary>
         /// Gets the name of the column.

@@ -14,34 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using Inflatable.QueryProvider.Enums;
-
 namespace Inflatable.QueryProvider.Interfaces
 {
     /// <summary>
-    /// Query generator
+    /// Property query generator
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public interface IQueryGenerator<TObject>
+    public interface IPropertyQueryGenerator<TObject> : IQueryGenerator<TObject>
         where TObject : class
     {
-        /// <summary>
-        /// Gets the type of the query.
-        /// </summary>
-        /// <value>The type of the query.</value>
-        QueryType QueryType { get; }
-
-        /// <summary>
-        /// Generates the declarations needed for the query.
-        /// </summary>
-        /// <returns>The resulting declarations.</returns>
-        IQuery GenerateDeclarations();
-
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
+        /// <param name="propertyName">Property name</param>
         /// <returns>The resulting query</returns>
-        IQuery GenerateQuery(TObject queryObject);
+        IQuery GenerateQuery(TObject queryObject, string propertyName);
     }
 }

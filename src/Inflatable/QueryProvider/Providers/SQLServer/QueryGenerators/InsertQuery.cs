@@ -16,10 +16,13 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -41,6 +44,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         public InsertQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
+            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+            QueryDeclarationText = GenerateInsertQueryDeclarations(TypeGraph.Root);
+            QueryText = GenerateInsertQuery(TypeGraph.Root);
+            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
+
+            IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
+            ReferenceProperties = ParentMappings.SelectMany(x => x.ReferenceProperties);
+            MapProperties = ParentMappings.SelectMany(x => x.MapProperties);
         }
 
         /// <summary>
@@ -50,13 +61,52 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         public override QueryType QueryType => QueryType.Insert;
 
         /// <summary>
+        /// Gets or sets the identifier properties.
+        /// </summary>
+        /// <value>The identifier properties.</value>
+        private IEnumerable<IIDProperty> IDProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the map properties.
+        /// </summary>
+        /// <value>The map properties.</value>
+        private IEnumerable<IMapProperty> MapProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the query declaration text.
+        /// </summary>
+        /// <value>The query declaration text.</value>
+        private string QueryDeclarationText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the query text.
+        /// </summary>
+        /// <value>The query text.</value>
+        private string QueryText { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference properties.
+        /// </summary>
+        /// <value>The reference properties.</value>
+        private IEnumerable<IProperty> ReferenceProperties { get; set; }
+
+        /// <summary>
+        /// Generates the declarations needed for the query.
+        /// </summary>
+        /// <returns>The resulting declarations.</returns>
+        public override IQuery GenerateDeclarations()
+        {
+            return new Query(CommandType.Text, QueryDeclarationText, QueryType);
+        }
+
+        /// <summary>
         /// Generates the insert query.
         /// </summary>
+        /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery()
+        public override IQuery GenerateQuery(TMappedClass queryObject)
         {
-            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateInsertQuery(TypeGraph.Root), QueryType);
+            return new Query(CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject));
         }
 
         /// <summary>
@@ -118,7 +168,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             //ID Properties to pass to the next set of queries
             foreach (var IDProperty in Mapping.IDProperties)
             {
-                DeclareProperties.AppendLine("DECLARE " + GetParentParameterName(IDProperty) + " AS " + GetParameterType(IDProperty) + ";");
                 SetProperties.AppendLine("SET " + GetParentParameterName(IDProperty) + "=" + (IDProperty.AutoIncrement ? "SCOPE_IDENTITY()" : GetParameterName(IDProperty)) + ";");
                 if (IDProperty.AutoIncrement)
                 {
@@ -129,7 +178,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             //Auto ID properties to pass to the next set of queries
             foreach (var AutoIDProperty in Mapping.AutoIDProperties)
             {
-                DeclareProperties.AppendLine("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType(AutoIDProperty) + ";");
                 SetProperties.AppendLine("SET " + GetParentParameterName(AutoIDProperty) + "=SCOPE_IDENTITY();");
             }
 
@@ -155,6 +203,52 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
                 }
             }
             return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Generates the insert query declarations.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>The resulting query</returns>
+        private string GenerateInsertQueryDeclarations(Utils.TreeNode<Type> node)
+        {
+            StringBuilder Builder = new StringBuilder();
+            var Mapping = MappingInformation.Mappings[node.Data];
+
+            //Generate parent queries
+            foreach (var Parent in node.Nodes)
+            {
+                Builder.AppendLine(GenerateInsertQueryDeclarations(Parent));
+            }
+
+            //ID Properties to pass to the next set of queries
+            foreach (var IDProperty in Mapping.IDProperties)
+            {
+                Builder.AppendLine("DECLARE " + GetParentParameterName(IDProperty) + " AS " + GetParameterType(IDProperty) + ";");
+            }
+
+            //Auto ID properties to pass to the next set of queries
+            foreach (var AutoIDProperty in Mapping.AutoIDProperties)
+            {
+                Builder.AppendLine("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType(AutoIDProperty) + ";");
+            }
+
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="node">The node.</param>
+        /// <returns>The parameters</returns>
+        private IParameter[] GenerateParameters(TMappedClass queryObject)
+        {
+            var Parameters = IDProperties.ForEach(y => y.GetAsParameter(queryObject)).ToList();
+            Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(queryObject)));
+            Parameters.AddRange(MapProperties.ForEach(y => y.GetAsParameter(queryObject)).SelectMany(x => x));
+
+            return Parameters.ToArray();
         }
     }
 }
