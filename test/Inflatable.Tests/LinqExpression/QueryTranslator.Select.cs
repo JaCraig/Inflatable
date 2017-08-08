@@ -14,7 +14,6 @@ namespace Inflatable.Tests.LinqExpression
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            int LocalVariable = 45;
             var TestQuery2 = TestQuery.Select(x => new { x.BoolValue, x.ByteArrayValue });
             var Data = TestObject.Translate(TestQuery2.Expression);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
@@ -28,7 +27,6 @@ namespace Inflatable.Tests.LinqExpression
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            int LocalVariable = 45;
             var TestQuery2 = TestQuery.Select(x => new { BoolValue2 = x.BoolValue, Temp = x.ByteArrayValue });
             var Data = TestObject.Translate(TestQuery2.Expression);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];

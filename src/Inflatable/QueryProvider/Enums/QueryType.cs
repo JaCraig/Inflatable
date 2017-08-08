@@ -27,11 +27,6 @@ namespace Inflatable.QueryProvider.Enums
         Insert,
 
         /// <summary>
-        /// The insert bulk
-        /// </summary>
-        InsertBulk,
-
-        /// <summary>
         /// The update
         /// </summary>
         Update,
@@ -42,13 +37,13 @@ namespace Inflatable.QueryProvider.Enums
         Delete,
 
         /// <summary>
-        /// Any
+        /// The linq query
         /// </summary>
-        Any,
+        LinqQuery,
 
         /// <summary>
-        /// All
+        /// The load property
         /// </summary>
-        All
+        LoadProperty
     }
 }

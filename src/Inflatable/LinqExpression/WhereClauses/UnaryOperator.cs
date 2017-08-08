@@ -30,10 +30,11 @@ namespace Inflatable.LinqExpression.WhereClauses
     public class UnaryOperator : IOperator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnaryOperator"/> class.
+        /// Initializes a new instance of the <see cref="UnaryOperator" /> class.
         /// </summary>
         /// <param name="internalOperator">The iternal operator.</param>
         /// <param name="operatorType">Type of the operator.</param>
+        /// <param name="nodeType">Type of the node.</param>
         /// <exception cref="ArgumentNullException">iternalOperator</exception>
         public UnaryOperator(IOperator internalOperator, ExpressionType operatorType, Type nodeType)
         {

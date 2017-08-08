@@ -18,9 +18,11 @@ using BigBook;
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 
 namespace Inflatable.ClassMapper.Interfaces
@@ -48,6 +50,14 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <returns>this</returns>
         ReturnType IsUnique();
+
+        /// <summary>
+        /// Loads the property using the query specified.
+        /// </summary>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>This</returns>
+        ReturnType LoadUsing(string queryText, CommandType type);
     }
 
     /// <summary>
@@ -211,5 +221,13 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <param name="secondProperty">The second property.</param>
         /// <returns>True if it is similar, false otherwise.</returns>
         bool Similar(IMapProperty secondProperty);
+
+        /// <summary>
+        /// Gets the load property query.
+        /// </summary>
+        /// <value>
+        /// The load property query.
+        /// </value>
+        Query LoadPropertyQuery { get; }
     }
 }

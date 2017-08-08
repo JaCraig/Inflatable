@@ -23,6 +23,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
+using Inflatable.QueryProvider;
+using Inflatable.QueryProvider.Enums;
 
 namespace Inflatable.ClassMapper.BaseClasses
 {
@@ -126,6 +128,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
         public bool Unique { get; protected set; }
+
+        /// <summary>
+        /// Gets the load property query.
+        /// </summary>
+        /// <value>
+        /// The load property query.
+        /// </value>
+        public Query LoadPropertyQuery { get; protected set; }
 
         /// <summary>
         /// != operator
@@ -351,6 +361,20 @@ namespace Inflatable.ClassMapper.BaseClasses
         public override string ToString()
         {
             return PropertyType.GetName() + " " + ParentMapping + "." + Name;
+        }
+
+        /// <summary>
+        /// Loads the property using the query specified.
+        /// </summary>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        /// This
+        /// </returns>
+        public ReturnType LoadUsing(string queryText, CommandType type)
+        {
+            LoadPropertyQuery = new Query(type, queryText, QueryType.LoadProperty);
+            return (ReturnType)((IMapProperty<ClassType, DataType, ReturnType>)this);
         }
     }
 }

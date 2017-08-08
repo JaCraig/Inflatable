@@ -43,7 +43,7 @@ namespace Inflatable.Aspect.EndMethod
                 return;
             builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
+                .AppendLineFormat("{0}=Session0.LoadPropertyAsync<{1},{2}>(this,\"{3}\").Result;",
                         Property.InternalFieldName,
                         Property.ParentMapping.ObjectType.GetName(),
                         Property.TypeName,

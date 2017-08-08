@@ -33,10 +33,9 @@ namespace Inflatable.LinqExpression.WhereClauses
         where TObject : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WhereClause"/> class.
+        /// Initializes a new instance of the <see cref="WhereClause{TObject}"/> class.
         /// </summary>
         /// <param name="internalOperator">The internal operator.</param>
-        /// <exception cref="System.ArgumentNullException">internalOperator</exception>
         public WhereClause(IOperator internalOperator)
         {
             InternalOperator = internalOperator;

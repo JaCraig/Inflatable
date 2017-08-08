@@ -412,22 +412,10 @@ namespace Inflatable.Sessions
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The appropriate property value</returns>
-        public IList<TData> LoadProperties<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+        public async Task<IList<TData>> LoadPropertiesAsync<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
             where TData : class
         {
-            string KeyName = typeof(TObject).GetName() + "_LoadProperty_" + propertyName + "_";
-            var Sources = MappingManager.Sources.Where(x => x.Mappings.ContainsKey(typeof(TObject)));
-            foreach (var Mapping in Sources.ForEach(x => x.Mappings[typeof(TObject)]))
-            {
-            }
-            parameters = parameters ?? new IParameter[0];
-            string KeyName = typeof(TObject).GetName() + "_All_" + parameters.ToString(x => x.ToString(), "_");
-            parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
-            if (Cache.ContainsKey(KeyName))
-            {
-                return GetListCached<TObject>(KeyName);
-            }
             var ReturnValue = new List<Dynamo>();
             foreach (var Source in MappingManager.Sources.Where(x => x.CanRead).OrderBy(x => x.Order))
             {
@@ -436,7 +424,10 @@ namespace Inflatable.Sessions
                 {
                     var ParentMappings = Source.GetParentMapping(typeof(TObject));
                     var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var Query = Mapping.Queries[QueryType.All];
+                    var Property = Mapping.MapProperties.FirstOrDefault(x => x.Name == propertyName);
+                    if (Property == null)
+                        continue;
+                    var Query = Property.LoadPropertyQuery;
                     Batch.AddQuery((Command, ResultList, Result) =>
                     {
                         int ResultListCount = ResultList.Count;
@@ -448,66 +439,11 @@ namespace Inflatable.Sessions
                     ReturnValue,
                     Query.QueryString,
                     Query.DatabaseCommandType,
-                    parameters);
+                    IDProperties.ToArray(x => x.GetAsParameter(objectToLoadProperty)));
                 }
                 await Batch.ExecuteAsync();
             }
-            Cache.Add(KeyName, ReturnValue, new string[] { typeof(TObject).GetName() });
-            return ConvertValues<TObject>(ReturnValue);
-
-            ExecuteAsync("", CommandType.Text,)
-            var ReturnValue = new System.Collections.Generic.List<Dynamo>();
-            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
-            {
-                IMapping Mapping = MapperProvider[typeof(ObjectType), Source];
-                if (Mapping != null)
-                {
-                    var Property = Mapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
-                    if (Property != null)
-                    {
-                        foreach (Dynamo Item in QueryProvider.Generate<ObjectType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType))
-                            .LoadProperty<DataType>(Object, Property)
-                            .Execute()[0])
-                        {
-                            var IDProperty = Property.ForeignMapping.IDProperties.FirstOrDefault();
-                            CopyOrAdd(ReturnValue, IDProperty, Item);
-                        }
-                    }
-                }
-            }
-            if (ReturnValue.Count == 0)
-                return new ObservableList<DataType>();
-            foreach (ISourceInfo Source in SourceProvider.Where(x => x.Readable).OrderBy(x => x.Order))
-            {
-                IMapping ObjectMapping = MapperProvider[typeof(ObjectType), Source];
-                IMapping Mapping = MapperProvider[typeof(DataType), Source];
-                if (Mapping != null)
-                {
-                    IProperty ObjectProperty = ObjectMapping == null ? null : ObjectMapping.Properties.FirstOrDefault(x => x.Name == PropertyName);
-                    if (ObjectProperty == null)
-                    {
-                        var IDProperty = Mapping.IDProperties.FirstOrDefault();
-                        IParameter Parameter = null;
-                        int Counter = 0;
-                        foreach (Dynamo Item in ReturnValue)
-                        {
-                            if (IDProperty.GetParameter(Item) != null)
-                            {
-                                Parameter = Parameter == null ? (IParameter)new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix) : (IParameter)new OrParameter(Parameter, new EqualParameter<object>(IDProperty.GetParameter(Item), Counter.ToString(CultureInfo.InvariantCulture), IDProperty.FieldName, Source.ParameterPrefix));
-                                ++Counter;
-                            }
-                        }
-                        if (Parameter != null)
-                        {
-                            foreach (Dynamo Item in QueryProvider.Generate<DataType>(Source, Mapping, MapperProvider.GetStructure(Mapping.DatabaseConfigType)).All(Parameter).Execute()[0])
-                            {
-                                CopyOrAdd(ReturnValue, IDProperty, Item);
-                            }
-                        }
-                    }
-                }
-            }
-            return ConvertValues<DataType>(ReturnValue).ToObservableList(x => x);
+            return ConvertValues<TData>(ReturnValue).ToObservableList(x => x);
         }
 
         /// <summary>
@@ -518,11 +454,11 @@ namespace Inflatable.Sessions
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The appropriate property value</returns>
-        public TData LoadProperty<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+        public async Task<TData> LoadPropertyAsync<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
             where TData : class
         {
-            return LoadProperties<TObject, TData>(objectToLoadProperty, propertyName).FirstOrDefault();
+            return (await LoadPropertiesAsync<TObject, TData>(objectToLoadProperty, propertyName)).FirstOrDefault();
         }
 
         /// <summary>
@@ -636,11 +572,11 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="ReturnValue">The return value.</param>
         /// <returns>The converted values.</returns>
-        private IEnumerable<TObject> ConvertValues<TObject>(List<Dynamo> ReturnValue)
+        private IList<TObject> ConvertValues<TObject>(List<Dynamo> ReturnValue)
                     where TObject : class
         {
             ReturnValue = ReturnValue ?? new List<Dynamo>();
-            return ReturnValue.ForEachParallel(x => ConvertValue<TObject>(x));
+            return ReturnValue.ForEachParallel(x => ConvertValue<TObject>(x)).ToList();
         }
 
         /// <summary>
@@ -693,7 +629,7 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="keyName">Name of the key.</param>
         /// <returns>The resulting list.</returns>
-        private IEnumerable<TObject> GetListCached<TObject>(string keyName)
+        private IList<TObject> GetListCached<TObject>(string keyName)
                     where TObject : class
         {
             var ReturnValue = (List<Dynamo>)Cache[keyName];
