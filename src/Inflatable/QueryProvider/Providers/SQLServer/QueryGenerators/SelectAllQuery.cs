@@ -22,7 +22,7 @@ using System;
 using System.Data;
 using System.Text;
 
-namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
+namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 {
     /// <summary>
     /// Select all query generator

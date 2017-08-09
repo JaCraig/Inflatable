@@ -17,7 +17,7 @@ limitations under the License.
 using Inflatable.ClassMapper;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Interfaces;
-using Inflatable.QueryProvider.Providers.SQLServer.Generators;
+using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators;
 
 namespace Inflatable.QueryProvider.Providers.SQLServer
 {
@@ -39,7 +39,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
                 new DeleteQuery<TMappedClass>(mappingInformation),
                 new InsertQuery<TMappedClass>(mappingInformation),
                 new UpdateQuery<TMappedClass>(mappingInformation),
-                new LinqQueryGenerator<TMappedClass>(mappingInformation)
+                new LinqQueryGenerator<TMappedClass>(mappingInformation),
+                new LoadPropertiesQuery<TMappedClass>(mappingInformation)
             })
         {
         }

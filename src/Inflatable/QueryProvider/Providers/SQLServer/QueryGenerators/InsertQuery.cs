@@ -27,7 +27,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
+namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 {
     /// <summary>
     /// Insert query generator
@@ -137,6 +137,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             {
                 ParameterList.Append(Splitter + GetColumnName(ReferenceProperty));
                 ValueList.Append(Splitter + GetParameterName(ReferenceProperty));
+                Splitter = ",";
+            }
+
+            //Map properties
+            foreach (var MapProperty in Mapping.MapProperties)
+            {
+                ParameterList.Append(Splitter + GetColumnName(MapProperty));
+                ValueList.Append(Splitter + GetParameterName(MapProperty));
                 Splitter = ",";
             }
 

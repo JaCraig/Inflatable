@@ -26,7 +26,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
+namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 {
     /// <summary>
     /// Delete query generator

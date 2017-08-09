@@ -22,6 +22,7 @@ using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
 using System.Data;
+using System.Linq;
 
 namespace Inflatable.QueryProvider.BaseClasses
 {
@@ -102,6 +103,36 @@ namespace Inflatable.QueryProvider.BaseClasses
         }
 
         /// <summary>
+        /// Gets the name of the column.
+        /// </summary>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns>The column name</returns>
+        protected string GetColumnName(IMapProperty mapProperty)
+        {
+            return mapProperty.ForeignMapping.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping) + ".[" + mapProperty.ForeignMapping.TableName + x.ColumnName + "]");
+        }
+
+        /// <summary>
+        /// Gets the name of the parent column.
+        /// </summary>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns>The parent column name</returns>
+        protected string GetForeignColumnName(IMapProperty mapProperty)
+        {
+            return GetColumnName(mapProperty.ForeignMapping.IDProperties.First());
+        }
+
+        /// <summary>
+        /// Gets the name of the parent parameter.
+        /// </summary>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns>The parent parameter name</returns>
+        protected string GetForeignParameterName(IMapProperty mapProperty)
+        {
+            return GetParameterName(mapProperty.ForeignMapping.IDProperties.First());
+        }
+
+        /// <summary>
         /// Gets the name of the parameter.
         /// </summary>
         /// <param name="idProperty">The identifier property.</param>
@@ -109,6 +140,16 @@ namespace Inflatable.QueryProvider.BaseClasses
         protected string GetParameterName(IIDProperty idProperty)
         {
             return "@" + idProperty.Name;
+        }
+
+        /// <summary>
+        /// Gets the name of the parameter.
+        /// </summary>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns>The parameter name</returns>
+        protected string GetParameterName(IMapProperty mapProperty)
+        {
+            return mapProperty.ForeignMapping.IDProperties.ToString(x => "@" + mapProperty.ForeignMapping.TableName + x.ColumnName);
         }
 
         /// <summary>
