@@ -51,7 +51,7 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
             SetupData();
-            var Results = await TestObject.AllAsync<MapProperties>();
+            var Results = DbContext<MapProperties>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Count());
         }
 

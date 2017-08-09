@@ -188,10 +188,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
             OrderByClause.Append(GenerateOrderByClause(node, data));
 
             //Generate final query
-            Builder.Append($"SELECT{(data.Distinct ? " DISTINCT" : "")}{(data.Top > 0 ? $" TOP {data.Top}" : "")} {ParameterList}" +
-                $"FROM {FromClause}" +
-                $"{WhereClause}" +
-                $"{OrderByClause}".Trim() + ";");
+            Builder.Append(($"SELECT{(data.Distinct ? " DISTINCT" : "")}{(data.Top > 0 ? $" TOP {data.Top}" : "")} {ParameterList}" +
+                $"\r\nFROM {FromClause}" +
+                $"\r\n{WhereClause}" +
+                $"\r\n{OrderByClause}").TrimEnd('\r', '\n', ' ', '\t') + ";");
             return Builder.ToString();
         }
 

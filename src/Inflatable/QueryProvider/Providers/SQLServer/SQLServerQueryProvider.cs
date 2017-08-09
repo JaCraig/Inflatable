@@ -19,6 +19,8 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 
@@ -34,10 +36,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Initializes a new instance of the <see cref="SQLServerQueryProvider"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
+        /// <exception cref="ArgumentNullException">configuration</exception>
         /// <exception cref="System.ArgumentNullException">configuration</exception>
         public SQLServerQueryProvider(IConfiguration configuration)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            CachedResults = new ConcurrentDictionary<Tuple<Type, MappingSource>, IGenerator>();
         }
 
         /// <summary>
@@ -50,6 +54,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Provider name associated with the query provider
         /// </summary>
         public DbProviderFactory Provider => SqlClientFactory.Instance;
+
+        /// <summary>
+        /// Gets or sets the dictionary.
+        /// </summary>
+        /// <value>The dictionary.</value>
+        private IDictionary<Tuple<Type, MappingSource>, IGenerator> CachedResults { get; set; }
 
         /// <summary>
         /// Creates a batch for running commands
@@ -67,20 +77,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <typeparam name="TMappedClass">Class type to create the generator for</typeparam>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <returns>Generator object</returns>
-        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInformation) where TMappedClass : class
+        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInformation)
+            where TMappedClass : class
         {
-            return new SQLServerGenerator<TMappedClass>(mappingInformation);
-        }
-
-        /// <summary>
-        /// Creates a generator object.
-        /// </summary>
-        /// <param name="mappingType">Type of the mapping.</param>
-        /// <param name="mappingInfo">The mapping information.</param>
-        /// <returns>Generator object</returns>
-        public IGenerator CreateGenerator(Type mappingType, MappingSource mappingInfo)
-        {
-            return (IGenerator)Activator.CreateInstance(typeof(SQLServerGenerator<>).MakeGenericType(mappingType), new object[] { mappingInfo });
+            var Key = new Tuple<Type, MappingSource>(typeof(TMappedClass), mappingInformation);
+            if (CachedResults.ContainsKey(Key))
+                return (IGenerator<TMappedClass>)CachedResults[Key];
+            var ReturnValue = new SQLServerGenerator<TMappedClass>(mappingInformation);
+            CachedResults.Add(Key, ReturnValue);
+            return ReturnValue;
         }
     }
 }

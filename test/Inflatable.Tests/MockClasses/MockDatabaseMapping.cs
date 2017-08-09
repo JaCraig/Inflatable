@@ -15,7 +15,7 @@ namespace Inflatable.Tests.MockClasses
         public Options SourceOptions => new Options
         {
             Optimize = true,
-            Access = Enums.SourceAccess.Read | Enums.SourceAccess.Write,
+            Access = Enums.SourceAccess.None,
             Audit = false,
             SchemaUpdate = Enums.SchemaGeneration.UpdateSchema
         };

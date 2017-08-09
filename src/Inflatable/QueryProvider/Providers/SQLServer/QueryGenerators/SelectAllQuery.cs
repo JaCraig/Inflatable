@@ -45,16 +45,26 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         /// Gets the type of the query.
         /// </summary>
         /// <value>The type of the query.</value>
-        public override QueryType QueryType => QueryType.All;
+        public override QueryType QueryType => QueryType.LinqQuery;
+
+        public override IQuery GenerateDeclarations()
+        {
+            return null;
+        }
 
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery()
+        public IQuery GenerateQuery()
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
             return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root), QueryType);
+        }
+
+        public override IQuery GenerateQuery(TMappedClass queryObject)
+        {
+            throw new NotImplementedException();
         }
 
         private string GenerateFromClause(Utils.TreeNode<Type> node)

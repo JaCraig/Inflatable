@@ -20,7 +20,7 @@ namespace Inflatable.Tests.LinqExpression
                                  .Where(x => x.ByteValue > 14)
                                  .Where(x => x.IntValue < LocalVariable);
             var Data = TestObject.Translate(TestQuery.Expression);
-            Assert.Equal(3, Data.Count);
+            Assert.Equal(2, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE ((([dbo].[AllReferencesAndID_].[BoolValue_] = @1) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) > @2)) AND ([dbo].[AllReferencesAndID_].[IntValue_] < @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
@@ -42,7 +42,7 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => x.BoolValue == false || x.ByteValue > 14);
             var Data = TestObject.Translate(TestQuery.Expression);
-            Assert.Equal(3, Data.Count);
+            Assert.Equal(2, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] = @1) OR (([dbo].[AllReferencesAndID_].[ByteValue_]) > @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
@@ -61,7 +61,7 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => !(x.BoolValue == false || x.ByteValue > 14));
             var Data = TestObject.Translate(TestQuery.Expression);
-            Assert.Equal(3, Data.Count);
+            Assert.Equal(2, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] <> @1) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) <= @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
@@ -80,7 +80,7 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => x.BoolValue);
             var Data = TestObject.Translate(TestQuery.Expression);
-            Assert.Equal(3, Data.Count);
+            Assert.Equal(2, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE ([dbo].[AllReferencesAndID_].[BoolValue_] = @0)", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
@@ -96,7 +96,7 @@ namespace Inflatable.Tests.LinqExpression
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Where(x => !x.BoolValue);
             var Data = TestObject.Translate(TestQuery.Expression);
-            Assert.Equal(3, Data.Count);
+            Assert.Equal(2, Data.Count);
             var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal("WHERE ([dbo].[AllReferencesAndID_].[BoolValue_] <> @0)", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();

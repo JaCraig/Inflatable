@@ -115,25 +115,5 @@ namespace Inflatable.QueryProvider
                 Logger.Debug("Creating generator for type {TypeName:l} in {SourceName:l}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
             return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);
         }
-
-        /// <summary>
-        /// Creates the generator.
-        /// </summary>
-        /// <param name="mappingType">Type of the mapping.</param>
-        /// <param name="mappingInfo">The mapping information.</param>
-        /// <returns>The requested query generator</returns>
-        /// <exception cref="ArgumentNullException">mappingInfo</exception>
-        /// <exception cref="ArgumentException">Provider not found</exception>
-        public IGenerator CreateGenerator(Type mappingType, MappingSource mappingInfo)
-        {
-            if (mappingInfo == null)
-                throw new ArgumentNullException(nameof(mappingInfo));
-            var provider = mappingInfo.Source.Provider;
-            if (!Providers.TryGetValue(provider, out Interfaces.IQueryProvider QueryProvider))
-                throw new ArgumentException("Provider not found: " + provider);
-            if (IsDebug)
-                Logger.Debug("Creating query generator for type {TypeName:l} in {SourceName:l}", mappingType.GetName(), mappingInfo.Source.Name);
-            return QueryProvider.CreateGenerator(mappingType, mappingInfo);
-        }
     }
 }

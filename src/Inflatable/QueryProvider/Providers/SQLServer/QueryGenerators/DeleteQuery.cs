@@ -102,24 +102,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.Generators
         /// </summary>
         private void GenerateQuery()
         {
-            var ParentTypes = MappingInformation.ParentTypes[AssociatedType];
-            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+            var ParentTypes = MappingInformation.GetParentMapping<TMappedClass>();
             StringBuilder Builder = new StringBuilder();
-            foreach (var ParentMapping in ParentTypes.ForEach(ParentType => MappingInformation.Mappings[ParentType]).OrderBy(x => x.Order))
-            {
-                if (ParentMapping.IDProperties.Count > 0)
-                {
-                    Builder.AppendLineFormat("DELETE FROM {0} WHERE {1};",
-                        GetTableName(ParentMapping),
-                        ParentMapping.IDProperties.ToString(x => GetColumnName(x) + "=" + GetParameterName(x), " AND "));
-                }
-            }
-            var Mapping = MappingInformation.Mappings[AssociatedType];
-            if (Mapping.IDProperties.Count > 0)
+            foreach (var ParentMapping in ParentTypes.Where(x => x.IDProperties.Count > 0).OrderBy(x => x.Order))
             {
                 Builder.AppendLineFormat("DELETE FROM {0} WHERE {1};",
-                        GetTableName(Mapping),
-                        Mapping.IDProperties.ToString(x => GetColumnName(x) + "=" + GetParameterName(x), " AND "));
+                    GetTableName(ParentMapping),
+                    ParentMapping.IDProperties.ToString(x => GetColumnName(x) + "=" + GetParameterName(x), " AND "));
             }
             QueryText = Builder.ToString();
         }

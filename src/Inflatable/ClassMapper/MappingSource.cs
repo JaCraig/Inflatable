@@ -19,7 +19,6 @@ using Inflatable.ClassMapper.TypeGraph;
 using Inflatable.Enums;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
-using Inflatable.QueryProvider.Enums;
 using Inflatable.Utils;
 using Serilog;
 using System;
@@ -63,7 +62,6 @@ namespace Inflatable.ClassMapper
             ReduceMappings();
             RemoveDeadMappings();
             SetupAutoIDs();
-            SetupQueries();
         }
 
         /// <summary>
@@ -152,6 +150,19 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value><c>true</c> if you should [update schema]; otherwise, <c>false</c>.</value>
         public bool UpdateSchema => Source?.SourceOptions?.SchemaUpdate.HasFlag(SchemaGeneration.UpdateSchema) ?? false;
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(obj, this);
+        }
 
         /// <summary>
         /// Gets the child mappings.
@@ -340,47 +351,6 @@ namespace Inflatable.ClassMapper
                 foreach (var Parent in Parents)
                 {
                     ParentTypes.Add(ConcreteType, Parent);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets up the default queries.
-        /// </summary>
-        private void SetupQueries()
-        {
-            Logger.Information("Setting up default queries.");
-            var QueryTypes = new QueryType[]
-            {
-                QueryType.All,
-                QueryType.Any,
-                QueryType.Delete,
-                QueryType.Insert,
-                QueryType.Update,
-                QueryType.InsertBulk
-            };
-            foreach (var ConcreteType in ConcreteTypes)
-            {
-                var Generator = QueryProvider.CreateGenerator(ConcreteType, this);
-                var Queries = Generator.GenerateDefaultQueries();
-                foreach (var TempQueryType in QueryTypes)
-                {
-                    if (!Mappings[ConcreteType].Queries.ContainsKey(TempQueryType) && !string.IsNullOrEmpty(Queries[TempQueryType].QueryString))
-                    {
-                        Mappings[ConcreteType].SetQuery(TempQueryType, Queries[TempQueryType].QueryString, Queries[TempQueryType].DatabaseCommandType);
-
-                        Logger.Debug("Adding default query of type {Type:l} for {Name:l} in source {Source:l}",
-                            Enum.GetName(typeof(QueryType), TempQueryType),
-                            ConcreteType.GetName(),
-                            Source.Name);
-                    }
-                    else if (string.IsNullOrEmpty(Queries[TempQueryType].QueryString))
-                    {
-                        Logger.Debug("Could not generate default query of type {Type:l} for {Name:l} in source {Source:l}",
-                            Enum.GetName(typeof(QueryType), TempQueryType),
-                            ConcreteType.GetName(),
-                            Source.Name);
-                    }
                 }
             }
         }

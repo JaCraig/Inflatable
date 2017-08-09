@@ -92,98 +92,6 @@ namespace Inflatable.Sessions
         private ICache Cache { get; }
 
         /// <summary>
-        /// Returns all items that match the criteria
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>All items that match the criteria</returns>
-        public async Task<IEnumerable<TObject>> AllAsync<TObject>(params IParameter[] parameters)
-            where TObject : class
-        {
-            parameters = parameters ?? new IParameter[0];
-            string KeyName = typeof(TObject).GetName() + "_All_" + parameters.ToString(x => x.ToString(), "_");
-            parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
-            if (Cache.ContainsKey(KeyName))
-            {
-                return GetListCached<TObject>(KeyName);
-            }
-            var ReturnValue = new List<Dynamo>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead).OrderBy(x => x.Order))
-            {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
-                foreach (var Mapping in Source.GetChildMappings<TObject>())
-                {
-                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var Query = Mapping.Queries[QueryType.All];
-                    Batch.AddQuery((Command, ResultList, Result) =>
-                    {
-                        int ResultListCount = ResultList.Count;
-                        for (int x = 0; x < ResultListCount; ++x)
-                        {
-                            CopyOrAdd(Result, IDProperties, ResultList[x]);
-                        }
-                    },
-                    ReturnValue,
-                    Query.QueryString,
-                    Query.DatabaseCommandType,
-                    parameters);
-                }
-                await Batch.ExecuteAsync();
-            }
-            Cache.Add(KeyName, ReturnValue, new string[] { typeof(TObject).GetName() });
-            return ConvertValues<TObject>(ReturnValue);
-        }
-
-        /// <summary>
-        /// Returns the first item that match the criteria
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The first item that match the criteria</returns>
-        public async Task<TObject> AnyAsync<TObject>(params IParameter[] parameters)
-            where TObject : class
-        {
-            parameters = parameters ?? new IParameter[0];
-            string KeyName = typeof(TObject).GetName() + "_Any_" + parameters.ToString(x => x.ToString(), "_");
-            parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
-            if (Cache.ContainsKey(KeyName))
-            {
-                return GetCached<TObject>(KeyName);
-            }
-            var ReturnValue = new List<Dynamo>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead).OrderBy(x => x.Order))
-            {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
-                foreach (var Mapping in Source.GetChildMappings<TObject>())
-                {
-                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var Query = Mapping.Queries[QueryType.Any];
-                    Batch.AddQuery((Command, ResultList, Result) =>
-                    {
-                        int ResultListCount = ResultList.Count;
-                        for (int x = 0; x < ResultListCount; ++x)
-                        {
-                            CopyOrAdd(Result, IDProperties, ResultList[x]);
-                        }
-                    },
-                    ReturnValue,
-                    Query.QueryString,
-                    Query.DatabaseCommandType,
-                    parameters);
-                }
-                await Batch.ExecuteAsync();
-            }
-            var FirstItem = ReturnValue.FirstOrDefault();
-            if (FirstItem != null)
-            {
-                Cache.Add(KeyName, FirstItem, new string[] { typeof(TObject).GetName() });
-            }
-            return ConvertValue<TObject>(FirstItem);
-        }
-
-        /// <summary>
         /// Deletes the specified object.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -197,18 +105,18 @@ namespace Inflatable.Sessions
                 return 0;
             Cache.RemoveByTag(typeof(TObject).GetName());
             var ReturnValue = 0;
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite).OrderBy(x => x.Order))
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite
+                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
+                                                         .OrderBy(x => x.Order))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 foreach (var Mapping in Source.GetChildMappings<TObject>())
                 {
-                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var Query = Mapping.Queries[QueryType.Delete];
                     for (int x = 0; x < objectsToDelete.Length; ++x)
                     {
-                        var IDParameters = IDProperties.ForEach(y => y.GetAsParameter(objectsToDelete[x])).ToArray();
-                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, IDParameters);
+                        var Query = Generator.GenerateQuery(QueryType.Delete, objectsToDelete[x]);
+                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Query.Parameters);
                     }
                 }
                 ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
@@ -307,13 +215,17 @@ namespace Inflatable.Sessions
             }
             List<Dynamo> Results = new List<Dynamo>();
             bool FirstRun = true;
-            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null
+                                                   && x.Value.Source.CanRead
+                                                   && x.Value.Source.Mappings.ContainsKey(typeof(TObject)))
                                           .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source);
                 FirstRun = false;
             }
-            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator == null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator == null
+                                                   && x.Value.Source.CanRead
+                                                   && x.Value.Source.Mappings.ContainsKey(typeof(TObject)))
                                           .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source);
@@ -371,19 +283,22 @@ namespace Inflatable.Sessions
             if (objectsToInsert.Length == 0)
                 return objectsToInsert;
             Cache.RemoveByTag(typeof(TObject).GetName());
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite).OrderBy(x => x.Order))
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite
+                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
+                                                         .OrderBy(x => x.Order))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 foreach (var Mapping in Source.GetChildMappings<TObject>())
                 {
+                    var DeclarationQuery = Generator.GenerateDeclarations(QueryType.Insert);
+                    Batch.AddQuery(DeclarationQuery.QueryString, DeclarationQuery.DatabaseCommandType, DeclarationQuery.Parameters);
+
                     var ParentMappings = Source.GetParentMapping(typeof(TObject));
                     var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var ReferenceProperties = ParentMappings.SelectMany(x => x.ReferenceProperties);
-                    var Query = Mapping.Queries[QueryType.Insert];
                     for (int x = 0; x < objectsToInsert.Length; ++x)
                     {
-                        var Parameters = IDProperties.ForEach(y => y.GetAsParameter(objectsToInsert[x])).ToList();
-                        Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(objectsToInsert[x])));
+                        var ObjectQuery = Generator.GenerateQuery(QueryType.Insert, objectsToInsert[x]);
                         var IDProperty = IDProperties.FirstOrDefault(y => y.AutoIncrement);
                         var ReturnedID = Batch.AddQuery((Command, ResultList, InsertObject) =>
                                                         {
@@ -393,10 +308,9 @@ namespace Inflatable.Sessions
                                                             }
                                                         },
                                                         objectsToInsert[x],
-                                                        Query.QueryString,
-                                                        Query.DatabaseCommandType,
-                                                        Parameters.ToArray());
-                        Query = Mapping.Queries[QueryType.InsertBulk];
+                                                        ObjectQuery.QueryString,
+                                                        ObjectQuery.DatabaseCommandType,
+                                                        ObjectQuery.Parameters);
                     }
                 }
                 await Batch.ExecuteAsync();
@@ -475,20 +389,19 @@ namespace Inflatable.Sessions
                 return 0;
             Cache.RemoveByTag(typeof(TObject).GetName());
             int ReturnValue = 0;
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite).OrderBy(x => x.Order))
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite
+                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
+                                                         .OrderBy(x => x.Order))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 foreach (var Mapping in Source.GetChildMappings<TObject>())
                 {
                     var ParentMappings = Source.GetParentMapping(typeof(TObject));
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var ReferenceProperties = ParentMappings.SelectMany(x => x.ReferenceProperties);
-                    var Query = Mapping.Queries[QueryType.Update];
                     for (int x = 0; x < objectsToUpdate.Length; ++x)
                     {
-                        var Parameters = IDProperties.ForEach(y => y.GetAsParameter(objectsToUpdate[x])).ToList();
-                        Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(objectsToUpdate[x])));
-                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Parameters.ToArray());
+                        var Query = Generator.GenerateQuery(QueryType.Update, objectsToUpdate[x]);
+                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Query.Parameters);
                     }
                 }
                 ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
