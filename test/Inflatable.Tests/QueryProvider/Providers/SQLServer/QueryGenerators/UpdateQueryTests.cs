@@ -18,7 +18,7 @@ using Xunit;
 
 namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 {
-    public class InsertQueryTests : TestingFixture
+    public class UpdateQueryTests : TestingFixture
     {
         [Fact]
         public void Creation()
@@ -34,10 +34,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
-            var TestObject = new InsertQuery<ConcreteClass1>(Mappings);
+            var TestObject = new UpdateQuery<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), TestObject.AssociatedType);
             Assert.Same(Mappings, TestObject.MappingInformation);
-            Assert.Equal(QueryType.Insert, TestObject.QueryType);
+            Assert.Equal(QueryType.Update, TestObject.QueryType);
         }
 
         [Fact]
@@ -54,12 +54,12 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
-            var TestObject = new InsertQuery<ConcreteClass1>(Mappings);
+            var TestObject = new UpdateQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Empty(Result.Parameters);
-            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;\r\n\r\nDECLARE @BaseClass1_ID_Temp AS BIGINT;\r\n\r\nDECLARE @ConcreteClass1_ID_Temp AS BIGINT;\r\n", Result.QueryString);
-            Assert.Equal(QueryType.Insert, Result.QueryType);
+            Assert.Equal("", Result.QueryString);
+            Assert.Equal(QueryType.Update, Result.QueryType);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
-            var TestObject = new InsertQuery<ConcreteClass1>(Mappings);
+            var TestObject = new UpdateQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateQuery(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 });
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
@@ -86,8 +86,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("BaseClassValue1", Result.Parameters[1].ID);
             Assert.Equal(2, Result.Parameters[2].InternalValue);
             Assert.Equal("Value1", Result.Parameters[2].ID);
-            Assert.Equal("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);\r\nSET @BaseClass1_ID_Temp=SCOPE_IDENTITY();\r\n\r\nINSERT INTO [dbo].[ConcreteClass1_]([dbo].[ConcreteClass1_].[Value1_],[dbo].[ConcreteClass1_].[BaseClass1_ID_]) VALUES (@Value1,@BaseClass1_ID_Temp);\r\n", Result.QueryString);
-            Assert.Equal(QueryType.Insert, Result.QueryType);
+            Assert.Equal("UPDATE [dbo].[BaseClass1_]\r\nSET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1\r\nFROM [dbo].[BaseClass1_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n\r\nUPDATE [dbo].[ConcreteClass1_]\r\nSET [dbo].[ConcreteClass1_].[Value1_]=@Value1\r\nFROM [dbo].[ConcreteClass1_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(QueryType.Update, Result.QueryType);
         }
 
         [Fact]
@@ -101,7 +101,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
-            var TestObject = new InsertQuery<MapProperties>(Mappings);
+            var TestObject = new UpdateQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQuery(new MapProperties { ID = 10, BoolValue = true });
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
@@ -111,8 +111,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
             Assert.Equal(null, Result.Parameters[2].InternalValue);
             Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[2].ID);
-            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_],[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]) VALUES (@BoolValue,@AllReferencesAndID_MappedClass_ID_);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
-            Assert.Equal(QueryType.Insert, Result.QueryType);
+            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue,[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]=@AllReferencesAndID_MappedClass_ID_\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(QueryType.Update, Result.QueryType);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
-            var TestObject = new InsertQuery<MapProperties>(Mappings);
+            var TestObject = new UpdateQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQuery(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } });
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
@@ -136,8 +136,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
             Assert.Equal(1, Result.Parameters[2].InternalValue);
             Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[2].ID);
-            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_],[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]) VALUES (@BoolValue,@AllReferencesAndID_MappedClass_ID_);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
-            Assert.Equal(QueryType.Insert, Result.QueryType);
+            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue,[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]=@AllReferencesAndID_MappedClass_ID_\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(QueryType.Update, Result.QueryType);
         }
     }
 }

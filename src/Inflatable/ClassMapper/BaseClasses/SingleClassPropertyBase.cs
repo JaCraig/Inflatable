@@ -201,7 +201,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         {
             ForeignMapping.IDProperties.ForEach(x =>
             {
-                table.AddColumn(ParentMapping.Prefix + Name + ParentMapping.Suffix + ForeignMapping.TableName + x.ColumnName,
+                table.AddColumn(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
                                 x.PropertyType.To(DbType.Int32),
                                 x.MaxLength,
                                 true,
@@ -265,10 +265,10 @@ namespace Inflatable.ClassMapper.BaseClasses
                 if (PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
-                    return new StringParameter(ParentMapping.Prefix + Name + ParentMapping.Suffix + ForeignMapping.TableName + x.ColumnName,
+                    return new StringParameter(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
                         TempParameter);
                 }
-                return new Parameter<object>(ParentMapping.Prefix + Name + ParentMapping.Suffix + ForeignMapping.TableName + x.ColumnName,
+                return new Parameter<object>(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
                     PropertyType.To<Type, SqlDbType>(),
                     Value);
             });

@@ -180,19 +180,19 @@ namespace Inflatable.Tests.Sessions
            ,1234)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
-           [MappedClass_AllReferencesAndID_ID_])
+           [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (1
            ,1)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
-           [MappedClass_AllReferencesAndID_ID_])
+           [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (0
            ,2)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
-           [MappedClass_AllReferencesAndID_ID_])
+           [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (1
            ,3)", CommandType.Text)
