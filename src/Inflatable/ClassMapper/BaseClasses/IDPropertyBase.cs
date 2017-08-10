@@ -295,11 +295,11 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>The parameter version of the property</returns>
         public IParameter GetAsParameter(object objectValue)
         {
-            var ParamValue = (DataType)GetParameter(objectValue);
+            var ParamValue = GetParameter(objectValue);
             var TempParameter = ParamValue as string;
             if (PropertyType == typeof(string))
                 return new StringParameter(Name, TempParameter);
-            return new Parameter<DataType>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
+            return new Parameter<object>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
         }
 
         /// <summary>

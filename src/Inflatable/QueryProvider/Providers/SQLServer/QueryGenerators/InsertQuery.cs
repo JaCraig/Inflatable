@@ -248,7 +248,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the parameters.
         /// </summary>
         /// <param name="queryObject">The query object.</param>
-        /// <param name="node">The node.</param>
         /// <returns>The parameters</returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject)
         {

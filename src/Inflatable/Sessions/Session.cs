@@ -433,7 +433,7 @@ namespace Inflatable.Sessions
         {
             if (item == null
                 || returnValue == null
-                || idProperties.Count() == 0)
+                || !idProperties.Any())
                 return;
             var Value = returnValue.FirstOrDefault(x => idProperties.All(y => y.GetValue(x).Equals(y.GetValue(item))));
             if (Value == null)
@@ -451,7 +451,7 @@ namespace Inflatable.Sessions
         {
             if (item == null || returnValue == null)
                 return;
-            if (idProperties.Count() == 0)
+            if (!idProperties.Any())
             {
                 returnValue.Add(item);
                 return;

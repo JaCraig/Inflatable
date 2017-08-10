@@ -18,13 +18,14 @@ using BigBook;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
+using Inflatable.QueryProvider.Enums;
+using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
-using Inflatable.QueryProvider;
-using Inflatable.QueryProvider.Enums;
 
 namespace Inflatable.ClassMapper.BaseClasses
 {
@@ -100,6 +101,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         public string InternalFieldName { get; protected set; }
 
         /// <summary>
+        /// Gets the load property query.
+        /// </summary>
+        /// <value>The load property query.</value>
+        public Query LoadPropertyQuery { get; protected set; }
+
+        /// <summary>
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
@@ -128,14 +135,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
         public bool Unique { get; protected set; }
-
-        /// <summary>
-        /// Gets the load property query.
-        /// </summary>
-        /// <value>
-        /// The load property query.
-        /// </value>
-        public Query LoadPropertyQuery { get; protected set; }
 
         /// <summary>
         /// != operator
@@ -202,7 +201,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         {
             ForeignMapping.IDProperties.ForEach(x =>
             {
-                table.AddColumn(ForeignMapping.TableName + x.ColumnName,
+                table.AddColumn(ParentMapping.Prefix + Name + ParentMapping.Suffix + ForeignMapping.TableName + x.ColumnName,
                                 x.PropertyType.To(DbType.Int32),
                                 x.MaxLength,
                                 true,
@@ -214,9 +213,9 @@ namespace Inflatable.ClassMapper.BaseClasses
                                 x.ColumnName,
                                 "",
                                 "",
-                                Cascade,
-                                Cascade,
-                                !Cascade);
+                                false,
+                                false,
+                                true);
             });
         }
 
@@ -260,7 +259,19 @@ namespace Inflatable.ClassMapper.BaseClasses
         public IEnumerable<IParameter> GetAsParameter(object objectValue)
         {
             var ParamValue = (DataType)GetParameter(objectValue);
-            return ForeignMapping.IDProperties.ForEach(x => x.GetAsParameter(ParamValue));
+            return ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(ParamValue);
+                if (PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(ParentMapping.Prefix + Name + ParentMapping.Suffix + ForeignMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(ParentMapping.Prefix + Name + ParentMapping.Suffix + ForeignMapping.TableName + x.ColumnName,
+                    PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            });
         }
 
         /// <summary>
@@ -339,6 +350,18 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Loads the property using the query specified.
+        /// </summary>
+        /// <param name="queryText">The query text.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>This</returns>
+        public ReturnType LoadUsing(string queryText, CommandType type)
+        {
+            LoadPropertyQuery = new Query(type, queryText, QueryType.LoadProperty);
+            return (ReturnType)((IMapProperty<ClassType, DataType, ReturnType>)this);
+        }
+
+        /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         public abstract void Setup(MappingSource mappings);
@@ -361,20 +384,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         public override string ToString()
         {
             return PropertyType.GetName() + " " + ParentMapping + "." + Name;
-        }
-
-        /// <summary>
-        /// Loads the property using the query specified.
-        /// </summary>
-        /// <param name="queryText">The query text.</param>
-        /// <param name="type">The type.</param>
-        /// <returns>
-        /// This
-        /// </returns>
-        public ReturnType LoadUsing(string queryText, CommandType type)
-        {
-            LoadPropertyQuery = new Query(type, queryText, QueryType.LoadProperty);
-            return (ReturnType)((IMapProperty<ClassType, DataType, ReturnType>)this);
         }
     }
 }

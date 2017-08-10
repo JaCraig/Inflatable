@@ -12,7 +12,6 @@ using Serilog;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Inflatable.Tests.Sessions
@@ -47,7 +46,7 @@ namespace Inflatable.Tests.Sessions
         public SchemaManager InternalSchemaManager { get; set; }
 
         [Fact]
-        public async Task AllNoParametersWithDataInDatabase()
+        public void AllNoParametersWithDataInDatabase()
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
             SetupData();
@@ -181,19 +180,19 @@ namespace Inflatable.Tests.Sessions
            ,1234)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
-           [AllReferencesAndID_ID_])
+           [MappedClass_AllReferencesAndID_ID_])
      VALUES
            (1
            ,1)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
-           [AllReferencesAndID_ID_])
+           [MappedClass_AllReferencesAndID_ID_])
      VALUES
            (0
            ,2)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
-           [AllReferencesAndID_ID_])
+           [MappedClass_AllReferencesAndID_ID_])
      VALUES
            (1
            ,3)", CommandType.Text)

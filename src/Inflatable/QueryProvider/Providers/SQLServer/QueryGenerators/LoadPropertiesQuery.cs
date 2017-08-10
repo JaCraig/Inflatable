@@ -138,6 +138,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates from clause.
         /// </summary>
         /// <param name="node">The node.</param>
+        /// <param name="property">The property.</param>
         /// <returns>The result</returns>
         private string GenerateParentFromClause(Utils.TreeNode<Type> node, IMapProperty property)
         {
@@ -204,7 +205,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the where clause.
         /// </summary>
         /// <param name="node">The node.</param>
-        /// <param name="data">The data.</param>
         /// <returns>The WHERE clause</returns>
         private string GenerateWhereClause(Utils.TreeNode<Type> node)
         {

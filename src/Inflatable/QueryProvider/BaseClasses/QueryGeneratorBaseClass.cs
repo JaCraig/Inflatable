@@ -109,7 +109,12 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <returns>The column name</returns>
         protected string GetColumnName(IMapProperty mapProperty)
         {
-            return mapProperty.ForeignMapping.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping) + ".[" + mapProperty.ForeignMapping.TableName + x.ColumnName + "]");
+            return mapProperty.ForeignMapping.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping)
+                                                                        + ".[" + mapProperty.ParentMapping.Prefix
+                                                                        + mapProperty.Name
+                                                                        + mapProperty.ParentMapping.Suffix
+                                                                        + mapProperty.ForeignMapping.TableName
+                                                                        + x.ColumnName + "]");
         }
 
         /// <summary>
@@ -149,7 +154,11 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <returns>The parameter name</returns>
         protected string GetParameterName(IMapProperty mapProperty)
         {
-            return mapProperty.ForeignMapping.IDProperties.ToString(x => "@" + mapProperty.ForeignMapping.TableName + x.ColumnName);
+            return mapProperty.ForeignMapping.IDProperties.ToString(x => "@" + mapProperty.ParentMapping.Prefix
+                                                                        + mapProperty.Name
+                                                                        + mapProperty.ParentMapping.Suffix
+                                                                        + mapProperty.ForeignMapping.TableName
+                                                                        + x.ColumnName);
         }
 
         /// <summary>
