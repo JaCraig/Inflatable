@@ -67,5 +67,14 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <param name="queryObject">The query object.</param>
         /// <returns>The resulting queries.</returns>
         IQuery GenerateQuery(QueryType type, TMappedClass queryObject);
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The resulting query</returns>
+        IQuery GenerateQuery(QueryType type, TMappedClass queryObject, string propertyName);
     }
 }

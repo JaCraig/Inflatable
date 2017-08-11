@@ -106,5 +106,17 @@ namespace Inflatable.QueryProvider.BaseClasses
         {
             return QueryGenerators[type].GenerateQuery(queryObject);
         }
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The resulting query</returns>
+        public IQuery GenerateQuery(QueryType type, TMappedClass queryObject, string propertyName)
+        {
+            return ((IPropertyQueryGenerator<TMappedClass>)QueryGenerators[type]).GenerateQuery(queryObject, propertyName);
+        }
     }
 }

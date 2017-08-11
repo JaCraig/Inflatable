@@ -111,13 +111,10 @@ namespace Inflatable.Sessions
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
-                foreach (var Mapping in Source.GetChildMappings<TObject>())
+                for (int x = 0; x < objectsToDelete.Length; ++x)
                 {
-                    for (int x = 0; x < objectsToDelete.Length; ++x)
-                    {
-                        var Query = Generator.GenerateQuery(QueryType.Delete, objectsToDelete[x]);
-                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Query.Parameters);
-                    }
+                    var Query = Generator.GenerateQuery(QueryType.Delete, objectsToDelete[x]);
+                    Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Query.Parameters);
                 }
                 ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
             }
@@ -289,29 +286,27 @@ namespace Inflatable.Sessions
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
-                foreach (var Mapping in Source.GetChildMappings<TObject>())
-                {
-                    var DeclarationQuery = Generator.GenerateDeclarations(QueryType.Insert);
-                    Batch.AddQuery(DeclarationQuery.QueryString, DeclarationQuery.DatabaseCommandType, DeclarationQuery.Parameters);
 
-                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    for (int x = 0; x < objectsToInsert.Length; ++x)
-                    {
-                        var ObjectQuery = Generator.GenerateQuery(QueryType.Insert, objectsToInsert[x]);
-                        var IDProperty = IDProperties.FirstOrDefault(y => y.AutoIncrement);
-                        var ReturnedID = Batch.AddQuery((Command, ResultList, InsertObject) =>
+                var DeclarationQuery = Generator.GenerateDeclarations(QueryType.Insert);
+                Batch.AddQuery(DeclarationQuery.QueryString, DeclarationQuery.DatabaseCommandType, DeclarationQuery.Parameters);
+
+                var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
+                for (int x = 0; x < objectsToInsert.Length; ++x)
+                {
+                    var ObjectQuery = Generator.GenerateQuery(QueryType.Insert, objectsToInsert[x]);
+                    var IDProperty = IDProperties.FirstOrDefault(y => y.AutoIncrement);
+                    var ReturnedID = Batch.AddQuery((Command, ResultList, InsertObject) =>
+                                                    {
+                                                        if (IDProperty != null && IDProperty.AutoIncrement)
                                                         {
-                                                            if (IDProperty != null && IDProperty.AutoIncrement)
-                                                            {
-                                                                IDProperty.SetValue(InsertObject, IDProperty.GetValue((Dynamo)ResultList[0]));
-                                                            }
-                                                        },
-                                                        objectsToInsert[x],
-                                                        ObjectQuery.QueryString,
-                                                        ObjectQuery.DatabaseCommandType,
-                                                        ObjectQuery.Parameters);
-                    }
+                                                            IDProperty.SetValue(InsertObject, IDProperty.GetValue((Dynamo)ResultList[0]));
+                                                        }
+                                                    },
+                                                    objectsToInsert[x],
+                                                    ObjectQuery.QueryString,
+                                                    ObjectQuery.DatabaseCommandType,
+                                                    ObjectQuery.Parameters);
                 }
                 await Batch.ExecuteAsync();
             }
@@ -331,30 +326,27 @@ namespace Inflatable.Sessions
             where TData : class
         {
             var ReturnValue = new List<Dynamo>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead).OrderBy(x => x.Order))
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead
+                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
+                                                         .OrderBy(x => x.Order))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
-                foreach (var Mapping in Source.GetChildMappings<TObject>())
-                {
-                    var ParentMappings = Source.GetParentMapping(typeof(TData));
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-                    var Property = Mapping.MapProperties.FirstOrDefault(x => x.Name == propertyName);
-                    if (Property == null)
-                        continue;
-                    var Query = Property.LoadPropertyQuery;
-                    Batch.AddQuery((Command, ResultList, Result) =>
-                    {
-                        int ResultListCount = ResultList.Count;
-                        for (int x = 0; x < ResultListCount; ++x)
-                        {
-                            CopyOrAdd(Result, IDProperties, ResultList[x]);
-                        }
-                    },
-                    ReturnValue,
-                    Query.QueryString,
-                    Query.DatabaseCommandType,
-                    IDProperties.ToArray(x => x.GetAsParameter(objectToLoadProperty)));
-                }
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
+                var Query = Generator.GenerateQuery(QueryType.LoadProperty, objectToLoadProperty, propertyName);
+
+                var IDProperties = Source.GetParentMapping(typeof(TData)).SelectMany(x => x.IDProperties);
+                Batch.AddQuery((Command, ResultList, Result) =>
+                                {
+                                    int ResultListCount = ResultList.Count;
+                                    for (int x = 0; x < ResultListCount; ++x)
+                                    {
+                                        CopyOrAdd(Result, IDProperties, ResultList[x]);
+                                    }
+                                },
+                                ReturnValue,
+                                Query.QueryString,
+                                Query.DatabaseCommandType,
+                                Query.Parameters);
                 await Batch.ExecuteAsync();
             }
             return ConvertValues<TData>(ReturnValue).ToObservableList(x => x);
@@ -395,14 +387,11 @@ namespace Inflatable.Sessions
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
-                foreach (var Mapping in Source.GetChildMappings<TObject>())
+                var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                for (int x = 0; x < objectsToUpdate.Length; ++x)
                 {
-                    var ParentMappings = Source.GetParentMapping(typeof(TObject));
-                    for (int x = 0; x < objectsToUpdate.Length; ++x)
-                    {
-                        var Query = Generator.GenerateQuery(QueryType.Update, objectsToUpdate[x]);
-                        Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Query.Parameters);
-                    }
+                    var Query = Generator.GenerateQuery(QueryType.Update, objectsToUpdate[x]);
+                    Batch.AddQuery(Query.QueryString, Query.DatabaseCommandType, Query.Parameters);
                 }
                 ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
             }
