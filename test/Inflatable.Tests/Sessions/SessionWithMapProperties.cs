@@ -1,4 +1,5 @@
-﻿using Inflatable.ClassMapper;
+﻿using BigBook;
+using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -25,7 +26,8 @@ namespace Inflatable.Tests.Sessions
         {
             InternalMappingManager = new MappingManager(new IMapping[] {
                 new AllReferencesAndIDMappingWithDatabase(),
-                new MapPropertiesMapping()
+                new MapPropertiesMapping(),
+                new MappedPropertiesWithCascadeMapping(),
             },
             new IDatabase[]{
                 new TestDatabaseMapping()
@@ -71,6 +73,19 @@ namespace Inflatable.Tests.Sessions
         }
 
         [Fact]
+        public async Task DeleteMultipleWithDataInDatabaseAndCascade()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Result = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            await TestObject.DeleteAsync(Result.ToArray());
+            var Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            Assert.Equal(1, Results.Count());
+            var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
+            Assert.Equal(1, Results2.Count());
+        }
+
+        [Fact]
         public async Task DeleteWithDataInDatabase()
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
@@ -92,11 +107,11 @@ namespace Inflatable.Tests.Sessions
         }
 
         [Fact]
-        public async Task InsertMultipleObjects()
+        public async Task InsertMultipleObjectsWithCascade()
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
             SetupData();
-            var Result1 = new MapProperties
+            var Result1 = new MapPropertiesWithCascade
             {
                 BoolValue = false,
                 MappedClass = new AllReferencesAndID
@@ -107,7 +122,7 @@ namespace Inflatable.Tests.Sessions
                     DateTimeValue = new DateTime(2000, 1, 1)
                 }
             };
-            var Result2 = new MapProperties
+            var Result2 = new MapPropertiesWithCascade
             {
                 BoolValue = false,
                 MappedClass = new AllReferencesAndID
@@ -118,7 +133,7 @@ namespace Inflatable.Tests.Sessions
                     DateTimeValue = new DateTime(2000, 1, 1)
                 }
             };
-            var Result3 = new MapProperties
+            var Result3 = new MapPropertiesWithCascade
             {
                 BoolValue = false,
                 MappedClass = new AllReferencesAndID
@@ -130,7 +145,7 @@ namespace Inflatable.Tests.Sessions
                 }
             };
             await TestObject.InsertAsync(Result1, Result2, Result3);
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            var Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.True(Results.Any(x => x.ID == Result1.ID
             && !x.BoolValue
@@ -147,6 +162,99 @@ namespace Inflatable.Tests.Sessions
             && x.MappedClass.ByteValue == 34
             && x.MappedClass.CharValue == 'c'
             && x.MappedClass.DateTimeValue == new DateTime(2000, 1, 1)));
+        }
+
+
+        [Fact]
+        public async Task UpdateMultipleWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            var UpdatedResults = Results.ForEach(x =>
+            {
+                x.BoolValue = false;
+                x.MappedClass = new AllReferencesAndID
+                {
+                    ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                    ByteValue = 34,
+                    CharValue = 'c',
+                    DateTimeValue = new DateTime(2000, 1, 1)
+                };
+                var Result = TestObject.InsertAsync(x.MappedClass).Result;
+            }).ToArray();
+            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            Assert.True(Results.All(x => !x.BoolValue));
+            Assert.True(Results.All(x => x.MappedClass.ID > 3));
+        }
+
+        [Fact]
+        public async Task UpdateMultipleCascadeWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            var UpdatedResults = Results.ForEach(x =>
+            {
+                x.BoolValue = false;
+                x.MappedClass = new AllReferencesAndID
+                {
+                    ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                    ByteValue = 34,
+                    CharValue = 'c',
+                    DateTimeValue = new DateTime(2000, 1, 1)
+                };
+            }).ToArray();
+            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            Assert.True(Results.All(x => !x.BoolValue));
+            Assert.True(Results.All(x => x.MappedClass.ID > 3));
+        }
+
+        [Fact]
+        public async Task UpdateMultipleWithDataInDatabaseToNull()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            var UpdatedResults = Results.ForEach(x =>
+            {
+                x.BoolValue = false;
+                x.MappedClass = null;
+            }).ToArray();
+            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            Assert.True(Results.All(x => !x.BoolValue));
+            Assert.True(Results.All(x => x.MappedClass == null));
+        }
+
+        [Fact]
+        public async Task UpdateNullWithDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            SetupData();
+            Assert.Equal(0, await TestObject.UpdateAsync<MapProperties>(null));
+        }
+
+        [Fact]
+        public async Task UpdateWithNoDataInDatabase()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var Result = new MapProperties
+            {
+                BoolValue = false,
+                MappedClass = new AllReferencesAndID
+                {
+                    ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                    ByteValue = 34,
+                    CharValue = 'c',
+                    DateTimeValue = new DateTime(2000, 1, 1)
+                }
+            };
+            Assert.Equal(0, await TestObject.UpdateAsync(Result));
+            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            Assert.Empty(Results);
         }
 
         [Fact]
@@ -296,6 +404,25 @@ namespace Inflatable.Tests.Sessions
            (0
            ,2)", CommandType.Text)
            .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
+           ([BoolValue_],
+           [AllReferencesAndID_MappedClass_ID_])
+     VALUES
+           (1
+           ,3)", CommandType.Text)
+
+           .AddQuery(@"INSERT INTO [dbo].[MapPropertiesWithCascade_]
+           ([BoolValue_],
+           [AllReferencesAndID_MappedClass_ID_])
+     VALUES
+           (1
+           ,1)", CommandType.Text)
+           .AddQuery(@"INSERT INTO [dbo].[MapPropertiesWithCascade_]
+           ([BoolValue_],
+           [AllReferencesAndID_MappedClass_ID_])
+     VALUES
+           (0
+           ,2)", CommandType.Text)
+           .AddQuery(@"INSERT INTO [dbo].[MapPropertiesWithCascade_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES

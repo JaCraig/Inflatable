@@ -89,7 +89,9 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings"></param>
         public override void Setup(MappingSource mappings)
         {
-            ForeignMapping = mappings.GetParentMapping<DataType>().FirstOrDefault(x => x.IDProperties.Any());
+            ForeignMapping = mappings.GetChildMappings<DataType>()
+                                     .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
+                                     .FirstOrDefault(x => x.IDProperties.Any());
             if (ForeignMapping == null)
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
         }

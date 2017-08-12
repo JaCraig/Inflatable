@@ -2,6 +2,8 @@
 using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.TestDatabases.ComplexGraph;
+using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
 using Inflatable.Tests.TestDatabases.SimpleClassNoAutoID;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using System.Linq;
@@ -121,6 +123,53 @@ namespace Inflatable.Tests
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.Where(x => x.ID == 6).SingleOrDefault();
             Assert.Null(Result);
+        }
+        
+        [Fact]
+        public async Task BaseClassSelect()
+        {
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            var Data = new BaseClass1[] {
+                new ConcreteClass1()
+                {
+                    Value1=1,
+                    BaseClassValue1=1
+                },
+                new ConcreteClass2()
+                {
+                    InterfaceValue=2,
+                    BaseClassValue1=2,
+                },
+                new ConcreteClass1()
+                {
+                    Value1=3,
+                    BaseClassValue1=3
+                },
+                new ConcreteClass1()
+                {
+                    Value1=1,
+                    BaseClassValue1=1
+                },
+                new ConcreteClass2()
+                {
+                    InterfaceValue=2,
+                    BaseClassValue1=2,
+                },
+                new ConcreteClass1()
+                {
+                    Value1=3,
+                    BaseClassValue1=3
+                }
+            };
+            await TempSession.InsertAsync(Data);
+
+            var TestObject = DbContext<BaseClass1>.CreateQuery();
+            var Result = TestObject.OrderBy(x => x.BaseClassValue1).ThenByDescending(x => x.ID).First();
+            Assert.Equal(4, Result.ID);
+            TestObject = DbContext<BaseClass1>.CreateQuery();
+            Result = TestObject.Where(x => x.ID == 6).First();
+            Assert.NotNull(Result);
         }
 
         [Fact]
