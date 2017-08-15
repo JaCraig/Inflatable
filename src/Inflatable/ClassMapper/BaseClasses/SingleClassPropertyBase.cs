@@ -357,7 +357,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>This</returns>
         public ReturnType LoadUsing(string queryText, CommandType type)
         {
-            LoadPropertyQuery = new Query(type, queryText, QueryType.LoadProperty);
+            LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
             return (ReturnType)((IMapProperty<ClassType, DataType, ReturnType>)this);
         }
 

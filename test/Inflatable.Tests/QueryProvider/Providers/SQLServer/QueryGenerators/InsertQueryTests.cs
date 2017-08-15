@@ -56,10 +56,20 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var TestObject = new InsertQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateDeclarations();
-            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Empty(Result.Parameters);
-            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;\r\n\r\nDECLARE @BaseClass1_ID_Temp AS BIGINT;\r\n\r\nDECLARE @ConcreteClass1_ID_Temp AS BIGINT;\r\n", Result.QueryString);
-            Assert.Equal(QueryType.Insert, Result.QueryType);
+            Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
+            Assert.Empty(Result[0].Parameters);
+            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;\r\n", Result[0].QueryString);
+            Assert.Equal(QueryType.Insert, Result[0].QueryType);
+
+            Assert.Equal(CommandType.Text, Result[1].DatabaseCommandType);
+            Assert.Empty(Result[1].Parameters);
+            Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;\r\n", Result[1].QueryString);
+            Assert.Equal(QueryType.Insert, Result[1].QueryType);
+
+            Assert.Equal(CommandType.Text, Result[2].DatabaseCommandType);
+            Assert.Empty(Result[2].Parameters);
+            Assert.Equal("DECLARE @ConcreteClass1_ID_Temp AS BIGINT;\r\n", Result[2].QueryString);
+            Assert.Equal(QueryType.Insert, Result[2].QueryType);
         }
 
         [Fact]
@@ -77,7 +87,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var TestObject = new InsertQuery<ConcreteClass1>(Mappings);
-            var Result = TestObject.GenerateQuery(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 });
+            var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
@@ -102,7 +112,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             var TestObject = new InsertQuery<MapProperties>(Mappings);
-            var Result = TestObject.GenerateQuery(new MapProperties { ID = 10, BoolValue = true });
+            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
@@ -127,7 +137,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             var TestObject = new InsertQuery<MapProperties>(Mappings);
-            var Result = TestObject.GenerateQuery(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } });
+            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);

@@ -386,7 +386,7 @@ namespace Inflatable.BaseClasses
         public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters)
         {
             if (string.IsNullOrEmpty(queryString)) throw new ArgumentNullException(nameof(queryString));
-            Queries.Add(queryType, new Query(databaseCommandType, queryString, queryType, parameters));
+            Queries.Add(queryType, new Query(ObjectType, databaseCommandType, queryString, queryType, parameters));
             return this;
         }
 

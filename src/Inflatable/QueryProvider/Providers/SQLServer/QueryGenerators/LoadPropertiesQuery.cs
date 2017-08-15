@@ -20,6 +20,7 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -44,9 +45,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public LoadPropertiesQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
-            var ParentMappings = MappingInformation.GetParentMapping(AssociatedType);
-            IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-            Queries = new Dictionary<string, string>();
+            Queries = new Dictionary<string, List<QueryGeneratorData>>();
         }
 
         /// <summary>
@@ -56,24 +55,18 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override QueryType QueryType => QueryType.LoadProperty;
 
         /// <summary>
-        /// Gets or sets the identifier properties.
-        /// </summary>
-        /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; set; }
-
-        /// <summary>
         /// Gets or sets the queries.
         /// </summary>
         /// <value>The queries.</value>
-        private IDictionary<string, string> Queries { get; set; }
+        private IDictionary<string, List<QueryGeneratorData>> Queries { get; set; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery GenerateDeclarations()
+        public override IQuery[] GenerateDeclarations()
         {
-            return new Query(CommandType.Text, "", QueryType.LoadProperty);
+            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
         }
 
         /// <summary>
@@ -82,22 +75,40 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <param name="propertyName">Property name</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery(TMappedClass queryObject, string propertyName)
+        public override IQuery[] GenerateQueries(TMappedClass queryObject, string propertyName)
         {
-            var TempQueryText = "";
+            var ParentMappings = MappingInformation.GetParentMapping(AssociatedType);
+            var Property = ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
+
+            var ChildMappings = MappingInformation.GetChildMappings(Property.PropertyType);
+
+            List<IQuery> ReturnValue = new List<IQuery>();
+
             if (!Queries.ContainsKey(propertyName))
             {
-                var ParentMappings = MappingInformation.GetParentMapping(AssociatedType);
-                var Property = ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
-                var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-                var ForeignTypeGraph = MappingInformation.TypeGraphs[Property.PropertyType];
-                TempQueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, Property);
+                Queries.Add(propertyName, new List<QueryGeneratorData>());
+                foreach (var ChildMapping in ChildMappings)
+                {
+                    ParentMappings = MappingInformation.GetParentMapping(ChildMapping.ObjectType);
+                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
+
+                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+
+                    Queries[propertyName].Add(new QueryGeneratorData
+                    {
+                        AssociatedMapping = ChildMapping,
+                        IDProperties = IDProperties,
+                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, Property),
+                        Property = Property
+                    });
+                }
             }
-            else
+            foreach (var Query in Queries[propertyName])
             {
-                TempQueryText = Queries[propertyName];
+                ReturnValue.Add(new Query(Query.AssociatedMapping.ObjectType, CommandType.Text, Query.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, Query.IDProperties)));
             }
-            return new Query(CommandType.Text, TempQueryText, QueryType.LoadProperty, GenerateParameters(queryObject));
+            return ReturnValue.ToArray();
         }
 
         /// <summary>
@@ -172,19 +183,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the parameters.
         /// </summary>
         /// <param name="queryObject">The query object.</param>
+        /// <param name="idProperties">The identifier properties.</param>
         /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject)
+        private IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties)
         {
-            return IDProperties.ForEach(x => x.GetAsParameter(queryObject)).ToArray();
+            return idProperties.ForEach(x => x.GetAsParameter(queryObject)).ToArray();
         }
 
         /// <summary>
         /// Generates from clause.
         /// </summary>
-        /// <param name="node">The node.</param>
         /// <param name="property">The property.</param>
         /// <returns>The result</returns>
-        private string GenerateParentFromClause(Utils.TreeNode<Type> node, IMapProperty property)
+        private string GenerateParentFromClause(IMapProperty property)
         {
             StringBuilder Result = new StringBuilder();
             StringBuilder TempIDProperties = new StringBuilder();
@@ -216,12 +227,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder WhereClause = new StringBuilder();
 
             var Mapping = MappingInformation.Mappings[node.Root.Data];
-            var ForeignMapping = MappingInformation.Mappings[property.PropertyType];
+            var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             //Get From Clause
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
-            FromClause.Append(GenerateParentFromClause(node.Root, property));
+            FromClause.Append(GenerateParentFromClause(property));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));

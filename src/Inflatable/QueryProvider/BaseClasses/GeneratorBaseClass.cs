@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression;
+using Inflatable.LinqExpression.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
@@ -81,7 +82,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>The resulting declarations.</returns>
-        public IQuery GenerateDeclarations(QueryType type)
+        public IQuery[] GenerateDeclarations(QueryType type)
         {
             return QueryGenerators[type].GenerateDeclarations();
         }
@@ -91,9 +92,9 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        public IQuery GenerateQuery(QueryData<TMappedClass> data)
+        public IQuery[] GenerateQueries(IQueryData data)
         {
-            return LinqQueryGenerator.GenerateQuery(data);
+            return LinqQueryGenerator.GenerateQueries((QueryData<TMappedClass>)data);
         }
 
         /// <summary>
@@ -102,9 +103,9 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="type">The type.</param>
         /// <param name="queryObject">The query object.</param>
         /// <returns>The resulting queries.</returns>
-        public IQuery GenerateQuery(QueryType type, TMappedClass queryObject)
+        public IQuery[] GenerateQueries(QueryType type, object queryObject)
         {
-            return QueryGenerators[type].GenerateQuery(queryObject);
+            return QueryGenerators[type].GenerateQueries((TMappedClass)queryObject);
         }
 
         /// <summary>
@@ -114,9 +115,9 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="queryObject">The query object.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The resulting query</returns>
-        public IQuery GenerateQuery(QueryType type, TMappedClass queryObject, string propertyName)
+        public IQuery[] GenerateQueries(QueryType type, object queryObject, string propertyName)
         {
-            return ((IPropertyQueryGenerator<TMappedClass>)QueryGenerators[type]).GenerateQuery(queryObject, propertyName);
+            return ((IPropertyQueryGenerator<TMappedClass>)QueryGenerators[type]).GenerateQueries((TMappedClass)queryObject, propertyName);
         }
     }
 }

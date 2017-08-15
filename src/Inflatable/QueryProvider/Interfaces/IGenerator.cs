@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using Inflatable.LinqExpression;
+using Inflatable.LinqExpression.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using System;
 using System.Collections.Generic;
@@ -31,6 +31,30 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <value>The type of the associated.</value>
         Type AssociatedType { get; }
+
+        /// <summary>
+        /// Generates the declarations needed for the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>The resulting declarations.</returns>
+        IQuery[] GenerateDeclarations(QueryType type);
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns>The resulting queries.</returns>
+        IQuery[] GenerateQueries(QueryType type, object queryObject);
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The resulting query</returns>
+        IQuery[] GenerateQueries(QueryType type, object queryObject, string propertyName);
     }
 
     /// <summary>
@@ -47,34 +71,10 @@ namespace Inflatable.QueryProvider.Interfaces
         IDictionary<QueryType, IQueryGenerator<TMappedClass>> QueryGenerators { get; }
 
         /// <summary>
-        /// Generates the declarations needed for the query.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>The resulting declarations.</returns>
-        IQuery GenerateDeclarations(QueryType type);
-
-        /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        IQuery GenerateQuery(QueryData<TMappedClass> data);
-
-        /// <summary>
-        /// Generates the query.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="queryObject">The query object.</param>
-        /// <returns>The resulting queries.</returns>
-        IQuery GenerateQuery(QueryType type, TMappedClass queryObject);
-
-        /// <summary>
-        /// Generates the query.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="queryObject">The query object.</param>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>The resulting query</returns>
-        IQuery GenerateQuery(QueryType type, TMappedClass queryObject, string propertyName);
+        IQuery[] GenerateQueries(IQueryData data);
     }
 }

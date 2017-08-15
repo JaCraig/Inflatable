@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
+using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
@@ -45,7 +46,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             : base(mappingInformation)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            QueryDeclarationText = GenerateInsertQueryDeclarations(TypeGraph.Root);
+            QueryDeclarationText = GenerateInsertQueryDeclarations();
             QueryText = GenerateInsertQuery(TypeGraph.Root);
             var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
 
@@ -76,7 +77,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the query declaration text.
         /// </summary>
         /// <value>The query declaration text.</value>
-        private string QueryDeclarationText { get; set; }
+        private string[] QueryDeclarationText { get; set; }
 
         /// <summary>
         /// Gets or sets the query text.
@@ -94,9 +95,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery GenerateDeclarations()
+        public override IQuery[] GenerateDeclarations()
         {
-            return new Query(CommandType.Text, QueryDeclarationText, QueryType);
+            List<IQuery> ReturnValue = new List<IQuery>();
+            for (int x = 0; x < QueryDeclarationText.Length; ++x)
+            {
+                ReturnValue.Add(new Query(AssociatedType, CommandType.Text, QueryDeclarationText[x], QueryType));
+            }
+            return ReturnValue.ToArray();
         }
 
         /// <summary>
@@ -104,9 +110,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery(TMappedClass queryObject)
+        public override IQuery[] GenerateQueries(TMappedClass queryObject)
         {
-            return new Query(CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject));
+            return new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
         }
 
         /// <summary>
@@ -216,32 +222,33 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <summary>
         /// Generates the insert query declarations.
         /// </summary>
-        /// <param name="node">The node.</param>
         /// <returns>The resulting query</returns>
-        private string GenerateInsertQueryDeclarations(Utils.TreeNode<Type> node)
+        private string[] GenerateInsertQueryDeclarations()
         {
-            StringBuilder Builder = new StringBuilder();
-            var Mapping = MappingInformation.Mappings[node.Data];
-
-            //Generate parent queries
-            foreach (var Parent in node.Nodes)
+            List<string> Builder = new List<string>();
+            List<IMapping> ParentMappings = new List<IMapping>();
+            var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
+            foreach (var ChildMapping in ChildMappings)
             {
-                Builder.AppendLine(GenerateInsertQueryDeclarations(Parent));
+                var TempParentMappings = MappingInformation.GetParentMapping(ChildMapping.ObjectType);
+                ParentMappings.AddIfUnique(TempParentMappings);
+            }
+            foreach (var ParentMapping in ParentMappings)
+            {
+                //ID Properties to pass to the next set of queries
+                foreach (var IDProperty in ParentMapping.IDProperties)
+                {
+                    Builder.Add("DECLARE " + GetParentParameterName(IDProperty) + " AS " + GetParameterType(IDProperty) + ";");
+                }
+
+                //Auto ID properties to pass to the next set of queries
+                foreach (var AutoIDProperty in ParentMapping.AutoIDProperties)
+                {
+                    Builder.Add("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType(AutoIDProperty) + ";");
+                }
             }
 
-            //ID Properties to pass to the next set of queries
-            foreach (var IDProperty in Mapping.IDProperties)
-            {
-                Builder.AppendLine("DECLARE " + GetParentParameterName(IDProperty) + " AS " + GetParameterType(IDProperty) + ";");
-            }
-
-            //Auto ID properties to pass to the next set of queries
-            foreach (var AutoIDProperty in Mapping.AutoIDProperties)
-            {
-                Builder.AppendLine("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType(AutoIDProperty) + ";");
-            }
-
-            return Builder.ToString();
+            return Builder.ToArray();
         }
 
         /// <summary>

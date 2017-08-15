@@ -35,13 +35,13 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        IQuery GenerateDeclarations();
+        IQuery[] GenerateDeclarations();
 
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        IQuery GenerateQuery(TObject queryObject);
+        IQuery[] GenerateQueries(TObject queryObject);
     }
 }

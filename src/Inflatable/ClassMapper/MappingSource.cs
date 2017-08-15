@@ -25,6 +25,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Inflatable.ClassMapper
@@ -182,6 +183,8 @@ namespace Inflatable.ClassMapper
         /// <returns>The IMapping list associated with the object type.</returns>
         public IEnumerable<IMapping> GetChildMappings(Type objectType)
         {
+            if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                objectType = objectType.GetTypeInfo().BaseType;
             return ChildTypes.ContainsKey(objectType) ? ChildTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
         }
 
@@ -215,6 +218,8 @@ namespace Inflatable.ClassMapper
         /// <returns>The IMapping list associated with the object type.</returns>
         public IEnumerable<IMapping> GetParentMapping(Type objectType)
         {
+            if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                objectType = objectType.GetTypeInfo().BaseType;
             return ParentTypes.ContainsKey(objectType) ? ParentTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
         }
 

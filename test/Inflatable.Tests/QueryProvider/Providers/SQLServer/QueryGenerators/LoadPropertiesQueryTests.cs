@@ -55,10 +55,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateDeclarations();
-            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Empty(Result.Parameters);
-            Assert.Equal("", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
+            Assert.Empty(Result[0].Parameters);
+            Assert.Equal("", Result[0].QueryString);
+            Assert.Equal(QueryType.LoadProperty, Result[0].QueryType);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings);
-            var Result = TestObject.GenerateQuery(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 });
+            var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(0, Result.Parameters.Length);
             Assert.Equal("", Result.QueryString);
@@ -95,7 +95,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             var TestObject = new LoadPropertiesQuery<MapProperties>(Mappings);
-            var Result = TestObject.GenerateQuery(new MapProperties { ID = 10, BoolValue = true }, "MappedClass");
+            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true }, "MappedClass")[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(1, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);

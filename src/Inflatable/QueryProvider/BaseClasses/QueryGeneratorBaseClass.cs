@@ -63,14 +63,14 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public abstract IQuery GenerateDeclarations();
+        public abstract IQuery[] GenerateDeclarations();
 
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public abstract IQuery GenerateQuery(TMappedClass queryObject);
+        public abstract IQuery[] GenerateQueries(TMappedClass queryObject);
 
         /// <summary>
         /// Gets the name of the column.

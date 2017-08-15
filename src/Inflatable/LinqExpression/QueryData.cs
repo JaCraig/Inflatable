@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.LinqExpression.Interfaces;
 using Inflatable.LinqExpression.OrderBy;
 using Inflatable.LinqExpression.WhereClauses;
 using SQLHelper.HelperClasses.Interfaces;
@@ -29,7 +30,7 @@ namespace Inflatable.LinqExpression
     /// Query data holder
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    public class QueryData<TObject>
+    public class QueryData<TObject> : IQueryData
         where TObject : class
     {
         /// <summary>

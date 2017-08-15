@@ -30,6 +30,6 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        IQuery GenerateQuery(QueryData<TObject> data);
+        IQuery[] GenerateQueries(QueryData<TObject> data);
     }
 }

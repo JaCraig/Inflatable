@@ -17,6 +17,7 @@ limitations under the License.
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using SQLHelper.HelperClasses.Interfaces;
+using System;
 using System.Data;
 
 namespace Inflatable.QueryProvider
@@ -30,16 +31,18 @@ namespace Inflatable.QueryProvider
         /// <summary>
         /// Initializes a new instance of the <see cref="Query"/> class.
         /// </summary>
+        /// <param name="returnType">Type of the return.</param>
         /// <param name="databaseCommandType">Type of the database command.</param>
         /// <param name="queryString">The query string.</param>
         /// <param name="queryType">Type of the query.</param>
         /// <param name="parameters">The parameters.</param>
-        public Query(CommandType databaseCommandType, string queryString, QueryType queryType, params IParameter[] parameters)
+        public Query(Type returnType, CommandType databaseCommandType, string queryString, QueryType queryType, params IParameter[] parameters)
         {
             DatabaseCommandType = databaseCommandType;
             QueryType = queryType;
             QueryString = queryString;
             Parameters = parameters ?? new IParameter[0];
+            ReturnType = returnType;
         }
 
         /// <summary>
@@ -65,5 +68,11 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <value>The type of the query.</value>
         public QueryType QueryType { get; set; }
+
+        /// <summary>
+        /// Gets the type of the return value.
+        /// </summary>
+        /// <value>The type of the return value.</value>
+        public Type ReturnType { get; set; }
     }
 }

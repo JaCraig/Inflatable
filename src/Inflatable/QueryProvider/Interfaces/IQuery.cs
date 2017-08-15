@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.QueryProvider.Enums;
 using SQLHelper.HelperClasses.Interfaces;
+using System;
 using System.Data;
 
 namespace Inflatable.QueryProvider.Interfaces
@@ -48,5 +49,11 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <value>The type of the query.</value>
         QueryType QueryType { get; }
+
+        /// <summary>
+        /// Gets the type of the return value.
+        /// </summary>
+        /// <value>The type of the return value.</value>
+        Type ReturnType { get; }
     }
 }

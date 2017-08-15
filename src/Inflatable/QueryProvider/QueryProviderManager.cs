@@ -115,5 +115,20 @@ namespace Inflatable.QueryProvider
                 Logger.Debug("Creating generator for type {TypeName:l} in {SourceName:l}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
             return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);
         }
+
+        /// <summary>
+        /// Creates a query generator.
+        /// </summary>
+        /// <param name="type">The type of the mapped class..</param>
+        /// <param name="mappingInfo">The mapping information.</param>
+        /// <returns>The requested query generator.</returns>
+        public IGenerator CreateGenerator(Type type, MappingSource mappingInfo)
+        {
+            if (type.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                type = type.GetTypeInfo().BaseType;
+            return (IGenerator)typeof(QueryProviderManager).GetTypeInfo().GetMethod("CreateGenerator", new Type[] { typeof(MappingSource) })
+                                                           .MakeGenericMethod(type)
+                                                           .Invoke(this, new object[] { mappingInfo });
+        }
     }
 }

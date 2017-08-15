@@ -47,9 +47,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <value>The type of the query.</value>
         public override QueryType QueryType => QueryType.LinqQuery;
 
-        public override IQuery GenerateDeclarations()
+        /// <summary>
+        /// Generates the declarations needed for the query.
+        /// </summary>
+        /// <returns>The resulting declarations.</returns>
+        public override IQuery[] GenerateDeclarations()
         {
             return null;
+        }
+
+        /// <summary>
+        /// Generates the query.
+        /// </summary>
+        /// <param name="queryObject">The object to generate the queries from.</param>
+        /// <returns>The resulting query</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override IQuery[] GenerateQueries(TMappedClass queryObject)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -59,12 +74,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public IQuery GenerateQuery()
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root), QueryType);
-        }
-
-        public override IQuery GenerateQuery(TMappedClass queryObject)
-        {
-            throw new NotImplementedException();
+            return new Query(AssociatedType, CommandType.Text, GenerateSelectQuery(TypeGraph.Root), QueryType);
         }
 
         private string GenerateFromClause(Utils.TreeNode<Type> node)

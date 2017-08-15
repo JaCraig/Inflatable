@@ -43,16 +43,16 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        public abstract IQuery GenerateQuery(QueryData<TObject> data);
+        public abstract IQuery[] GenerateQueries(QueryData<TObject> data);
 
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery(TObject queryObject)
+        public override IQuery[] GenerateQueries(TObject queryObject)
         {
-            return GenerateQuery(new QueryData<TObject>(MappingInformation));
+            return GenerateQueries(new QueryData<TObject>(MappingInformation));
         }
     }
 }

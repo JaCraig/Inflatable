@@ -12,7 +12,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TestObject = new Queries
             {
-                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+                { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             Assert.Equal(1, TestObject.Count);
             Assert.Equal(1, TestObject.Keys.Count);
@@ -24,7 +24,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TestObject = new Queries
             {
-                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+                { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             TestObject.Clear();
             Assert.Equal(0, TestObject.Count);
@@ -37,7 +37,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TestObject = new Queries
             {
-                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+                { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             Assert.True(TestObject.ContainsKey(QueryType.Delete));
             Assert.False(TestObject.ContainsKey(QueryType.Insert));
@@ -58,7 +58,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TestObject = new Queries
             {
-                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+                { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             var QueryObject = TestObject[QueryType.Delete];
             Assert.Equal(CommandType.Text, QueryObject.DatabaseCommandType);
@@ -71,7 +71,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TestObject = new Queries
             {
-                { QueryType.Delete, new Query(CommandType.Text, "ASDF", QueryType.Delete) }
+                { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             TestObject.Remove(QueryType.Delete);
             Assert.Equal(0, TestObject.Count);

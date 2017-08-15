@@ -6,7 +6,6 @@ using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
@@ -51,14 +50,14 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void Creation()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             Assert.NotNull(TestObject);
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 2 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             await TestObject.DeleteAsync(Result.ToArray());
@@ -69,7 +68,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             await TestObject.DeleteAsync(Result.ToArray());
@@ -80,7 +79,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             await TestObject.DeleteAsync(Result.ToArray());
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
@@ -90,7 +89,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task Execute()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_ WHERE ID_=@0",
                 CommandType.Text,
@@ -103,7 +102,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task ExecuteDynamic()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync("SELECT * FROM AllReferencesAndID_ WHERE ID_=@0",
                 CommandType.Text,
@@ -116,7 +115,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task ExecuteScalar()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AllReferencesAndID_",
                 CommandType.Text,
@@ -127,7 +126,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjects()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result1 = new AllReferencesAndID
             {
@@ -176,7 +175,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertSingleObject()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = new AllReferencesAndID
             {
@@ -199,7 +198,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             var UpdatedResults = Results.ForEach(x => { x.CharValue = 'p'; }).ToArray();
@@ -211,7 +210,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             Assert.Equal(0, await TestObject.UpdateAsync<AllReferencesAndID>(null));
         }
@@ -219,7 +218,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = (await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default")).First();
             Result.CharValue = 'p';
@@ -231,7 +230,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, CacheManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             var Result = new AllReferencesAndID()
             {
                 CharValue = 'p'

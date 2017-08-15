@@ -78,9 +78,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery GenerateDeclarations()
+        public override IQuery[] GenerateDeclarations()
         {
-            return new Query(CommandType.Text, "", QueryType);
+            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
         }
 
         /// <summary>
@@ -88,10 +88,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery(TMappedClass queryObject)
+        public override IQuery[] GenerateQueries(TMappedClass queryObject)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateUpdateQuery(TypeGraph.Root, queryObject), QueryType, GenerateParameters(queryObject));
+            return new[] { new Query(AssociatedType, CommandType.Text, GenerateUpdateQuery(TypeGraph.Root, queryObject), QueryType, GenerateParameters(queryObject)) };
         }
 
         /// <summary>

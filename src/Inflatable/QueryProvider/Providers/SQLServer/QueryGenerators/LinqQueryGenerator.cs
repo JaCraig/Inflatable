@@ -56,9 +56,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery GenerateDeclarations()
+        public override IQuery[] GenerateDeclarations()
         {
-            return new Query(CommandType.Text, "", QueryType);
+            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
         }
 
         /// <summary>
@@ -66,10 +66,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery GenerateQuery(QueryData<TMappedClass> data)
+        public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new Query(CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType, data.Parameters.ToArray());
+            return new IQuery[] { new Query(AssociatedType, CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType, data.Parameters.ToArray()) };
         }
 
         /// <summary>
@@ -106,10 +106,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <summary>
         /// Generates the order by clause.
         /// </summary>
-        /// <param name="node">The node.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        private string GenerateOrderByClause(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
+        private string GenerateOrderByClause(QueryData<TMappedClass> data)
         {
             StringBuilder Builder = new StringBuilder();
             string Splitter = "";
@@ -183,9 +182,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             ParameterList.Append(GenerateParameterList(node, data));
 
             //Get Where Clause
-            WhereClause.Append(GenerateWhereClause(node, data));
+            WhereClause.Append(GenerateWhereClause(data));
 
-            OrderByClause.Append(GenerateOrderByClause(node, data));
+            OrderByClause.Append(GenerateOrderByClause(data));
 
             //Generate final query
             Builder.Append(($"SELECT{(data.Distinct ? " DISTINCT" : "")}{(data.Top > 0 ? $" TOP {data.Top}" : "")} {ParameterList}" +
@@ -198,10 +197,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <summary>
         /// Generates the where clause.
         /// </summary>
-        /// <param name="node">The node.</param>
         /// <param name="data">The data.</param>
         /// <returns>The WHERE clause</returns>
-        private string GenerateWhereClause(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
+        private string GenerateWhereClause(QueryData<TMappedClass> data)
         {
             return data.WhereClause.ToString();
         }
