@@ -45,6 +45,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public LoadPropertiesQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
+            var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
+            var ParentMappings = ChildMappings.SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
+            IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
             Queries = new Dictionary<string, List<QueryGeneratorData>>();
         }
 
@@ -53,6 +56,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <value>The type of the query.</value>
         public override QueryType QueryType => QueryType.LoadProperty;
+
+        /// <summary>
+        /// Gets the identifier properties.
+        /// </summary>
+        /// <value>The identifier properties.</value>
+        private IEnumerable<IIDProperty> IDProperties { get; set; }
 
         /// <summary>
         /// Gets or sets the queries.
@@ -89,9 +98,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Queries.Add(propertyName, new List<QueryGeneratorData>());
                 foreach (var ChildMapping in ChildMappings)
                 {
-                    ParentMappings = MappingInformation.GetParentMapping(ChildMapping.ObjectType);
-                    var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
