@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using BigBook;
+using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
@@ -44,7 +45,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public UpdateQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
-            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
+            var ParentMappings = MappingInformation.GetChildMappings(typeof(TMappedClass))
+                                                   .SelectMany(x => mappingInformation.GetParentMapping(x.ObjectType))
+                                                   .Distinct();
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
             ReferenceProperties = ParentMappings.SelectMany(x => x.ReferenceProperties);
             MapProperties = ParentMappings.SelectMany(x => x.MapProperties);
@@ -132,9 +135,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The parameters.</returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject)
         {
+            var ORMObject = queryObject as IORMObject;
             var Parameters = IDProperties.ForEach(y => y.GetAsParameter(queryObject)).ToList();
             Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(queryObject)));
-            Parameters.AddRange(MapProperties.ForEach(y => y.GetAsParameter(queryObject)).SelectMany(x => x));
+            Parameters.AddRange(MapProperties.Where(x => ORMObject == null || ORMObject.PropertiesChanged0.Contains(x.Name)).ForEach(y => y.GetAsParameter(queryObject)).SelectMany(x => x));
             return Parameters.ToArray();
         }
 
@@ -146,9 +150,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateUpdateQuery(Utils.TreeNode<Type> node, TMappedClass queryObject)
         {
-            var Mapping = MappingInformation.Mappings[node.Data];
-            if (Mapping.ReferenceProperties.Count == 0)
-                return "";
             StringBuilder Builder = new StringBuilder();
             StringBuilder ParameterList = new StringBuilder();
             StringBuilder WhereClause = new StringBuilder();
@@ -165,6 +166,17 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 }
             }
 
+            var ORMObject = queryObject as IORMObject;
+            var Mapping = MappingInformation.Mappings[node.Data];
+            if (ORMObject!=null
+                && !Mapping.ReferenceProperties.Any()
+                && !Mapping.MapProperties.Where(x => ORMObject.PropertiesChanged0.Contains(x.Name)).Any())
+                return Builder.ToString();
+            if (ORMObject == null
+                && Mapping.ReferenceProperties.Count == 0
+                && Mapping.MapProperties.Count == 0)
+                return Builder.ToString();
+
             //Adding reference properties
             foreach (var ReferenceProperty in Mapping.ReferenceProperties)
             {
@@ -173,7 +185,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
 
             //Map properties
-            foreach (var MapProperty in Mapping.MapProperties)
+            foreach (var MapProperty in Mapping.MapProperties.Where(x => ORMObject == null || ORMObject.PropertiesChanged0.Contains(x.Name)))
             {
                 ParameterList.Append(Splitter + GetColumnName(MapProperty) + "=" + GetParameterName(MapProperty));
                 Splitter = ",";

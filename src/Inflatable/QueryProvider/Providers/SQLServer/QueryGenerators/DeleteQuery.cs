@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
+using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
@@ -43,10 +44,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public DeleteQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
-            GenerateQuery();
-            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
-
+            ParentMappings = MappingInformation.GetChildMappings<TMappedClass>()
+                                                .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                                                .Distinct();
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
+            GenerateQuery();
         }
 
         /// <summary>
@@ -54,6 +56,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <value>The type of the query.</value>
         public override QueryType QueryType => QueryType.Delete;
+
+        /// <summary>
+        /// Gets or sets the parent mappings.
+        /// </summary>
+        /// <value>
+        /// The parent mappings.
+        /// </value>
+        private IEnumerable<IMapping> ParentMappings { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier properties.
@@ -101,9 +111,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         private void GenerateQuery()
         {
-            var ParentTypes = MappingInformation.GetParentMapping<TMappedClass>();
             StringBuilder Builder = new StringBuilder();
-            foreach (var ParentMapping in ParentTypes.Where(x => x.IDProperties.Count > 0).OrderBy(x => x.Order))
+            foreach (var ParentMapping in ParentMappings.Where(x => x.IDProperties.Count > 0).OrderBy(x => x.Order))
             {
                 Builder.AppendLineFormat("DELETE FROM {0} WHERE {1};",
                     GetTableName(ParentMapping),

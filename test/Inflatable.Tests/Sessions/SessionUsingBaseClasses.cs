@@ -106,7 +106,7 @@ namespace Inflatable.Tests.Sessions
                 x.BaseClassValue1 = 10;
             });
             var ResultCount = await TempSession.UpdateAsync(TestObject);
-            Assert.Equal(6, ResultCount);
+            Assert.Equal(12, ResultCount);
             TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(6, TestObject.Length);
             Assert.Equal(3, TestObject.OfType<ConcreteClass1>().Count());
