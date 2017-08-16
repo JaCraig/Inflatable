@@ -109,17 +109,15 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>The result</returns>
         public IOperator Optimize(MappingSource mappingSource)
         {
-            var Mapping = mappingSource.Mappings[InternalProperty.DeclaringType];
-            var ParentMappings = mappingSource.GetParentMapping(InternalProperty.DeclaringType);
-            if (!Mapping.ContainsProperty(InternalProperty.Name))
+            var ParentMappings = mappingSource.GetChildMappings(InternalProperty.DeclaringType)
+                                                   .SelectMany(x => mappingSource.GetParentMapping(x.ObjectType))
+                                                   .Distinct();
+            var ParentMapping = ParentMappings.FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
+            if (ParentMapping == null)
             {
-                var ParentMapping = ParentMappings.FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
-                if (ParentMapping == null)
-                    return null;
-                Column = ParentMapping.GetColumnName(InternalProperty.Name);
+                return null;
             }
-            else
-                Column = Mapping.GetColumnName(InternalProperty.Name);
+            Column = ParentMapping.GetColumnName(InternalProperty.Name);
 
             if (InternalProperty.PropertyType == typeof(bool) && Parent as BinaryOperator == null)
             {

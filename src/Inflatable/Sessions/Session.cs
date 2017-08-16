@@ -147,7 +147,8 @@ namespace Inflatable.Sessions
             var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
             Batch.AddQuery(command, type, Parameters.ToArray());
-            var Results = (await Batch.ExecuteAsync()).Select(x => new QueryResults(new Query(typeof(TObject),
+            var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
+            var Results = (await Batch.ExecuteAsync()).Select(x => new QueryResults(new Query(ObjectType,
                                                                                                 CommandType.Text,
                                                                                                 command,
                                                                                                 QueryType.LinqQuery,

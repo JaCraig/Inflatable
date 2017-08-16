@@ -50,12 +50,9 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass1())[0].QueryString);
 
-            Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;
-", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
-            Assert.Equal(@"DECLARE @BaseClass1_ID_Temp AS BIGINT;
-", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
-            Assert.Equal(@"DECLARE @ConcreteClass1_ID_Temp AS BIGINT;
-", Result.GenerateDeclarations(QueryType.Insert)[2].QueryString);
+            Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
+            Assert.Equal(@"DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
+            Assert.Equal(@"DECLARE @ConcreteClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[2].QueryString);
 
             Assert.Equal(@"INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;
 SET @IInterface1_ID_Temp=SCOPE_IDENTITY();
@@ -104,12 +101,9 @@ INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass2())[0].QueryString);
 
-            Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;
-", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
-            Assert.Equal(@"DECLARE @BaseClass1_ID_Temp AS BIGINT;
-", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
-            Assert.Equal(@"DECLARE @ConcreteClass2_ID_Temp AS BIGINT;
-", Result.GenerateDeclarations(QueryType.Insert)[2].QueryString);
+            Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
+            Assert.Equal(@"DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
+            Assert.Equal(@"DECLARE @ConcreteClass2_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[2].QueryString);
 
             Assert.Equal(@"INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;
 SET @IInterface1_ID_Temp=SCOPE_IDENTITY();
@@ -159,10 +153,8 @@ INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[
 
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass3())[0].QueryString);
 
-            Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;
-", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
-            Assert.Equal(@"DECLARE @ConcreteClass3_ID_Temp AS BIGINT;
-", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
+            Assert.Equal(@"DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
+            Assert.Equal(@"DECLARE @ConcreteClass3_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
 
             Assert.Equal(@"INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;
 SET @IInterface1_ID_Temp=SCOPE_IDENTITY();

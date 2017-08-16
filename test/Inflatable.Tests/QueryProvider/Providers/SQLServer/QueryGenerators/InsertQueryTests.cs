@@ -58,17 +58,17 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
             Assert.Empty(Result[0].Parameters);
-            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;\r\n", Result[0].QueryString);
+            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result[0].QueryString);
             Assert.Equal(QueryType.Insert, Result[0].QueryType);
 
             Assert.Equal(CommandType.Text, Result[1].DatabaseCommandType);
             Assert.Empty(Result[1].Parameters);
-            Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;\r\n", Result[1].QueryString);
+            Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result[1].QueryString);
             Assert.Equal(QueryType.Insert, Result[1].QueryType);
 
             Assert.Equal(CommandType.Text, Result[2].DatabaseCommandType);
             Assert.Empty(Result[2].Parameters);
-            Assert.Equal("DECLARE @ConcreteClass1_ID_Temp AS BIGINT;\r\n", Result[2].QueryString);
+            Assert.Equal("DECLARE @ConcreteClass1_ID_Temp AS BIGINT;", Result[2].QueryString);
             Assert.Equal(QueryType.Insert, Result[2].QueryType);
         }
 

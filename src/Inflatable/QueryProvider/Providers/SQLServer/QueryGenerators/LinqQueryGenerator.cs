@@ -22,6 +22,7 @@ using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -68,8 +69,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
-            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType, data.Parameters.ToArray()) };
+            List<IQuery> ReturnValue=new List<IQuery>();
+            var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
+            foreach (var ChildMapping in ChildMappings)
+            {
+
+                var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+                ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType, data.Parameters.ToArray()));
+            }
+            return ReturnValue.ToArray();
         }
 
         /// <summary>

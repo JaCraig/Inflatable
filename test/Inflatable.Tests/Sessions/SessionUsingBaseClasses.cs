@@ -37,9 +37,9 @@ namespace Inflatable.Tests.Sessions
                     Value1=3,
                     BaseClassValue1=3
                 },
-                new ConcreteClass1()
+                new ConcreteClass2()
                 {
-                    Value1=1,
+                    InterfaceValue=2,
                     BaseClassValue1=1
                 },
                 new ConcreteClass2()
@@ -82,9 +82,9 @@ namespace Inflatable.Tests.Sessions
                     Value1=3,
                     BaseClassValue1=3
                 },
-                new ConcreteClass1()
+                new ConcreteClass2()
                 {
-                    Value1=1,
+                    InterfaceValue=2,
                     BaseClassValue1=1
                 },
                 new ConcreteClass2()

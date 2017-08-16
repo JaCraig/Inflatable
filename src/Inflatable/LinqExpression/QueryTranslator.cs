@@ -129,11 +129,12 @@ namespace Inflatable.LinqExpression
                     var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
-                        var Mapping = Source.Mappings[typeof(TObject)];
-                        var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                        var ParentMappings = Source.GetChildMappings(typeof(TObject))
+                                                   .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                                                   .Distinct();
                         foreach (var Column in Columns)
                         {
-                            if (Mapping.ContainsProperty(Column.Name) || ParentMappings.Any(x => x.ContainsProperty(Column.Name)))
+                            if (ParentMappings.Any(x => x.ContainsProperty(Column.Name)))
                             {
                                 Builders[Source].SelectValues.Add(Column);
                             }
@@ -151,11 +152,12 @@ namespace Inflatable.LinqExpression
                     var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
-                        var Mapping = Source.Mappings[typeof(TObject)];
-                        var ParentMappings = Source.GetParentMapping(typeof(TObject));
+                        var ParentMappings = Source.GetChildMappings(typeof(TObject))
+                                                   .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                                                   .Distinct();
                         foreach (var Column in Columns)
                         {
-                            if (Mapping.ContainsProperty(Column.Name) || ParentMappings.Any(x => x.ContainsProperty(Column.Name)))
+                            if (ParentMappings.Any(x => x.ContainsProperty(Column.Name)))
                             {
                                 Builders[Source].OrderByValues.Add(new OrderByClause(Builders[Source].OrderByValues.Count,
                                     Column,
