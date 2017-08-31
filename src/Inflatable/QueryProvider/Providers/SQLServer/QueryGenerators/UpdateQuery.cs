@@ -168,9 +168,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             var ORMObject = queryObject as IORMObject;
             var Mapping = MappingInformation.Mappings[node.Data];
-            if (ORMObject!=null
+            if (ORMObject != null
                 && !Mapping.ReferenceProperties.Any()
-                && !Mapping.MapProperties.Where(x => ORMObject.PropertiesChanged0.Contains(x.Name)).Any())
+                && !Mapping.MapProperties.Any(x => ORMObject.PropertiesChanged0.Contains(x.Name)))
                 return Builder.ToString();
             if (ORMObject == null
                 && Mapping.ReferenceProperties.Count == 0

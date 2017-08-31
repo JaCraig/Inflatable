@@ -44,6 +44,15 @@ namespace Inflatable.Interfaces
         ID<ClassType, DataType> ID<DataType>(Expression<Func<ClassType, DataType>> expression);
 
         /// <summary>
+        /// Sets a property as a many to many type.
+        /// </summary>
+        /// <typeparam name="DataType">The type of the ata type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The many to many object</returns>
+        ManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IList<DataType>>> expression)
+            where DataType : class;
+
+        /// <summary>
         /// Sets a property as a map type.
         /// </summary>
         /// <typeparam name="DataType">The type of the data type.</typeparam>
@@ -83,6 +92,12 @@ namespace Inflatable.Interfaces
         /// </summary>
         /// <value>The identifier properties.</value>
         ICollection<IIDProperty> IDProperties { get; }
+
+        /// <summary>
+        /// Gets the many to many properties.
+        /// </summary>
+        /// <value>The many to many properties.</value>
+        ICollection<IManyToManyProperty> ManyToManyProperties { get; }
 
         /// <summary>
         /// Gets the map properties.

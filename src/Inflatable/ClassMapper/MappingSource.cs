@@ -254,6 +254,11 @@ namespace Inflatable.ClassMapper
                 {
                     Builder.AppendLineFormat("\t\t\t{0}", Property);
                 }
+                Builder.AppendLine("\t\tMany To Many:");
+                foreach (var Property in Mapping.ManyToManyProperties)
+                {
+                    Builder.AppendLineFormat("\t\t\t{0}", Property);
+                }
                 Builder.AppendLine();
             }
             return Builder.ToString();

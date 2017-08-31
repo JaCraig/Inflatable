@@ -63,6 +63,7 @@ namespace Inflatable.BaseClasses
             TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
             Merge = merge;
             MapProperties = new List<IMapProperty>();
+            ManyToManyProperties = new List<IManyToManyProperty>();
         }
 
         /// <summary>
@@ -82,6 +83,12 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <value>The identifier properties.</value>
         public ICollection<IIDProperty> IDProperties { get; private set; }
+
+        /// <summary>
+        /// Gets the many to many properties.
+        /// </summary>
+        /// <value>The many to many properties.</value>
+        public ICollection<IManyToManyProperty> ManyToManyProperties { get; private set; }
 
         /// <summary>
         /// Gets the map properties.
@@ -257,6 +264,21 @@ namespace Inflatable.BaseClasses
         }
 
         /// <summary>
+        /// Sets a property as a many to many type.
+        /// </summary>
+        /// <typeparam name="DataType">The type of the ata type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The many to many object</returns>
+        public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
+            where DataType : class
+        {
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            var ReturnValue = new ManyToMany<ClassType, DataType>(expression, this);
+            ManyToManyProperties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
         /// Sets a property as a map type.
         /// </summary>
         /// <typeparam name="DataType">The type of the data type.</typeparam>
@@ -320,6 +342,20 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
+            for (int x = 0; x < ManyToManyProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = ManyToManyProperties.ElementAt(x);
+                for (int y = x + 1; y < ManyToManyProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        ManyToManyProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -353,6 +389,20 @@ namespace Inflatable.BaseClasses
                     {
                         logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
+            for (int x = 0; x < parentMapping.ManyToManyProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = parentMapping.ManyToManyProperties.ElementAt(x);
+                for (int y = x + 1; y < ManyToManyProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
                 }

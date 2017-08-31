@@ -203,6 +203,10 @@ namespace Inflatable.Schema
                     Map.Setup(Source);
                     Map.AddToTable(Table);
                 }
+                foreach (var Map in Mapping.ManyToManyProperties)
+                {
+                    Map.Setup(Source, this);
+                }
                 foreach (var ParentMapping in ParentMappings)
                 {
                     foreach (var ID in ParentMapping.IDProperties)
