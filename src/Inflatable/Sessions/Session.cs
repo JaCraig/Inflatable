@@ -26,6 +26,7 @@ using Inflatable.Schema;
 using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -456,6 +457,28 @@ namespace Inflatable.Sessions
                     }
                 }
             }
+            foreach (var ManyToManyProperty in source.GetParentMapping(@object.GetType()).SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
+            {
+                var Generator = QueryProviderManager.CreateGenerator(ManyToManyProperty.PropertyType, source);
+                var ManyToManyValue = ManyToManyProperty.GetValue(@object);
+                if (ManyToManyValue != null)
+                {
+                    var ManyToManyValueList = ManyToManyValue as IEnumerable;
+                    foreach (var Item in ManyToManyValueList)
+                    {
+                        var TempType = Item.GetType();
+                        if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                            TempType = TempType.GetTypeInfo().BaseType;
+                        QueryResults.RemoveCacheTag(TempType.GetName());
+                        DeleteCascade(Item, source, batch);
+                        var Queries = Generator.GenerateQueries(QueryType.Delete, Item);
+                        foreach (var TempQuery in Queries)
+                        {
+                            batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -505,6 +528,9 @@ namespace Inflatable.Sessions
                 return;
             objectsSeen.Add(@object);
             var ORMObject = @object as IORMObject;
+
+            //Add cascade saving for ManyToMany as well as the Aspect code to lazy load them as needed. Also clean up various code below.
+            asdfasdf
             foreach (var MapProperty in source.GetParentMapping(objectType)
                                               .SelectMany(x => x.MapProperties)
                                               .Where(x => x.Cascade

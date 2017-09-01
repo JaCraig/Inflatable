@@ -128,6 +128,16 @@ namespace Inflatable.QueryProvider.BaseClasses
         }
 
         /// <summary>
+        /// Gets the name of the parent column.
+        /// </summary>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns>The parent column name</returns>
+        protected string GetForeignColumnName(IManyToManyProperty mapProperty)
+        {
+            return GetColumnName(mapProperty.ForeignMapping.IDProperties.First());
+        }
+
+        /// <summary>
         /// Gets the name of the parent parameter.
         /// </summary>
         /// <param name="mapProperty">The map property.</param>
@@ -241,6 +251,16 @@ namespace Inflatable.QueryProvider.BaseClasses
         protected string GetTableName(IMapping parentMapping)
         {
             return "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]";
+        }
+
+        /// <summary>
+        /// Gets the name of the table.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>The name of the table.</returns>
+        protected string GetTableName(IManyToManyProperty property)
+        {
+            return "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "]";
         }
     }
 }

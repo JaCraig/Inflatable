@@ -48,12 +48,6 @@ namespace Inflatable.ClassMapper.BaseClasses
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
             Name = expression.PropertyName();
-            string Class1 = typeof(ClassType).Name;
-            string Class2 = typeof(DataType).Name;
-            if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
-                SetTableName(Class1 + "_" + Class2);
-            else
-                SetTableName(Class2 + "_" + Class1);
             CompiledExpression = expression.Compile();
             Expression = expression;
             InternalFieldName = "_" + Name + "Derived";

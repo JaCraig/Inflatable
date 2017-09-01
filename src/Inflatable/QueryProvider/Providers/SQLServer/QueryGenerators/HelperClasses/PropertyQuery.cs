@@ -38,12 +38,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperCla
         public IEnumerable<IIDProperty> IDProperties { get; set; }
 
         /// <summary>
-        /// Gets or sets the property (if needed).
-        /// </summary>
-        /// <value>The property (if needed).</value>
-        public IMapProperty Property { get; set; }
-
-        /// <summary>
         /// Gets or sets the query text.
         /// </summary>
         /// <value>The query text.</value>

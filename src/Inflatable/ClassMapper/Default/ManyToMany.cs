@@ -77,6 +77,16 @@ namespace Inflatable.ClassMapper.Default
             if (ForeignMapping == null)
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
 
+            if (string.IsNullOrEmpty(TableName))
+            {
+                string Class1 = typeof(ClassType).Name;
+                string Class2 = ForeignMapping.ObjectType.Name;
+                if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
+                    SetTableName(Class1 + "_" + Class2);
+                else
+                    SetTableName(Class2 + "_" + Class1);
+            }
+
             var JoinTable = dataModel.SourceSpec.AddTable(TableName, ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentIDMappings = mappings.GetParentMapping(ParentMapping.ObjectType).SelectMany(x => x.IDProperties);

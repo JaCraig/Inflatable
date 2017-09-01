@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
+using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
@@ -88,33 +89,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var ParentMappings = MappingInformation.GetParentMapping(AssociatedType);
             var Property = ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
+            if (Property != null)
+                return LoadMapProperty(ParentMappings, Property, queryObject);
 
-            var ChildMappings = MappingInformation.GetChildMappings(Property.PropertyType);
-
-            List<IQuery> ReturnValue = new List<IQuery>();
-
-            if (!Queries.ContainsKey(propertyName))
-            {
-                Queries.Add(propertyName, new List<QueryGeneratorData>());
-                foreach (var ChildMapping in ChildMappings)
-                {
-                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
-
-                    Queries[propertyName].Add(new QueryGeneratorData
-                    {
-                        AssociatedMapping = ChildMapping,
-                        IDProperties = IDProperties,
-                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, Property),
-                        Property = Property
-                    });
-                }
-            }
-            foreach (var Query in Queries[propertyName])
-            {
-                ReturnValue.Add(new Query(Query.AssociatedMapping.ObjectType, CommandType.Text, Query.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, Query.IDProperties)));
-            }
-            return ReturnValue.ToArray();
+            var ManyToManyProperty = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
+            if (ManyToManyProperty != null)
+                return LoadManyToManyProperty(ParentMappings, ManyToManyProperty, queryObject);
+            return new IQuery[0];
         }
 
         /// <summary>
@@ -219,6 +200,29 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         /// <summary>
+        /// Generates from clause.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>The result</returns>
+        private string GenerateParentFromClause(IManyToManyProperty property)
+        {
+            StringBuilder Result = new StringBuilder();
+            StringBuilder TempIDProperties = new StringBuilder();
+            string Separator = "";
+            foreach (var IDProperty in property.ForeignMapping.IDProperties)
+            {
+                TempIDProperties.AppendFormat("{0}{1}={2}",
+                    Separator,
+                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + property.ForeignMapping.TableName + IDProperty.ColumnName + "]",
+                    GetColumnName(IDProperty));
+                Separator = " AND ";
+            }
+            Result.AppendLine();
+            Result.AppendFormat("INNER JOIN {0} ON {1}", "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "]", TempIDProperties);
+            return Result.ToString();
+        }
+
+        /// <summary>
         /// Generates the select query.
         /// </summary>
         /// <param name="foreignNode">The foreign node.</param>
@@ -254,6 +258,62 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         /// <summary>
+        /// Generates the select query.
+        /// </summary>
+        /// <param name="foreignNode">The foreign node.</param>
+        /// <param name="node">The node.</param>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
+        private string GenerateSelectQuery(Utils.Tree<Type> foreignNode, Utils.Tree<Type> node, IManyToManyProperty property)
+        {
+            StringBuilder Builder = new StringBuilder();
+            StringBuilder ParameterList = new StringBuilder();
+            StringBuilder FromClause = new StringBuilder();
+            StringBuilder WhereClause = new StringBuilder();
+
+            var Mapping = MappingInformation.Mappings[node.Root.Data];
+            var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
+
+            //Get From Clause
+            FromClause.Append(GetTableName(ForeignMapping));
+            FromClause.Append(GenerateFromClause(foreignNode.Root));
+            FromClause.Append(GenerateParentFromClause(property));
+
+            //Get parameter listing
+            ParameterList.Append(GenerateParameterList(foreignNode.Root));
+
+            //Get Where Clause
+            WhereClause.Append(GenerateWhereClause(property));
+
+            //Generate final query
+            Builder.Append($"SELECT {ParameterList}" +
+                $"\r\nFROM {FromClause}" +
+                $"\r\nWHERE {WhereClause};");
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Generates the where clause.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
+        private string GenerateWhereClause(IManyToManyProperty property)
+        {
+            StringBuilder Result = new StringBuilder();
+            string Separator = "";
+            var ParentIDMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            foreach (var ParentIDMapping in ParentIDMappings)
+            {
+                Result.AppendFormat("{0}{1}={2}",
+                    Separator,
+                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ParentIDMapping.ColumnName + "]",
+                    GetParameterName(ParentIDMapping));
+                Separator = "\r\nAND ";
+            }
+            return Result.ToString();
+        }
+
+        /// <summary>
         /// Generates the where clause.
         /// </summary>
         /// <param name="node">The node.</param>
@@ -278,6 +338,70 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Separator = "\r\nAND ";
             }
             return Result.ToString();
+        }
+
+        private IQuery[] LoadManyToManyProperty(IEnumerable<IMapping> parentMappings, IManyToManyProperty property, TMappedClass queryObject)
+        {
+            var ChildMappings = MappingInformation.GetChildMappings(property.PropertyType);
+            List<IQuery> ReturnValue = new List<IQuery>();
+
+            if (!Queries.ContainsKey(property.Name))
+            {
+                Queries.Add(property.Name, new List<QueryGeneratorData>());
+                foreach (var ChildMapping in ChildMappings)
+                {
+                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+
+                    Queries[property.Name].Add(new QueryGeneratorData
+                    {
+                        AssociatedMapping = ChildMapping,
+                        IDProperties = IDProperties,
+                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property),
+                    });
+                }
+            }
+            foreach (var Query in Queries[property.Name])
+            {
+                ReturnValue.Add(new Query(Query.AssociatedMapping.ObjectType, CommandType.Text, Query.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, Query.IDProperties)));
+            }
+            return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Loads the map property.
+        /// </summary>
+        /// <param name="parentMappings">The parent mappings.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns></returns>
+        private IQuery[] LoadMapProperty(IEnumerable<IMapping> parentMappings, IMapProperty property, TMappedClass queryObject)
+        {
+            var ChildMappings = MappingInformation.GetChildMappings(property.PropertyType);
+
+            List<IQuery> ReturnValue = new List<IQuery>();
+
+            if (!Queries.ContainsKey(property.Name))
+            {
+                Queries.Add(property.Name, new List<QueryGeneratorData>());
+                foreach (var ChildMapping in ChildMappings)
+                {
+                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+
+                    Queries[property.Name].Add(new QueryGeneratorData
+                    {
+                        AssociatedMapping = ChildMapping,
+                        IDProperties = IDProperties,
+                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property)
+                    });
+                }
+            }
+            foreach (var Query in Queries[property.Name])
+            {
+                ReturnValue.Add(new Query(Query.AssociatedMapping.ObjectType, CommandType.Text, Query.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, Query.IDProperties)));
+            }
+            return ReturnValue.ToArray();
         }
     }
 }
