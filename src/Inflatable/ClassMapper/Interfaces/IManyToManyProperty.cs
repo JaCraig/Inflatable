@@ -18,7 +18,9 @@ using BigBook.Patterns;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.Schema;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -165,6 +167,14 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <returns>The resulting property</returns>
         IManyToManyProperty Convert<TResult>(IMapping mapping)
             where TResult : class;
+
+        /// <summary>
+        /// Gets as parameter.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="propertyValue">The property value.</param>
+        /// <returns></returns>
+        IEnumerable<IParameter> GetAsParameter(object queryObject, object propertyValue);
 
         /// <summary>
         /// Gets the property's value from the object sent in

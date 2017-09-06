@@ -411,6 +411,11 @@ namespace Inflatable.Sessions
             return ReturnValue;
         }
 
+        /// <summary>
+        /// Converts the parameters.
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
         private static List<IParameter> ConvertParameters(object[] parameters)
         {
             var Parameters = new List<IParameter>();
@@ -429,6 +434,60 @@ namespace Inflatable.Sessions
             }
 
             return Parameters;
+        }
+
+        /// <summary>
+        /// Inserts the cascade object.
+        /// </summary>
+        /// <param name="MapValue">The map value.</param>
+        /// <param name="TempType">Type of the temporary.</param>
+        /// <param name="Generator">The generator.</param>
+        /// <param name="Batch">The batch.</param>
+        /// <returns></returns>
+        private static void InsertCascadeObject(object MapValue, ref Type TempType, IGenerator Generator, SQLHelper.SQLHelper Batch)
+        {
+            TempType = TempType.GetTypeInfo().BaseType;
+            var Queries = Generator.GenerateQueries(QueryType.Update, MapValue);
+            foreach (var TempQuery in Queries)
+            {
+                Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+            }
+        }
+
+        /// <summary>
+        /// Updates the cascade object.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="MapValue">The map value.</param>
+        /// <param name="TempType">Type of the temporary.</param>
+        /// <param name="Generator">The generator.</param>
+        /// <param name="Batch">The batch.</param>
+        /// <returns></returns>
+        private static void UpdateCascadeObject(MappingSource source, object MapValue, Type TempType, IGenerator Generator, SQLHelper.SQLHelper Batch)
+        {
+            var TempQueries = Generator.GenerateDeclarations(QueryType.Insert);
+            for (int x = 0; x < TempQueries.Length; ++x)
+            {
+                Batch.AddQuery(TempQueries[x].QueryString, TempQueries[x].DatabaseCommandType, TempQueries[x].Parameters);
+            }
+            var Queries = Generator.GenerateQueries(QueryType.Insert, MapValue);
+            foreach (var TempQuery in Queries)
+            {
+                var IDProperty = source.GetParentMapping(TempType)
+                                       .SelectMany(x => x.IDProperties)
+                                       .FirstOrDefault(x => x.AutoIncrement);
+                var ReturnedID = Batch.AddQuery((TmpCommand, ResultList, InsertObject) =>
+                {
+                    if (IDProperty != null && IDProperty.AutoIncrement)
+                    {
+                        IDProperty.SetValue(InsertObject, IDProperty.GetValue((Dynamo)ResultList[0]));
+                    }
+                },
+                MapValue,
+                TempQuery.QueryString,
+                TempQuery.DatabaseCommandType,
+                TempQuery.Parameters);
+            }
         }
 
         /// <summary>
@@ -531,6 +590,9 @@ namespace Inflatable.Sessions
 
             //Add cascade saving for ManyToMany as well as the Aspect code to lazy load them as needed. Also clean up various code below.
             asdfasdf
+            // Code below should only do inserts as a one time batch for the ID on Map items.
+            // ManyToMany can be batched together into one set of inserts instead of a bunch. Updates
+            // can just be added to the overall batch as that doesn't touch the IDs.
             foreach (var MapProperty in source.GetParentMapping(objectType)
                                               .SelectMany(x => x.MapProperties)
                                               .Where(x => x.Cascade
@@ -538,58 +600,56 @@ namespace Inflatable.Sessions
                                                           || ORMObject.PropertiesChanged0.Contains(x.Name))))
             {
                 var MapValue = MapProperty.GetValue(@object);
-                if (MapValue != null)
+                await SaveCascadeObject(source, objectsSeen, MapValue);
+            }
+            foreach (var ManyToManyProperty in source.GetParentMapping(objectType)
+                                              .SelectMany(x => x.ManyToManyProperties)
+                                              .Where(x => x.Cascade))
+            {
+                var ManyToManyValue = ManyToManyProperty.GetValue(@object) as IEnumerable;
+                foreach (var Item in ManyToManyValue)
                 {
-                    Type TempType = MapValue.GetType();
-                    var CascadeType = TempType;
-                    if (CascadeType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-                        CascadeType = CascadeType.GetTypeInfo().BaseType;
-                    await SaveCascade(MapValue, CascadeType, source, objectsSeen);
-
-                    var Generator = QueryProviderManager.CreateGenerator(MapValue.GetType(), source);
-                    var Batch = QueryProviderManager.CreateBatch(source.Source);
-
-                    IQuery[] Queries = null;
-                    IORMObject UpdateMapObject = MapValue as IORMObject;
-                    if (UpdateMapObject == null)
+                    var ORMItem = Item as IORMObject;
+                    if (ORMItem == null || ORMItem.PropertiesChanged0.Contains(ManyToManyProperty.Name))
                     {
-                        var TempQueries = Generator.GenerateDeclarations(QueryType.Insert);
-                        for (int x = 0; x < TempQueries.Length; ++x)
-                        {
-                            Batch.AddQuery(TempQueries[x].QueryString, TempQueries[x].DatabaseCommandType, TempQueries[x].Parameters);
-                        }
-                        Queries = Generator.GenerateQueries(QueryType.Insert, MapValue);
-                        foreach (var TempQuery in Queries)
-                        {
-                            var IDProperty = source.GetParentMapping(TempType)
-                                                   .SelectMany(x => x.IDProperties)
-                                                   .FirstOrDefault(x => x.AutoIncrement);
-                            var ReturnedID = Batch.AddQuery((TmpCommand, ResultList, InsertObject) =>
-                            {
-                                if (IDProperty != null && IDProperty.AutoIncrement)
-                                {
-                                    IDProperty.SetValue(InsertObject, IDProperty.GetValue((Dynamo)ResultList[0]));
-                                }
-                            },
-                            MapValue,
-                            TempQuery.QueryString,
-                            TempQuery.DatabaseCommandType,
-                            TempQuery.Parameters);
-                        }
+                        await SaveCascadeObject(source, objectsSeen, Item);
                     }
-                    else
-                    {
-                        TempType = TempType.GetTypeInfo().BaseType;
-                        Queries = Generator.GenerateQueries(QueryType.Update, MapValue);
-                        foreach (var TempQuery in Queries)
-                        {
-                            Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
-                        }
-                    }
-                    QueryResults.RemoveCacheTag(TempType.GetName());
-                    await Batch.ExecuteAsync();
                 }
             }
+        }
+
+        /// <summary>
+        /// Saves the cascade object.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        /// <param name="MapValue">The map value.</param>
+        /// <returns></returns>
+        private async Task SaveCascadeObject(MappingSource source, IList<object> objectsSeen, object MapValue)
+        {
+            if (MapValue == null || objectsSeen.Contains(MapValue))
+                return;
+            objectsSeen.Add(MapValue);
+            Type TempType = MapValue.GetType();
+            var CascadeType = TempType;
+            if (CascadeType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                CascadeType = CascadeType.GetTypeInfo().BaseType;
+            await SaveCascade(MapValue, CascadeType, source, objectsSeen);
+
+            var Generator = QueryProviderManager.CreateGenerator(MapValue.GetType(), source);
+            var Batch = QueryProviderManager.CreateBatch(source.Source);
+
+            IORMObject UpdateMapObject = MapValue as IORMObject;
+            if (UpdateMapObject == null)
+            {
+                UpdateCascadeObject(source, MapValue, TempType, Generator, Batch);
+            }
+            else
+            {
+                InsertCascadeObject(MapValue, ref TempType, Generator, Batch);
+            }
+            QueryResults.RemoveCacheTag(TempType.GetName());
+            await Batch.ExecuteAsync();
         }
     }
 }

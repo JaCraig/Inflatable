@@ -20,6 +20,8 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
+using SQLHelper.HelperClasses;
+using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -210,6 +212,44 @@ namespace Inflatable.ClassMapper.BaseClasses
             if (((object)SecondObj) == null)
                 return false;
             return this == SecondObj;
+        }
+
+        /// <summary>
+        /// Gets as parameter.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="propertyValue">The property value.</param>
+        /// <returns></returns>
+        public IEnumerable<IParameter> GetAsParameter(object queryObject, object propertyValue)
+        {
+            List<IParameter> Parameters = new List<IParameter>();
+            Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(propertyValue);
+                if (PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(ForeignMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(ForeignMapping.TableName + x.ColumnName,
+                    PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            }));
+            Parameters.AddRange(ParentMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(queryObject);
+                if (PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(ParentMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(ParentMapping.TableName + x.ColumnName,
+                    PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            }));
+            return Parameters;
         }
 
         /// <summary>

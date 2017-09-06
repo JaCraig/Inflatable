@@ -6,6 +6,11 @@ namespace Inflatable.Tests.TestDatabases.ManyToManyProperties
 {
     public class ManyToManyProperties
     {
+        public ManyToManyProperties()
+        {
+            ManyToManyClass = new List<AllReferencesAndID>();
+        }
+
         [BoolGenerator]
         public bool BoolValue { get; set; }
 
