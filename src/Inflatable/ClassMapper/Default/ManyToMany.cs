@@ -89,7 +89,9 @@ namespace Inflatable.ClassMapper.Default
 
             var JoinTable = dataModel.SourceSpec.AddTable(TableName, ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
-            var ParentIDMappings = mappings.GetParentMapping(ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
+            var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
+            DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
             foreach (var ParentIDMapping in ParentIDMappings)
             {
                 JoinTable.AddColumn(ParentMapping.TableName + ParentIDMapping.ColumnName,
@@ -104,9 +106,9 @@ namespace Inflatable.ClassMapper.Default
                                 ParentIDMapping.ColumnName,
                                 "",
                                 "",
-                                true,
-                                true,
-                                false);
+                                DatabaseJoinsCascade,
+                                DatabaseJoinsCascade,
+                                !DatabaseJoinsCascade);
             }
             foreach (var ForeignIDMapping in ForeignMapping.IDProperties)
             {
@@ -122,9 +124,9 @@ namespace Inflatable.ClassMapper.Default
                                 ForeignIDMapping.ColumnName,
                                 "",
                                 "",
-                                true,
-                                true,
-                                false);
+                                DatabaseJoinsCascade,
+                                DatabaseJoinsCascade,
+                                !DatabaseJoinsCascade);
             }
         }
     }

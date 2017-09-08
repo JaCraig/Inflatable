@@ -52,7 +52,7 @@ namespace Inflatable.Modules
             bootstrapper.Register<MappingManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<QueryProviderManager>(ServiceLifetime.Singleton);
-            bootstrapper.Register<Session>(ServiceLifetime.Singleton);
+            bootstrapper.Register<Session>();
             bootstrapper.RegisterAll<ORMAspectAssembliesBase>(ServiceLifetime.Singleton);
             bootstrapper.RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton);
             bootstrapper.RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton);

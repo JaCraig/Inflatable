@@ -32,6 +32,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <typeparam name="ClassType">The class type.</typeparam>
     /// <typeparam name="DataType">The data type.</typeparam>
     /// <typeparam name="ReturnType">The return type.</typeparam>
+    /// <seealso cref="IClassProperty"/>
     /// <seealso cref="IFluentInterface"/>
     public interface IManyToManyProperty<ClassType, DataType, ReturnType> : IFluentInterface
         where ClassType : class
@@ -103,13 +104,19 @@ namespace Inflatable.ClassMapper.Interfaces
     /// Many to many property
     /// </summary>
     /// <seealso cref="IFluentInterface"/>
-    public interface IManyToManyProperty
+    public interface IManyToManyProperty : IClassProperty
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="IMapProperty"/> is cascade.
         /// </summary>
         /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
         bool Cascade { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether [database joins cascade].
+        /// </summary>
+        /// <value><c>true</c> if [database joins cascade]; otherwise, <c>false</c>.</value>
+        bool DatabaseJoinsCascade { get; }
 
         /// <summary>
         /// Gets the foreign mapping.

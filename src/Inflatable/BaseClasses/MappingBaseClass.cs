@@ -398,7 +398,7 @@ namespace Inflatable.BaseClasses
                 var ReferenceProperty1 = parentMapping.ManyToManyProperties.ElementAt(x);
                 for (int y = x + 1; y < ManyToManyProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
+                    IManyToManyProperty ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);

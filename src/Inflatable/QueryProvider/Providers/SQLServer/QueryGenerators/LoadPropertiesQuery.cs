@@ -83,18 +83,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
-        /// <param name="propertyName">Property name</param>
+        /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject, string propertyName)
+        public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
             var ParentMappings = MappingInformation.GetParentMapping(AssociatedType);
-            var Property = ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
-            if (Property != null)
-                return LoadMapProperty(ParentMappings, Property, queryObject);
+            switch (property)
+            {
+                case IMapProperty Property:
+                    return LoadMapProperty(ParentMappings, Property, queryObject);
 
-            var ManyToManyProperty = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
-            if (ManyToManyProperty != null)
-                return LoadManyToManyProperty(ParentMappings, ManyToManyProperty, queryObject);
+                case IManyToManyProperty ManyToManyProperty:
+                    return LoadManyToManyProperty(ParentMappings, ManyToManyProperty, queryObject);
+            }
             return new IQuery[0];
         }
 

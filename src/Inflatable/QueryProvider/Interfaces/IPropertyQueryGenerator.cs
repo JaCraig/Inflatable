@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.ClassMapper.Interfaces;
+
 namespace Inflatable.QueryProvider.Interfaces
 {
     /// <summary>
@@ -27,8 +29,8 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
-        /// <param name="propertyName">Property name</param>
+        /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        IQuery[] GenerateQueries(TObject queryObject, string propertyName);
+        IQuery[] GenerateQueries(TObject queryObject, IClassProperty property);
     }
 }

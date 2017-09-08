@@ -21,7 +21,9 @@ using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses;
+using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -31,18 +33,18 @@ using System.Text;
 namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 {
     /// <summary>
-    /// Save properties query generator
+    /// Delete properties query
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
     /// <seealso cref="BaseClasses.PropertyQueryGeneratorBaseClass{TMappedClass}"/>
-    public class SavePropertiesQuery<TMappedClass> : PropertyQueryGeneratorBaseClass<TMappedClass>
+    public class DeletePropertiesQuery<TMappedClass> : PropertyQueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SavePropertiesQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        public SavePropertiesQuery(MappingSource mappingInformation)
+        public DeletePropertiesQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
             IDProperties = MappingInformation.GetChildMappings(typeof(TMappedClass))
@@ -56,7 +58,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets the type of the query.
         /// </summary>
         /// <value>The type of the query.</value>
-        public override QueryType QueryType => QueryType.JoinsSave;
+        public override QueryType QueryType => QueryType.JoinsDelete;
 
         /// <summary>
         /// Gets the identifier properties.
@@ -92,7 +94,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return new IQuery[0];
         }
 
-        private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property)
+        /// <summary>
+        /// Generates the join delete query.
+        /// </summary>
+        /// <param name="foreignIDProperties">The foreign identifier properties.</param>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
+        private string GenerateJoinDeleteQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property, int itemCount)
         {
             StringBuilder Builder = new StringBuilder();
             StringBuilder PropertyNames = new StringBuilder();
@@ -100,68 +108,122 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder ParametersList = new StringBuilder();
             string Splitter = "";
             string Splitter2 = "";
-            foreach (var ForeignID in foreignIDProperties)
-            {
-                PropertyNames.Append(Splitter).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "]");
-                PropertyValues.Append(Splitter).Append("@" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName);
-                ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "] = @" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName);
-                Splitter = ",";
-                Splitter2 = " AND ";
-            }
             foreach (var IDProperty in IDProperties)
             {
-                PropertyNames.Append(Splitter).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "]");
-                PropertyValues.Append(Splitter).Append("@" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
                 ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
-                Splitter = ",";
                 Splitter2 = " AND ";
             }
-            Builder.AppendFormat("IF NOT EXISTS (SELECT * FROM {0} WHERE {3}) BEGIN INSERT INTO {0}({1}) VALUES ({2}) END;", GetTableName(property), PropertyNames, PropertyValues, ParametersList);
+            ParametersList.Append(" AND NOT (");
+            Splitter = "";
+            for (int x = 0; x < itemCount; ++x)
+            {
+                Splitter2 = "";
+                ParametersList.Append(Splitter).Append("(");
+                foreach (var ForeignID in foreignIDProperties)
+                {
+                    ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "] = @" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + x);
+                    Splitter2 = " AND ";
+                }
+                ParametersList.Append(")");
+                Splitter = " OR ";
+            }
+            ParametersList.Append(")");
+            Builder.AppendFormat("DELETE FROM {0} WHERE {1};", GetTableName(property), ParametersList);
             return Builder.ToString();
         }
 
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="propertyItem">The property item.</param>
+        /// <returns></returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToManyProperty property, object propertyItem)
         {
+            var ItemList = propertyItem as IEnumerable;
             List<IParameter> ReturnValues = new List<IParameter>();
-            ReturnValues.AddRange(property.GetAsParameter(queryObject, propertyItem));
+            int Count = 0;
+            ReturnValues.AddRange(property.ParentMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(queryObject);
+                if (x.PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(property.ParentMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(property.ParentMapping.TableName + x.ColumnName,
+                    x.PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            }));
+            foreach (var Item in ItemList)
+            {
+                ReturnValues.AddRange(property.ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+                {
+                    var Value = x.GetValue(Item);
+                    if (x.PropertyType == typeof(string))
+                    {
+                        var TempParameter = Value as string;
+                        return new StringParameter(property.ForeignMapping.TableName + x.ColumnName + Count,
+                            TempParameter);
+                    }
+                    return new Parameter<object>(property.ForeignMapping.TableName + x.ColumnName + Count,
+                        x.PropertyType.To<Type, SqlDbType>(),
+                        Value);
+                }));
+                ++Count;
+            }
             return ReturnValues.ToArray();
         }
 
+        /// <summary>
+        /// Manies to many property.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns></returns>
         private IQuery[] ManyToManyProperty(IManyToManyProperty property, TMappedClass queryObject)
         {
             var ItemList = property.GetValue(queryObject) as IEnumerable;
 
-            if (!Queries.ContainsKey(property.Name))
-            {
-                var ForeignIDProperties = MappingInformation.GetChildMappings(property.PropertyType)
+            var ForeignIDProperties = MappingInformation.GetChildMappings(property.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(property.Name, new List<QueryGeneratorData>());
-                Queries[property.Name].Add(new QueryGeneratorData
-                {
-                    AssociatedMapping = MappingInformation.Mappings[property.PropertyType],
-                    IDProperties = IDProperties,
-                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, property)
-                });
-            }
-            if (ItemList == null)
-                return new IQuery[0];
-
-            List<IQuery> ReturnValue = new List<IQuery>();
-            foreach (var TempQuery in Queries[property.Name])
+            List<IQuery> ReturnValue = new List<IQuery>
             {
-                foreach (var Item in ItemList)
-                {
-                    ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType,
-                        CommandType.Text,
-                        TempQuery.QueryText,
-                        QueryType,
-                        GenerateParameters(queryObject, property, Item)));
-                }
-            }
+                new Query(property.PropertyType,
+                CommandType.Text,
+                GenerateJoinDeleteQuery(ForeignIDProperties, property, ItemList.Count()),
+                QueryType,
+                GenerateParameters(queryObject, property, ItemList))
+            };
             return ReturnValue.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <seealso cref="Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass{TMappedClass}"/>
+    internal static class ExtensionHelpers
+    {
+        /// <summary>
+        /// Counts the specified list.
+        /// </summary>
+        /// <param name="list">The list.</param>
+        /// <returns></returns>
+        public static int Count(this IEnumerable list)
+        {
+            if (list == null)
+                return 0;
+            int FinalCount = 0;
+            foreach (var Item in list)
+            {
+                ++FinalCount;
+            }
+            return FinalCount;
         }
     }
 }

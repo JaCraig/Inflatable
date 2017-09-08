@@ -17,12 +17,14 @@ limitations under the License.
 using BigBook;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
+using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.Schema;
+using Inflatable.Sessions.Commands;
 using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
@@ -92,32 +94,7 @@ namespace Inflatable.Sessions
         public async Task<int> DeleteAsync<TObject>(params TObject[] objectsToDelete)
             where TObject : class
         {
-            objectsToDelete = (objectsToDelete ?? new TObject[0]).Where(x => x != null).ToArray();
-            if (objectsToDelete.Length == 0)
-                return 0;
-            var ReturnValue = 0;
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite
-                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
-                                                         .OrderBy(x => x.Order))
-            {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
-                for (int x = 0; x < objectsToDelete.Length; ++x)
-                {
-                    var TempType = objectsToDelete[x].GetType();
-                    if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-                        TempType = TempType.GetTypeInfo().BaseType;
-                    QueryResults.RemoveCacheTag(TempType.GetName());
-                    DeleteCascade(objectsToDelete[x], Source, Batch);
-                    var Generator = QueryProviderManager.CreateGenerator(objectsToDelete[x].GetType(), Source);
-                    var Queries = Generator.GenerateQueries(QueryType.Delete, objectsToDelete[x]);
-                    foreach (var TempQuery in Queries)
-                    {
-                        Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
-                    }
-                }
-                ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
-            }
-            return ReturnValue;
+            return await new DeleteCommand<TObject>(MappingManager, QueryProviderManager, objectsToDelete).Execute();
         }
 
         /// <summary>
@@ -289,7 +266,7 @@ namespace Inflatable.Sessions
                     if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
                         TempType = TempType.GetTypeInfo().BaseType;
                     QueryResults.RemoveCacheTag(TempType.GetName());
-                    await SaveCascade(objectsToInsert[x], TempType, Source, new List<object>());
+                    await SaveCascade(objectsToInsert[x], TempType, Source, new List<object>(), Batch);
                     Generator = QueryProviderManager.CreateGenerator(TempType, Source);
                     var ObjectQueries = Generator.GenerateQueries(QueryType.Insert, objectsToInsert[x]);
                     foreach (var ObjectQuery in ObjectQueries)
@@ -335,7 +312,8 @@ namespace Inflatable.Sessions
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
-                var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, propertyName);
+                IClassProperty Property = FindProperty<TObject, TData>(Source, propertyName);
+                var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
                 foreach (var TempQuery in Queries)
                 {
                     Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
@@ -394,7 +372,7 @@ namespace Inflatable.Sessions
                     var TempType = objectsToUpdate[x].GetType();
                     if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
                         TempType = TempType.GetTypeInfo().BaseType;
-                    await SaveCascade(objectsToUpdate[x], TempType, Source, new List<object>());
+                    await SaveCascade(objectsToUpdate[x], TempType, Source, new List<object>(), Batch);
                     var Generator = QueryProviderManager.CreateGenerator(TempType, Source);
                     QueryResults.RemoveCacheTag(TempType.GetName());
                     var Queries = Generator.GenerateQueries(QueryType.Update, objectsToUpdate[x]);
@@ -437,24 +415,6 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
-        /// Inserts the cascade object.
-        /// </summary>
-        /// <param name="MapValue">The map value.</param>
-        /// <param name="TempType">Type of the temporary.</param>
-        /// <param name="Generator">The generator.</param>
-        /// <param name="Batch">The batch.</param>
-        /// <returns></returns>
-        private static void InsertCascadeObject(object MapValue, ref Type TempType, IGenerator Generator, SQLHelper.SQLHelper Batch)
-        {
-            TempType = TempType.GetTypeInfo().BaseType;
-            var Queries = Generator.GenerateQueries(QueryType.Update, MapValue);
-            foreach (var TempQuery in Queries)
-            {
-                Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
-            }
-        }
-
-        /// <summary>
         /// Updates the cascade object.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -463,7 +423,7 @@ namespace Inflatable.Sessions
         /// <param name="Generator">The generator.</param>
         /// <param name="Batch">The batch.</param>
         /// <returns></returns>
-        private static void UpdateCascadeObject(MappingSource source, object MapValue, Type TempType, IGenerator Generator, SQLHelper.SQLHelper Batch)
+        private static void InsertCascadeObject(MappingSource source, object MapValue, Type TempType, IGenerator Generator, SQLHelper.SQLHelper Batch)
         {
             var TempQueries = Generator.GenerateDeclarations(QueryType.Insert);
             for (int x = 0; x < TempQueries.Length; ++x)
@@ -491,53 +451,40 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
-        /// Deletes the cascade.
+        /// Inserts the cascade object.
         /// </summary>
-        /// <param name="object">The object.</param>
-        /// <param name="source">The source.</param>
-        /// <param name="batch">The batch.</param>
-        private void DeleteCascade(object @object, MappingSource source, SQLHelper.SQLHelper batch)
+        /// <param name="MapValue">The map value.</param>
+        /// <param name="TempType">Type of the temporary.</param>
+        /// <param name="Generator">The generator.</param>
+        /// <param name="Batch">The batch.</param>
+        /// <returns></returns>
+        private static void UpdateCascadeObject(object MapValue, ref Type TempType, IGenerator Generator, SQLHelper.SQLHelper Batch)
         {
-            foreach (var MapProperty in source.GetParentMapping(@object.GetType()).SelectMany(x => x.MapProperties).Where(x => x.Cascade))
+            TempType = TempType.GetTypeInfo().BaseType;
+            var Queries = Generator.GenerateQueries(QueryType.Update, MapValue);
+            foreach (var TempQuery in Queries)
             {
-                var Generator = QueryProviderManager.CreateGenerator(MapProperty.PropertyType, source);
-                var MapValue = MapProperty.GetValue(@object);
-                if (MapValue != null)
-                {
-                    var TempType = MapValue.GetType();
-                    if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-                        TempType = TempType.GetTypeInfo().BaseType;
-                    QueryResults.RemoveCacheTag(TempType.GetName());
-                    DeleteCascade(MapValue, source, batch);
-                    var Queries = Generator.GenerateQueries(QueryType.Delete, MapValue);
-                    foreach (var TempQuery in Queries)
-                    {
-                        batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
-                    }
-                }
+                Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
             }
-            foreach (var ManyToManyProperty in source.GetParentMapping(@object.GetType()).SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
-            {
-                var Generator = QueryProviderManager.CreateGenerator(ManyToManyProperty.PropertyType, source);
-                var ManyToManyValue = ManyToManyProperty.GetValue(@object);
-                if (ManyToManyValue != null)
-                {
-                    var ManyToManyValueList = ManyToManyValue as IEnumerable;
-                    foreach (var Item in ManyToManyValueList)
-                    {
-                        var TempType = Item.GetType();
-                        if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-                            TempType = TempType.GetTypeInfo().BaseType;
-                        QueryResults.RemoveCacheTag(TempType.GetName());
-                        DeleteCascade(Item, source, batch);
-                        var Queries = Generator.GenerateQueries(QueryType.Delete, Item);
-                        foreach (var TempQuery in Queries)
-                        {
-                            batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
-                        }
-                    }
-                }
-            }
+        }
+
+        /// <summary>
+        /// Finds the property.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TData">The type of the data.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The property</returns>
+        private IClassProperty FindProperty<TObject, TData>(MappingSource source, string propertyName)
+            where TObject : class
+            where TData : class
+        {
+            var ParentMappings = source.GetParentMapping(typeof(TObject));
+            IClassProperty Property = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
+            if (Property != null)
+                return Property;
+            return ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
         }
 
         /// <summary>
@@ -581,40 +528,41 @@ namespace Inflatable.Sessions
         /// <param name="source">The source.</param>
         /// <param name="objectsSeen">The objects seen.</param>
         /// <returns></returns>
-        private async Task SaveCascade(object @object, Type objectType, MappingSource source, IList<object> objectsSeen)
+        private async Task SaveCascade(object @object, Type objectType, MappingSource source, IList<object> objectsSeen, SQLHelper.SQLHelper batch)
         {
             if (@object == null || objectsSeen.Contains(@object))
                 return;
             objectsSeen.Add(@object);
             var ORMObject = @object as IORMObject;
+            var ParentMappings = source.GetParentMapping(objectType);
 
             //Add cascade saving for ManyToMany as well as the Aspect code to lazy load them as needed. Also clean up various code below.
-            asdfasdf
+            //asdfasdf
             // Code below should only do inserts as a one time batch for the ID on Map items.
             // ManyToMany can be batched together into one set of inserts instead of a bunch. Updates
             // can just be added to the overall batch as that doesn't touch the IDs.
-            foreach (var MapProperty in source.GetParentMapping(objectType)
-                                              .SelectMany(x => x.MapProperties)
-                                              .Where(x => x.Cascade
-                                                       && (ORMObject == null
-                                                          || ORMObject.PropertiesChanged0.Contains(x.Name))))
+            foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties)
+                                                      .Where(x => x.Cascade
+                                                               && (ORMObject == null
+                                                                  || ORMObject.PropertiesChanged0.Contains(x.Name))))
             {
                 var MapValue = MapProperty.GetValue(@object);
-                await SaveCascadeObject(source, objectsSeen, MapValue);
+                await SaveCascadeObject(source, objectsSeen, MapValue, batch);
             }
-            foreach (var ManyToManyProperty in source.GetParentMapping(objectType)
-                                              .SelectMany(x => x.ManyToManyProperties)
-                                              .Where(x => x.Cascade))
+            foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties)
+                                                             .Where(x => x.Cascade
+                                                                      && (ORMObject == null
+                                                                         || ORMObject.PropertiesChanged0.Contains(x.Name))))
             {
                 var ManyToManyValue = ManyToManyProperty.GetValue(@object) as IEnumerable;
                 foreach (var Item in ManyToManyValue)
                 {
-                    var ORMItem = Item as IORMObject;
-                    if (ORMItem == null || ORMItem.PropertiesChanged0.Contains(ManyToManyProperty.Name))
-                    {
-                        await SaveCascadeObject(source, objectsSeen, Item);
-                    }
+                    await SaveCascadeObject(source, objectsSeen, Item, batch);
                 }
+            }
+            foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties))
+            {
+                SaveJoins(@object, source, batch, ManyToManyProperty);
             }
         }
 
@@ -625,7 +573,7 @@ namespace Inflatable.Sessions
         /// <param name="objectsSeen">The objects seen.</param>
         /// <param name="MapValue">The map value.</param>
         /// <returns></returns>
-        private async Task SaveCascadeObject(MappingSource source, IList<object> objectsSeen, object MapValue)
+        private async Task SaveCascadeObject(MappingSource source, IList<object> objectsSeen, object MapValue, SQLHelper.SQLHelper batch)
         {
             if (MapValue == null || objectsSeen.Contains(MapValue))
                 return;
@@ -634,22 +582,43 @@ namespace Inflatable.Sessions
             var CascadeType = TempType;
             if (CascadeType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
                 CascadeType = CascadeType.GetTypeInfo().BaseType;
-            await SaveCascade(MapValue, CascadeType, source, objectsSeen);
+            await SaveCascade(MapValue, CascadeType, source, objectsSeen, batch);
 
             var Generator = QueryProviderManager.CreateGenerator(MapValue.GetType(), source);
-            var Batch = QueryProviderManager.CreateBatch(source.Source);
-
             IORMObject UpdateMapObject = MapValue as IORMObject;
-            if (UpdateMapObject == null)
+            if (UpdateMapObject != null)
             {
-                UpdateCascadeObject(source, MapValue, TempType, Generator, Batch);
+                UpdateCascadeObject(MapValue, ref TempType, Generator, batch);
             }
             else
             {
-                InsertCascadeObject(MapValue, ref TempType, Generator, Batch);
+                var Batch = QueryProviderManager.CreateBatch(source.Source);
+                InsertCascadeObject(source, MapValue, TempType, Generator, Batch);
+                await Batch.ExecuteAsync();
             }
             QueryResults.RemoveCacheTag(TempType.GetName());
-            await Batch.ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Saves the joins.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="ManyToManyProperty">The many to many property.</param>
+        private void SaveJoins(object @object, MappingSource source, SQLHelper.SQLHelper batch, IManyToManyProperty ManyToManyProperty)
+        {
+            var LinksGenerator = QueryProviderManager.CreateGenerator(ManyToManyProperty.ParentMapping.ObjectType, source);
+            var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, ManyToManyProperty);
+            foreach (var TempQuery in TempQueries)
+            {
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+            }
+            TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, ManyToManyProperty);
+            foreach (var TempQuery in TempQueries)
+            {
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+            }
         }
     }
 }

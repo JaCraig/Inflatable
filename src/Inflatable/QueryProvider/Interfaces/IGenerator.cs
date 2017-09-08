@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using System;
@@ -52,9 +53,9 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="queryObject">The query object.</param>
-        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        IQuery[] GenerateQueries(QueryType type, object queryObject, string propertyName);
+        IQuery[] GenerateQueries(QueryType type, object queryObject, IClassProperty property);
     }
 
     /// <summary>

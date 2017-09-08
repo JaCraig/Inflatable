@@ -103,7 +103,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// Map property
     /// </summary>
     /// <seealso cref="IFluentInterface"/>
-    public interface IMapProperty
+    public interface IMapProperty : IClassProperty
     {
         /// <summary>
         /// Gets a value indicating whether this <see cref="IMapProperty"/> is cascade.
@@ -128,6 +128,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value>The name of the internal field.</value>
         string InternalFieldName { get; }
+
+        /// <summary>
+        /// Gets the load property query.
+        /// </summary>
+        /// <value>The load property query.</value>
+        Query LoadPropertyQuery { get; }
 
         /// <summary>
         /// Gets the name.
@@ -221,13 +227,5 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <param name="secondProperty">The second property.</param>
         /// <returns>True if it is similar, false otherwise.</returns>
         bool Similar(IMapProperty secondProperty);
-
-        /// <summary>
-        /// Gets the load property query.
-        /// </summary>
-        /// <value>
-        /// The load property query.
-        /// </value>
-        Query LoadPropertyQuery { get; }
     }
 }

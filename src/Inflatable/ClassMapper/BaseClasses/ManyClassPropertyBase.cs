@@ -72,6 +72,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         public Func<ClassType, IList<DataType>> CompiledExpression { get; }
 
         /// <summary>
+        /// Gets a value indicating whether [database joins cascade].
+        /// </summary>
+        /// <value><c>true</c> if [database joins cascade]; otherwise, <c>false</c>.</value>
+        public bool DatabaseJoinsCascade { get; protected set; }
+
+        /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
@@ -226,7 +232,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
             {
                 var Value = x.GetValue(propertyValue);
-                if (PropertyType == typeof(string))
+                if (x.PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
                     return new StringParameter(ForeignMapping.TableName + x.ColumnName,
@@ -239,7 +245,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             Parameters.AddRange(ParentMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
             {
                 var Value = x.GetValue(queryObject);
-                if (PropertyType == typeof(string))
+                if (x.PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
                     return new StringParameter(ParentMapping.TableName + x.ColumnName,

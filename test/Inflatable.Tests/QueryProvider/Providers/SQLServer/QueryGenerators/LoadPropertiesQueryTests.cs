@@ -94,9 +94,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
-            Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First().Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
+            var ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
+            ManyToManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
             var TestObject = new LoadPropertiesQuery<ManyToManyProperties>(Mappings);
-            var Result = TestObject.GenerateQueries(new ManyToManyProperties { ID = 10, BoolValue = true }, "ManyToManyClass")[0];
+            var Result = TestObject.GenerateQueries(new ManyToManyProperties { ID = 10, BoolValue = true }, ManyToManyProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(1, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
@@ -115,9 +116,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
-            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
+            var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
+            MapProperty.Setup(Mappings);
             var TestObject = new LoadPropertiesQuery<MapProperties>(Mappings);
-            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true }, "MappedClass")[0];
+            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(1, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);

@@ -40,7 +40,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
                 new InsertQuery<TMappedClass>(mappingInformation),
                 new UpdateQuery<TMappedClass>(mappingInformation),
                 new LinqQueryGenerator<TMappedClass>(mappingInformation),
-                new LoadPropertiesQuery<TMappedClass>(mappingInformation)
+                new LoadPropertiesQuery<TMappedClass>(mappingInformation),
+                new SavePropertiesQuery<TMappedClass>(mappingInformation)
             })
         {
         }

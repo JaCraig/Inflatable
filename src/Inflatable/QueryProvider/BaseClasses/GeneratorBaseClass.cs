@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.LinqExpression.Interfaces;
 using Inflatable.QueryProvider.Enums;
@@ -113,11 +114,11 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="queryObject">The query object.</param>
-        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        public IQuery[] GenerateQueries(QueryType type, object queryObject, string propertyName)
+        public IQuery[] GenerateQueries(QueryType type, object queryObject, IClassProperty property)
         {
-            return ((IPropertyQueryGenerator<TMappedClass>)QueryGenerators[type]).GenerateQueries((TMappedClass)queryObject, propertyName);
+            return ((IPropertyQueryGenerator<TMappedClass>)QueryGenerators[type]).GenerateQueries((TMappedClass)queryObject, property);
         }
     }
 }

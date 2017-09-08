@@ -14,12 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-namespace Inflatable.ClassMapper.Interfaces
+namespace Inflatable.Sessions.Commands.Enums
 {
     /// <summary>
-    /// Single class property data holder
+    /// Command types
     /// </summary>
-    public interface IClassProperty
+    public enum CommandType
     {
+        /// <summary>
+        /// The delete
+        /// </summary>
+        Delete
     }
 }

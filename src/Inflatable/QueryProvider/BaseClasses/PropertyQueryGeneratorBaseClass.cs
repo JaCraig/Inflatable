@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
 
 namespace Inflatable.QueryProvider.BaseClasses
@@ -41,9 +42,9 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
-        /// <param name="propertyName">Property name</param>
+        /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        public abstract IQuery[] GenerateQueries(TObject queryObject, string propertyName);
+        public abstract IQuery[] GenerateQueries(TObject queryObject, IClassProperty property);
 
         /// <summary>
         /// Generates the query.
