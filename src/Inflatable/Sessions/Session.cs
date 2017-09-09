@@ -585,8 +585,7 @@ namespace Inflatable.Sessions
             await SaveCascade(MapValue, CascadeType, source, objectsSeen, batch);
 
             var Generator = QueryProviderManager.CreateGenerator(MapValue.GetType(), source);
-            IORMObject UpdateMapObject = MapValue as IORMObject;
-            if (UpdateMapObject != null)
+            if (MapValue is IORMObject UpdateMapObject)
             {
                 UpdateCascadeObject(MapValue, ref TempType, Generator, batch);
             }

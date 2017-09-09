@@ -22,8 +22,12 @@ namespace Inflatable.Sessions.Commands.Enums
     public enum CommandType
     {
         /// <summary>
-        /// The delete
+        /// The delete type
         /// </summary>
-        Delete
+        Delete,
+        /// <summary>
+        /// The save type
+        /// </summary>
+        Save
     }
 }
