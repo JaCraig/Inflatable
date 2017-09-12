@@ -59,8 +59,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets a value indicating whether this <see
-        /// cref="T:Inflatable.ClassMapper.Interfaces.IMapProperty"/> is cascade.
+        /// Gets a value indicating whether this is cascade.
         /// </summary>
         /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
         public bool Cascade { get; protected set; }

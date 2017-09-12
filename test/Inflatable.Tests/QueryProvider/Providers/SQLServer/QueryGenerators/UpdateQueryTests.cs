@@ -104,14 +104,12 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new UpdateQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(3, Result.Parameters.Length);
+            Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.Equal(true, Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal(null, Result.Parameters[2].InternalValue);
-            Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[2].ID);
-            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue,[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]=@AllReferencesAndID_MappedClass_ID_\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
             Assert.Equal(QueryType.Update, Result.QueryType);
         }
 
@@ -129,14 +127,12 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new UpdateQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(3, Result.Parameters.Length);
+            Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.Equal(true, Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal(1, Result.Parameters[2].InternalValue);
-            Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[2].ID);
-            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue,[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]=@AllReferencesAndID_MappedClass_ID_\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
             Assert.Equal(QueryType.Update, Result.QueryType);
         }
     }

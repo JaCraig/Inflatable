@@ -35,7 +35,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         where TObject : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandBaseClass"/> class.
+        /// Initializes a new instance of the <see cref="CommandBaseClass{TObject}"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
@@ -119,11 +119,13 @@ namespace Inflatable.Sessions.Commands.BaseClasses
             if (Object1Type != obj2.GetType())
                 return false;
             var ObjectIDs = source.GetParentMapping(Object1Type).SelectMany(x => x.IDProperties);
+            if (!ObjectIDs.Any())
+                return false;
             foreach (var ObjectID in ObjectIDs)
             {
                 var Value1 = ObjectID.GetValue(obj1);
                 var Value2 = ObjectID.GetValue(obj2);
-                if (!Equals(Value1, Value2))
+                if (!Equals(Value1, Value2) || ObjectID.IsDefault(obj1))
                     return false;
             }
             return true;

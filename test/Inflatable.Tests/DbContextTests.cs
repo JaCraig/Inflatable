@@ -15,6 +15,53 @@ namespace Inflatable.Tests
     public class DbContextTests : TestingFixture
     {
         [Fact]
+        public async Task BaseClassSelect()
+        {
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            var TempData = new BaseClass1[] {
+                new ConcreteClass1()
+                {
+                    Value1=1,
+                    BaseClassValue1=1
+                },
+                new ConcreteClass2()
+                {
+                    InterfaceValue=2,
+                    BaseClassValue1=2,
+                },
+                new ConcreteClass1()
+                {
+                    Value1=3,
+                    BaseClassValue1=3
+                },
+                new ConcreteClass1()
+                {
+                    Value1=1,
+                    BaseClassValue1=1
+                },
+                new ConcreteClass2()
+                {
+                    InterfaceValue=2,
+                    BaseClassValue1=2,
+                },
+                new ConcreteClass1()
+                {
+                    Value1=3,
+                    BaseClassValue1=3
+                }
+            };
+            await TempSession.Save(TempData).ExecuteAsync();
+
+            var TestObject = DbContext<BaseClass1>.CreateQuery();
+            var Result = TestObject.OrderBy(x => x.BaseClassValue1).ThenByDescending(x => x.ID).First();
+            Assert.Equal(4, Result.ID);
+            TestObject = DbContext<BaseClass1>.CreateQuery();
+            Result = TestObject.Where(x => x.ID == 6).First();
+            Assert.NotNull(Result);
+        }
+
+        [Fact]
         public void CreateQuery()
         {
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
@@ -35,7 +82,7 @@ namespace Inflatable.Tests
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            var Data = new SimpleClassNoID[] {
+            var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
                 {
                     Name="A"
@@ -57,7 +104,7 @@ namespace Inflatable.Tests
                     Name="B"
                 }
             };
-            await TempSession.InsertAsync(Data);
+            await TempSession.Save(TempData).ExecuteAsync();
 
             var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var Results = TestObject.Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).Distinct().ToList();
@@ -71,7 +118,7 @@ namespace Inflatable.Tests
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            var Data = new AllReferencesAndID[] {
+            var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
                     ID=1,
@@ -103,7 +150,7 @@ namespace Inflatable.Tests
                     IntValue=4,
                 }
             };
-            await TempSession.InsertAsync(Data);
+            await TempSession.Save(TempData).ExecuteAsync();
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).First();
@@ -124,60 +171,13 @@ namespace Inflatable.Tests
             Result = TestObject.Where(x => x.ID == 6).SingleOrDefault();
             Assert.Null(Result);
         }
-        
-        [Fact]
-        public async Task BaseClassSelect()
-        {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            var Data = new BaseClass1[] {
-                new ConcreteClass1()
-                {
-                    Value1=1,
-                    BaseClassValue1=1
-                },
-                new ConcreteClass2()
-                {
-                    InterfaceValue=2,
-                    BaseClassValue1=2,
-                },
-                new ConcreteClass1()
-                {
-                    Value1=3,
-                    BaseClassValue1=3
-                },
-                new ConcreteClass1()
-                {
-                    Value1=1,
-                    BaseClassValue1=1
-                },
-                new ConcreteClass2()
-                {
-                    InterfaceValue=2,
-                    BaseClassValue1=2,
-                },
-                new ConcreteClass1()
-                {
-                    Value1=3,
-                    BaseClassValue1=3
-                }
-            };
-            await TempSession.InsertAsync(Data);
-
-            var TestObject = DbContext<BaseClass1>.CreateQuery();
-            var Result = TestObject.OrderBy(x => x.BaseClassValue1).ThenByDescending(x => x.ID).First();
-            Assert.Equal(4, Result.ID);
-            TestObject = DbContext<BaseClass1>.CreateQuery();
-            Result = TestObject.Where(x => x.ID == 6).First();
-            Assert.NotNull(Result);
-        }
 
         [Fact]
         public async Task OrderBy()
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            var Data = new AllReferencesAndID[] {
+            var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
                     ID=1,
@@ -209,7 +209,7 @@ namespace Inflatable.Tests
                     IntValue=4,
                 }
             };
-            await TempSession.InsertAsync(Data);
+            await TempSession.Save(TempData).ExecuteAsync();
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).ToList();
@@ -232,7 +232,7 @@ namespace Inflatable.Tests
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            var Data = new AllReferencesAndID[] {
+            var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
                     ID=1,
@@ -264,7 +264,7 @@ namespace Inflatable.Tests
                     IntValue=10,
                 }
             };
-            await TempSession.InsertAsync(Data);
+            await TempSession.Save(TempData).ExecuteAsync();
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).ToList();
@@ -282,7 +282,7 @@ namespace Inflatable.Tests
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            var Data = new AllReferencesAndID[] {
+            var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
                     ID=1,
@@ -314,7 +314,7 @@ namespace Inflatable.Tests
                     IntValue=4,
                 }
             };
-            await TempSession.InsertAsync(Data);
+            await TempSession.Save(TempData).ExecuteAsync();
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Take(3).ToList();

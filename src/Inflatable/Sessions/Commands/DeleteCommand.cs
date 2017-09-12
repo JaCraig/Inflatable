@@ -36,7 +36,7 @@ namespace Inflatable.Sessions.Commands
         where TObject : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteCommand"/> class.
+        /// Initializes a new instance of the <see cref="DeleteCommand{TObject}"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
@@ -107,6 +107,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="object">The object.</param>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
         private void DeleteCascade(object @object, MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen)
         {
             var ParentMappings = source.GetParentMapping(@object.GetType());

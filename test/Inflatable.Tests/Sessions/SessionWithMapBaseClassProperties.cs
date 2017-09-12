@@ -67,7 +67,7 @@ namespace Inflatable.Tests.Sessions
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            await TestObject.DeleteAsync(Result.ToArray());
+            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.Equal(1, Results.Count());
             var Results2 = await TestObject.ExecuteAsync<IMapPropertyInterface>("SELECT ID_ as [ID] FROM IMapPropertyInterface_", CommandType.Text, "Default");
@@ -79,7 +79,7 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            await TestObject.DeleteAsync(Result.ToArray());
+            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.Empty(Results);
         }
@@ -116,7 +116,7 @@ namespace Inflatable.Tests.Sessions
                     ChildValue1 = 3
                 }
             };
-            await TestObject.InsertAsync(Result1, Result2, Result3);
+            await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.True(Results.Any(x => x.ID == Result1.ID
@@ -158,7 +158,7 @@ namespace Inflatable.Tests.Sessions
                     BaseValue1 = 10
                 };
             }).ToArray();
-            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.True(Results.All(x => x.MappedClass.ID > 3));
@@ -176,7 +176,7 @@ namespace Inflatable.Tests.Sessions
                 x.BoolValue = false;
                 x.MappedClass = null;
             }).ToArray();
-            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            Assert.Equal(6, await TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.True(Results.All(x => x.MappedClass == null));

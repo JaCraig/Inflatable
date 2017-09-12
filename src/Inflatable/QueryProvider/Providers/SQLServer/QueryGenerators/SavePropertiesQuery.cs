@@ -87,11 +87,58 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
+            if (property is IMapProperty TempMapProperty)
+                return MapProperty(TempMapProperty, queryObject);
             if (property is IManyToManyProperty Property)
                 return ManyToManyProperty(Property, queryObject);
             return new IQuery[0];
         }
 
+        /// <summary>
+        /// Generates the join save query.
+        /// </summary>
+        /// <param name="foreignIDProperties">The foreign identifier properties.</param>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns></returns>
+        private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IMapProperty mapProperty)
+        {
+            StringBuilder Builder = new StringBuilder();
+            StringBuilder WhereList = new StringBuilder();
+            StringBuilder ParametersList = new StringBuilder();
+            string Splitter2 = "";
+            foreach (var ForeignID in foreignIDProperties)
+            {
+                ParametersList.Append(Splitter2).Append(GetTableName(mapProperty.ParentMapping)
+                                                                        + ".["
+                                                                        + mapProperty.ForeignMapping.TableName
+                                                                        + mapProperty.ParentMapping.Prefix
+                                                                        + mapProperty.Name
+                                                                        + mapProperty.ParentMapping.Suffix
+                                                                        + ForeignID.ColumnName
+                                                                        + "] = @"
+                                                                        + mapProperty.ForeignMapping.TableName
+                                                                        + mapProperty.ParentMapping.Prefix
+                                                                        + mapProperty.Name
+                                                                        + mapProperty.ParentMapping.Suffix
+                                                                        + ForeignID.ColumnName);
+                Splitter2 = " AND ";
+            }
+            Splitter2 = "";
+            foreach (var IDProperty in IDProperties)
+            {
+                WhereList.Append(Splitter2).Append(GetColumnName(IDProperty) + " = " + GetParameterName(IDProperty));
+                Splitter2 = " AND ";
+            }
+            Builder.AppendFormat("UPDATE {0} SET {1} WHERE {2};", GetTableName(mapProperty.ParentMapping), ParametersList, WhereList);
+            return Builder.ToString();
+        }
+
+        /// <summary>
+        /// Generates the join save query.
+        /// </summary>
+        /// <param name="foreignIDProperties">The foreign identifier properties.</param>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
         private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property)
         {
             StringBuilder Builder = new StringBuilder();
@@ -120,6 +167,26 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return Builder.ToString();
         }
 
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="mapProperty">The map property.</param>
+        /// <returns></returns>
+        private IParameter[] GenerateParameters(TMappedClass queryObject, IMapProperty mapProperty)
+        {
+            List<IParameter> ReturnValue = new List<IParameter>();
+            ReturnValue.AddRange(mapProperty.GetAsParameter(queryObject));
+            return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="propertyItem">The property item.</param>
+        /// <returns></returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToManyProperty property, object propertyItem)
         {
             List<IParameter> ReturnValues = new List<IParameter>();
@@ -127,6 +194,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return ReturnValues.ToArray();
         }
 
+        /// <summary>
+        /// Manies to many property.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns></returns>
         private IQuery[] ManyToManyProperty(IManyToManyProperty property, TMappedClass queryObject)
         {
             var ItemList = property.GetValue(queryObject) as IEnumerable;
@@ -160,6 +233,43 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                         QueryType,
                         GenerateParameters(queryObject, property, Item)));
                 }
+            }
+            return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Maps the property.
+        /// </summary>
+        /// <param name="mapProperty">The map property.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns></returns>
+        private IQuery[] MapProperty(IMapProperty mapProperty, TMappedClass queryObject)
+        {
+            var ItemValue = mapProperty.GetValue(queryObject);
+
+            if (!Queries.ContainsKey(mapProperty.Name))
+            {
+                var ForeignIDProperties = MappingInformation.GetChildMappings(mapProperty.PropertyType)
+                                            .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                                            .Distinct()
+                                            .SelectMany(x => x.IDProperties);
+
+                Queries.Add(mapProperty.Name, new List<QueryGeneratorData>());
+                Queries[mapProperty.Name].Add(new QueryGeneratorData
+                {
+                    AssociatedMapping = MappingInformation.Mappings[mapProperty.PropertyType],
+                    IDProperties = IDProperties,
+                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, mapProperty)
+                });
+            }
+            List<IQuery> ReturnValue = new List<IQuery>();
+            foreach (var TempQuery in Queries[mapProperty.Name])
+            {
+                ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType,
+                    CommandType.Text,
+                    TempQuery.QueryText,
+                    QueryType,
+                    GenerateParameters(queryObject, mapProperty)));
             }
             return ReturnValue.ToArray();
         }

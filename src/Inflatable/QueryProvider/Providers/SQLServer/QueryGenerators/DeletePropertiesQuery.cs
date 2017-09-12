@@ -99,6 +99,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="foreignIDProperties">The foreign identifier properties.</param>
         /// <param name="property">The property.</param>
+        /// <param name="itemCount">The item count.</param>
         /// <returns></returns>
         private string GenerateJoinDeleteQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property, int itemCount)
         {

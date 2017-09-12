@@ -94,7 +94,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     return LoadMapProperty(ParentMappings, Property, queryObject);
 
                 case IManyToManyProperty ManyToManyProperty:
-                    return LoadManyToManyProperty(ParentMappings, ManyToManyProperty, queryObject);
+                    return LoadManyToManyProperty(ManyToManyProperty, queryObject);
             }
             return new IQuery[0];
         }
@@ -341,7 +341,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return Result.ToString();
         }
 
-        private IQuery[] LoadManyToManyProperty(IEnumerable<IMapping> parentMappings, IManyToManyProperty property, TMappedClass queryObject)
+        private IQuery[] LoadManyToManyProperty(IManyToManyProperty property, TMappedClass queryObject)
         {
             var ChildMappings = MappingInformation.GetChildMappings(property.PropertyType);
             List<IQuery> ReturnValue = new List<IQuery>();
@@ -362,9 +362,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     });
                 }
             }
-            foreach (var Query in Queries[property.Name])
+            foreach (var TempQuery in Queries[property.Name])
             {
-                ReturnValue.Add(new Query(Query.AssociatedMapping.ObjectType, CommandType.Text, Query.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, Query.IDProperties)));
+                ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType, CommandType.Text, TempQuery.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, TempQuery.IDProperties)));
             }
             return ReturnValue.ToArray();
         }
@@ -398,9 +398,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     });
                 }
             }
-            foreach (var Query in Queries[property.Name])
+            foreach (var TempQuery in Queries[property.Name])
             {
-                ReturnValue.Add(new Query(Query.AssociatedMapping.ObjectType, CommandType.Text, Query.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, Query.IDProperties)));
+                ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType, CommandType.Text, TempQuery.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, TempQuery.IDProperties)));
             }
             return ReturnValue.ToArray();
         }

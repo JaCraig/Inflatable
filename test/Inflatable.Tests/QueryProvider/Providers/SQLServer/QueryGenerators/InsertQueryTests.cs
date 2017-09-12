@@ -114,14 +114,12 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new InsertQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(3, Result.Parameters.Length);
+            Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.Equal(true, Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal(null, Result.Parameters[2].InternalValue);
-            Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[2].ID);
-            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_],[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]) VALUES (@BoolValue,@AllReferencesAndID_MappedClass_ID_);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
+            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
             Assert.Equal(QueryType.Insert, Result.QueryType);
         }
 
@@ -139,14 +137,12 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new InsertQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(3, Result.Parameters.Length);
+            Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.Equal(true, Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal(1, Result.Parameters[2].InternalValue);
-            Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[2].ID);
-            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_],[dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_]) VALUES (@BoolValue,@AllReferencesAndID_MappedClass_ID_);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
+            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
             Assert.Equal(QueryType.Insert, Result.QueryType);
         }
     }

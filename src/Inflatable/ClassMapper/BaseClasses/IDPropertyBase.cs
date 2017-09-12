@@ -368,6 +368,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Determines whether the specified object's property is default.
+        /// </summary>
+        /// <param name="Object">The object.</param>
+        /// <returns><c>true</c> if the specified object's property is default; otherwise, <c>false</c>.</returns>
+        public bool IsDefault(object Object)
+        {
+            return Equals(GetValue(Object), default(DataType));
+        }
+
+        /// <summary>
         /// Determines whether this instance is indexed.
         /// </summary>
         /// <returns>this</returns>

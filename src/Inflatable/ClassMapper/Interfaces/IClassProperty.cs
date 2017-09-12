@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Inflatable.Interfaces;
+
 namespace Inflatable.ClassMapper.Interfaces
 {
     /// <summary>
@@ -21,5 +23,10 @@ namespace Inflatable.ClassMapper.Interfaces
     /// </summary>
     public interface IClassProperty
     {
+        /// <summary>
+        /// Gets the parent mapping.
+        /// </summary>
+        /// <value>The parent mapping.</value>
+        IMapping ParentMapping { get; }
     }
 }

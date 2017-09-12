@@ -60,7 +60,7 @@ namespace Inflatable.Tests.Sessions
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 2 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            await TestObject.DeleteAsync(Result.ToArray());
+            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(1, Results.Count());
         }
@@ -71,7 +71,7 @@ namespace Inflatable.Tests.Sessions
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            await TestObject.DeleteAsync(Result.ToArray());
+            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(2, Results.Count());
         }
@@ -81,7 +81,7 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            await TestObject.DeleteAsync(Result.ToArray());
+            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Empty(Results);
         }
@@ -152,7 +152,7 @@ namespace Inflatable.Tests.Sessions
                 CharValue = 'c',
                 DateTimeValue = new DateTime(2000, 1, 1)
             };
-            await TestObject.InsertAsync(Result1, Result2, Result3);
+            await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID], BoolValue_ as [BoolValue], ByteValue_ as [ByteValue], CharValue_ as [CharValue], DateTimeValue_ as [DateTimeValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.True(Results.Any(x => x.ID == Result1.ID
@@ -185,7 +185,7 @@ namespace Inflatable.Tests.Sessions
                 CharValue = 'a',
                 DateTimeValue = new DateTime(2000, 1, 1)
             };
-            await TestObject.InsertAsync(Result);
+            await TestObject.Save(Result).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID], BoolValue_ as [BoolValue], ByteValue_ as [ByteValue], CharValue_ as [CharValue], DateTimeValue_ as [DateTimeValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(4, Results.Count());
             Assert.True(Results.Any(x => x.ID == Result.ID
@@ -202,7 +202,7 @@ namespace Inflatable.Tests.Sessions
             SetupData();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             var UpdatedResults = Results.ForEach(x => { x.CharValue = 'p'; }).ToArray();
-            Assert.Equal(3, await TestObject.UpdateAsync(UpdatedResults));
+            Assert.Equal(3, await TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.True(Results.All(x => x.CharValue == 'p'));
         }
@@ -212,7 +212,7 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
-            Assert.Equal(0, await TestObject.UpdateAsync<AllReferencesAndID>(null));
+            Assert.Equal(0, await TestObject.Save<AllReferencesAndID>(null).ExecuteAsync());
         }
 
         [Fact]
@@ -222,7 +222,7 @@ namespace Inflatable.Tests.Sessions
             SetupData();
             var Result = (await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default")).First();
             Result.CharValue = 'p';
-            Assert.Equal(1, await TestObject.UpdateAsync(Result));
+            Assert.Equal(1, await TestObject.Save(Result).ExecuteAsync());
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.True(Results.Any(x => x.CharValue == 'p'));
         }
@@ -235,9 +235,9 @@ namespace Inflatable.Tests.Sessions
             {
                 CharValue = 'p'
             };
-            Assert.Equal(0, await TestObject.UpdateAsync(Result));
+            await TestObject.Save(Result).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            Assert.Empty(Results);
+            Assert.Equal(1, Results.Count());
         }
 
         private void SetupData()

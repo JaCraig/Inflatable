@@ -258,10 +258,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>The parameter version of the property</returns>
         public IEnumerable<IParameter> GetAsParameter(object objectValue)
         {
+            List<IParameter> Parameters = new List<IParameter>();
             var ParamValue = (DataType)GetParameter(objectValue);
-            return ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
             {
                 var Value = x.GetValue(ParamValue);
+                if (x.IsDefault(ParamValue))
+                    Value = null;
                 if (PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
@@ -271,7 +274,9 @@ namespace Inflatable.ClassMapper.BaseClasses
                 return new Parameter<object>(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
                     PropertyType.To<Type, SqlDbType>(),
                     Value);
-            });
+            }));
+            Parameters.AddRange(ParentMapping.IDProperties.ForEach(x => x.GetAsParameter(objectValue)));
+            return Parameters;
         }
 
         /// <summary>

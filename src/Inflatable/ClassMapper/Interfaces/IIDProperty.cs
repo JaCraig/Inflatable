@@ -216,6 +216,13 @@ namespace Inflatable.ClassMapper.Interfaces
         object GetValue(Dynamo Object);
 
         /// <summary>
+        /// Determines whether the specified object's property is default.
+        /// </summary>
+        /// <param name="Object">The object.</param>
+        /// <returns><c>true</c> if the specified object's property is default; otherwise, <c>false</c>.</returns>
+        bool IsDefault(object Object);
+
+        /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         void Setup();

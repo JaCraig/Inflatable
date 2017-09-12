@@ -50,7 +50,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                                    .Distinct();
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
             ReferenceProperties = ParentMappings.SelectMany(x => x.ReferenceProperties);
-            MapProperties = ParentMappings.SelectMany(x => x.MapProperties);
         }
 
         /// <summary>
@@ -64,12 +63,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <value>The identifier properties.</value>
         private IEnumerable<IIDProperty> IDProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets the map properties.
-        /// </summary>
-        /// <value>The map properties.</value>
-        private IEnumerable<IMapProperty> MapProperties { get; set; }
 
         /// <summary>
         /// Gets or sets the reference properties.
@@ -138,7 +131,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ORMObject = queryObject as IORMObject;
             var Parameters = IDProperties.ForEach(y => y.GetAsParameter(queryObject)).ToList();
             Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(queryObject)));
-            Parameters.AddRange(MapProperties.Where(x => ORMObject == null || ORMObject.PropertiesChanged0.Contains(x.Name)).ForEach(y => y.GetAsParameter(queryObject)).SelectMany(x => x));
             return Parameters.ToArray();
         }
 
@@ -169,25 +161,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ORMObject = queryObject as IORMObject;
             var Mapping = MappingInformation.Mappings[node.Data];
             if (ORMObject != null
-                && !Mapping.ReferenceProperties.Any()
-                && !Mapping.MapProperties.Any(x => ORMObject.PropertiesChanged0.Contains(x.Name)))
+                && !Mapping.ReferenceProperties.Any())
                 return Builder.ToString();
             if (ORMObject == null
-                && Mapping.ReferenceProperties.Count == 0
-                && Mapping.MapProperties.Count == 0)
+                && Mapping.ReferenceProperties.Count == 0)
                 return Builder.ToString();
 
             //Adding reference properties
             foreach (var ReferenceProperty in Mapping.ReferenceProperties)
             {
                 ParameterList.Append(Splitter + GetColumnName(ReferenceProperty) + "=" + GetParameterName(ReferenceProperty));
-                Splitter = ",";
-            }
-
-            //Map properties
-            foreach (var MapProperty in Mapping.MapProperties.Where(x => ORMObject == null || ORMObject.PropertiesChanged0.Contains(x.Name)))
-            {
-                ParameterList.Append(Splitter + GetColumnName(MapProperty) + "=" + GetParameterName(MapProperty));
                 Splitter = ",";
             }
 

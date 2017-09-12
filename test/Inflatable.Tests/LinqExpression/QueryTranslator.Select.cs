@@ -15,8 +15,8 @@ namespace Inflatable.Tests.LinqExpression
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             var TestQuery2 = TestQuery.Select(x => new { x.BoolValue, x.ByteArrayValue });
-            var Data = TestObject.Translate(TestQuery2.Expression);
-            var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
+            var TempData = TestObject.Translate(TestQuery2.Expression);
+            var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal(2, Result.SelectValues.Count);
             Assert.Equal("BoolValue", Result.SelectValues[0].Name);
             Assert.Equal("ByteArrayValue", Result.SelectValues[1].Name);
@@ -28,8 +28,8 @@ namespace Inflatable.Tests.LinqExpression
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             var TestQuery2 = TestQuery.Select(x => new { BoolValue2 = x.BoolValue, Temp = x.ByteArrayValue });
-            var Data = TestObject.Translate(TestQuery2.Expression);
-            var Result = Data[Mappings.Sources.First(x => x.Source.Name == "Default")];
+            var TempData = TestObject.Translate(TestQuery2.Expression);
+            var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
             Assert.Equal(2, Result.SelectValues.Count);
             Assert.Equal("BoolValue", Result.SelectValues[0].Name);
             Assert.Equal("ByteArrayValue", Result.SelectValues[1].Name);

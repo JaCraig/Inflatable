@@ -52,7 +52,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
             ReferenceProperties = ParentMappings.SelectMany(x => x.ReferenceProperties);
-            MapProperties = ParentMappings.SelectMany(x => x.MapProperties);
         }
 
         /// <summary>
@@ -66,12 +65,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <value>The identifier properties.</value>
         private IEnumerable<IIDProperty> IDProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets the map properties.
-        /// </summary>
-        /// <value>The map properties.</value>
-        private IEnumerable<IMapProperty> MapProperties { get; set; }
 
         /// <summary>
         /// Gets or sets the query declaration text.
@@ -143,14 +136,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 ParameterList.Append(Splitter + GetColumnName(ReferenceProperty));
                 ValueList.Append(Splitter + GetParameterName(ReferenceProperty));
-                Splitter = ",";
-            }
-
-            //Map properties
-            foreach (var MapProperty in Mapping.MapProperties)
-            {
-                ParameterList.Append(Splitter + GetColumnName(MapProperty));
-                ValueList.Append(Splitter + GetParameterName(MapProperty));
                 Splitter = ",";
             }
 
@@ -260,8 +245,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Parameters = IDProperties.ForEach(y => y.GetAsParameter(queryObject)).ToList();
             Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(queryObject)));
-            Parameters.AddRange(MapProperties.ForEach(y => y.GetAsParameter(queryObject)).SelectMany(x => x));
-
             return Parameters.ToArray();
         }
     }

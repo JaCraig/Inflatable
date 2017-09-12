@@ -9,6 +9,8 @@ using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
+using Inflatable.Tests.TestDatabases.MapProperties;
+using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System.Data;
@@ -110,6 +112,54 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("AllReferencesAndID_ID_", Result.Parameters[0].ID);
             Assert.Equal("ManyToManyProperties_ID_", Result.Parameters[1].ID);
             Assert.Equal("IF NOT EXISTS (SELECT * FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_ AND [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_) BEGIN INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_],[dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_]) VALUES (@AllReferencesAndID_ID_,@ManyToManyProperties_ID_) END;", Result.QueryString);
+            Assert.Equal(QueryType.JoinsSave, Result.QueryType);
+        }
+
+        [Fact]
+        public void GenerateQueryWithMapPropertiesNullValue()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new AllReferencesAndIDMappingWithDatabase(),
+                new MapPropertiesMapping()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
+            MapProperty.Setup(Mappings);
+            var TestObject = new SavePropertiesQuery<MapProperties>(Mappings);
+            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true }, MapProperty)[0];
+            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
+            Assert.Equal(2, Result.Parameters.Length);
+            Assert.Equal(10, Result.Parameters[1].InternalValue);
+            Assert.Equal(null, Result.Parameters[0].InternalValue);
+            Assert.Equal("ID", Result.Parameters[1].ID);
+            Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[0].ID);
+            Assert.Equal("UPDATE [dbo].[MapProperties_] SET [dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_] = @AllReferencesAndID_MappedClass_ID_ WHERE [dbo].[MapProperties_].[ID_] = @ID;", Result.QueryString);
+            Assert.Equal(QueryType.JoinsSave, Result.QueryType);
+        }
+
+        [Fact]
+        public void GenerateQueryWithMapPropertiesWithValue()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new AllReferencesAndIDMappingWithDatabase(),
+                new MapPropertiesMapping()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
+            MapProperty.Setup(Mappings);
+            var TestObject = new SavePropertiesQuery<MapProperties>(Mappings);
+            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } }, MapProperty)[0];
+            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
+            Assert.Equal(2, Result.Parameters.Length);
+            Assert.Equal(10, Result.Parameters[1].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
+            Assert.Equal("ID", Result.Parameters[1].ID);
+            Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[0].ID);
+            Assert.Equal("UPDATE [dbo].[MapProperties_] SET [dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_] = @AllReferencesAndID_MappedClass_ID_ WHERE [dbo].[MapProperties_].[ID_] = @ID;", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
         }
     }
