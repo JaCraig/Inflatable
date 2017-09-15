@@ -100,6 +100,12 @@ namespace Inflatable.Interfaces
         ICollection<IManyToManyProperty> ManyToManyProperties { get; }
 
         /// <summary>
+        /// Gets the many to many properties.
+        /// </summary>
+        /// <value>The many to many properties.</value>
+        ICollection<IManyToOneProperty> ManyToOneProperties { get; }
+
+        /// <summary>
         /// Gets the map properties.
         /// </summary>
         /// <value>The map properties.</value>

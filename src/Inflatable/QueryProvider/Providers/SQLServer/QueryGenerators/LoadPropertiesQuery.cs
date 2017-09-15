@@ -307,7 +307,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 Result.AppendFormat("{0}{1}={2}",
                     Separator,
-                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ParentIDMapping.ColumnName + "]",
+                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
                     GetParameterName(ParentIDMapping));
                 Separator = "\r\nAND ";
             }

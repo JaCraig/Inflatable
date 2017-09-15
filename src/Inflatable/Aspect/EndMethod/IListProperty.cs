@@ -24,10 +24,10 @@ using System.Text;
 namespace Inflatable.Aspect.EndMethod
 {
     /// <summary>
-    /// List property set up
+    /// List property
     /// </summary>
     /// <seealso cref="IEndMethodHelper"/>
-    public class ListProperty : IEndMethodHelper
+    public class IListProperty : IEndMethodHelper
     {
         /// <summary>
         /// Setups the specified return value name.
@@ -38,22 +38,24 @@ namespace Inflatable.Aspect.EndMethod
         /// <param name="builder">The builder.</param>
         public void Setup(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder)
         {
-            var Property = mapping.IDProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
+            var Property = mapping.ManyToManyProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
             if (Property == null)
                 return;
-            return;
-            //if(!(Property is List))
-            // return;
-            var Builder = new StringBuilder();
-            Builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
+            builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\").ToList();",
+                .AppendLineFormat("{0}=Session0.LoadPropertiesAsync<{1},{2}>(this,\"{3}\").GetAwaiter().GetResult();",
                         Property.InternalFieldName,
                         Property.ParentMapping.ObjectType.GetName(),
                         Property.TypeName,
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.InternalFieldName + "Loaded")
-                .AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name)
+                .AppendLineFormat("if({0}!=null)", Property.InternalFieldName)
+                .AppendLine("{")
+                .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", Property.InternalFieldName, Property.TypeName, Property.Name)
+                .AppendLineFormat(@"((ObservableList<{1}>){0}).ForEach(TempObject => {{
+    ((IORMObject)TempObject).PropertyChanged += (x, y) => ((ObservableList<{1}>){0}).NotifyObjectChanged(x);
+}});", Property.InternalFieldName, Property.TypeName)
+                .AppendLine("}")
                 .AppendLine("}")
                 .AppendLineFormat("{0}={1};",
                     returnValueName,

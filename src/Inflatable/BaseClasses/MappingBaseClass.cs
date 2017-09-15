@@ -64,6 +64,7 @@ namespace Inflatable.BaseClasses
             Merge = merge;
             MapProperties = new List<IMapProperty>();
             ManyToManyProperties = new List<IManyToManyProperty>();
+            ManyToOneProperties = new List<IManyToOneProperty>();
         }
 
         /// <summary>
@@ -89,6 +90,12 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <value>The many to many properties.</value>
         public ICollection<IManyToManyProperty> ManyToManyProperties { get; private set; }
+
+        /// <summary>
+        /// Gets the many to one properties.
+        /// </summary>
+        /// <value>The many to one properties.</value>
+        public ICollection<IManyToOneProperty> ManyToOneProperties { get; private set; }
 
         /// <summary>
         /// Gets the map properties.
@@ -266,7 +273,7 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Sets a property as a many to many type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the ata type.</typeparam>
+        /// <typeparam name="DataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
         public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
@@ -275,6 +282,36 @@ namespace Inflatable.BaseClasses
             if (expression == null) throw new ArgumentNullException(nameof(expression));
             var ReturnValue = new ManyToMany<ClassType, DataType>(expression, this);
             ManyToManyProperties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Sets a property as a many to one type.
+        /// </summary>
+        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The many to many object</returns>
+        public ManyToOneMany<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
+            where DataType : class
+        {
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            var ReturnValue = new ManyToOneMany<ClassType, DataType>(expression, this);
+            ManyToOneProperties.Add(ReturnValue);
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Sets a property as a many to one type.
+        /// </summary>
+        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The many to many object</returns>
+        public ManyToOneSingle<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
+            where DataType : class
+        {
+            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            var ReturnValue = new ManyToOneSingle<ClassType, DataType>(expression, this);
+            ManyToOneProperties.Add(ReturnValue);
             return ReturnValue;
         }
 

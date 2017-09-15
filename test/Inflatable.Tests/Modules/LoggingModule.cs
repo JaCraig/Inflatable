@@ -25,7 +25,7 @@ namespace Inflatable.Tests.Modules
                 return;
             bootstrapper.Register<ILogger>(new LoggerConfiguration()
                                             .WriteTo
-                                            .File("Log.txt")
+                                            .File("./Log.txt")
                                             .MinimumLevel
                                             .Debug()
                                             .CreateLogger(),

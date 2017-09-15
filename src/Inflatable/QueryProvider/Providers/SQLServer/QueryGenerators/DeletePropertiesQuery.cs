@@ -114,21 +114,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
                 Splitter2 = " AND ";
             }
-            ParametersList.Append(" AND NOT (");
-            Splitter = "";
-            for (int x = 0; x < itemCount; ++x)
+            if (itemCount > 0)
             {
-                Splitter2 = "";
-                ParametersList.Append(Splitter).Append("(");
-                foreach (var ForeignID in foreignIDProperties)
+                ParametersList.Append(" AND NOT (");
+                Splitter = "";
+                for (int x = 0; x < itemCount; ++x)
                 {
-                    ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "] = @" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + x);
-                    Splitter2 = " AND ";
+                    Splitter2 = "";
+                    ParametersList.Append(Splitter).Append("(");
+                    foreach (var ForeignID in foreignIDProperties)
+                    {
+                        ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "] = @" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + x);
+                        Splitter2 = " AND ";
+                    }
+                    ParametersList.Append(")");
+                    Splitter = " OR ";
                 }
                 ParametersList.Append(")");
-                Splitter = " OR ";
             }
-            ParametersList.Append(")");
             Builder.AppendFormat("DELETE FROM {0} WHERE {1};", GetTableName(property), ParametersList);
             return Builder.ToString();
         }

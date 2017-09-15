@@ -101,6 +101,12 @@ namespace Inflatable.Aspect
         public ICollection<Type> InterfacesUsing => new Type[] { typeof(IORMObject) };
 
         /// <summary>
+        /// Gets or sets the many to many fields.
+        /// </summary>
+        /// <value>The many to many fields.</value>
+        public List<IManyToManyProperty> ManyToManyFields { get; set; }
+
+        /// <summary>
         /// Gets or sets the map fields.
         /// </summary>
         /// <value>The map fields.</value>
@@ -125,6 +131,7 @@ namespace Inflatable.Aspect
         {
             "Inflatable",
             "Inflatable.Sessions",
+            "Inflatable.Aspect.Interfaces",
             "BigBook",
             "System.Collections.Generic",
             "System.ComponentModel",

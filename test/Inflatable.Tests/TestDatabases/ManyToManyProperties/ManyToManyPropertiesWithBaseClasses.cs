@@ -10,6 +10,11 @@ namespace Inflatable.Tests.TestDatabases.ManyToManyProperties
 
     public class ManyToManyPropertiesWithBaseClasses
     {
+        public ManyToManyPropertiesWithBaseClasses()
+        {
+            ManyToManyClass = new List<ManyToManyPropertyBaseClass>();
+        }
+
         [BoolGenerator]
         public bool BoolValue { get; set; }
 
