@@ -14,12 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Schema;
 using Inflatable.Utils;
 using System;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -73,23 +75,26 @@ namespace Inflatable.ClassMapper.Default
                                      .FirstOrDefault(x => x.IDProperties.Any());
             if (ForeignMapping == null)
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
-            foreach (var ForeignIDMapping in ForeignMapping.IDProperties)
+            var ParentTable = dataModel.SourceSpec.Tables.FirstOrDefault(x => x.Name == ParentMapping.TableName);
+            foreach (var IDMapping in ForeignMapping.IDProperties)
             {
-                //JoinTable.AddColumn(ForeignMapping.TableName + ForeignIDMapping.ColumnName,
-                //                ForeignIDMapping.PropertyType.To(DbType.Int32),
-                //                ForeignIDMapping.MaxLength,
-                //                false,
-                //                false,
-                //                false,
-                //                false,
-                //                false,
-                //                ForeignMapping.TableName,
-                //                ForeignIDMapping.ColumnName,
-                //                "",
-                //                "",
-                //                DatabaseJoinsCascade,
-                //                DatabaseJoinsCascade,
-                //                !DatabaseJoinsCascade);
+                if (ParentTable.Columns.Any(x => x.Name == ColumnName + ForeignMapping.TableName + IDMapping.ColumnName))
+                    continue;
+                ParentTable.AddColumn(ColumnName + ForeignMapping.TableName + IDMapping.ColumnName,
+                                IDMapping.PropertyType.To(DbType.Int32),
+                                IDMapping.MaxLength,
+                                true,
+                                false,
+                                false,
+                                false,
+                                false,
+                                ForeignMapping.TableName,
+                                IDMapping.ColumnName,
+                                "",
+                                "",
+                                false,
+                                false,
+                                true);
             }
         }
     }

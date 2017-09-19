@@ -365,6 +365,9 @@ namespace Inflatable.Sessions
             IClassProperty Property = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
             if (Property != null)
                 return Property;
+            Property = ParentMappings.SelectMany(x => x.ManyToOneProperties).FirstOrDefault(x => x.Name == propertyName);
+            if (Property != null)
+                return Property;
             return ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
         }
 

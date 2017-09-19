@@ -207,10 +207,6 @@ namespace Inflatable.Schema
                 {
                     Map.Setup(Source, this);
                 }
-                foreach (var Map in Mapping.ManyToOneProperties)
-                {
-                    Map.Setup(Source, this);
-                }
                 foreach (var ParentMapping in ParentMappings)
                 {
                     foreach (var ID in ParentMapping.IDProperties)
@@ -223,6 +219,13 @@ namespace Inflatable.Schema
                         ID.Setup();
                         ID.AddToChildTable(Table);
                     }
+                }
+            }
+            foreach (var Mapping in Source.Mappings.Values.OrderBy(x => x.Order))
+            {
+                foreach (var Map in Mapping.ManyToOneProperties)
+                {
+                    Map.Setup(Source, this);
                 }
             }
         }

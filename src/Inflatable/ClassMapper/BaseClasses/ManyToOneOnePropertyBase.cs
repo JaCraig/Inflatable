@@ -20,6 +20,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
+using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -57,6 +58,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
+            ColumnName = "";
         }
 
         /// <summary>
@@ -64,6 +66,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
         public bool Cascade { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the name of the column.
+        /// </summary>
+        /// <value>The name of the column.</value>
+        public string ColumnName { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -217,32 +225,20 @@ namespace Inflatable.ClassMapper.BaseClasses
         public IEnumerable<IParameter> GetAsParameter(object queryObject, object propertyValue)
         {
             List<IParameter> Parameters = new List<IParameter>();
-            //Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
-            //{
-            //    var Value = x.GetValue(propertyValue);
-            //    if (x.PropertyType == typeof(string))
-            //    {
-            //        var TempParameter = Value as string;
-            //        return new StringParameter(ForeignMapping.TableName + x.ColumnName,
-            //            TempParameter);
-            //    }
-            //    return new Parameter<object>(ForeignMapping.TableName + x.ColumnName,
-            //        PropertyType.To<Type, SqlDbType>(),
-            //        Value);
-            //}));
-            //Parameters.AddRange(ParentMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
-            //{
-            //    var Value = x.GetValue(queryObject);
-            //    if (x.PropertyType == typeof(string))
-            //    {
-            //        var TempParameter = Value as string;
-            //        return new StringParameter(ParentMapping.TableName + x.ColumnName,
-            //            TempParameter);
-            //    }
-            //    return new Parameter<object>(ParentMapping.TableName + x.ColumnName,
-            //        PropertyType.To<Type, SqlDbType>(),
-            //        Value);
-            //}));
+            Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(propertyValue);
+                if (x.PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(ColumnName + ForeignMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(ColumnName + ForeignMapping.TableName + x.ColumnName,
+                    PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            }));
+            Parameters.AddRange(ParentMapping.IDProperties.ForEach(x => x.GetAsParameter(queryObject)));
             return Parameters;
         }
 
@@ -296,6 +292,17 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType LoadUsing(string queryText, CommandType type)
         {
             LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
+            return (ReturnType)((IManyToOneProperty<ClassType, DataType, ReturnType>)this);
+        }
+
+        /// <summary>
+        /// Sets the name of the column.
+        /// </summary>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns>This</returns>
+        public ReturnType SetColumnName(string columnName)
+        {
+            ColumnName = columnName;
             return (ReturnType)((IManyToOneProperty<ClassType, DataType, ReturnType>)this);
         }
 

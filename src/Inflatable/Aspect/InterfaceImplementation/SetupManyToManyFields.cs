@@ -39,6 +39,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
         public string Setup(Type type, ORMAspect aspect)
         {
             aspect.ManyToManyFields = new List<IManyToManyProperty>();
+            aspect.ManyToOneFields = new List<IManyToOneProperty>();
             var Builder = new StringBuilder();
             foreach (var Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
             {
@@ -51,6 +52,16 @@ namespace Inflatable.Aspect.InterfaceImplementation
                     {
                         aspect.ManyToManyFields.Add(Property);
                         Builder.AppendLineFormat("private {0} {1};", "IList<" + Property.TypeName + ">", Property.InternalFieldName);
+                        Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
+                    }
+                    foreach (IManyToOneProperty Property in Mapping.ManyToOneProperties
+                                                          .Where(x => !aspect.ManyToOneFields.Any(y => y.Name == x.Name)))
+                    {
+                        aspect.ManyToOneFields.Add(Property);
+                        if (Property is IManyToOneListProperty)
+                            Builder.AppendLineFormat("private {0} {1};", "IList<" + Property.TypeName + ">", Property.InternalFieldName);
+                        else
+                            Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.InternalFieldName);
                         Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
                     }
                 }

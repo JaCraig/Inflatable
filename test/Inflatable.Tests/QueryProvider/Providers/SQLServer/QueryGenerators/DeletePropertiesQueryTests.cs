@@ -9,6 +9,8 @@ using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
+using Inflatable.Tests.TestDatabases.ManyToOneProperties;
+using Inflatable.Tests.TestDatabases.ManyToOneProperties.Mappings;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System.Data;
@@ -110,6 +112,45 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("AllReferencesAndID_ID_1", Result.Parameters[2].ID);
             Assert.Equal("DELETE FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_ AND NOT (([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_0) OR ([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_1));", Result.QueryString);
             Assert.Equal(QueryType.JoinsDelete, Result.QueryType);
+        }
+
+        [Fact]
+        public void GenerateQueryWithManyToOneManyProperties()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new ManyToOneManyPropertiesMapping(),
+                new ManyToOneOnePropertiesMapping()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
+            ManyToOneProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
+            var TestObject = new DeletePropertiesQuery<ManyToOneManyProperties>(Mappings);
+            var TempManyToOne = new ManyToOneManyProperties { ID = 10, BoolValue = true };
+            TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 1 });
+            TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 2 });
+            var Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
+            Assert.Equal(0, Result.Length);
+        }
+
+        [Fact]
+        public void GenerateQueryWithManyToOneSingleProperties()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new ManyToOneManyPropertiesMapping(),
+                new ManyToOneOnePropertiesMapping()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();
+            ManyToOneProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
+            var TestObject = new DeletePropertiesQuery<ManyToOneOneProperties>(Mappings);
+            var TempManyToOne = new ManyToOneOneProperties { ID = 10, BoolValue = true };
+            TempManyToOne.ManyToOneClass = new ManyToOneManyProperties { ID = 1 };
+            var Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
+            Assert.Equal(0, Result.Length);
         }
     }
 }

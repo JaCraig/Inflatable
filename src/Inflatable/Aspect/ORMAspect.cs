@@ -107,6 +107,12 @@ namespace Inflatable.Aspect
         public List<IManyToManyProperty> ManyToManyFields { get; set; }
 
         /// <summary>
+        /// Gets or sets the many to one fields.
+        /// </summary>
+        /// <value>The many to one fields.</value>
+        public List<IManyToOneProperty> ManyToOneFields { get; set; }
+
+        /// <summary>
         /// Gets or sets the map fields.
         /// </summary>
         /// <value>The map fields.</value>

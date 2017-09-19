@@ -87,10 +87,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
-            if (property is IMapProperty TempMapProperty)
-                return MapProperty(TempMapProperty, queryObject);
-            if (property is IManyToManyProperty Property)
-                return ManyToManyProperty(Property, queryObject);
+            switch (property)
+            {
+                case IMapProperty TempMapProperty:
+                    return MapProperty(TempMapProperty, queryObject);
+
+                case IManyToManyProperty Property:
+                    return ManyToManyProperty(Property, queryObject);
+
+                case IManyToOneListProperty ManyToOne:
+                    return ManyToOneProperty(ManyToOne, queryObject);
+
+                case IManyToOneProperty ManyToOne:
+                    return ManyToOneProperty(ManyToOne, queryObject);
+            }
+
             return new IQuery[0];
         }
 
@@ -167,6 +178,80 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return Builder.ToString();
         }
 
+        private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToOneProperty manyToOne)
+        {
+            StringBuilder Builder = new StringBuilder();
+            StringBuilder WhereList = new StringBuilder();
+            StringBuilder ParametersList = new StringBuilder();
+            string TableName = "";
+            if (manyToOne is IManyToOneListProperty)
+            {
+                GenerateJoinSaveQueryMultiple(foreignIDProperties, manyToOne, WhereList, ParametersList);
+                TableName = GetTableName(manyToOne.ForeignMapping);
+            }
+            else
+            {
+                GenerateJoinSaveQuerySingle(foreignIDProperties, manyToOne, WhereList, ParametersList);
+                TableName = GetTableName(manyToOne.ParentMapping);
+            }
+            Builder.AppendFormat("UPDATE {0} SET {1} WHERE {2};", TableName, ParametersList, WhereList);
+            return Builder.ToString();
+        }
+
+        private void GenerateJoinSaveQueryMultiple(IEnumerable<IIDProperty> foreignIDProperties,
+            IManyToOneProperty manyToOne,
+            StringBuilder whereList,
+            StringBuilder parametersList)
+        {
+            string Splitter = "";
+            foreach (var ForeignID in IDProperties)
+            {
+                parametersList.Append(Splitter).Append(GetTableName(manyToOne.ForeignMapping)
+                                                                        + ".["
+                                                                        + manyToOne.ColumnName
+                                                                        + manyToOne.ParentMapping.TableName
+                                                                        + ForeignID.ColumnName
+                                                                        + "] = @"
+                                                                        + manyToOne.ColumnName
+                                                                        + manyToOne.ParentMapping.TableName
+                                                                        + ForeignID.ColumnName);
+                Splitter = " AND ";
+            }
+            Splitter = "";
+            foreach (var IDProperty in foreignIDProperties)
+            {
+                whereList.Append(Splitter).Append(GetColumnName(IDProperty) + " = " + GetParameterName(IDProperty));
+                Splitter = " AND ";
+            }
+        }
+
+        private void GenerateJoinSaveQuerySingle(IEnumerable<IIDProperty> foreignIDProperties,
+            IManyToOneProperty manyToOne,
+            StringBuilder whereList,
+            StringBuilder parametersList)
+        {
+            string Splitter = "";
+            foreach (var ForeignID in foreignIDProperties)
+            {
+                parametersList.Append(Splitter).Append(GetTableName(manyToOne.ParentMapping)
+                                                                        + ".["
+                                                                        + manyToOne.ColumnName
+                                                                        + manyToOne.ForeignMapping.TableName
+                                                                        + ForeignID.ColumnName
+                                                                        + "] = @"
+                                                                        + manyToOne.ColumnName
+                                                                        + manyToOne.ForeignMapping.TableName
+                                                                        + ForeignID.ColumnName);
+                Splitter = " AND ";
+            }
+            Splitter = "";
+            foreach (var IDProperty in IDProperties)
+            {
+                whereList.Append(Splitter).Append(GetColumnName(IDProperty) + " = " + GetParameterName(IDProperty));
+                Splitter = " AND ";
+            }
+        }
+
         /// <summary>
         /// Generates the parameters.
         /// </summary>
@@ -191,6 +276,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             List<IParameter> ReturnValues = new List<IParameter>();
             ReturnValues.AddRange(property.GetAsParameter(queryObject, propertyItem));
+            return ReturnValues.ToArray();
+        }
+
+        private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToOneProperty manyToOne, object propertyItem)
+        {
+            List<IParameter> ReturnValues = new List<IParameter>();
+            ReturnValues.AddRange(manyToOne.GetAsParameter(queryObject, propertyItem));
             return ReturnValues.ToArray();
         }
 
@@ -233,6 +325,80 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                         QueryType,
                         GenerateParameters(queryObject, property, Item)));
                 }
+            }
+            return ReturnValue.ToArray();
+        }
+
+        private IQuery[] ManyToOneProperty(IManyToOneListProperty manyToOne, TMappedClass queryObject)
+        {
+            var ItemList = manyToOne.GetValue(queryObject) as IEnumerable;
+
+            if (!Queries.ContainsKey(manyToOne.Name))
+            {
+                var ForeignIDProperties = MappingInformation.GetChildMappings(manyToOne.PropertyType)
+                                            .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                                            .Distinct()
+                                            .SelectMany(x => x.IDProperties);
+
+                Queries.Add(manyToOne.Name, new List<QueryGeneratorData>());
+                Queries[manyToOne.Name].Add(new QueryGeneratorData
+                {
+                    AssociatedMapping = MappingInformation.Mappings[manyToOne.PropertyType],
+                    IDProperties = IDProperties,
+                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
+                });
+            }
+            if (ItemList == null)
+                return new IQuery[0];
+
+            List<IQuery> ReturnValue = new List<IQuery>();
+            foreach (var TempQuery in Queries[manyToOne.Name])
+            {
+                foreach (var Item in ItemList)
+                {
+                    ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType,
+                        CommandType.Text,
+                        TempQuery.QueryText,
+                        QueryType,
+                        GenerateParameters(queryObject, manyToOne, Item)));
+                }
+            }
+            return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Manies to one property.
+        /// </summary>
+        /// <param name="manyToOne">The many to one.</param>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns></returns>
+        private IQuery[] ManyToOneProperty(IManyToOneProperty manyToOne, TMappedClass queryObject)
+        {
+            var ItemValue = manyToOne.GetValue(queryObject);
+
+            if (!Queries.ContainsKey(manyToOne.Name))
+            {
+                var ForeignIDProperties = MappingInformation.GetChildMappings(manyToOne.PropertyType)
+                                            .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                                            .Distinct()
+                                            .SelectMany(x => x.IDProperties);
+
+                Queries.Add(manyToOne.Name, new List<QueryGeneratorData>());
+                Queries[manyToOne.Name].Add(new QueryGeneratorData
+                {
+                    AssociatedMapping = MappingInformation.Mappings[manyToOne.PropertyType],
+                    IDProperties = IDProperties,
+                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
+                });
+            }
+            List<IQuery> ReturnValue = new List<IQuery>();
+            foreach (var TempQuery in Queries[manyToOne.Name])
+            {
+                ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType,
+                    CommandType.Text,
+                    TempQuery.QueryText,
+                    QueryType,
+                    GenerateParameters(queryObject, manyToOne, ItemValue)));
             }
             return ReturnValue.ToArray();
         }

@@ -197,7 +197,9 @@ namespace Inflatable.BaseClasses
         {
             return IDProperties.Any(x => x.Name == propertyName)
                     || ReferenceProperties.Any(x => x.Name == propertyName)
-                    || MapProperties.Any(x => x.Name == propertyName);
+                    || MapProperties.Any(x => x.Name == propertyName)
+                    || ManyToManyProperties.Any(x => x.Name == propertyName)
+                    || ManyToOneProperties.Any(x => x.Name == propertyName);
         }
 
         /// <summary>
@@ -213,6 +215,14 @@ namespace Inflatable.BaseClasses
             foreach (var prop in mapping.MapProperties)
             {
                 MapProperties.Add(prop.Convert<ClassType>(this));
+            }
+            foreach (var prop in mapping.ManyToManyProperties)
+            {
+                ManyToManyProperties.Add(prop.Convert<ClassType>(this));
+            }
+            foreach (var prop in mapping.ManyToOneProperties)
+            {
+                ManyToOneProperties.Add(prop.Convert<ClassType>(this));
             }
         }
 
@@ -387,8 +397,23 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
+
+            for (int x = 0; x < ManyToOneProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = ManyToOneProperties.ElementAt(x);
+                for (int y = x + 1; y < ManyToOneProperties.Count; ++y)
+                {
+                    var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        logger.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
                 }
@@ -438,8 +463,23 @@ namespace Inflatable.BaseClasses
                     IManyToManyProperty ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
+                        --y;
+                    }
+                }
+            }
+
+            for (int x = 0; x < parentMapping.ManyToOneProperties.Count; ++x)
+            {
+                var ReferenceProperty1 = parentMapping.ManyToOneProperties.ElementAt(x);
+                for (int y = x + 1; y < ManyToOneProperties.Count; ++y)
+                {
+                    IManyToOneProperty ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
+                    if (ReferenceProperty1.Similar(ReferenceProperty2))
+                    {
+                        logger.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
                 }

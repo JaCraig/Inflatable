@@ -27,6 +27,14 @@ using System.Linq.Expressions;
 namespace Inflatable.ClassMapper.Interfaces
 {
     /// <summary>
+    /// Many to one list property
+    /// </summary>
+    /// <seealso cref="IManyToOneProperty"/>
+    public interface IManyToOneListProperty : IManyToOneProperty
+    {
+    }
+
+    /// <summary>
     /// Many to one property interface
     /// </summary>
     /// <typeparam name="ClassType">The class type.</typeparam>
@@ -52,6 +60,13 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <param name="type">The type.</param>
         /// <returns>This</returns>
         ReturnType LoadUsing(string queryText, CommandType type);
+
+        /// <summary>
+        /// Sets the name of the column.
+        /// </summary>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns>This</returns>
+        ReturnType SetColumnName(string columnName);
     }
 
     /// <summary>
@@ -104,6 +119,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
         bool Cascade { get; }
+
+        /// <summary>
+        /// Gets the name of the column.
+        /// </summary>
+        /// <value>The name of the column.</value>
+        string ColumnName { get; }
 
         /// <summary>
         /// Gets the foreign mapping.

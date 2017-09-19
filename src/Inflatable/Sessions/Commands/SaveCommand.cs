@@ -123,9 +123,42 @@ namespace Inflatable.Sessions.Commands
                                                                          || ORMObject.PropertiesChanged0.Contains(x.Name))))
             {
                 var ManyToManyValue = ManyToManyProperty.GetValue(@object) as IEnumerable;
+                if (ManyToManyValue == null)
+                    continue;
                 foreach (var Item in ManyToManyValue)
                 {
                     Save(Item, source, batch, declarationBatch, objectsSeen);
+                }
+            }
+        }
+
+        private void CascadeManyToOneProperties(object @object,
+            MappingSource source,
+            SQLHelper.SQLHelper batch,
+            SQLHelper.SQLHelper declarationBatch,
+            IList<object> objectsSeen,
+            IEnumerable<IMapping> parentMappings)
+        {
+            IORMObject ORMObject = @object as IORMObject;
+            foreach (var ManyToOneProperty in parentMappings.SelectMany(x => x.ManyToOneProperties)
+                                                             .Where(x => x.Cascade
+                                                                      && (ORMObject == null
+                                                                         || ORMObject.PropertiesChanged0.Contains(x.Name))))
+            {
+                var ManyToOneValue = ManyToOneProperty.GetValue(@object);
+                if (ManyToOneValue == null)
+                    continue;
+                var ManyToOneListValue = ManyToOneValue as IEnumerable;
+                if (ManyToOneListValue == null)
+                {
+                    Save(ManyToOneValue, source, batch, declarationBatch, objectsSeen);
+                }
+                else
+                {
+                    foreach (var Item in ManyToOneListValue)
+                    {
+                        Save(Item, source, batch, declarationBatch, objectsSeen);
+                    }
                 }
             }
         }
@@ -206,6 +239,7 @@ namespace Inflatable.Sessions.Commands
 
             CascadeMapProperties(@object, source, batch, declarationBatch, objectsSeen, ParentMappings);
             CascadeManyToManyProperties(@object, source, batch, declarationBatch, objectsSeen, ParentMappings);
+            CascadeManyToOneProperties(@object, source, batch, declarationBatch, objectsSeen, ParentMappings);
 
             if (@object is IORMObject UpdateObject)
                 Update(UpdateObject, source, batch);
@@ -231,6 +265,10 @@ namespace Inflatable.Sessions.Commands
                     SavePropertyJoins(TempObject, source, batch, MapProperty);
                 }
                 foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties))
+                {
+                    SavePropertyJoins(TempObject, source, batch, ManyToManyProperty);
+                }
+                foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToOneProperties))
                 {
                     SavePropertyJoins(TempObject, source, batch, ManyToManyProperty);
                 }

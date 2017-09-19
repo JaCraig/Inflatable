@@ -77,6 +77,95 @@ namespace Inflatable.Sessions.Commands
         }
 
         /// <summary>
+        /// Cascades the many to many properties.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        /// <param name="ParentMappings">The parent mappings.</param>
+        private void CascadeManyToManyProperties(object @object, MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        {
+            foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
+            {
+                var ManyToManyValue = ManyToManyProperty.GetValue(@object);
+                if (ManyToManyValue != null)
+                {
+                    var ManyToManyValueList = ManyToManyValue as IList;
+                    List<object> FinalList = new List<object>();
+                    int ManyToManyValueListCount = ManyToManyValueList.Count;
+                    for (int x = 0; x < ManyToManyValueListCount; ++x)
+                    {
+                        var Item = ManyToManyValueList[x];
+                        FinalList.Add(Item);
+                    }
+                    DeleteJoins(@object, source, batch, ManyToManyProperty, ManyToManyValueList);
+                    int FinalListCount = FinalList.Count;
+                    for (int x = 0; x < FinalListCount; ++x)
+                    {
+                        var Item = FinalList[x];
+                        Delete(Item, source, batch, objectsSeen);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cascades the many to one properties.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        /// <param name="ParentMappings">The parent mappings.</param>
+        private void CascadeManyToOneProperties(object @object, MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        {
+            foreach (var ManyToOneProperty in ParentMappings.SelectMany(x => x.ManyToOneProperties).Where(x => x.Cascade))
+            {
+                var ManyToOneValue = ManyToOneProperty.GetValue(@object);
+                if (ManyToOneValue != null)
+                {
+                    if (ManyToOneValue is IList ManyToOneValueList)
+                    {
+                        List<object> FinalList = new List<object>();
+                        int ManyToManyValueListCount = ManyToOneValueList.Count;
+                        for (int x = 0; x < ManyToManyValueListCount; ++x)
+                        {
+                            var Item = ManyToOneValueList[x];
+                            FinalList.Add(Item);
+                        }
+                        int FinalListCount = FinalList.Count;
+                        for (int x = 0; x < FinalListCount; ++x)
+                        {
+                            var Item = FinalList[x];
+                            Delete(Item, source, batch, objectsSeen);
+                        }
+                    }
+                    else
+                    {
+                        Delete(ManyToOneValue, source, batch, objectsSeen);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Cascades the map properties.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        /// <param name="ParentMappings">The parent mappings.</param>
+        private void CascadeMapProperties(object @object, MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        {
+            foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties).Where(x => x.Cascade))
+            {
+                Delete(MapProperty.GetValue(@object), source, batch, objectsSeen);
+            }
+        }
+
+        /// <summary>
         /// Deletes the specified object.
         /// </summary>
         /// <param name="object">The object.</param>
@@ -111,32 +200,9 @@ namespace Inflatable.Sessions.Commands
         private void DeleteCascade(object @object, MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen)
         {
             var ParentMappings = source.GetParentMapping(@object.GetType());
-            foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties).Where(x => x.Cascade))
-            {
-                Delete(MapProperty.GetValue(@object), source, batch, objectsSeen);
-            }
-            foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
-            {
-                var ManyToManyValue = ManyToManyProperty.GetValue(@object);
-                if (ManyToManyValue != null)
-                {
-                    var ManyToManyValueList = ManyToManyValue as IList;
-                    List<object> FinalList = new List<object>();
-                    int ManyToManyValueListCount = ManyToManyValueList.Count;
-                    for (int x = 0; x < ManyToManyValueListCount; ++x)
-                    {
-                        var Item = ManyToManyValueList[x];
-                        FinalList.Add(Item);
-                    }
-                    DeleteJoins(@object, source, batch, ManyToManyProperty, ManyToManyValueList);
-                    int FinalListCount = FinalList.Count;
-                    for (int x = 0; x < FinalListCount; ++x)
-                    {
-                        var Item = FinalList[x];
-                        Delete(Item, source, batch, objectsSeen);
-                    }
-                }
-            }
+            CascadeMapProperties(@object, source, batch, objectsSeen, ParentMappings);
+            CascadeManyToManyProperties(@object, source, batch, objectsSeen, ParentMappings);
+            CascadeManyToOneProperties(@object, source, batch, objectsSeen, ParentMappings);
         }
 
         /// <summary>
