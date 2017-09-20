@@ -20,8 +20,10 @@ using Inflatable.ClassMapper;
 using Inflatable.LinqExpression;
 using Inflatable.Sessions;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Inflatable
 {
@@ -64,6 +66,56 @@ namespace Inflatable
         }
 
         /// <summary>
+        /// Executes the query asynchronously.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects returned by the query.</returns>
+        public static async Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
+        {
+            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(command, type, connection, parameters);
+        }
+
+        /// <summary>
+        /// Executes the query asynchronously.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects returned by the query</returns>
+        public static async Task<IEnumerable<dynamic>> ExecuteDynamicAsync(string command, CommandType type, string connection, params object[] parameters)
+        {
+            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
+        }
+
+        /// <summary>
+        /// Executes the query getting a scalar asynchronously.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The first object returned by the query.</returns>
+        public static async Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters)
+        {
+            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters);
+        }
+
+        /// <summary>
+        /// Adds a delete command.
+        /// </summary>
+        /// <param name="objectsToDelete">The objects to delete.</param>
+        /// <returns>This</returns>
+        public DbContext<TObject> Delete(params TObject[] objectsToDelete)
+        {
+            InternalSession.Delete(objectsToDelete);
+            return this;
+        }
+
+        /// <summary>
         /// Executes the query represented by a specified expression tree.
         /// </summary>
         /// <param name="expression">An expression tree that represents a LINQ query.</param>
@@ -76,6 +128,15 @@ namespace Inflatable
         }
 
         /// <summary>
+        /// Executes the various save and delete commands asynchronous.
+        /// </summary>
+        /// <returns>The number of rows modified or the first ID if inserting new items.</returns>
+        public async Task<int> ExecuteAsync()
+        {
+            return await InternalSession.ExecuteAsync();
+        }
+
+        /// <summary>
         /// Gets the query text.
         /// </summary>
         /// <param name="expression">The expression.</param>
@@ -83,6 +144,17 @@ namespace Inflatable
         public override string GetQueryText(Expression expression)
         {
             return Translate(expression).First().Value.ToString();
+        }
+
+        /// <summary>
+        /// Adds a save command.
+        /// </summary>
+        /// <param name="objectsToSave">The objects to save.</param>
+        /// <returns>This</returns>
+        public DbContext<TObject> Save(params TObject[] objectsToSave)
+        {
+            InternalSession.Save(objectsToSave);
+            return this;
         }
 
         /// <summary>

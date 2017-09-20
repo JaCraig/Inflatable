@@ -176,27 +176,6 @@ namespace Inflatable.Sessions
         /// <summary>
         /// Executes the specified command and returns items of a specific type.
         /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="connection">The connection name.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The list of objects</returns>
-        /// <exception cref="System.ArgumentException"></exception>
-        public async Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
-        {
-            parameters = parameters ?? new IParameter[0];
-            List<IParameter> Parameters = ConvertParameters(parameters);
-            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
-            if (Source == null)
-                throw new ArgumentException($"Source not found {connection}");
-            var Batch = QueryProviderManager.CreateBatch(Source.Source);
-            Batch.AddQuery(command, type, Parameters.ToArray());
-            return (await Batch.ExecuteAsync())[0];
-        }
-
-        /// <summary>
-        /// Executes the specified command and returns items of a specific type.
-        /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="queries">The queries to run.</param>
         /// <returns>The resulting data</returns>
@@ -235,6 +214,27 @@ namespace Inflatable.Sessions
             }
             QueryResults.CacheValues(KeyName, Results);
             return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
+        }
+
+        /// <summary>
+        /// Executes the specified command and returns items of a specific type.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects</returns>
+        /// <exception cref="System.ArgumentException"></exception>
+        public async Task<IEnumerable<dynamic>> ExecuteDynamicAsync(string command, CommandType type, string connection, params object[] parameters)
+        {
+            parameters = parameters ?? new IParameter[0];
+            List<IParameter> Parameters = ConvertParameters(parameters);
+            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            if (Source == null)
+                throw new ArgumentException($"Source not found {connection}");
+            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            Batch.AddQuery(command, type, Parameters.ToArray());
+            return (await Batch.ExecuteAsync())[0];
         }
 
         /// <summary>

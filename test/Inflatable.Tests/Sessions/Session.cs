@@ -104,7 +104,7 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
-            var Result = await TestObject.ExecuteAsync("SELECT * FROM AllReferencesAndID_ WHERE ID_=@0",
+            var Result = await TestObject.ExecuteDynamicAsync("SELECT * FROM AllReferencesAndID_ WHERE ID_=@0",
                 CommandType.Text,
                 "Default",
                 2);
