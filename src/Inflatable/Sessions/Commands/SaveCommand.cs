@@ -34,18 +34,16 @@ namespace Inflatable.Sessions.Commands
     /// <summary>
     /// Save command
     /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="BaseClasses.CommandBaseClass{TObject}"/>
-    public class SaveCommand<TObject> : CommandBaseClass<TObject>
-        where TObject : class
+    /// <seealso cref="CommandBaseClass"/>
+    public class SaveCommand : CommandBaseClass
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SaveCommand{TObject}"/> class.
+        /// Initializes a new instance of the <see cref="SaveCommand"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="objects">The objects.</param>
-        public SaveCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, TObject[] objects)
+        public SaveCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, object[] objects)
             : base(mappingManager, queryProviderManager, objects)
         {
         }
@@ -60,28 +58,25 @@ namespace Inflatable.Sessions.Commands
         /// Executes this instance.
         /// </summary>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> Execute()
+        public override async Task<int> Execute(MappingSource source)
         {
             if (Objects.Length == 0)
                 return 0;
             var ReturnValue = 0;
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite
-                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
-                                                         .OrderBy(x => x.Order))
+            var Batch = QueryProviderManager.CreateBatch(source.Source);
+            var DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
+            List<object> ObjectsSeen = new List<object>();
+            for (int x = 0; x < Objects.Length; ++x)
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
-                var DeclarationBatch = QueryProviderManager.CreateBatch(Source.Source);
-                List<object> ObjectsSeen = new List<object>();
-                for (int x = 0; x < Objects.Length; ++x)
-                {
-                    Save(Objects[x], Source, Batch, DeclarationBatch, ObjectsSeen);
-                }
-                Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
-                ReturnValue += await Batch.ExecuteScalarAsync<int>();
-                Batch = Batch.CreateBatch();
-                SaveJoins(Source, Batch, ObjectsSeen);
-                ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
+                Save(Objects[x], source, Batch, DeclarationBatch, ObjectsSeen);
             }
+            if (!ObjectsSeen.Any())
+                return 0;
+            Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
+            ReturnValue += await Batch.ExecuteScalarAsync<int>();
+            Batch = Batch.CreateBatch();
+            SaveJoins(source, Batch, ObjectsSeen);
+            ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
 
             return ReturnValue;
         }
@@ -230,7 +225,9 @@ namespace Inflatable.Sessions.Commands
         /// <param name="objectsSeen">The objects seen.</param>
         private void Save(object @object, MappingSource source, SQLHelper.SQLHelper batch, SQLHelper.SQLHelper declarationBatch, IList<object> objectsSeen)
         {
-            if (@object == null || WasObjectSeen(@object, objectsSeen, source))
+            if (@object == null
+                || WasObjectSeen(@object, objectsSeen, source)
+                || !CanExecute(@object, source))
                 return;
             objectsSeen.Add(@object);
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);

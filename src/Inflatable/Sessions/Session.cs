@@ -96,7 +96,7 @@ namespace Inflatable.Sessions
         public Session Delete<TObject>(params TObject[] objectsToDelete)
             where TObject : class
         {
-            Commands.Add(new DeleteCommand<TObject>(MappingManager, QueryProviderManager, objectsToDelete));
+            Commands.Add(new DeleteCommand(MappingManager, QueryProviderManager, objectsToDelete));
             return this;
         }
 
@@ -118,9 +118,14 @@ namespace Inflatable.Sessions
                     }
                 }
             }
-            for (int x = 0; x < Commands.Count; ++x)
+            foreach (var Source in MappingManager.Sources
+                                                 .Where(x => x.CanWrite)
+                                                 .OrderBy(x => x.Order))
             {
-                Result += await Commands[x].Execute();
+                for (int x = 0; x < Commands.Count; ++x)
+                {
+                    Result += await Commands[x].Execute(Source);
+                }
             }
             Commands.Clear();
             return Result;
@@ -320,7 +325,7 @@ namespace Inflatable.Sessions
         public Session Save<TObject>(params TObject[] objectsToSave)
             where TObject : class
         {
-            Commands.Add(new SaveCommand<TObject>(MappingManager, QueryProviderManager, objectsToSave));
+            Commands.Add(new SaveCommand(MappingManager, QueryProviderManager, objectsToSave));
             return this;
         }
 

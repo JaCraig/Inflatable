@@ -31,19 +31,18 @@ namespace Inflatable.Sessions.Commands.BaseClasses
     /// Command base class
     /// </summary>
     /// <seealso cref="ICommand"/>
-    public abstract class CommandBaseClass<TObject> : ICommand
-        where TObject : class
+    public abstract class CommandBaseClass : ICommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandBaseClass{TObject}"/> class.
+        /// Initializes a new instance of the <see cref="CommandBaseClass"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="objects">The objects.</param>
-        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, TObject[] objects)
+        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, object[] objects)
         {
             QueryProviderManager = queryProviderManager;
-            Objects = (objects ?? new TObject[0]).Where(x => x != null).ToArray();
+            Objects = (objects ?? new object[0]).Where(x => x != null).ToArray();
             MappingManager = mappingManager;
         }
 
@@ -57,13 +56,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Gets the objects.
         /// </summary>
         /// <value>The objects.</value>
-        public TObject[] Objects { get; private set; }
-
-        /// <summary>
-        /// Gets the type of the objects.
-        /// </summary>
-        /// <value>The type of the objects.</value>
-        public Type ObjectType => typeof(TObject);
+        public object[] Objects { get; private set; }
 
         /// <summary>
         /// Gets the mapping manager.
@@ -81,7 +74,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Executes this instance.
         /// </summary>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract Task<int> Execute();
+        public abstract Task<int> Execute(MappingSource source);
 
         /// <summary>
         /// Merges the specified command.
@@ -92,16 +85,30 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         {
             if (ReferenceEquals(command, null))
                 return true;
-            if (command.ObjectType != ObjectType || command.CommandType != CommandType)
+            if (command.CommandType != CommandType)
                 return false;
-            var TempCommand = command as CommandBaseClass<TObject>;
+            var TempCommand = command as CommandBaseClass;
             if (TempCommand == null)
                 return false;
-            List<TObject> Values = new List<TObject>();
+            List<object> Values = new List<object>();
             Values.AddRange(Objects);
             Values.AddRange(TempCommand.Objects);
             Objects = Values.ToArray();
             return true;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can execute the specified object.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>
+        /// <c>true</c> if this instance can execute the specified object; otherwise, <c>false</c>.
+        /// </returns>
+        protected bool CanExecute(object @object, MappingSource source)
+        {
+            Type TempType = GetActualType(@object);
+            return source.Mappings.ContainsKey(TempType);
         }
 
         /// <summary>
@@ -137,9 +144,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="object">The object.</param>
         protected void RemoveItemsFromCache(object @object)
         {
-            var TempType = @object.GetType();
-            if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-                TempType = TempType.GetTypeInfo().BaseType;
+            Type TempType = GetActualType(@object);
             QueryResults.RemoveCacheTag(TempType.GetName());
         }
 
@@ -153,6 +158,14 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         protected bool WasObjectSeen(object @object, IList<object> objectsSeen, MappingSource source)
         {
             return objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
+        }
+
+        private static Type GetActualType(object @object)
+        {
+            var TempType = @object.GetType();
+            if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                TempType = TempType.GetTypeInfo().BaseType;
+            return TempType;
         }
     }
 }

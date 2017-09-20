@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using System;
+using Inflatable.ClassMapper;
 using System.Threading.Tasks;
 
 namespace Inflatable.Sessions.Commands.Interfaces
@@ -31,16 +31,11 @@ namespace Inflatable.Sessions.Commands.Interfaces
         Enums.CommandType CommandType { get; }
 
         /// <summary>
-        /// Gets the type of the objects.
-        /// </summary>
-        /// <value>The type of the objects.</value>
-        Type ObjectType { get; }
-
-        /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        Task<int> Execute();
+        Task<int> Execute(MappingSource source);
 
         /// <summary>
         /// Merges the specified command.

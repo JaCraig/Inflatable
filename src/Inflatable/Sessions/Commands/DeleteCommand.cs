@@ -30,18 +30,16 @@ namespace Inflatable.Sessions.Commands
     /// <summary>
     /// Delete command
     /// </summary>
-    /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="BaseClasses.CommandBaseClass{TObject}"/>
-    public class DeleteCommand<TObject> : CommandBaseClass<TObject>
-        where TObject : class
+    /// <seealso cref="BaseClasses.CommandBaseClass"/>
+    public class DeleteCommand : CommandBaseClass
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteCommand{TObject}"/> class.
+        /// Initializes a new instance of the <see cref="DeleteCommand{object}"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="objectsToDelete">The objects to delete.</param>
-        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, params TObject[] objectsToDelete)
+        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, params object[] objectsToDelete)
             : base(mappingManager, queryProviderManager, objectsToDelete)
         {
         }
@@ -56,22 +54,20 @@ namespace Inflatable.Sessions.Commands
         /// Executes this instance.
         /// </summary>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> Execute()
+        public override async Task<int> Execute(MappingSource source)
         {
             if (Objects.Length == 0)
                 return 0;
             var ReturnValue = 0;
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanWrite
-                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
-                                                         .OrderBy(x => x.Order))
+            var Batch = QueryProviderManager.CreateBatch(source.Source);
+            List<object> ObjectsSeen = new List<object>();
+            for (int x = 0; x < Objects.Length; ++x)
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
-                for (int x = 0; x < Objects.Length; ++x)
-                {
-                    Delete(Objects[x], Source, Batch, new List<object>());
-                }
-                ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
+                Delete(Objects[x], source, Batch, ObjectsSeen);
             }
+            if (!ObjectsSeen.Any())
+                return 0;
+            ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
 
             return ReturnValue;
         }
@@ -174,7 +170,9 @@ namespace Inflatable.Sessions.Commands
         /// <param name="objectsSeen">The objects seen.</param>
         private void Delete(object @object, MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen)
         {
-            if (@object == null || WasObjectSeen(@object, objectsSeen, source))
+            if (@object == null
+                || WasObjectSeen(@object, objectsSeen, source)
+                || !CanExecute(@object, source))
                 return;
             objectsSeen.Add(@object);
             DeleteCascade(@object, source, batch, objectsSeen);

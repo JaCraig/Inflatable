@@ -6,3 +6,4 @@ src/Inflatable/Inflatable.xproj.user
 */obj/*
 *.xproj.user
 */project.lock.json
+Log.txt

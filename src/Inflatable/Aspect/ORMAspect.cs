@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Inflatable.Aspect
 {
@@ -57,11 +58,12 @@ namespace Inflatable.Aspect
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
             assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
             AssembliesUsing.Add(assemblies.Assemblies);
-            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(Dynamo).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(Object).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique(MetadataReference.CreateFromFile(typeof(MulticastDelegate).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Dynamo).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Object).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(MulticastDelegate).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Task<>).GetTypeInfo().Assembly.Location));
             IDFields = new List<IIDProperty>();
             ReferenceFields = new List<IProperty>();
         }
@@ -193,20 +195,6 @@ namespace Inflatable.Aspect
                 }
             }
             return Builder.ToString();
-            //var Property = Mapping.Properties.FirstOrDefault(x => x.Name == Method.Name.Replace("get_", ""));
-            //if (Property != null)
-            //{
-            //    var Builder = new StringBuilder();
-            //    if (Property is IManyToOne || Property is IMap)
-            //        Builder.AppendLine(SetupSingleProperty(ReturnValueName, Property));
-            //    else if (Property is IIEnumerableManyToOne || Property is IManyToMany
-            //        || Property is IIListManyToMany || Property is IIListManyToOne
-            //        || Property is ICollectionManyToMany || Property is ICollectionManyToOne)
-            //        Builder.AppendLine(SetupIEnumerableProperty(ReturnValueName, Property));
-            //    else if (Property is IListManyToMany || Property is IListManyToOne)
-            //        Builder.AppendLine(SetupListProperty(ReturnValueName, Property));
-            //    return Builder.ToString();
-            //}
         }
 
         /// <summary>
