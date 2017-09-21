@@ -34,7 +34,7 @@ namespace Inflatable.Sessions.Commands
     public class DeleteCommand : CommandBaseClass
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteCommand{object}"/> class.
+        /// Initializes a new instance of the <see cref="DeleteCommand"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>

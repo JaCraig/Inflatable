@@ -123,7 +123,7 @@ namespace Inflatable
         public override object Execute(Expression expression)
         {
             var Results = Translate(expression);
-            var DatabaseValues = InternalSession.ExecuteAsync<TObject>(Results).Result;
+            var DatabaseValues = InternalSession.ExecuteAsync<TObject>(Results).GetAwaiter().GetResult();
             return Results.Values.First().Top == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 

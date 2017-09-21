@@ -24,6 +24,10 @@ using System.Text;
 
 namespace Inflatable.Aspect.EndMethod
 {
+    /// <summary>
+    /// Many to one lazy loading setup.
+    /// </summary>
+    /// <seealso cref="Inflatable.Aspect.Interfaces.IEndMethodHelper"/>
     public class IManyToOnePropertyLazyLoad : IEndMethodHelper
     {
         /// <summary>
