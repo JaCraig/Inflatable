@@ -35,7 +35,7 @@
     <PackageReference Include="Holmes" Version="1.0.10" />
     <PackageReference Include="Serilog" Version="2.5.0" />
     <PackageReference Include="SQLHelper.DB" Version="1.0.40" />
-    <PackageReference Include="Data.Modeler" Version="1.0.17" />
+    <PackageReference Include="Data.Modeler" Version="1.0.18" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="1.0.6" />
     <PackageReference Include="Mirage" Version="1.0.10" />

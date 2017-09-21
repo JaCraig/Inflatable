@@ -67,7 +67,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                 for (int i = 0; i < MaxLength; i++)
                 {
                     var Interface = CurrentInterfaces[i];
-                    if (!TempTypeGraph.ContainsNode(Interface, (x, y) => x == y))
+                    if (!TempTypeGraph.ContainsNode(Interface, (x, y) => x == y) && Mappings.Keys.Contains(Interface))
                     {
                         CurrentNode.AddNode(Interface);
                     }
