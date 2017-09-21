@@ -17,7 +17,6 @@ limitations under the License.
 using Inflatable.Interfaces;
 using Mirage.Generators;
 using System;
-using System.Collections.Generic;
 using Valkyrie;
 
 namespace Inflatable.BaseClasses
@@ -66,61 +65,6 @@ namespace Inflatable.BaseClasses
         /// ID for the object
         /// </summary>
         public IDType ID { get; set; }
-
-        ///// <summary>
-        ///// Loads the items based on type
-        ///// </summary>
-        ///// <param name="Params">Parameters used to specify what to load</param>
-        ///// <returns>All items that fit the specified query</returns>
-        //public static IEnumerable<ObjectType> All(params IParameter[] Params)
-        //{
-        //    IEnumerable<ObjectType> instance = new List<ObjectType>();
-        //    instance = QueryProvider.All<ObjectType>(Params);
-        //    return instance;
-        //}
-
-        ///// <summary>
-        ///// Loads the items based on the criteria specified
-        ///// </summary>
-        ///// <param name="Command">Command to run</param>
-        ///// <param name="Type">Command type</param>
-        ///// <param name="ConnectionString">Connection string name</param>
-        ///// <param name="Params">Parameters used to specify what to load</param>
-        ///// <returns>The specified items</returns>
-        //public static IEnumerable<ObjectType> All(string Command, CommandType Type, string ConnectionString, params object[] Params)
-        //{
-        //    IEnumerable<ObjectType> instance = new List<ObjectType>();
-        //    instance = QueryProvider.All<ObjectType>(Command, Type, ConnectionString, Params);
-
-        //    return instance;
-        //}
-
-        ///// <summary>
-        ///// Loads the item based on the criteria specified
-        ///// </summary>
-        ///// <param name="Params">Parameters used to specify what to load</param>
-        ///// <returns>The specified item</returns>
-        //public static ObjectType Any(params IParameter[] Params)
-        //{
-        //    var instance = new ObjectType();
-        //    instance = QueryProvider.Any<ObjectType>(Params);
-        //    return instance;
-        //}
-
-        ///// <summary>
-        ///// Loads the item based on the criteria specified
-        ///// </summary>
-        ///// <param name="Command">Command to run</param>
-        ///// <param name="Type">Command type</param>
-        ///// <param name="ConnectionString">Connection string name</param>
-        ///// <param name="Params">Parameters used to specify what to load</param>
-        ///// <returns>The specified item</returns>
-        //public static ObjectType Any(string Command, CommandType Type, string ConnectionString, params object[] Params)
-        //{
-        //    var instance = new ObjectType();
-        //    instance = QueryProvider.Any<ObjectType>(Command, Type, ConnectionString, Params);
-        //    return instance;
-        //}
 
         /// <summary>
         /// != operator
@@ -180,43 +124,6 @@ namespace Inflatable.BaseClasses
             return first.GetHashCode() > second.GetHashCode();
         }
 
-        ///// <summary>
-        ///// Gets the page count based on page size
-        ///// </summary>
-        ///// <param name="PageSize">Page size</param>
-        ///// <param name="Params">Parameters used to specify what to load</param>
-        ///// <returns>All items that fit the specified query</returns>
-        //public static int PageCount(int PageSize = 25, params IParameter[] Params)
-        //{
-        //    return QueryProvider.PageCount<ObjectType>(PageSize, Params);
-        //}
-
-        ///// <summary>
-        ///// Loads the items based on type
-        ///// </summary>
-        ///// <param name="PageSize">Page size</param>
-        ///// <param name="CurrentPage">Current page (0 based)</param>
-        ///// <param name="OrderBy">The order by portion of the query</param>
-        ///// <param name="Params">Parameters used to specify what to load</param>
-        ///// <returns>All items that fit the specified query</returns>
-        //public static IEnumerable<ObjectType> Paged(int PageSize = 25, int CurrentPage = 0, string OrderBy = "", params IParameter[] Params)
-        //{
-        //    IEnumerable<ObjectType> instance = new List<ObjectType>();
-        //    instance = QueryProvider.Paged<ObjectType>(PageSize, CurrentPage, OrderBy, Params);
-        //    return instance;
-        //}
-
-        /// <summary>
-        /// Saves a list of objects
-        /// </summary>
-        /// <param name="Objects">List of objects</param>
-        public static void Save(IEnumerable<ObjectType> Objects)
-        {
-            if (Objects == null)
-                return;
-            //Objects.ForEach(x => x.Save());
-        }
-
         /// <summary>
         /// Compares the object to another object
         /// </summary>
@@ -239,14 +146,6 @@ namespace Inflatable.BaseClasses
             return other.ID.CompareTo(ID);
         }
 
-        ///// <summary>
-        ///// Deletes the item
-        ///// </summary>
-        //public virtual void Delete()
-        //{
-        //    QueryProvider.Delete((ObjectType)this);
-        //}
-
         /// <summary>
         /// Determines if two items are equal
         /// </summary>
@@ -268,16 +167,6 @@ namespace Inflatable.BaseClasses
         {
             return ID.GetHashCode();
         }
-
-        ///// <summary>
-        ///// Saves the item (if it already exists, it updates the item. Otherwise it inserts the item)
-        ///// </summary>
-        //public virtual void Save()
-        //{
-        //    SetupObject();
-        //    this.Validate();
-        //    QueryProvider.Save<ObjectType, IDType>((ObjectType)this);
-        //}
 
         /// <summary>
         /// Sets up the object for saving purposes

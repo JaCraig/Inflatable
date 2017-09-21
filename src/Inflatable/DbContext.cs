@@ -28,6 +28,72 @@ using System.Threading.Tasks;
 namespace Inflatable
 {
     /// <summary>
+    /// Db Context
+    /// </summary>
+    public class DbContext
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbContext"/> class.
+        /// </summary>
+        public DbContext()
+        {
+            InternalSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+        }
+
+        /// <summary>
+        /// Gets or sets the internal session.
+        /// </summary>
+        /// <value>The internal session.</value>
+        private Session InternalSession { get; set; }
+
+        /// <summary>
+        /// Executes the query asynchronously.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="connection">The connection.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The list of objects returned by the query</returns>
+        public static async Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
+        {
+            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
+        }
+
+        /// <summary>
+        /// Adds a delete command.
+        /// </summary>
+        /// <param name="objectsToDelete">The objects to delete.</param>
+        /// <returns>This</returns>
+        public DbContext Delete<TObject>(params TObject[] objectsToDelete)
+            where TObject : class
+        {
+            InternalSession.Delete(objectsToDelete);
+            return this;
+        }
+
+        /// <summary>
+        /// Executes the various save and delete commands asynchronous.
+        /// </summary>
+        /// <returns>The number of rows modified or the first ID if inserting new items.</returns>
+        public async Task<int> ExecuteAsync()
+        {
+            return await InternalSession.ExecuteAsync();
+        }
+
+        /// <summary>
+        /// Adds a save command.
+        /// </summary>
+        /// <param name="objectsToSave">The objects to save.</param>
+        /// <returns>This</returns>
+        public DbContext Save<TObject>(params TObject[] objectsToSave)
+            where TObject : class
+        {
+            InternalSession.Save(objectsToSave);
+            return this;
+        }
+    }
+
+    /// <summary>
     /// Db context
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -79,19 +145,6 @@ namespace Inflatable
         }
 
         /// <summary>
-        /// Executes the query asynchronously.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="connection">The connection.</param>
-        /// <param name="parameters">The parameters.</param>
-        /// <returns>The list of objects returned by the query</returns>
-        public static async Task<IEnumerable<dynamic>> ExecuteDynamicAsync(string command, CommandType type, string connection, params object[] parameters)
-        {
-            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
-        }
-
-        /// <summary>
         /// Executes the query getting a scalar asynchronously.
         /// </summary>
         /// <param name="command">The command.</param>
@@ -102,17 +155,6 @@ namespace Inflatable
         public static async Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters)
         {
             return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters);
-        }
-
-        /// <summary>
-        /// Adds a delete command.
-        /// </summary>
-        /// <param name="objectsToDelete">The objects to delete.</param>
-        /// <returns>This</returns>
-        public DbContext<TObject> Delete(params TObject[] objectsToDelete)
-        {
-            InternalSession.Delete(objectsToDelete);
-            return this;
         }
 
         /// <summary>
@@ -128,15 +170,6 @@ namespace Inflatable
         }
 
         /// <summary>
-        /// Executes the various save and delete commands asynchronous.
-        /// </summary>
-        /// <returns>The number of rows modified or the first ID if inserting new items.</returns>
-        public async Task<int> ExecuteAsync()
-        {
-            return await InternalSession.ExecuteAsync();
-        }
-
-        /// <summary>
         /// Gets the query text.
         /// </summary>
         /// <param name="expression">The expression.</param>
@@ -144,17 +177,6 @@ namespace Inflatable
         public override string GetQueryText(Expression expression)
         {
             return Translate(expression).First().Value.ToString();
-        }
-
-        /// <summary>
-        /// Adds a save command.
-        /// </summary>
-        /// <param name="objectsToSave">The objects to save.</param>
-        /// <returns>This</returns>
-        public DbContext<TObject> Save(params TObject[] objectsToSave)
-        {
-            InternalSession.Save(objectsToSave);
-            return this;
         }
 
         /// <summary>
