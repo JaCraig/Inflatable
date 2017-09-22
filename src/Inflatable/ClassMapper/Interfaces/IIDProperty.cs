@@ -181,6 +181,15 @@ namespace Inflatable.ClassMapper.Interfaces
         void AddToTable(ITable table);
 
         /// <summary>
+        /// Converts this instance to the class specified
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="mapping">The mapping.</param>
+        /// <returns>The resulting property</returns>
+        IIDProperty Convert<TResult>(IMapping mapping)
+            where TResult : class;
+
+        /// <summary>
         /// Gets the property as an IParameter (for classes, this will return the ID of the property)
         /// </summary>
         /// <param name="objectValue">Object to get the parameter from</param>

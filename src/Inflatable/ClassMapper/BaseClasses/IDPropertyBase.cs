@@ -276,6 +276,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Converts this instance to the class specified
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="mapping">The mapping.</param>
+        /// <returns>The resulting property</returns>
+        public abstract IIDProperty Convert<TResult>(IMapping mapping)
+            where TResult : class;
+
+        /// <summary>
         /// Determines if the two objects are equal and returns true if they are, false otherwise
         /// </summary>
         /// <param name="obj">Object to compare to</param>

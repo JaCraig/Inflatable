@@ -49,6 +49,8 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <returns>The type graph associated with the type.</returns>
         public Tree<Type> Generate(Type mappingType)
         {
+            if (!Mappings.Keys.Contains(mappingType))
+                return null;
             var TempTypeGraph = new Tree<Type>(mappingType);
             mappingType = mappingType.GetTypeInfo().BaseType;
             var CurrentNode = TempTypeGraph.Root;
@@ -62,18 +64,43 @@ namespace Inflatable.ClassMapper.TypeGraph
             }
             while (CurrentNode != null)
             {
-                int MaxLength = CurrentNode.Data.GetInterfaces().Length;
                 var CurrentInterfaces = CurrentNode.Data.GetInterfaces();
-                for (int i = 0; i < MaxLength; i++)
+                int MaxLength = CurrentInterfaces.Length;
+                if (MaxLength != 0)
                 {
-                    var Interface = CurrentInterfaces[i];
-                    if (!TempTypeGraph.ContainsNode(Interface, (x, y) => x == y) && Mappings.Keys.Contains(Interface))
+                    Tree<Type>[] PotentialNodes = new Tree<Type>[MaxLength];
+                    for (int x = 0; x < MaxLength; x++)
                     {
-                        CurrentNode.AddNode(Interface);
+                        var Interface = CurrentInterfaces[x];
+                        if (!TempTypeGraph.ContainsNode(Interface, (z, y) => z == y))
+                        {
+                            PotentialNodes[x] = Generate(Interface);
+                        }
+                    }
+                    for (int x = 0; x < MaxLength; ++x)
+                    {
+                        if (PotentialNodes[x] == null)
+                            continue;
+                        for (int y = 0; y < MaxLength; ++y)
+                        {
+                            if (x != y && PotentialNodes[x].ContainsNode(CurrentInterfaces[y], (i, j) => i == j))
+                            {
+                                PotentialNodes[y] = null;
+                            }
+                        }
+                    }
+                    for (int x = 0; x < MaxLength; ++x)
+                    {
+                        if (PotentialNodes[x] != null)
+                        {
+                            PotentialNodes[x].Root.Parent = CurrentNode;
+                            CurrentNode.Nodes.Add(PotentialNodes[x].Root);
+                        }
                     }
                 }
                 CurrentNode = CurrentNode.Parent;
             }
+
             return TempTypeGraph;
         }
     }

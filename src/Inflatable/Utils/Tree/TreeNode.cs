@@ -54,7 +54,7 @@ namespace Inflatable.Utils
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public TreeNode<TData> Parent { get; private set; }
+        public TreeNode<TData> Parent { get; set; }
 
         /// <summary>
         /// Adds the node.
@@ -102,6 +102,15 @@ namespace Inflatable.Utils
                 ReturnList.AddRange(Node.ToList());
             }
             return ReturnList;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return Data.ToString();
         }
     }
 }

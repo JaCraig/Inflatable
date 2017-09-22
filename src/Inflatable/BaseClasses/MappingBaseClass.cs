@@ -208,6 +208,10 @@ namespace Inflatable.BaseClasses
         /// <param name="mapping">The mapping.</param>
         public void Copy(IMapping mapping)
         {
+            foreach (var prop in mapping.IDProperties)
+            {
+                IDProperties.Add(prop.Convert<ClassType>(this));
+            }
             foreach (var prop in mapping.ReferenceProperties)
             {
                 ReferenceProperties.Add(prop.Convert<ClassType>(this));
