@@ -188,6 +188,12 @@ namespace Inflatable.ClassMapper.Interfaces
         IParameter GetAsParameter(object objectValue);
 
         /// <summary>
+        /// Gets the default value.
+        /// </summary>
+        /// <returns>The default value</returns>
+        object GetDefaultValue();
+
+        /// <summary>
         /// Gets the property as a parameter (for classes, this will return the ID of the property)
         /// </summary>
         /// <param name="Object">Object to get the parameter from</param>

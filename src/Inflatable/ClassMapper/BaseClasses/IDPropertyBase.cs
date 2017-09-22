@@ -303,6 +303,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Gets the default value.
+        /// </summary>
+        /// <returns>The default value</returns>
+        public object GetDefaultValue()
+        {
+            return DefaultValue();
+        }
+
+        /// <summary>
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>

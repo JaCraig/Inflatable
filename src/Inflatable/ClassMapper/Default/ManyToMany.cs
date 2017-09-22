@@ -94,7 +94,7 @@ namespace Inflatable.ClassMapper.Default
             DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
             foreach (var ParentIDMapping in ParentIDMappings)
             {
-                JoinTable.AddColumn(ParentMapping.TableName + ParentIDMapping.ColumnName,
+                JoinTable.AddColumn<object>(ParentMapping.TableName + ParentIDMapping.ColumnName,
                                 ParentIDMapping.PropertyType.To(DbType.Int32),
                                 ParentIDMapping.MaxLength,
                                 false,
@@ -104,7 +104,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 ParentMapping.TableName,
                                 ParentIDMapping.ColumnName,
-                                "",
+                                null,
                                 "",
                                 DatabaseJoinsCascade,
                                 DatabaseJoinsCascade,
@@ -112,7 +112,7 @@ namespace Inflatable.ClassMapper.Default
             }
             foreach (var ForeignIDMapping in ForeignMapping.IDProperties)
             {
-                JoinTable.AddColumn(ForeignMapping.TableName + ForeignIDMapping.ColumnName,
+                JoinTable.AddColumn<object>(ForeignMapping.TableName + ForeignIDMapping.ColumnName,
                                 ForeignIDMapping.PropertyType.To(DbType.Int32),
                                 ForeignIDMapping.MaxLength,
                                 false,
@@ -122,7 +122,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 ForeignMapping.TableName,
                                 ForeignIDMapping.ColumnName,
-                                "",
+                                null,
                                 "",
                                 DatabaseJoinsCascade,
                                 DatabaseJoinsCascade,

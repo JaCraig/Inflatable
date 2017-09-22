@@ -201,7 +201,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         {
             ForeignMapping.IDProperties.ForEach(x =>
             {
-                table.AddColumn(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
+                table.AddColumn<object>(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
                                 x.PropertyType.To(DbType.Int32),
                                 x.MaxLength,
                                 true,
@@ -211,7 +211,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                                 Unique,
                                 ForeignMapping.TableName,
                                 x.ColumnName,
-                                "",
+                                null,
                                 "",
                                 false,
                                 false,

@@ -80,7 +80,7 @@ namespace Inflatable.ClassMapper.Default
             {
                 if (ParentTable.Columns.Any(x => x.Name == ColumnName + ForeignMapping.TableName + IDMapping.ColumnName))
                     continue;
-                ParentTable.AddColumn(ColumnName + ForeignMapping.TableName + IDMapping.ColumnName,
+                ParentTable.AddColumn<object>(ColumnName + ForeignMapping.TableName + IDMapping.ColumnName,
                                 IDMapping.PropertyType.To(DbType.Int32),
                                 IDMapping.MaxLength,
                                 true,
@@ -90,7 +90,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 ForeignMapping.TableName,
                                 IDMapping.ColumnName,
-                                "",
+                                null,
                                 "",
                                 false,
                                 false,

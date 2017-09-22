@@ -182,7 +182,7 @@ namespace Inflatable.Schema
                     SourceSpec.Schemas.AddIfUnique(Mapping.SchemaName);
                 var Table = SourceSpec.AddTable(Mapping.TableName, Mapping.SchemaName);
                 var Tree = Source.TypeGraphs[Mapping.ObjectType];
-                var ParentMappings = Source.GetParentMapping(Mapping.ObjectType);
+                var ParentMappings = Tree.Root.Nodes.ForEach(x => Source.Mappings[x.Data]);
                 foreach (var ID in Mapping.IDProperties)
                 {
                     ID.Setup();
