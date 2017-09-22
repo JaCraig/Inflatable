@@ -86,7 +86,8 @@ namespace Inflatable.ClassMapper.Default
                 else
                     SetTableName(Class2 + "_" + Class1);
             }
-
+            if (dataModel.SourceSpec.Tables.Any(x => x.Name == TableName))
+                return;
             var JoinTable = dataModel.SourceSpec.AddTable(TableName, ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
