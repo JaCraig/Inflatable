@@ -208,23 +208,23 @@ namespace Inflatable.BaseClasses
         /// <param name="mapping">The mapping.</param>
         public void Copy(IMapping mapping)
         {
-            foreach (var prop in mapping.IDProperties)
+            foreach (var prop in mapping.IDProperties.Where(x => !IDProperties.Any(y => y.Name == x.Name)))
             {
                 IDProperties.Add(prop.Convert<ClassType>(this));
             }
-            foreach (var prop in mapping.ReferenceProperties)
+            foreach (var prop in mapping.ReferenceProperties.Where(x => !ReferenceProperties.Any(y => y.Name == x.Name)))
             {
                 ReferenceProperties.Add(prop.Convert<ClassType>(this));
             }
-            foreach (var prop in mapping.MapProperties)
+            foreach (var prop in mapping.MapProperties.Where(x => !MapProperties.Any(y => y.Name == x.Name)))
             {
                 MapProperties.Add(prop.Convert<ClassType>(this));
             }
-            foreach (var prop in mapping.ManyToManyProperties)
+            foreach (var prop in mapping.ManyToManyProperties.Where(x => !ManyToManyProperties.Any(y => y.Name == x.Name)))
             {
                 ManyToManyProperties.Add(prop.Convert<ClassType>(this));
             }
-            foreach (var prop in mapping.ManyToOneProperties)
+            foreach (var prop in mapping.ManyToOneProperties.Where(x => !ManyToOneProperties.Any(y => y.Name == x.Name)))
             {
                 ManyToOneProperties.Add(prop.Convert<ClassType>(this));
             }
