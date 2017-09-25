@@ -74,12 +74,14 @@ namespace Inflatable.ClassMapper.Default
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .FirstOrDefault(x => x.IDProperties.Any());
+            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
             if (ForeignMapping == null)
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
 
             if (string.IsNullOrEmpty(TableName))
             {
-                string Class1 = typeof(ClassType).Name;
+                var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
+                string Class1 = ParentWithID.ObjectType.Name;
                 string Class2 = ForeignMapping.ObjectType.Name;
                 if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
                     SetTableName(Class1 + "_" + Class2);
@@ -90,7 +92,6 @@ namespace Inflatable.ClassMapper.Default
                 return;
             var JoinTable = dataModel.SourceSpec.AddTable(TableName, ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
-            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
             foreach (var ParentIDMapping in ParentIDMappings)
