@@ -148,31 +148,33 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ItemList = propertyItem as IEnumerable;
             List<IParameter> ReturnValues = new List<IParameter>();
             int Count = 0;
-            ReturnValues.AddRange(property.ParentMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+            var ParentIDs = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            var ForeignIDs = MappingInformation.GetParentMapping(property.PropertyType).SelectMany(x => x.IDProperties);
+            ReturnValues.AddRange(ParentIDs.ForEach<IIDProperty, IParameter>(x =>
             {
                 var Value = x.GetValue(queryObject);
                 if (x.PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
-                    return new StringParameter(property.ParentMapping.TableName + x.ColumnName,
+                    return new StringParameter(x.ParentMapping.TableName + x.ColumnName,
                         TempParameter);
                 }
-                return new Parameter<object>(property.ParentMapping.TableName + x.ColumnName,
+                return new Parameter<object>(x.ParentMapping.TableName + x.ColumnName,
                     x.PropertyType.To<Type, SqlDbType>(),
                     Value);
             }));
             foreach (var Item in ItemList)
             {
-                ReturnValues.AddRange(property.ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
+                ReturnValues.AddRange(ForeignIDs.ForEach<IIDProperty, IParameter>(x =>
                 {
                     var Value = x.GetValue(Item);
                     if (x.PropertyType == typeof(string))
                     {
                         var TempParameter = Value as string;
-                        return new StringParameter(property.ForeignMapping.TableName + x.ColumnName + Count,
+                        return new StringParameter(x.ParentMapping.TableName + x.ColumnName + Count,
                             TempParameter);
                     }
-                    return new Parameter<object>(property.ForeignMapping.TableName + x.ColumnName + Count,
+                    return new Parameter<object>(x.ParentMapping.TableName + x.ColumnName + Count,
                         x.PropertyType.To<Type, SqlDbType>(),
                         Value);
                 }));
