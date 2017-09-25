@@ -74,10 +74,9 @@ namespace Inflatable.ClassMapper.Default
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .FirstOrDefault(x => x.IDProperties.Any());
-            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
             if (ForeignMapping == null)
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
-
+            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
             if (string.IsNullOrEmpty(TableName))
             {
                 var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
@@ -96,7 +95,7 @@ namespace Inflatable.ClassMapper.Default
             DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
             foreach (var ParentIDMapping in ParentIDMappings)
             {
-                JoinTable.AddColumn<object>(ParentMapping.TableName + ParentIDMapping.ColumnName,
+                JoinTable.AddColumn<object>(ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName,
                                 ParentIDMapping.PropertyType.To(DbType.Int32),
                                 ParentIDMapping.MaxLength,
                                 false,
@@ -104,7 +103,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 false,
                                 false,
-                                ParentMapping.TableName,
+                                ParentIDMapping.ParentMapping.TableName,
                                 ParentIDMapping.ColumnName,
                                 null,
                                 "",
@@ -114,7 +113,7 @@ namespace Inflatable.ClassMapper.Default
             }
             foreach (var ForeignIDMapping in ForeignMapping.IDProperties)
             {
-                JoinTable.AddColumn<object>(ForeignMapping.TableName + ForeignIDMapping.ColumnName,
+                JoinTable.AddColumn<object>(ForeignIDMapping.ParentMapping.TableName + ForeignIDMapping.ColumnName,
                                 ForeignIDMapping.PropertyType.To(DbType.Int32),
                                 ForeignIDMapping.MaxLength,
                                 false,
@@ -122,7 +121,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 false,
                                 false,
-                                ForeignMapping.TableName,
+                                ForeignIDMapping.ParentMapping.TableName,
                                 ForeignIDMapping.ColumnName,
                                 null,
                                 "",

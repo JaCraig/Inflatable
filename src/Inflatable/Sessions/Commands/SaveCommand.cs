@@ -28,6 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Valkyrie;
 
 namespace Inflatable.Sessions.Commands
 {
@@ -72,6 +73,7 @@ namespace Inflatable.Sessions.Commands
             }
             if (!ObjectsSeen.Any())
                 return 0;
+            ObjectsSeen.ForEach(x => x.Validate());
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.ExecuteScalarAsync<int>();
             Batch = Batch.CreateBatch();
