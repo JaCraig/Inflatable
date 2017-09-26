@@ -21,7 +21,9 @@ using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses;
+using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -275,7 +277,34 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToManyProperty property, object propertyItem)
         {
             List<IParameter> ReturnValues = new List<IParameter>();
-            ReturnValues.AddRange(property.GetAsParameter(queryObject, propertyItem));
+            var ParentIDs = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            var ForeignIDs = MappingInformation.GetParentMapping(property.PropertyType).SelectMany(x => x.IDProperties);
+            ReturnValues.AddRange(ParentIDs.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(queryObject);
+                if (x.PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(x.ParentMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(x.ParentMapping.TableName + x.ColumnName,
+                    x.PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            }));
+            ReturnValues.AddRange(ForeignIDs.ForEach<IIDProperty, IParameter>(x =>
+            {
+                var Value = x.GetValue(propertyItem);
+                if (x.PropertyType == typeof(string))
+                {
+                    var TempParameter = Value as string;
+                    return new StringParameter(x.ParentMapping.TableName + x.ColumnName,
+                        TempParameter);
+                }
+                return new Parameter<object>(x.ParentMapping.TableName + x.ColumnName,
+                    x.PropertyType.To<Type, SqlDbType>(),
+                    Value);
+            }));
             return ReturnValues.ToArray();
         }
 
