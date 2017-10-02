@@ -45,8 +45,7 @@ namespace Inflatable.Aspect
         /// <param name="interfaceImplementationHelpers">The interface implementation helpers.</param>
         /// <param name="endMethodHelpers">The end method helpers.</param>
         /// <exception cref="System.ArgumentNullException">classManager</exception>
-        public ORMAspect(ORMAspectAssembliesBase assemblies,
-            MappingManager classManager,
+        public ORMAspect(MappingManager classManager,
             IEnumerable<IStartMethodHelper> startMethodHelpers,
             IEnumerable<IInterfaceImplementationHelper> interfaceImplementationHelpers,
             IEnumerable<IEndMethodHelper> endMethodHelpers)
@@ -56,8 +55,6 @@ namespace Inflatable.Aspect
             InterfaceImplementationHelpers = interfaceImplementationHelpers ?? new List<IInterfaceImplementationHelper>();
             StartMethodHelpers = startMethodHelpers ?? new List<IStartMethodHelper>();
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
-            assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
-            AssembliesUsing.Add(assemblies.Assemblies);
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Dynamo).GetTypeInfo().Assembly.Location));
