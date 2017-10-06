@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Data.Modeler.Providers.Interfaces;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using SQLHelper.HelperClasses;
@@ -75,6 +76,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value>The name of the column.</value>
         public string ColumnName { get; private set; }
+
+        /// <summary>
+        /// Gets the columns associated with this property.
+        /// </summary>
+        /// <value>The columns associated with this property.</value>
+        public IQueryColumnInfo[] Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -275,6 +282,15 @@ namespace Inflatable.ClassMapper.BaseClasses
             if (PropertyType == typeof(string))
                 return new StringParameter(Name, TempParameter);
             return new Parameter<DataType>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
+        }
+
+        /// <summary>
+        /// Gets the column information.
+        /// </summary>
+        /// <returns>The column information.</returns>
+        public IQueryColumnInfo[] GetColumnInfo()
+        {
+            return Columns;
         }
 
         /// <summary>

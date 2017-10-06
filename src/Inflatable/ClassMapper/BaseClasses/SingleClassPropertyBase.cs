@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Data.Modeler.Providers.Interfaces;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
@@ -277,6 +278,20 @@ namespace Inflatable.ClassMapper.BaseClasses
             }));
             Parameters.AddRange(ParentMapping.IDProperties.ForEach(x => x.GetAsParameter(objectValue)));
             return Parameters;
+        }
+
+        public IQueryColumnInfo[] GetColumnInfo()
+        {
+            return new IQueryColumnInfo[0];
+            //List<IQueryColumnInfo> Columns = new List<IQueryColumnInfo>();
+
+            //ForeignMapping.IDProperties
+            //              .SelectMany(x => x.GetColumnInfo())
+            //              .ForEach(x =>
+            //              {
+            //                  new SimpleColumnInfo
+            //                  x.ColumnName = ForeignMapping.TableName + ParentMapping.Prefix + x.PropertyName + ParentMapping.Suffix + x.ColumnName;
+            //              })
         }
 
         /// <summary>

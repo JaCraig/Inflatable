@@ -131,7 +131,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <summary>
     /// Property data holder interface
     /// </summary>
-    public interface IProperty
+    public interface IProperty : IPropertyColumns
     {
         /// <summary>
         /// Gets the name of the column.

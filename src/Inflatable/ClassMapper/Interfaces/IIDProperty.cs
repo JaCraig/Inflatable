@@ -100,7 +100,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <summary>
     /// ID property interface
     /// </summary>
-    public interface IIDProperty
+    public interface IIDProperty : IPropertyColumns
     {
         /// <summary>
         /// Gets a value indicating whether to [automatic increment].
@@ -222,13 +222,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
         object GetValue(object Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(Dynamo Object);
 
         /// <summary>
         /// Determines whether the specified object's property is default.

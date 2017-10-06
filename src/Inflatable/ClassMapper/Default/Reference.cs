@@ -97,6 +97,19 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         public override void Setup()
         {
+            Columns = new Column.SimpleColumnInfo<ClassType, DataType>[]
+            {
+                new Column.SimpleColumnInfo<ClassType,DataType>
+                {
+                    ColumnName=ColumnName,
+                    DefaultValue=()=>default(DataType),
+                    CompiledExpression=CompiledExpression,
+                    PropertyName=Name,
+                    PropertyType=PropertyType,
+                    SchemaName=ParentMapping.SchemaName,
+                    TableName=ParentMapping.TableName
+                }
+            };
         }
     }
 }

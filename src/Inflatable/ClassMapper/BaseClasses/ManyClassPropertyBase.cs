@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using BigBook;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
@@ -255,6 +256,11 @@ namespace Inflatable.ClassMapper.BaseClasses
                     Value);
             }));
             return Parameters;
+        }
+
+        public IQueryColumnInfo[] GetColumnInfo()
+        {
+            return new IQueryColumnInfo[0];
         }
 
         /// <summary>
