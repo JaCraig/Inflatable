@@ -14,19 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using Inflatable.Interfaces;
+using Inflatable.ClassMapper.Column.Interfaces;
 
 namespace Inflatable.ClassMapper.Interfaces
 {
     /// <summary>
-    /// Single class property data holder
+    /// Interface holding column information
     /// </summary>
-    public interface IClassProperty : IPropertyColumns
+    public interface IPropertyColumns
     {
         /// <summary>
-        /// Gets the parent mapping.
+        /// Gets the column information.
         /// </summary>
-        /// <value>The parent mapping.</value>
-        IMapping ParentMapping { get; }
+        /// <returns>The column information.</returns>
+        IQueryColumnInfo[] GetColumnInfo();
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        void SetColumnInfo(MappingSource mappings);
     }
 }

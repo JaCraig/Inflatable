@@ -16,6 +16,8 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
+using Inflatable.ClassMapper.Column;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Schema;
@@ -64,6 +66,46 @@ namespace Inflatable.ClassMapper.Default
         }
 
         /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public override void SetColumnInfo(MappingSource mappings)
+        {
+            string Prefix = "";
+            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
+            var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
+            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
+            if (ParentWithID == ForeignMapping)
+                Prefix = "Parent_";
+            List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
+            TempColumns.AddRange(ParentIDMappings.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexColumnInfo<ClassType, ClassType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = Prefix + x.ParentMapping.TableName + x.ColumnName,
+                    CompiledExpression = y => y,
+                    SchemaName = ParentMapping.SchemaName,
+                    TableName = TableName
+                };
+            }));
+            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexListColumnInfo<ClassType, DataType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = x.ParentMapping.TableName + x.ColumnName,
+                    CompiledExpression = CompiledExpression,
+                    SchemaName = ParentMapping.SchemaName,
+                    TableName = TableName
+                };
+            }));
+            Columns = TempColumns.ToArray();
+        }
+
+        /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
@@ -77,9 +119,9 @@ namespace Inflatable.ClassMapper.Default
             if (ForeignMapping == null)
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
             var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
+            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
             if (string.IsNullOrEmpty(TableName))
             {
-                var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
                 string Class1 = ParentWithID.ObjectType.Name;
                 string Class2 = ForeignMapping.ObjectType.Name;
                 if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
@@ -93,9 +135,12 @@ namespace Inflatable.ClassMapper.Default
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
+            string Prefix = "";
+            if (ParentWithID == ForeignMapping)
+                Prefix = "Parent_";
             foreach (var ParentIDMapping in ParentIDMappings)
             {
-                JoinTable.AddColumn<object>(ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName,
+                JoinTable.AddColumn<object>(Prefix + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName,
                                 ParentIDMapping.PropertyType.To(DbType.Int32),
                                 ParentIDMapping.MaxLength,
                                 false,

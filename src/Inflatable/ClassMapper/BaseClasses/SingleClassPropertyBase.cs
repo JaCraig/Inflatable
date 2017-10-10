@@ -16,14 +16,12 @@ limitations under the License.
 
 using BigBook;
 using Data.Modeler.Providers.Interfaces;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
-using SQLHelper.HelperClasses;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -75,6 +73,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value>The name of the column.</value>
         public string ColumnName { get; protected set; }
+
+        /// <summary>
+        /// Gets the columns associated with this property.
+        /// </summary>
+        /// <value>The columns associated with this property.</value>
+        public IQueryColumnInfo[] Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -252,31 +256,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// Gets the column information.
         /// </summary>
-        /// <param name="objectValue"></param>
-        /// <returns>The parameter version of the property</returns>
-        public IEnumerable<IParameter> GetAsParameter(object objectValue)
+        /// <returns>The column information.</returns>
+        public IQueryColumnInfo[] GetColumnInfo()
         {
-            List<IParameter> Parameters = new List<IParameter>();
-            var ParamValue = (DataType)GetParameter(objectValue);
-            Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
-            {
-                var Value = x.GetValue(ParamValue);
-                if (x.IsDefault(ParamValue))
-                    Value = null;
-                if (PropertyType == typeof(string))
-                {
-                    var TempParameter = Value as string;
-                    return new StringParameter(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
-                        TempParameter);
-                }
-                return new Parameter<object>(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
-                    PropertyType.To<Type, SqlDbType>(),
-                    Value);
-            }));
-            Parameters.AddRange(ParentMapping.IDProperties.ForEach(x => x.GetAsParameter(objectValue)));
-            return Parameters;
+            return Columns;
         }
 
         /// <summary>
@@ -289,59 +274,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public abstract object GetParameter(object Object);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public abstract object GetParameter(Dynamo Object);
-
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <param name="Object">The object.</param>
-        /// <returns></returns>
-        public object GetProperty(ClassType Object)
-        {
-            return CompiledExpression(Object);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(ClassType Object)
-        {
-            if (Object == default(ClassType))
-                return null;
-            return CompiledExpression(Object);
-        }
-
-        /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
         public object GetValue(object Object)
         {
-            return GetValue(Object as ClassType);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(Dynamo Object)
-        {
-            return Object[Name];
+            var TempObject = Object as ClassType;
+            if (ReferenceEquals(TempObject, null))
+                return null;
+            return CompiledExpression(TempObject);
         }
 
         /// <summary>
@@ -365,6 +307,12 @@ namespace Inflatable.ClassMapper.BaseClasses
             LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
             return (ReturnType)((IMapProperty<ClassType, DataType, ReturnType>)this);
         }
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public abstract void SetColumnInfo(MappingSource mappings);
 
         /// <summary>
         /// Sets up the property (used internally)

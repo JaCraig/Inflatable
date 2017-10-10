@@ -16,10 +16,9 @@ limitations under the License.
 
 using BigBook;
 using Data.Modeler.Providers.Interfaces;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
-using SQLHelper.HelperClasses;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -59,6 +58,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             Constraints = new List<string>();
             DefaultValue = () => default(DataType);
             Expression = expression;
+            SetAction = Expression.PropertySetter<ClassType, DataType>().Compile();
             InternalFieldName = "_" + Name + "Derived";
             MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
             Nullable = typeof(DataType) == typeof(string)
@@ -75,6 +75,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value>The name of the column.</value>
         public string ColumnName { get; private set; }
+
+        /// <summary>
+        /// Gets the columns associated with this property.
+        /// </summary>
+        /// <value>The columns associated with this property.</value>
+        public IQueryColumnInfo[] Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -162,6 +168,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value><c>true</c> if unique; otherwise, <c>false</c>.</value>
         public bool Unique { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the expression used to set the value.
+        /// </summary>
+        /// <value>The set expression.</value>
+        protected Action<ClassType, DataType> SetAction { get; set; }
 
         /// <summary>
         /// != operator
@@ -264,17 +276,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// Gets the column information.
         /// </summary>
-        /// <param name="objectValue"></param>
-        /// <returns>The parameter version of the property</returns>
-        public IParameter GetAsParameter(object objectValue)
+        /// <returns>The column information.</returns>
+        public IQueryColumnInfo[] GetColumnInfo()
         {
-            var ParamValue = (DataType)GetParameter(objectValue);
-            var TempParameter = ParamValue as string;
-            if (PropertyType == typeof(string))
-                return new StringParameter(Name, TempParameter);
-            return new Parameter<DataType>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
+            if (Columns == null)
+                SetColumnInfo(null);
+            return Columns;
         }
 
         /// <summary>
@@ -284,52 +293,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         public override int GetHashCode()
         {
             return (Name.GetHashCode() * ParentMapping.GetHashCode()) % int.MaxValue;
-        }
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public abstract object GetParameter(object Object);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public abstract object GetParameter(Dynamo Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(ClassType Object)
-        {
-            if (Object == default(ClassType))
-                return null;
-            return CompiledExpression(Object);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(object Object)
-        {
-            return GetValue(Object as ClassType);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(Dynamo Object)
-        {
-            return Object[Name];
         }
 
         /// <summary>
@@ -361,6 +324,12 @@ namespace Inflatable.ClassMapper.BaseClasses
             Unique = true;
             return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
         }
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public abstract void SetColumnInfo(MappingSource mappings);
 
         /// <summary>
         /// Sets up the property (used internally)

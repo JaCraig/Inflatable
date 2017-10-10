@@ -14,14 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -66,7 +63,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <typeparam name="ClassType">The type of the class type.</typeparam>
     /// <typeparam name="DataType">The type of the data type.</typeparam>
     /// <seealso cref="IFluentInterface"/>
-    public interface IMapProperty<ClassType, DataType> : IMapProperty<ClassType>
+    public interface IMapProperty<ClassType, DataType> : IMapProperty
         where ClassType : class
         where DataType : class
     {
@@ -81,22 +78,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value>The expression.</value>
         Expression<Func<ClassType, DataType>> Expression { get; }
-    }
-
-    /// <summary>
-    /// Map property interface
-    /// </summary>
-    /// <typeparam name="ClassType">The type of the class type.</typeparam>
-    /// <seealso cref="IFluentInterface"/>
-    public interface IMapProperty<ClassType> : IMapProperty
-        where ClassType : class
-    {
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <param name="Object">The object.</param>
-        /// <returns></returns>
-        object GetProperty(ClassType Object);
     }
 
     /// <summary>
@@ -142,12 +123,6 @@ namespace Inflatable.ClassMapper.Interfaces
         string Name { get; }
 
         /// <summary>
-        /// Gets the parent mapping.
-        /// </summary>
-        /// <value>The parent mapping.</value>
-        IMapping ParentMapping { get; }
-
-        /// <summary>
         /// Gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
@@ -181,39 +156,11 @@ namespace Inflatable.ClassMapper.Interfaces
             where TResult : class;
 
         /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="objectValue">The object value.</param>
-        /// <returns>The parameter version of the property</returns>
-        IEnumerable<IParameter> GetAsParameter(object objectValue);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        object GetParameter(object Object);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        object GetParameter(Dynamo Object);
-
-        /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
         object GetValue(object Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(Dynamo Object);
 
         /// <summary>
         /// Sets up the property (used internally)

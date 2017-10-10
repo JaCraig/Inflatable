@@ -58,18 +58,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override QueryType QueryType => QueryType.Delete;
 
         /// <summary>
-        /// Gets or sets the parent mappings.
-        /// </summary>
-        /// <value>
-        /// The parent mappings.
-        /// </value>
-        private IEnumerable<IMapping> ParentMappings { get; set; }
-
-        /// <summary>
         /// Gets or sets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
         private IEnumerable<IIDProperty> IDProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent mappings.
+        /// </summary>
+        /// <value>The parent mappings.</value>
+        private IEnumerable<IMapping> ParentMappings { get; set; }
 
         /// <summary>
         /// Gets or sets the query text.
@@ -103,7 +101,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The parameters</returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject)
         {
-            return IDProperties.ForEach(x => x.GetAsParameter(queryObject)).ToArray();
+            return IDProperties.SelectMany(x => x.GetColumnInfo().Select(y => y.GetAsParameter(queryObject))).ToArray();
         }
 
         /// <summary>

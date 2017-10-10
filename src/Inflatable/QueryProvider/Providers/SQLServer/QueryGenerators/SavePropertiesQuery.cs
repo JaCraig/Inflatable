@@ -168,11 +168,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Splitter = ",";
                 Splitter2 = " AND ";
             }
+            string Prefix = "";
+            if (IDProperties.Any(x => x.ParentMapping == property.ForeignMapping))
+                Prefix = "Parent_";
             foreach (var IDProperty in IDProperties)
             {
-                PropertyNames.Append(Splitter).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "]");
-                PropertyValues.Append(Splitter).Append("@" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
-                ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
+                PropertyNames.Append(Splitter).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "]");
+                PropertyValues.Append(Splitter).Append("@" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
+                ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
                 Splitter = ",";
                 Splitter2 = " AND ";
             }
@@ -263,7 +266,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter[] GenerateParameters(TMappedClass queryObject, IMapProperty mapProperty)
         {
             List<IParameter> ReturnValue = new List<IParameter>();
-            ReturnValue.AddRange(mapProperty.GetAsParameter(queryObject));
+            ReturnValue.AddRange(mapProperty.GetColumnInfo().Select(x => x.GetAsParameter(queryObject)));
             return ReturnValue.ToArray();
         }
 
@@ -279,22 +282,25 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             List<IParameter> ReturnValues = new List<IParameter>();
             var ParentIDs = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
             var ForeignIDs = MappingInformation.GetParentMapping(property.PropertyType).SelectMany(x => x.IDProperties);
+            string Prefix = "";
+            if (IDProperties.Any(x => x.ParentMapping == property.ForeignMapping))
+                Prefix = "Parent_";
             ReturnValues.AddRange(ParentIDs.ForEach<IIDProperty, IParameter>(x =>
             {
-                var Value = x.GetValue(queryObject);
+                var Value = x.GetColumnInfo()[0].GetValue(queryObject);
                 if (x.PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
-                    return new StringParameter(x.ParentMapping.TableName + x.ColumnName,
+                    return new StringParameter(Prefix + x.ParentMapping.TableName + x.ColumnName,
                         TempParameter);
                 }
-                return new Parameter<object>(x.ParentMapping.TableName + x.ColumnName,
+                return new Parameter<object>(Prefix + x.ParentMapping.TableName + x.ColumnName,
                     x.PropertyType.To<Type, SqlDbType>(),
                     Value);
             }));
             ReturnValues.AddRange(ForeignIDs.ForEach<IIDProperty, IParameter>(x =>
             {
-                var Value = x.GetValue(propertyItem);
+                var Value = x.GetColumnInfo()[0].GetValue(propertyItem);
                 if (x.PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
@@ -311,7 +317,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToOneProperty manyToOne, object propertyItem)
         {
             List<IParameter> ReturnValues = new List<IParameter>();
-            ReturnValues.AddRange(manyToOne.GetAsParameter(queryObject, propertyItem));
+            ReturnValues.AddRange(manyToOne.GetColumnInfo().ForEach(x => x.GetAsParameter(queryObject, propertyItem)));
             return ReturnValues.ToArray();
         }
 

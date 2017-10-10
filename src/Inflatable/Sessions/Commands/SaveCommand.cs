@@ -207,7 +207,7 @@ namespace Inflatable.Sessions.Commands
                                                 {
                                                     if (IDProperty != null && IDProperty.AutoIncrement)
                                                     {
-                                                        IDProperty.SetValue(InsertObject, IDProperty.GetValue((Dynamo)ResultList[0]));
+                                                        IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0]));
                                                     }
                                                 },
                                                 @object,

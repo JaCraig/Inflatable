@@ -243,8 +243,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The parameters</returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject)
         {
-            var Parameters = IDProperties.ForEach(y => y.GetAsParameter(queryObject)).ToList();
-            Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(queryObject)));
+            var Parameters = IDProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
+            Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)));
             return Parameters.ToArray();
         }
     }

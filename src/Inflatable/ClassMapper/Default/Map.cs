@@ -16,11 +16,14 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
+using Inflatable.ClassMapper.Column;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Utils;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -64,23 +67,26 @@ namespace Inflatable.ClassMapper.Default
         }
 
         /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// Sets the column information.
         /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public override object GetParameter(object Object)
+        /// <param name="mappings">The mappings.</param>
+        public override void SetColumnInfo(MappingSource mappings)
         {
-            return GetValue(Object);
-        }
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public override object GetParameter(Dynamo Object)
-        {
-            return GetValue(Object);
+            List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
+            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexColumnInfo<ClassType, DataType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + IDColumnInfo.ColumnName,
+                    CompiledExpression = CompiledExpression,
+                    SchemaName = ParentMapping.SchemaName,
+                    TableName = ParentMapping.TableName
+                };
+            }));
+            TempColumns.AddRange(ParentMapping.IDProperties.SelectMany(x => x.GetColumnInfo()));
+            Columns = TempColumns.ToArray();
         }
 
         /// <summary>

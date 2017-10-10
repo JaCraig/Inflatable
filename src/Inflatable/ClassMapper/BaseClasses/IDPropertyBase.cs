@@ -16,10 +16,9 @@ limitations under the License.
 
 using BigBook;
 using Data.Modeler.Providers.Interfaces;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
-using SQLHelper.HelperClasses;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -81,6 +80,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value>The name of the column.</value>
         public string ColumnName { get; private set; }
+
+        /// <summary>
+        /// Gets the columns associated with this property.
+        /// </summary>
+        /// <value>The columns associated with this property.</value>
+        public IQueryColumnInfo[] Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -298,26 +303,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// Gets the column information.
         /// </summary>
-        /// <param name="objectValue"></param>
-        /// <returns>The parameter version of the property</returns>
-        public IParameter GetAsParameter(object objectValue)
+        /// <returns>The column information.</returns>
+        public IQueryColumnInfo[] GetColumnInfo()
         {
-            var ParamValue = GetParameter(objectValue);
-            var TempParameter = ParamValue as string;
-            if (PropertyType == typeof(string))
-                return new StringParameter(Name, TempParameter);
-            return new Parameter<object>(Name, PropertyType.To<Type, SqlDbType>(), ParamValue);
-        }
-
-        /// <summary>
-        /// Gets the default value.
-        /// </summary>
-        /// <returns>The default value</returns>
-        public object GetDefaultValue()
-        {
-            return DefaultValue();
+            if (Columns == null)
+                SetColumnInfo(null);
+            return Columns;
         }
 
         /// <summary>
@@ -330,52 +323,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public abstract object GetParameter(object Object);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public abstract object GetParameter(Dynamo Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(ClassType Object)
-        {
-            if (Object == default(ClassType))
-                return null;
-            return CompiledExpression(Object);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(object Object)
-        {
-            return GetValue(Object as ClassType);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(Dynamo Object)
-        {
-            return Object[Name];
-        }
-
-        /// <summary>
         /// Determines whether this [is auto incremented].
         /// </summary>
         /// <returns>this</returns>
@@ -383,16 +330,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         {
             AutoIncrement = true;
             return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
-        }
-
-        /// <summary>
-        /// Determines whether the specified object's property is default.
-        /// </summary>
-        /// <param name="Object">The object.</param>
-        /// <returns><c>true</c> if the specified object's property is default; otherwise, <c>false</c>.</returns>
-        public bool IsDefault(object Object)
-        {
-            return Equals(GetValue(Object), default(DataType));
         }
 
         /// <summary>
@@ -426,21 +363,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public abstract void SetColumnInfo(MappingSource mappings);
+
+        /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         public abstract void Setup();
-
-        /// <summary>
-        /// Sets the property's value for the object sent in.
-        /// </summary>
-        /// <param name="objectToSet">The object to set.</param>
-        /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object propertyValue)
-        {
-            var TempObject = objectToSet as ClassType;
-            var TempPropertyValue = (DataType)propertyValue;
-            SetAction(TempObject, TempPropertyValue);
-        }
 
         /// <summary>
         /// Gets the property as a string

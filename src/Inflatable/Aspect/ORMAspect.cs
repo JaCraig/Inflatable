@@ -39,11 +39,11 @@ namespace Inflatable.Aspect
         /// <summary>
         /// Initializes a new instance of the <see cref="ORMAspect"/> class.
         /// </summary>
-        /// <param name="assemblies">The assemblies the aspect needs to use.</param>
         /// <param name="classManager">The class manager.</param>
         /// <param name="startMethodHelpers">The start method helpers.</param>
         /// <param name="interfaceImplementationHelpers">The interface implementation helpers.</param>
         /// <param name="endMethodHelpers">The end method helpers.</param>
+        /// <exception cref="ArgumentNullException">classManager</exception>
         /// <exception cref="System.ArgumentNullException">classManager</exception>
         public ORMAspect(MappingManager classManager,
             IEnumerable<IStartMethodHelper> startMethodHelpers,

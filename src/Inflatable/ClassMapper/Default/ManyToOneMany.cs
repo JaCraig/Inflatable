@@ -16,6 +16,8 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
+using Inflatable.ClassMapper.Column;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Schema;
@@ -61,6 +63,40 @@ namespace Inflatable.ClassMapper.Default
             }.Convert<TResult>();
             var ReturnObject = new ManyToOneMany<TResult, DataType>(Result, mapping);
             return ReturnObject;
+        }
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public override void SetColumnInfo(MappingSource mappings)
+        {
+            List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
+            TempColumns.AddRange(ParentMapping.IDProperties.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexColumnInfo<ClassType, ClassType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = ColumnName + ParentMapping.TableName + x.ColumnName,
+                    CompiledExpression = y => y,
+                    SchemaName = ForeignMapping.SchemaName,
+                    TableName = ForeignMapping.TableName
+                };
+            }));
+            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexListColumnInfo<ClassType, DataType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = x.Name,
+                    CompiledExpression = CompiledExpression,
+                    SchemaName = x.ParentMapping.SchemaName,
+                    TableName = x.ParentMapping.TableName
+                };
+            }));
+            Columns = TempColumns.ToArray();
         }
 
         /// <summary>

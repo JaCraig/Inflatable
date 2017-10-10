@@ -43,26 +43,28 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void GetParameter()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
+            TestObject.Setup();
             var TestDynamo = new BigBook.Dynamo
             {
                 ["ID"] = 12
             };
-            Assert.Equal(12, TestObject.GetParameter(TestDynamo));
+            Assert.Equal(12, TestObject.GetColumnInfo()[0].GetValue(TestDynamo));
             var TestModelObject = new AllReferencesAndID { ID = 12 };
-            Assert.Equal(12, TestObject.GetParameter(TestModelObject));
+            Assert.Equal(12, TestObject.GetColumnInfo()[0].GetValue(TestModelObject));
         }
 
         [Fact]
         public void GetValue()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
+            TestObject.Setup();
             var TestDynamo = new BigBook.Dynamo
             {
                 ["ID"] = 12
             };
-            Assert.Equal(12, TestObject.GetValue(TestDynamo));
+            Assert.Equal(12, TestObject.GetColumnInfo()[0].GetValue(TestDynamo));
             var TestModelObject = new AllReferencesAndID { ID = 12 };
-            Assert.Equal(12, TestObject.GetValue(TestModelObject));
+            Assert.Equal(12, TestObject.GetColumnInfo()[0].GetValue(TestModelObject));
         }
 
         [Fact]

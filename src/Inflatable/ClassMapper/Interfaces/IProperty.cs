@@ -14,11 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -94,7 +92,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType"></typeparam>
-    public interface IProperty<ClassType, DataType> : IProperty<ClassType>
+    public interface IProperty<ClassType, DataType> : IProperty
         where ClassType : class
     {
         /// <summary>
@@ -114,24 +112,9 @@ namespace Inflatable.ClassMapper.Interfaces
     }
 
     /// <summary>
-    /// Property interface
-    /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
-    public interface IProperty<ClassType> : IProperty
-        where ClassType : class
-    {
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(ClassType Object);
-    }
-
-    /// <summary>
     /// Property data holder interface
     /// </summary>
-    public interface IProperty
+    public interface IProperty : IPropertyColumns
     {
         /// <summary>
         /// Gets the name of the column.
@@ -225,41 +208,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <returns>The resulting property</returns>
         IProperty Convert<TResult>(IMapping mapping)
             where TResult : class;
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="objectValue">The object value.</param>
-        /// <returns>The parameter version of the property</returns>
-        IParameter GetAsParameter(object objectValue);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        object GetParameter(object Object);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        object GetParameter(Dynamo Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(object Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(Dynamo Object);
 
         /// <summary>
         /// Sets up the property (used internally)

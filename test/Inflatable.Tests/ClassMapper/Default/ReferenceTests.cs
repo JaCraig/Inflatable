@@ -42,26 +42,28 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void GetParameter()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
+            TestObject.Setup();
             var TestDynamo = new BigBook.Dynamo
             {
                 ["DateTimeValue"] = new DateTime(2000, 1, 1)
             };
-            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetParameter(TestDynamo));
+            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetColumnInfo()[0].GetValue(TestDynamo));
             var TestModelObject = new AllReferencesAndID { DateTimeValue = new DateTime(2000, 1, 1) };
-            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetParameter(TestModelObject));
+            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetColumnInfo()[0].GetValue(TestModelObject));
         }
 
         [Fact]
         public void GetValue()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
+            TestObject.Setup();
             var TestDynamo = new BigBook.Dynamo
             {
                 ["DateTimeValue"] = new DateTime(2000, 1, 1)
             };
-            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetValue(TestDynamo));
+            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetColumnInfo()[0].GetValue(TestDynamo));
             var TestModelObject = new AllReferencesAndID { DateTimeValue = new DateTime(2000, 1, 1) };
-            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetValue(TestModelObject));
+            Assert.Equal(new DateTime(2000, 1, 1), TestObject.GetColumnInfo()[0].GetValue(TestModelObject));
         }
 
         [Fact]

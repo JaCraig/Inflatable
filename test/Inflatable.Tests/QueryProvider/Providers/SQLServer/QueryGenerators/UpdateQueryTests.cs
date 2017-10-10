@@ -101,6 +101,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
+            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().SetColumnInfo(Mappings);
             var TestObject = new UpdateQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
@@ -124,6 +125,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
+            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().SetColumnInfo(Mappings);
             var TestObject = new UpdateQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);

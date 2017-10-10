@@ -129,8 +129,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter[] GenerateParameters(TMappedClass queryObject)
         {
             var ORMObject = queryObject as IORMObject;
-            var Parameters = IDProperties.ForEach(y => y.GetAsParameter(queryObject)).ToList();
-            Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetAsParameter(queryObject)));
+            var Parameters = IDProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
+            Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)));
             return Parameters.ToArray();
         }
 
