@@ -28,5 +28,11 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <returns>The column information.</returns>
         IQueryColumnInfo[] GetColumnInfo();
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        void SetColumnInfo(MappingSource mappings);
     }
 }

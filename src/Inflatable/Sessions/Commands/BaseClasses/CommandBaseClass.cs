@@ -130,9 +130,9 @@ namespace Inflatable.Sessions.Commands.BaseClasses
                 return false;
             foreach (var ObjectID in ObjectIDs)
             {
-                var Value1 = ObjectID.GetValue(obj1);
-                var Value2 = ObjectID.GetValue(obj2);
-                if (!Equals(Value1, Value2) || ObjectID.IsDefault(obj1))
+                var Value1 = ObjectID.GetColumnInfo()[0].GetValue(obj1);
+                var Value2 = ObjectID.GetColumnInfo()[0].GetValue(obj2);
+                if (!Equals(Value1, Value2) || ObjectID.GetColumnInfo()[0].IsDefault(obj1))
                     return false;
             }
             return true;

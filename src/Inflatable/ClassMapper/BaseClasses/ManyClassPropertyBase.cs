@@ -21,8 +21,6 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
-using SQLHelper.HelperClasses;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -64,6 +62,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <value><c>true</c> if cascade; otherwise, <c>false</c>.</value>
         public bool Cascade { get; protected set; }
+
+        /// <summary>
+        /// Gets the columns associated with this property.
+        /// </summary>
+        /// <value>The columns associated with this property.</value>
+        public IQueryColumnInfo[] Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -221,46 +225,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets as parameter.
+        /// Gets the column information.
         /// </summary>
-        /// <param name="queryObject">The query object.</param>
-        /// <param name="propertyValue">The property value.</param>
-        /// <returns></returns>
-        public IEnumerable<IParameter> GetAsParameter(object queryObject, object propertyValue)
-        {
-            List<IParameter> Parameters = new List<IParameter>();
-            Parameters.AddRange(ForeignMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
-            {
-                var Value = x.GetValue(propertyValue);
-                if (x.PropertyType == typeof(string))
-                {
-                    var TempParameter = Value as string;
-                    return new StringParameter(ForeignMapping.TableName + x.ColumnName,
-                        TempParameter);
-                }
-                return new Parameter<object>(ForeignMapping.TableName + x.ColumnName,
-                    PropertyType.To<Type, SqlDbType>(),
-                    Value);
-            }));
-            Parameters.AddRange(ParentMapping.IDProperties.ForEach<IIDProperty, IParameter>(x =>
-            {
-                var Value = x.GetValue(queryObject);
-                if (x.PropertyType == typeof(string))
-                {
-                    var TempParameter = Value as string;
-                    return new StringParameter(ParentMapping.TableName + x.ColumnName,
-                        TempParameter);
-                }
-                return new Parameter<object>(ParentMapping.TableName + x.ColumnName,
-                    PropertyType.To<Type, SqlDbType>(),
-                    Value);
-            }));
-            return Parameters;
-        }
-
+        /// <returns>The column information.</returns>
         public IQueryColumnInfo[] GetColumnInfo()
         {
-            return new IQueryColumnInfo[0];
+            return Columns;
         }
 
         /// <summary>
@@ -273,35 +243,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         }
 
         /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <param name="Object">The object.</param>
-        /// <returns>The property</returns>
-        public object GetProperty(ClassType Object)
-        {
-            return CompiledExpression(Object);
-        }
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        public object GetValue(ClassType Object)
-        {
-            if (Object == default(ClassType))
-                return null;
-            return CompiledExpression(Object);
-        }
-
-        /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
         public object GetValue(object Object)
         {
-            return GetValue(Object as ClassType);
+            var TempObject = Object as ClassType;
+            if (ReferenceEquals(TempObject, null))
+                return null;
+            return CompiledExpression(TempObject);
         }
 
         /// <summary>
@@ -315,6 +266,12 @@ namespace Inflatable.ClassMapper.BaseClasses
             LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
             return (ReturnType)((IManyToManyProperty<ClassType, IList<DataType>, ReturnType>)this);
         }
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public abstract void SetColumnInfo(MappingSource mappings);
 
         /// <summary>
         /// Sets the table's name.

@@ -14,11 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -68,7 +66,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// </summary>
     /// <typeparam name="ClassType">Class type</typeparam>
     /// <typeparam name="DataType"></typeparam>
-    public interface IIDProperty<ClassType, DataType> : IIDProperty<ClassType>
+    public interface IIDProperty<ClassType, DataType> : IIDProperty
         where ClassType : class
     {
         /// <summary>
@@ -80,21 +78,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Expression pointing to the property
         /// </summary>
         Expression<Func<ClassType, DataType>> Expression { get; }
-    }
-
-    /// <summary>
-    /// ID Property interface
-    /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
-    public interface IIDProperty<ClassType> : IIDProperty
-        where ClassType : class
-    {
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(ClassType Object);
     }
 
     /// <summary>
@@ -190,56 +173,8 @@ namespace Inflatable.ClassMapper.Interfaces
             where TResult : class;
 
         /// <summary>
-        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="objectValue">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        IParameter GetAsParameter(object objectValue);
-
-        /// <summary>
-        /// Gets the default value.
-        /// </summary>
-        /// <returns>The default value</returns>
-        object GetDefaultValue();
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        object GetParameter(object Object);
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        object GetParameter(Dynamo Object);
-
-        /// <summary>
-        /// Gets the property's value from the object sent in
-        /// </summary>
-        /// <param name="Object">Object to get the value from</param>
-        /// <returns>The value of the property</returns>
-        object GetValue(object Object);
-
-        /// <summary>
-        /// Determines whether the specified object's property is default.
-        /// </summary>
-        /// <param name="Object">The object.</param>
-        /// <returns><c>true</c> if the specified object's property is default; otherwise, <c>false</c>.</returns>
-        bool IsDefault(object Object);
-
-        /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         void Setup();
-
-        /// <summary>
-        /// Sets the property's value for the object sent in.
-        /// </summary>
-        /// <param name="objectToSet">The object to set.</param>
-        /// <param name="propertyValue">The property value.</param>
-        void SetValue(object objectToSet, object propertyValue);
     }
 }

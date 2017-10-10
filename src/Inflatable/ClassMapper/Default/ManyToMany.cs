@@ -16,6 +16,8 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
+using Inflatable.ClassMapper.Column;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Schema;
@@ -61,6 +63,46 @@ namespace Inflatable.ClassMapper.Default
             }.Convert<TResult>();
             var ReturnObject = new ManyToMany<TResult, DataType>(Result, mapping);
             return ReturnObject;
+        }
+
+        /// <summary>
+        /// Sets the column information.
+        /// </summary>
+        /// <param name="mappings">The mappings.</param>
+        public override void SetColumnInfo(MappingSource mappings)
+        {
+            string Prefix = "";
+            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
+            var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
+            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
+            if (ParentWithID == ForeignMapping)
+                Prefix = "Parent_";
+            List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
+            TempColumns.AddRange(ParentIDMappings.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexColumnInfo<ClassType, ClassType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = Prefix + x.ParentMapping.TableName + x.ColumnName,
+                    CompiledExpression = y => y,
+                    SchemaName = ParentMapping.SchemaName,
+                    TableName = TableName
+                };
+            }));
+            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            {
+                var IDColumnInfo = x.GetColumnInfo()[0];
+                return new ComplexListColumnInfo<ClassType, DataType>
+                {
+                    Child = IDColumnInfo,
+                    ColumnName = x.ParentMapping.TableName + x.ColumnName,
+                    CompiledExpression = CompiledExpression,
+                    SchemaName = ParentMapping.SchemaName,
+                    TableName = TableName
+                };
+            }));
+            Columns = TempColumns.ToArray();
         }
 
         /// <summary>

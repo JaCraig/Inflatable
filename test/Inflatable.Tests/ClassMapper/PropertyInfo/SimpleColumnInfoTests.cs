@@ -14,6 +14,13 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { null, null }
         };
 
+        public static TheoryData<AllReferencesAndID, long, object> SetValueData = new TheoryData<AllReferencesAndID, long, object>
+        {
+            { new AllReferencesAndID(),10L, 10L },
+            { new AllReferencesAndID{ID=1},10L, 10L },
+            { null,10, null }
+        };
+
         public static TheoryData<AllReferencesAndID, object> ValueData = new TheoryData<AllReferencesAndID, object>
         {
             { new AllReferencesAndID(), 0L },
@@ -29,13 +36,20 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             PropertyName = "ID",
             PropertyType = typeof(long),
             SchemaName = "dbo",
-            TableName = "AllReferencesAndID_"
+            TableName = "AllReferencesAndID_",
+            SetAction = (x, y) => x.ID = (int)y,
+            IsNullable = true
         };
 
         [Fact]
         public void Creation()
         {
             Assert.NotNull(TestObject);
+            Assert.Equal("ID_", TestObject.ColumnName);
+            Assert.Equal("ID", TestObject.PropertyName);
+            Assert.Equal(typeof(long), TestObject.PropertyType);
+            Assert.Equal("dbo", TestObject.SchemaName);
+            Assert.Equal("AllReferencesAndID_", TestObject.TableName);
         }
 
         [Theory]
@@ -62,7 +76,15 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
         {
             Assert.True(TestObject.IsDefault(new AllReferencesAndID()));
             Assert.False(TestObject.IsDefault(new AllReferencesAndID { ID = 1 }));
-            Assert.False(TestObject.IsDefault(null));
+            Assert.True(TestObject.IsDefault(null));
+        }
+
+        [Theory]
+        [MemberData(nameof(SetValueData))]
+        public void SetValue(AllReferencesAndID inputObject, long newValue, object expectedResult)
+        {
+            TestObject.SetValue(inputObject, newValue);
+            Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
         }
     }
 }

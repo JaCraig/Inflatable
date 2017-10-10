@@ -130,6 +130,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
             ManyToOneManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
+            ManyToOneManyProperty.SetColumnInfo(Mappings);
 
             var TestObject = new SavePropertiesQuery<ManyToOneManyProperties>(Mappings);
             var TempManyToOneMany = new ManyToOneManyProperties { ID = 10, BoolValue = true };
@@ -197,6 +198,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
             MapProperty.Setup(Mappings);
+            MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
@@ -221,6 +223,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
             MapProperty.Setup(Mappings);
+            MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapProperties>(Mappings);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);

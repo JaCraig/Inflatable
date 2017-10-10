@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
@@ -73,23 +72,12 @@ namespace Inflatable.ClassMapper.Default
         }
 
         /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
+        /// Sets the column information.
         /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public override object GetParameter(Dynamo Object)
+        /// <param name="mappings">The mappings.</param>
+        public override void SetColumnInfo(MappingSource mappings)
         {
-            return GetValue(Object);
-        }
-
-        /// <summary>
-        /// Gets the property as a parameter (for classes, this will return the ID of the property)
-        /// </summary>
-        /// <param name="Object">Object to get the parameter from</param>
-        /// <returns>The parameter version of the property</returns>
-        public override object GetParameter(object Object)
-        {
-            return GetValue(Object);
+            Setup();
         }
 
         /// <summary>
@@ -97,6 +85,8 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         public override void Setup()
         {
+            if (Columns != null)
+                return;
             Columns = new Column.SimpleColumnInfo<ClassType, DataType>[]
             {
                 new Column.SimpleColumnInfo<ClassType,DataType>
@@ -107,7 +97,9 @@ namespace Inflatable.ClassMapper.Default
                     PropertyName=Name,
                     PropertyType=PropertyType,
                     SchemaName=ParentMapping.SchemaName,
-                    TableName=ParentMapping.TableName
+                    TableName=ParentMapping.TableName,
+                    SetAction=SetAction,
+                    IsNullable=Nullable
                 }
             };
         }

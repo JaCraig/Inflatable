@@ -18,9 +18,7 @@ using BigBook.Patterns;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.Schema;
-using SQLHelper.HelperClasses.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -67,7 +65,7 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <typeparam name="ClassType">The class type.</typeparam>
     /// <typeparam name="DataType">The data type.</typeparam>
     /// <seealso cref="IFluentInterface"/>
-    public interface IManyToManyProperty<ClassType, DataType> : IManyToManyProperty<ClassType>
+    public interface IManyToManyProperty<ClassType, DataType> : IManyToManyProperty
         where ClassType : class
         where DataType : class
     {
@@ -82,22 +80,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value>The expression.</value>
         Expression<Func<ClassType, DataType>> Expression { get; }
-    }
-
-    /// <summary>
-    /// Many to many property
-    /// </summary>
-    /// <typeparam name="ClassType">The type of the lass type.</typeparam>
-    /// <seealso cref="IFluentInterface"/>
-    public interface IManyToManyProperty<ClassType> : IManyToManyProperty
-        where ClassType : class
-    {
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <param name="Object">The object.</param>
-        /// <returns></returns>
-        object GetProperty(ClassType Object);
     }
 
     /// <summary>
@@ -143,12 +125,6 @@ namespace Inflatable.ClassMapper.Interfaces
         string Name { get; }
 
         /// <summary>
-        /// Gets the parent mapping.
-        /// </summary>
-        /// <value>The parent mapping.</value>
-        IMapping ParentMapping { get; }
-
-        /// <summary>
         /// Gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
@@ -174,14 +150,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <returns>The resulting property</returns>
         IManyToManyProperty Convert<TResult>(IMapping mapping)
             where TResult : class;
-
-        /// <summary>
-        /// Gets as parameter.
-        /// </summary>
-        /// <param name="queryObject">The query object.</param>
-        /// <param name="propertyValue">The property value.</param>
-        /// <returns></returns>
-        IEnumerable<IParameter> GetAsParameter(object queryObject, object propertyValue);
 
         /// <summary>
         /// Gets the property's value from the object sent in

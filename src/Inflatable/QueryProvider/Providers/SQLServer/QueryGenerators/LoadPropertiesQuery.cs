@@ -182,7 +182,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The parameters</returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties)
         {
-            return idProperties.ForEach(x => x.GetAsParameter(queryObject)).ToArray();
+            return idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
         }
 
         /// <summary>
@@ -420,11 +420,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder Result = new StringBuilder();
             string Separator = "";
             var ParentIDMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            var Prefix = "";
+            if (ParentIDMappings.Any(x => x.ParentMapping == property.ForeignMapping))
+                Prefix = "Parent_";
             foreach (var ParentIDMapping in ParentIDMappings)
             {
                 Result.AppendFormat("{0}{1}={2}",
                     Separator,
-                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
+                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
                     GetParameterName(ParentIDMapping));
                 Separator = "\r\nAND ";
             }

@@ -46,6 +46,12 @@ namespace Inflatable.ClassMapper.Column
         public Func<TDataType> DefaultValue { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is nullable.
+        /// </summary>
+        /// <value><c>true</c> if this instance is nullable; otherwise, <c>false</c>.</value>
+        public bool IsNullable { get; set; }
+
+        /// <summary>
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
@@ -63,10 +69,36 @@ namespace Inflatable.ClassMapper.Column
         public string SchemaName { get; set; }
 
         /// <summary>
+        /// Gets or sets the expression used to set the value.
+        /// </summary>
+        /// <value>The set expression.</value>
+        public Action<TClassType, TDataType> SetAction { get; set; }
+
+        /// <summary>
         /// Gets the table name.
         /// </summary>
         /// <value>The table name.</value>
         public string TableName { get; set; }
+
+        /// <summary>
+        /// Creates a copy.
+        /// </summary>
+        /// <returns>The resulting copy.</returns>
+        public IQueryColumnInfo CreateCopy()
+        {
+            return new SimpleColumnInfo<TClassType, TDataType>
+            {
+                ColumnName = ColumnName,
+                CompiledExpression = CompiledExpression,
+                DefaultValue = DefaultValue,
+                IsNullable = IsNullable,
+                PropertyName = PropertyName,
+                PropertyType = PropertyType,
+                SchemaName = SchemaName,
+                SetAction = SetAction,
+                TableName = TableName
+            };
+        }
 
         /// <summary>
         /// Gets the property as an IParameter (for classes, this will return the ID of the property)
@@ -77,13 +109,24 @@ namespace Inflatable.ClassMapper.Column
         {
             var ParamValue = GetValue(objectValue);
             if (Equals(ParamValue, DefaultValue()))
-                ParamValue = null;
+                ParamValue = IsNullable ? null : (object)DefaultValue();
             if (PropertyType == typeof(string))
             {
                 var TempParameter = ParamValue as string;
                 return new StringParameter(PropertyName, TempParameter);
             }
-            return new Parameter<object>(PropertyName, PropertyType.To<Type, SqlDbType>(), ParamValue);
+            return new Parameter<object>(PropertyName, PropertyType.To<Type, DbType>(), ParamValue);
+        }
+
+        /// <summary>
+        /// Gets as parameter.
+        /// </summary>
+        /// <param name="objectValue">The object value.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <returns>The object value as a parameter.</returns>
+        public IParameter GetAsParameter(object objectValue, object paramValue)
+        {
+            return GetAsParameter(objectValue);
         }
 
         /// <summary>
@@ -107,13 +150,62 @@ namespace Inflatable.ClassMapper.Column
         }
 
         /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <returns>The resulting value.</returns>
+        public object GetValue(object @object, object paramValue)
+        {
+            return GetValue(@object);
+        }
+
+        /// <summary>
         /// Is this a default value?
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>True if it is, false otherwise.</returns>
         public bool IsDefault(object @object)
         {
+            if (ReferenceEquals(@object, default(TClassType)))
+                return true;
             return Equals(GetValue(@object), DefaultValue());
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is default.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
+        public bool IsDefault(object @object, object paramValue)
+        {
+            return IsDefault(@object);
+        }
+
+        /// <summary>
+        /// Sets the property's value for the object sent in.
+        /// </summary>
+        /// <param name="objectToSet">The object to set.</param>
+        /// <param name="propertyValue">The property value.</param>
+        public void SetValue(object objectToSet, object propertyValue)
+        {
+            var TempObject = objectToSet as TClassType;
+            if (ReferenceEquals(TempObject, default(TClassType)))
+                return;
+            var TempPropertyValue = (TDataType)propertyValue;
+            SetAction(TempObject, TempPropertyValue);
+        }
+
+        /// <summary>
+        /// Sets the value.
+        /// </summary>
+        /// <param name="objectToSet">The object to set.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <param name="propertyValue">The property value.</param>
+        public void SetValue(object objectToSet, object paramValue, object propertyValue)
+        {
+            SetValue(objectToSet, propertyValue);
         }
 
         /// <summary>

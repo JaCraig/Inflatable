@@ -29,7 +29,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets or sets the name of the column.
         /// </summary>
         /// <value>The name of the column.</value>
-        string ColumnName { get; }
+        string ColumnName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the property.
@@ -47,20 +47,34 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets or sets the name of the schema.
         /// </summary>
         /// <value>The name of the schema.</value>
-        string SchemaName { get; }
+        string SchemaName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the table.
         /// </summary>
         /// <value>The name of the table.</value>
-        string TableName { get; }
+        string TableName { get; set; }
+
+        /// <summary>
+        /// Creates a copy.
+        /// </summary>
+        /// <returns>The resulting copy.</returns>
+        IQueryColumnInfo CreateCopy();
 
         /// <summary>
         /// Gets as parameter.
         /// </summary>
         /// <param name="objectValue">The object value.</param>
-        /// <returns></returns>
+        /// <returns>The object value as a parameter.</returns>
         IParameter GetAsParameter(object objectValue);
+
+        /// <summary>
+        /// Gets as parameter.
+        /// </summary>
+        /// <param name="objectValue">The object value.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <returns>The object value as a parameter.</returns>
+        IParameter GetAsParameter(object objectValue, object paramValue);
 
         /// <summary>
         /// Gets the value.
@@ -73,8 +87,16 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets the value.
         /// </summary>
         /// <param name="object">The object.</param>
-        /// <returns></returns>
+        /// <returns>The resulting value.</returns>
         object GetValue(object @object);
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <returns>The resulting value.</returns>
+        object GetValue(object @object, object paramValue);
 
         /// <summary>
         /// Determines whether the specified object is default.
@@ -82,5 +104,28 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// <param name="object">The object.</param>
         /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
         bool IsDefault(object @object);
+
+        /// <summary>
+        /// Determines whether the specified object is default.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
+        bool IsDefault(object @object, object paramValue);
+
+        /// <summary>
+        /// Sets the value.
+        /// </summary>
+        /// <param name="objectToSet">The object to set.</param>
+        /// <param name="propertyValue">The property value.</param>
+        void SetValue(object objectToSet, object propertyValue);
+
+        /// <summary>
+        /// Sets the value.
+        /// </summary>
+        /// <param name="objectToSet">The object to set.</param>
+        /// <param name="paramValue">The parameter value.</param>
+        /// <param name="propertyValue">The property value.</param>
+        void SetValue(object objectToSet, object paramValue, object propertyValue);
     }
 }

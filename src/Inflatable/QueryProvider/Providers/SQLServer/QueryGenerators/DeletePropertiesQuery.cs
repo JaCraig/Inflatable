@@ -162,7 +162,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ForeignIDs = MappingInformation.GetParentMapping(property.PropertyType).SelectMany(x => x.IDProperties);
             ReturnValues.AddRange(ParentIDs.ForEach<IIDProperty, IParameter>(x =>
             {
-                var Value = x.GetValue(queryObject);
+                var Value = x.GetColumnInfo()[0].GetValue(queryObject);
                 if (x.PropertyType == typeof(string))
                 {
                     var TempParameter = Value as string;
@@ -177,7 +177,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 ReturnValues.AddRange(ForeignIDs.ForEach<IIDProperty, IParameter>(x =>
                 {
-                    var Value = x.GetValue(Item);
+                    var Value = x.GetColumnInfo()[0].GetValue(Item);
                     if (x.PropertyType == typeof(string))
                     {
                         var TempParameter = Value as string;

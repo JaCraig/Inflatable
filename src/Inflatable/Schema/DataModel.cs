@@ -228,6 +228,21 @@ namespace Inflatable.Schema
                     Map.Setup(Source, this);
                 }
             }
+            foreach (var Mapping in Source.Mappings.Values.OrderBy(x => x.Order))
+            {
+                foreach (var Map in Mapping.ManyToOneProperties)
+                {
+                    Map.SetColumnInfo(Source);
+                }
+                foreach (var Map in Mapping.ManyToManyProperties)
+                {
+                    Map.SetColumnInfo(Source);
+                }
+                foreach (var Map in Mapping.MapProperties)
+                {
+                    Map.SetColumnInfo(Source);
+                }
+            }
         }
 
         /// <summary>

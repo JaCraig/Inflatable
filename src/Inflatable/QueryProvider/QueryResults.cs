@@ -143,7 +143,7 @@ namespace Inflatable.QueryProvider
                 return;
             foreach (var Value in results.Values)
             {
-                var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetValue(x).Equals(y.GetValue(Value))));
+                var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
                 if (MyValue != null)
                     Value.CopyTo(MyValue);
             }
@@ -165,7 +165,7 @@ namespace Inflatable.QueryProvider
             }
             foreach (var Value in results.Values)
             {
-                var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetValue(x).Equals(y.GetValue(Value))));
+                var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
                 if (MyValue == null)
                     Values.Add(Value);
                 else
