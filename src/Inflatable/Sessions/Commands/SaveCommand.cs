@@ -243,7 +243,14 @@ namespace Inflatable.Sessions.Commands
             if (@object is IORMObject UpdateObject)
                 Update(UpdateObject, source, batch);
             else
-                Insert(@object, source, batch, declarationBatch, ParentMappings.SelectMany(x => x.IDProperties));
+            {
+                var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
+                var IsUpdatable = IDProperties.Any() && IDProperties.All(y => y.AutoIncrement && y.GetColumnInfo().All(z => !z.IsDefault(@object)));
+                if (IsUpdatable)
+                    Update(@object, source, batch);
+                else
+                    Insert(@object, source, batch, declarationBatch, ParentMappings.SelectMany(x => x.IDProperties));
+            }
 
             RemoveItemsFromCache(@object);
         }
@@ -302,7 +309,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="updateObject">The update object.</param>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
-        private void Update(IORMObject updateObject, MappingSource source, SQLHelper.SQLHelper batch)
+        private void Update(object updateObject, MappingSource source, SQLHelper.SQLHelper batch)
         {
             var Generator = QueryProviderManager.CreateGenerator(updateObject.GetType(), source);
             var Queries = Generator.GenerateQueries(QueryType.Update, updateObject);

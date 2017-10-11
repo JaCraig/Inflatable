@@ -121,31 +121,26 @@ namespace Inflatable.Tests
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
-                    ID=1,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=2,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=3,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=4,
                     BoolValue = false,
                     IntValue=4,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=5,
                     BoolValue = false,
                     IntValue=4,
                 }
@@ -180,31 +175,26 @@ namespace Inflatable.Tests
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
-                    ID=1,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=2,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=3,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=4,
                     BoolValue = false,
                     IntValue=4,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=5,
                     BoolValue = false,
                     IntValue=4,
                 }
@@ -235,31 +225,26 @@ namespace Inflatable.Tests
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
-                    ID=1,
                     BoolValue = true,
                     IntValue=10,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=2,
                     BoolValue = true,
                     IntValue=10,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=3,
                     BoolValue = true,
                     IntValue=10,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=4,
                     BoolValue = false,
                     IntValue=10,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=5,
                     BoolValue = false,
                     IntValue=10,
                 }
@@ -285,31 +270,26 @@ namespace Inflatable.Tests
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
-                    ID=1,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=2,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=3,
                     BoolValue = true,
                     IntValue=5,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=4,
                     BoolValue = false,
                     IntValue=4,
                 },
                 new AllReferencesAndID()
                 {
-                    ID=5,
                     BoolValue = false,
                     IntValue=4,
                 }
