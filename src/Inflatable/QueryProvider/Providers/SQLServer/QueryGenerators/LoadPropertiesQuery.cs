@@ -51,6 +51,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ParentMappings = ChildMappings.SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
             Queries = new ListMapping<string, QueryGeneratorData>();
+            SetupQueries();
         }
 
         /// <summary>
@@ -589,6 +590,29 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 ReturnValue.Add(new Query(TempQuery.AssociatedMapping.ObjectType, CommandType.Text, TempQuery.QueryText, QueryType.LoadProperty, GenerateParameters(queryObject, TempQuery.IDProperties)));
             }
             return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Sets up the queries.
+        /// </summary>
+        private void SetupQueries()
+        {
+            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
+            foreach (var ParentMapping in ParentMappings)
+            {
+                foreach (var Property in ParentMapping.ManyToManyProperties)
+                {
+                    LoadManyToManyProperty(Property, default(TMappedClass));
+                }
+                foreach (var Property in ParentMapping.ManyToOneProperties)
+                {
+                    LoadManyToOneProperty(Property, default(TMappedClass));
+                }
+                foreach (var Property in ParentMapping.MapProperties)
+                {
+                    LoadMapProperty(ParentMappings, Property, default(TMappedClass));
+                }
+            }
         }
     }
 }

@@ -52,6 +52,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                              .Distinct()
                                              .SelectMany(x => x.IDProperties);
             Queries = new ListMapping<string, QueryGeneratorData>();
+            SetupQueries();
         }
 
         /// <summary>
@@ -204,9 +205,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         private void GenerateJoinSaveQueryMultiple(IEnumerable<IIDProperty> foreignIDProperties,
-            IManyToOneProperty manyToOne,
-            StringBuilder whereList,
-            StringBuilder parametersList)
+                    IManyToOneProperty manyToOne,
+                    StringBuilder whereList,
+                    StringBuilder parametersList)
         {
             string Splitter = "";
             foreach (var ForeignID in IDProperties)
@@ -231,9 +232,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         private void GenerateJoinSaveQuerySingle(IEnumerable<IIDProperty> foreignIDProperties,
-            IManyToOneProperty manyToOne,
-            StringBuilder whereList,
-            StringBuilder parametersList)
+                    IManyToOneProperty manyToOne,
+                    StringBuilder whereList,
+                    StringBuilder parametersList)
         {
             string Splitter = "";
             foreach (var ForeignID in foreignIDProperties)
@@ -469,6 +470,38 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     GenerateParameters(queryObject, mapProperty)));
             }
             return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Sets up the queries.
+        /// </summary>
+        private void SetupQueries()
+        {
+            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
+            foreach (var ParentMapping in ParentMappings)
+            {
+                foreach (var Property in ParentMapping.ManyToManyProperties)
+                {
+                    ManyToManyProperty(Property, default(TMappedClass));
+                }
+                foreach (var Property in ParentMapping.ManyToOneProperties)
+                {
+                    switch (Property)
+                    {
+                        case IManyToOneListProperty ManyToOne:
+                            ManyToOneProperty(ManyToOne, default(TMappedClass));
+                            break;
+
+                        case IManyToOneProperty ManyToOne:
+                            ManyToOneProperty(ManyToOne, default(TMappedClass));
+                            break;
+                    }
+                }
+                foreach (var Property in ParentMapping.MapProperties)
+                {
+                    MapProperty(Property, default(TMappedClass));
+                }
+            }
         }
     }
 }
