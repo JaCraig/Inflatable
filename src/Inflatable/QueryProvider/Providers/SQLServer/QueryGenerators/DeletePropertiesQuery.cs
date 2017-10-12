@@ -51,7 +51,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                              .Distinct()
                                              .SelectMany(x => x.IDProperties);
-            Queries = new Dictionary<string, List<QueryGeneratorData>>();
+            Queries = new ListMapping<string, QueryGeneratorData>();
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the queries.
         /// </summary>
         /// <value>The queries.</value>
-        private IDictionary<string, List<QueryGeneratorData>> Queries { get; set; }
+        private ListMapping<string, QueryGeneratorData> Queries { get; set; }
 
         /// <summary>
         /// Generates the declarations needed for the query.

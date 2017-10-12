@@ -50,7 +50,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
             var ParentMappings = ChildMappings.SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
-            Queries = new Dictionary<string, List<QueryGeneratorData>>();
+            Queries = new ListMapping<string, QueryGeneratorData>();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the queries.
         /// </summary>
         /// <value>The queries.</value>
-        private IDictionary<string, List<QueryGeneratorData>> Queries { get; set; }
+        private ListMapping<string, QueryGeneratorData> Queries { get; set; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -468,13 +468,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(property.Name))
             {
-                Queries.Add(property.Name, new List<QueryGeneratorData>());
                 foreach (var ChildMapping in ChildMappings)
                 {
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries[property.Name].Add(new QueryGeneratorData
+                    Queries.Add(property.Name, new QueryGeneratorData
                     {
                         AssociatedMapping = ChildMapping,
                         IDProperties = IDProperties,
@@ -503,13 +502,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                Queries.Add(manyToOne.Name, new List<QueryGeneratorData>());
                 foreach (var ChildMapping in ChildMappings)
                 {
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries[manyToOne.Name].Add(new QueryGeneratorData
+                    Queries.Add(manyToOne.Name, new QueryGeneratorData
                     {
                         AssociatedMapping = ChildMapping,
                         IDProperties = IDProperties,
@@ -538,13 +536,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                Queries.Add(manyToOne.Name, new List<QueryGeneratorData>());
                 foreach (var ChildMapping in ChildMappings)
                 {
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries[manyToOne.Name].Add(new QueryGeneratorData
+                    Queries.Add(manyToOne.Name, new QueryGeneratorData
                     {
                         AssociatedMapping = ChildMapping,
                         IDProperties = IDProperties,
@@ -574,13 +571,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(property.Name))
             {
-                Queries.Add(property.Name, new List<QueryGeneratorData>());
                 foreach (var ChildMapping in ChildMappings)
                 {
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries[property.Name].Add(new QueryGeneratorData
+                    Queries.Add(property.Name, new QueryGeneratorData
                     {
                         AssociatedMapping = ChildMapping,
                         IDProperties = IDProperties,

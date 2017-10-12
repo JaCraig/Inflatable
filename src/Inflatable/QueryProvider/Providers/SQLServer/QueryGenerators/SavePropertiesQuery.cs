@@ -51,7 +51,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                              .Distinct()
                                              .SelectMany(x => x.IDProperties);
-            Queries = new Dictionary<string, List<QueryGeneratorData>>();
+            Queries = new ListMapping<string, QueryGeneratorData>();
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the queries.
         /// </summary>
         /// <value>The queries.</value>
-        private IDictionary<string, List<QueryGeneratorData>> Queries { get; set; }
+        private ListMapping<string, QueryGeneratorData> Queries { get; set; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -338,8 +338,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(property.Name, new List<QueryGeneratorData>());
-                Queries[property.Name].Add(new QueryGeneratorData
+                Queries.Add(property.Name, new QueryGeneratorData
                 {
                     AssociatedMapping = MappingInformation.Mappings[property.PropertyType],
                     IDProperties = IDProperties,
@@ -375,8 +374,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(manyToOne.Name, new List<QueryGeneratorData>());
-                Queries[manyToOne.Name].Add(new QueryGeneratorData
+                Queries.Add(manyToOne.Name, new QueryGeneratorData
                 {
                     AssociatedMapping = MappingInformation.Mappings[manyToOne.PropertyType],
                     IDProperties = IDProperties,
@@ -418,8 +416,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(manyToOne.Name, new List<QueryGeneratorData>());
-                Queries[manyToOne.Name].Add(new QueryGeneratorData
+                Queries.Add(manyToOne.Name, new QueryGeneratorData
                 {
                     AssociatedMapping = MappingInformation.Mappings[manyToOne.PropertyType],
                     IDProperties = IDProperties,
@@ -455,8 +452,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(mapProperty.Name, new List<QueryGeneratorData>());
-                Queries[mapProperty.Name].Add(new QueryGeneratorData
+                Queries.Add(mapProperty.Name, new QueryGeneratorData
                 {
                     AssociatedMapping = MappingInformation.Mappings[mapProperty.PropertyType],
                     IDProperties = IDProperties,
