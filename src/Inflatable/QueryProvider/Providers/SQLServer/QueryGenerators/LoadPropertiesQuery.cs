@@ -606,7 +606,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 }
                 foreach (var Property in ParentMapping.ManyToOneProperties)
                 {
-                    LoadManyToOneProperty(Property, default(TMappedClass));
+                    switch (Property)
+                    {
+                        case IManyToOneListProperty ManyToOne:
+                            LoadManyToOneProperty(ManyToOne, default(TMappedClass));
+                            break;
+
+                        case IManyToOneProperty ManyToOne:
+                            LoadManyToOneProperty(ManyToOne, default(TMappedClass));
+                            break;
+                    }
                 }
                 foreach (var Property in ParentMapping.MapProperties)
                 {
