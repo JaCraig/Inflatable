@@ -82,7 +82,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(0, Result.Parameters.Length);
+            Assert.Empty(Result.Parameters);
             Assert.Equal("", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
         }
@@ -204,7 +204,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[1].InternalValue);
-            Assert.Equal(null, Result.Parameters[0].InternalValue);
+            Assert.Null(Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[1].ID);
             Assert.Equal("AllReferencesAndID_MappedClass_ID_", Result.Parameters[0].ID);
             Assert.Equal("UPDATE [dbo].[MapProperties_] SET [dbo].[MapProperties_].[AllReferencesAndID_MappedClass_ID_] = @AllReferencesAndID_MappedClass_ID_ WHERE [dbo].[MapProperties_].[ID_] = @ID;", Result.QueryString);

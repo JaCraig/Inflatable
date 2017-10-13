@@ -67,7 +67,7 @@ namespace Inflatable.Tests
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Assert.NotNull(TestObject);
             Assert.NotNull(TestObject.Expression);
-            Assert.IsType(typeof(DbContext<AllReferencesAndID>), TestObject.Provider);
+            Assert.IsType<DbContext<AllReferencesAndID>>(TestObject.Provider);
         }
 
         [Fact]

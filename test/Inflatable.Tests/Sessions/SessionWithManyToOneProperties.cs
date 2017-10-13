@@ -65,7 +65,7 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            Assert.Equal(1, Results.Count());
+            Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<ManyToOneOneProperties>("SELECT ID_ as [ID] FROM ManyToOneOneProperties_", CommandType.Text, "Default");
             Assert.Equal(3, Results2.Count());
         }
@@ -78,9 +78,9 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
-            Assert.Equal(1, Results.Count());
+            Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<ManyToOneOneProperties>("SELECT ID_ as [ID] FROM ManyToOneOneProperties_", CommandType.Text, "Default");
-            Assert.Equal(1, Results2.Count());
+            Assert.Single(Results2);
         }
 
         [Fact]
@@ -136,18 +136,18 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
-            Assert.True(Results.Any(x => x.ID == Result1.ID
+            Assert.Contains(Results, x => x.ID == Result1.ID
             && !x.BoolValue
             && x.ManyToOneClass.Count == 1
-            && x.ManyToOneClass.Any(y => y.BoolValue)));
-            Assert.True(Results.Any(x => x.ID == Result2.ID
+            && x.ManyToOneClass.Any(y => y.BoolValue));
+            Assert.Contains(Results, x => x.ID == Result2.ID
             && !x.BoolValue
             && x.ManyToOneClass.Count == 1
-            && x.ManyToOneClass.Any(y => y.BoolValue)));
-            Assert.True(Results.Any(x => x.ID == Result3.ID
+            && x.ManyToOneClass.Any(y => y.BoolValue));
+            Assert.Contains(Results, x => x.ID == Result3.ID
             && !x.BoolValue
             && x.ManyToOneClass.Count == 1
-            && x.ManyToOneClass.Any(y => y.BoolValue)));
+            && x.ManyToOneClass.Any(y => y.BoolValue));
         }
 
         [Fact]
@@ -240,7 +240,7 @@ namespace Inflatable.Tests.Sessions
             });
             await TestObject.Save(Result).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            Assert.Equal(1, Results.Count());
+            Assert.Single(Results);
         }
 
         private void SetupData()

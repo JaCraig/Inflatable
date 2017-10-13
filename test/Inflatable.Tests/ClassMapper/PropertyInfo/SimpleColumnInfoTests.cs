@@ -28,7 +28,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { null, null }
         };
 
-        private SimpleColumnInfo<AllReferencesAndID, long> TestObject = new SimpleColumnInfo<AllReferencesAndID, long>
+        private readonly SimpleColumnInfo<AllReferencesAndID, long> TestObject = new SimpleColumnInfo<AllReferencesAndID, long>
         {
             ColumnName = "ID_",
             CompiledExpression = x => x.ID,

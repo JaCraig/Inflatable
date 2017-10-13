@@ -75,7 +75,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(1, Result.Parameters.Length);
+            Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.QueryString);

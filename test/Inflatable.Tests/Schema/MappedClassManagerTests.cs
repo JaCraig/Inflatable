@@ -35,7 +35,7 @@ namespace Inflatable.Tests.Schema
         {
             SchemaManager TestObject = new SchemaManager(Mappings, Configuration, Logger);
             Assert.Equal(Mappings, TestObject.Mappings);
-            Assert.Equal(1, TestObject.Models.Count());
+            Assert.Single(TestObject.Models);
             var TestModel = TestObject.Models.First();
             Assert.Equal("Default", TestModel.Source.Source.Name);
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
@@ -44,8 +44,8 @@ namespace Inflatable.Tests.Schema
             Assert.Equal(0, TestModel.SourceSpec.Functions.Count);
             Assert.Equal(0, TestModel.SourceSpec.StoredProcedures.Count);
             Assert.Equal(2, TestModel.SourceSpec.Tables.Count);
-            Assert.True(TestModel.SourceSpec.Tables.Any(x => x.Name == "AllReferencesAndID_"));
-            Assert.True(TestModel.SourceSpec.Tables.Any(x => x.Name == "MapProperties_"));
+            Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "AllReferencesAndID_");
+            Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "MapProperties_");
             Assert.Equal(0, TestModel.SourceSpec.Views.Count);
             Assert.Equal(4, TestModel.GeneratedSchemaChanges.Count());
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);

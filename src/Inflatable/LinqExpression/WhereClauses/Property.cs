@@ -34,7 +34,7 @@ namespace Inflatable.LinqExpression.WhereClauses
     public class Property<TObject> : IOperator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Property"/> class.
+        /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="count">The count.</param>

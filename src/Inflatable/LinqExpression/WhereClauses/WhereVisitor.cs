@@ -31,7 +31,7 @@ namespace Inflatable.LinqExpression.WhereClauses
     public class WhereVisitor<TObject> : ExpressionVisitor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WhereVisitor"/> class.
+        /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="count">The count.</param>
         public WhereVisitor(int count)

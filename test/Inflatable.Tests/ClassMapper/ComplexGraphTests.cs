@@ -45,26 +45,26 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(typeof(ConcreteClass2), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Data);
             Assert.Equal(typeof(ConcreteClass3), TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Data);
 
-            Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes.Count);
+            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes);
             Assert.Equal(typeof(BaseClass1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Data);
-            Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes.Count);
+            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes[0].Data);
 
-            Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes.Count);
+            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes);
             Assert.Equal(typeof(BaseClass1), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Data);
-            Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes.Count);
+            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes[0].Data);
 
-            Assert.Equal(1, TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Nodes.Count);
+            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Nodes);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Nodes[0].Data);
 
             Assert.Equal(6, TestObject.ChildTypes.Count);
             Assert.Equal(2, TestObject.ChildTypes[typeof(BaseClass1)].Count());
-            Assert.Equal(1, TestObject.ChildTypes[typeof(ConcreteClass1)].Count());
-            Assert.Equal(1, TestObject.ChildTypes[typeof(ConcreteClass2)].Count());
-            Assert.Equal(1, TestObject.ChildTypes[typeof(ConcreteClass3)].Count());
+            Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass1)]);
+            Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass2)]);
+            Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass3)]);
             Assert.Equal(3, TestObject.ChildTypes[typeof(IInterface1)].Count());
-            Assert.Equal(1, TestObject.ChildTypes[typeof(IInterface2)].Count());
+            Assert.Single(TestObject.ChildTypes[typeof(IInterface2)]);
             Assert.Equal(3, TestObject.ParentTypes.Count);
             Assert.Equal(3, TestObject.ParentTypes[typeof(ConcreteClass1)].Count());
             Assert.Equal(3, TestObject.ParentTypes[typeof(ConcreteClass2)].Count());

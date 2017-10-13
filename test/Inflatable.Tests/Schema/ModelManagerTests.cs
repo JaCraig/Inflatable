@@ -33,7 +33,7 @@ namespace Inflatable.Tests.Schema
         {
             SchemaManager TestObject = new SchemaManager(Mappings, Configuration, Logger);
             Assert.Equal(Mappings, TestObject.Mappings);
-            Assert.Equal(1, TestObject.Models.Count());
+            Assert.Single(TestObject.Models);
             var TestModel = TestObject.Models.First();
             Assert.Equal("Default", TestModel.Source.Source.Name);
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);

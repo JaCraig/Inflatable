@@ -32,7 +32,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { new ManyToManyProperties(),null },
         };
 
-        private ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID> TestObject = new ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID>
+        private readonly ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID> TestObject = new ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID>
         {
             ColumnName = "ManyToManyClass_ID_",
             CompiledExpression = x => x.ManyToManyClass,

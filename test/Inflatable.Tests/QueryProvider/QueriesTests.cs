@@ -14,7 +14,7 @@ namespace Inflatable.Tests.QueryProvider
             {
                 { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
-            Assert.Equal(1, TestObject.Count);
+            Assert.Single(TestObject);
             Assert.Equal(1, TestObject.Keys.Count);
             Assert.Equal(1, TestObject.Values.Count);
         }
@@ -27,7 +27,7 @@ namespace Inflatable.Tests.QueryProvider
                 { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             TestObject.Clear();
-            Assert.Equal(0, TestObject.Count);
+            Assert.Empty(TestObject);
             Assert.Empty(TestObject.Keys);
             Assert.Empty(TestObject.Values);
         }
@@ -47,7 +47,7 @@ namespace Inflatable.Tests.QueryProvider
         public void Creation()
         {
             var TestObject = new Queries();
-            Assert.Equal(0, TestObject.Count);
+            Assert.Empty(TestObject);
             Assert.False(TestObject.IsReadOnly);
             Assert.Empty(TestObject.Keys);
             Assert.Empty(TestObject.Values);
@@ -74,7 +74,7 @@ namespace Inflatable.Tests.QueryProvider
                 { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             TestObject.Remove(QueryType.Delete);
-            Assert.Equal(0, TestObject.Count);
+            Assert.Empty(TestObject);
             Assert.Empty(TestObject.Keys);
             Assert.Empty(TestObject.Values);
         }

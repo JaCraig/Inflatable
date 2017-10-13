@@ -117,7 +117,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal(true, Result.Parameters[1].InternalValue);
+            Assert.True((bool)Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
             Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
             Assert.Equal(QueryType.Insert, Result.QueryType);
@@ -140,7 +140,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal(true, Result.Parameters[1].InternalValue);
+            Assert.True((bool)Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
             Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
             Assert.Equal(QueryType.Insert, Result.QueryType);

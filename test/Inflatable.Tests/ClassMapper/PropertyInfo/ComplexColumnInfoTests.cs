@@ -32,7 +32,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { new MapProperties(),null },
         };
 
-        private ComplexColumnInfo<MapProperties, AllReferencesAndID> TestObject = new ComplexColumnInfo<MapProperties, AllReferencesAndID>
+        private readonly ComplexColumnInfo<MapProperties, AllReferencesAndID> TestObject = new ComplexColumnInfo<MapProperties, AllReferencesAndID>
         {
             ColumnName = "MappedClass_ID_",
             CompiledExpression = x => x.MappedClass,

@@ -59,7 +59,7 @@ namespace Inflatable.Tests.Sessions
             TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(3, TestObject.Length);
             Assert.Equal(2, TestObject.OfType<ConcreteClass1>().Count());
-            Assert.Equal(1, TestObject.OfType<ConcreteClass2>().Count());
+            Assert.Single(TestObject.OfType<ConcreteClass2>());
             Assert.True(TestObject.All(x => x.ID <= 3));
         }
 

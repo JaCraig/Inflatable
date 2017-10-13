@@ -25,11 +25,11 @@ namespace Inflatable.Tests.ClassMapper
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var TestSource = TestObject.Sources.First();
-            Assert.Equal(1, TestObject.Sources.Count());
+            Assert.Single(TestObject.Sources);
             Assert.Equal(1, TestSource.Mappings.Count);
             Assert.Equal(typeof(AllReferencesAndID), TestSource.Mappings.First().Key);
             Assert.IsType<AllReferencesAndIDMappingNoDatabase>(TestSource.Mappings.First().Value);
-            Assert.Equal(1, TestSource.TypeGraphs.Count());
+            Assert.Single(TestSource.TypeGraphs);
             Assert.Equal(typeof(AllReferencesAndID), TestSource.TypeGraphs.First().Key);
             Assert.Equal(TestSource.Mappings.First().Key, TestSource.TypeGraphs.First().Key);
         }

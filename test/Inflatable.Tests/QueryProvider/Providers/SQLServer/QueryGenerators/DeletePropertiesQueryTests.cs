@@ -80,7 +80,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TestObject = new DeletePropertiesQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(0, Result.Parameters.Length);
+            Assert.Empty(Result.Parameters);
             Assert.Equal("", Result.QueryString);
             Assert.Equal(QueryType.JoinsDelete, Result.QueryType);
         }
@@ -131,7 +131,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 1 });
             TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 2 });
             var Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
-            Assert.Equal(0, Result.Length);
+            Assert.Empty(Result);
         }
 
         [Fact]
@@ -150,7 +150,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TempManyToOne = new ManyToOneOneProperties { ID = 10, BoolValue = true };
             TempManyToOne.ManyToOneClass = new ManyToOneManyProperties { ID = 1 };
             var Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
-            Assert.Equal(0, Result.Length);
+            Assert.Empty(Result);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 2 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            Assert.Equal(1, Results.Count());
+            Assert.Single(Results);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace Inflatable.Tests.Sessions
                 CommandType.Text,
                 "Default",
                 2);
-            Assert.Equal(1, Result.Count());
+            Assert.Single(Result);
             Assert.Equal(2, Result.First().ID);
         }
 
@@ -108,7 +108,7 @@ namespace Inflatable.Tests.Sessions
                 CommandType.Text,
                 "Default",
                 2);
-            Assert.Equal(1, Result.Count());
+            Assert.Single(Result);
             Assert.Equal(2, (long)Result.First().ID_);
         }
 
@@ -155,21 +155,21 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID], BoolValue_ as [BoolValue], ByteValue_ as [ByteValue], CharValue_ as [CharValue], DateTimeValue_ as [DateTimeValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
-            Assert.True(Results.Any(x => x.ID == Result1.ID
+            Assert.Contains(Results, x => x.ID == Result1.ID
             && !x.BoolValue
             && x.ByteValue == 34
             && x.CharValue == 'a'
-            && x.DateTimeValue == new DateTime(2000, 1, 1)));
-            Assert.True(Results.Any(x => x.ID == Result2.ID
+            && x.DateTimeValue == new DateTime(2000, 1, 1));
+            Assert.Contains(Results, x => x.ID == Result2.ID
             && !x.BoolValue
             && x.ByteValue == 34
             && x.CharValue == 'b'
-            && x.DateTimeValue == new DateTime(2000, 1, 1)));
-            Assert.True(Results.Any(x => x.ID == Result3.ID
+            && x.DateTimeValue == new DateTime(2000, 1, 1));
+            Assert.Contains(Results, x => x.ID == Result3.ID
             && !x.BoolValue
             && x.ByteValue == 34
             && x.CharValue == 'c'
-            && x.DateTimeValue == new DateTime(2000, 1, 1)));
+            && x.DateTimeValue == new DateTime(2000, 1, 1));
         }
 
         [Fact]
@@ -188,11 +188,11 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Save(Result).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID], BoolValue_ as [BoolValue], ByteValue_ as [ByteValue], CharValue_ as [CharValue], DateTimeValue_ as [DateTimeValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(4, Results.Count());
-            Assert.True(Results.Any(x => x.ID == Result.ID
+            Assert.Contains(Results, x => x.ID == Result.ID
             && !x.BoolValue
             && x.ByteValue == 34
             && x.CharValue == 'a'
-            && x.DateTimeValue == new DateTime(2000, 1, 1)));
+            && x.DateTimeValue == new DateTime(2000, 1, 1));
         }
 
         [Fact]
@@ -224,7 +224,7 @@ namespace Inflatable.Tests.Sessions
             Result.CharValue = 'p';
             Assert.Equal(1, await TestObject.Save(Result).ExecuteAsync());
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            Assert.True(Results.Any(x => x.CharValue == 'p'));
+            Assert.Contains(Results, x => x.CharValue == 'p');
         }
 
         [Fact]
@@ -237,7 +237,7 @@ namespace Inflatable.Tests.Sessions
             };
             await TestObject.Save(Result).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            Assert.Equal(1, Results.Count());
+            Assert.Single(Results);
         }
 
         private void SetupData()

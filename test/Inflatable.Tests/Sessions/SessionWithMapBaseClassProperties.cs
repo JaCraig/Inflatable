@@ -69,9 +69,9 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            Assert.Equal(1, Results.Count());
+            Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<IMapPropertyInterface>("SELECT ID_ as [ID] FROM IMapPropertyInterface_", CommandType.Text, "Default");
-            Assert.Equal(1, Results2.Count());
+            Assert.Single(Results2);
         }
 
         [Fact]
@@ -119,18 +119,18 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
-            Assert.True(Results.Any(x => x.ID == Result1.ID
+            Assert.Contains(Results, x => x.ID == Result1.ID
             && !x.BoolValue
             && x.MappedClass.BaseValue1 == 1
-            && ((MapProperty1)x.MappedClass).ChildValue1 == 1));
-            Assert.True(Results.Any(x => x.ID == Result2.ID
+            && ((MapProperty1)x.MappedClass).ChildValue1 == 1);
+            Assert.Contains(Results, x => x.ID == Result2.ID
             && x.BoolValue
             && x.MappedClass.BaseValue1 == 2
-            && ((MapProperty2)x.MappedClass).ChildValue2 == 2));
-            Assert.True(Results.Any(x => x.ID == Result3.ID
+            && ((MapProperty2)x.MappedClass).ChildValue2 == 2);
+            Assert.Contains(Results, x => x.ID == Result3.ID
             && !x.BoolValue
             && x.MappedClass.BaseValue1 == 3
-            && ((MapProperty1)x.MappedClass).ChildValue1 == 3));
+            && ((MapProperty1)x.MappedClass).ChildValue1 == 3);
         }
 
         [Fact]
