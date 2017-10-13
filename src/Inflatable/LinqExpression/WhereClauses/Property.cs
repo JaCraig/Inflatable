@@ -30,7 +30,7 @@ namespace Inflatable.LinqExpression.WhereClauses
     /// Property operator
     /// </summary>
     /// <seealso cref="IOperator"/>
-    public class Property : IOperator
+    public class Property<TObject> : IOperator
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Property"/> class.
@@ -81,7 +81,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>A copy of this instance.</returns>
         public IOperator Copy()
         {
-            return new Property(InternalProperty, Count);
+            return new Property<TObject>(InternalProperty, Count);
         }
 
         /// <summary>
@@ -109,9 +109,8 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>The result</returns>
         public IOperator Optimize(MappingSource mappingSource)
         {
-            var ParentMappings = mappingSource.GetChildMappings(InternalProperty.DeclaringType)
-                                                   .SelectMany(x => mappingSource.GetParentMapping(x.ObjectType))
-                                                   .Distinct();
+            var ParentMappings = mappingSource.GetChildMappings(typeof(TObject))
+                                              .SelectMany(x => mappingSource.GetParentMapping(x.ObjectType));
             var ParentMapping = ParentMappings.FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
             if (ParentMapping == null)
             {

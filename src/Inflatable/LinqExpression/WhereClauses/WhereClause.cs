@@ -20,6 +20,7 @@ using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Inflatable.LinqExpression.WhereClauses
@@ -123,7 +124,8 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             if (InternalOperator == null)
                 return this;
-            InternalOperator = mappingSource.Mappings.ContainsKey(ObjectType) ?
+            bool IsValid = mappingSource.GetChildMappings(ObjectType).Any();
+            InternalOperator = IsValid ?
                 InternalOperator.Optimize(mappingSource) :
                 null;
             if (InternalOperator?.TypeCode != typeof(bool))

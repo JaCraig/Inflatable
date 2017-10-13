@@ -198,7 +198,7 @@ namespace Inflatable.Sessions
             bool FirstRun = true;
             foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null
                                                    && x.Value.Source.CanRead
-                                                   && x.Value.Source.Mappings.ContainsKey(typeof(TObject)))
+                                                   && x.Value.Source.GetChildMappings(typeof(TObject)).Any())
                                           .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source);
@@ -206,7 +206,7 @@ namespace Inflatable.Sessions
             }
             foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator == null
                                                    && x.Value.Source.CanRead
-                                                   && x.Value.Source.Mappings.ContainsKey(typeof(TObject)))
+                                                   && x.Value.Source.GetChildMappings(typeof(TObject)).Any())
                                           .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source);

@@ -46,20 +46,6 @@ namespace Inflatable.LinqExpression.WhereClauses
                 TypeCode = Value.GetType();
         }
 
-        ///// <summary>
-        ///// The constant converters
-        ///// </summary>
-        //private readonly IDictionary<Type, Func<object, int, string>> ConstantConverters = new Dictionary<Type, Func<object, int, string>>
-        //{
-        //    [typeof(bool)] = (x, y) => "@" + y.ToString(),
-        //    [typeof(string)] = (x, y) => "@" + y.ToString(),
-        //    [typeof(DateTime)] = (x, y) => "@" + y.ToString(),
-        //    [typeof(char)] = (x, y) => "@" + y.ToString(),
-        //    [typeof(TimeSpan)] = (x, y) => "@" + y.ToString(),
-        //    [typeof(DateTimeOffset)] = (x, y) => "@" + y.ToString(),
-        //    [typeof(object)] = (x, y) => throw new NotSupportedException($"The constant for ‘{x}’ is not supported")
-        //};
-
         /// <summary>
         /// Gets the count.
         /// </summary>
@@ -144,7 +130,7 @@ namespace Inflatable.LinqExpression.WhereClauses
                 return "SELECT * FROM " + TempQuery.ElementType.Name;
             if (Value == null)
                 return "NULL";
-            return "@" + Count;// ConstantConverters.ContainsKey(TypeCode) ? ConstantConverters[TypeCode](Value, Count) : Value.ToString();
+            return "@" + Count;
         }
     }
 }

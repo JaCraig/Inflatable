@@ -26,8 +26,9 @@ namespace Inflatable.LinqExpression.WhereClauses
     /// <summary>
     /// Where visitor
     /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
     /// <seealso cref="ExpressionVisitor"/>
-    public class WhereVisitor : ExpressionVisitor
+    public class WhereVisitor<TObject> : ExpressionVisitor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WhereVisitor"/> class.
@@ -103,7 +104,7 @@ namespace Inflatable.LinqExpression.WhereClauses
             var TempProperty = node.Member as PropertyInfo;
             if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter && TempProperty != null)
             {
-                CurrentClause = new Property(TempProperty, Count);
+                CurrentClause = new Property<TObject>(TempProperty, Count);
                 ++Count;
                 return node;
             }

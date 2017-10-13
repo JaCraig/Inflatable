@@ -45,6 +45,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public InsertQuery(MappingSource mappingInformation)
             : base(mappingInformation)
         {
+            if (!MappingInformation.TypeGraphs.ContainsKey(AssociatedType))
+                return;
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
             QueryDeclarationText = GenerateInsertQueryDeclarations();
             QueryText = GenerateInsertQuery(TypeGraph.Root);

@@ -47,7 +47,7 @@ namespace Inflatable.LinqExpression
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Builders = new Dictionary<MappingSource, QueryData<TObject>>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.Mappings.ContainsKey(typeof(TObject))))
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()))
             {
                 Builders.Add(Source, new QueryData<TObject>(Source));
             }
@@ -114,7 +114,7 @@ namespace Inflatable.LinqExpression
                     node = (MethodCallExpression)Evaluator.PartialEval(node);
                     Visit(node.Arguments[0]);
                     LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                    var CurrentClause = new WhereVisitor(Count).WhereProjection(lambda.Body);
+                    var CurrentClause = new WhereVisitor<TObject>(Count).WhereProjection(lambda.Body);
                     ++Count;
                     foreach (var Source in Builders.Keys)
                     {
