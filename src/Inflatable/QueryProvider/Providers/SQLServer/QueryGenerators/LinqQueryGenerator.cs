@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.LinqExpression.OrderBy.Enums;
 using Inflatable.QueryProvider.BaseClasses;
@@ -189,7 +190,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             ParameterList.Append(GenerateParameterList(node, data));
 
             //Get Where Clause
-            WhereClause.Append(GenerateWhereClause(data));
+            WhereClause.Append(GenerateWhereClause(data, Mapping));
 
             OrderByClause.Append(GenerateOrderByClause(data));
 
@@ -205,9 +206,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the where clause.
         /// </summary>
         /// <param name="data">The data.</param>
+        /// <param name="mapping">The mapping.</param>
         /// <returns>The WHERE clause</returns>
-        private string GenerateWhereClause(QueryData<TMappedClass> data)
+        private string GenerateWhereClause(QueryData<TMappedClass> data, IMapping mapping)
         {
+            data.WhereClause.SetColumnNames(MappingInformation, mapping);
             return data.WhereClause.ToString();
         }
     }

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -61,5 +62,12 @@ namespace Inflatable.LinqExpression.WhereClauses.Interfaces
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         IOperator Optimize(MappingSource mappingSource);
+
+        /// <summary>
+        /// Sets the column names.
+        /// </summary>
+        /// <param name="mappingSource">The mapping source.</param>
+        /// <param name="mapping">The mapping.</param>
+        void SetColumnNames(MappingSource mappingSource, IMapping mapping);
     }
 }

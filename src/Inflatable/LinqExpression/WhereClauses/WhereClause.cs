@@ -16,6 +16,7 @@ limitations under the License.
 */
 
 using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
@@ -131,6 +132,16 @@ namespace Inflatable.LinqExpression.WhereClauses
             if (InternalOperator?.TypeCode != typeof(bool))
                 InternalOperator = null;
             return this;
+        }
+
+        /// <summary>
+        /// Sets the column names.
+        /// </summary>
+        /// <param name="mappingSource">The mapping source.</param>
+        /// <param name="mapping">The mapping.</param>
+        public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
+        {
+            InternalOperator?.SetColumnNames(mappingSource, mapping);
         }
 
         /// <summary>

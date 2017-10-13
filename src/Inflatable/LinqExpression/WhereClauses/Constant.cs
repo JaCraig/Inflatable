@@ -17,6 +17,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using SQLHelper.HelperClasses;
 using SQLHelper.HelperClasses.Interfaces;
@@ -118,6 +119,15 @@ namespace Inflatable.LinqExpression.WhereClauses
         public IOperator Optimize(MappingSource mappingSource)
         {
             return this;
+        }
+
+        /// <summary>
+        /// Sets the column names.
+        /// </summary>
+        /// <param name="mappingSource">The mapping source.</param>
+        /// <param name="mapping">The mapping.</param>
+        public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
+        {
         }
 
         /// <summary>

@@ -15,8 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using SQLHelper.HelperClasses.Interfaces;
 using System;
@@ -118,13 +118,25 @@ namespace Inflatable.LinqExpression.WhereClauses
                 return null;
             }
             Column = ParentMapping.GetColumnName(InternalProperty.Name);
-            Column = Column.Right(Column.Length - (Column.LastIndexOf('.') + 1));
 
             if (InternalProperty.PropertyType == typeof(bool) && Parent as BinaryOperator == null)
             {
                 return new BinaryOperator(this, new Constant(true, Count), ExpressionType.Equal);
             }
             return this;
+        }
+
+        /// <summary>
+        /// Sets the column names.
+        /// </summary>
+        /// <param name="mappingSource">The mapping source.</param>
+        /// <param name="mapping">The mapping.</param>
+        public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
+        {
+            var ParentMapping = mappingSource.GetParentMapping(mapping.ObjectType).FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
+            if (ParentMapping == null)
+                return;
+            Column = ParentMapping.GetColumnName(InternalProperty.Name);
         }
 
         /// <summary>
