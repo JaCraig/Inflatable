@@ -210,23 +210,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     StringBuilder parametersList)
         {
             string Splitter = "";
-            foreach (var ForeignID in IDProperties)
+            foreach (var ForeignIDs in manyToOne.GetColumnInfo().Where(x => x.IsForeign))
             {
-                parametersList.Append(Splitter).Append(GetTableName(manyToOne.ForeignMapping)
-                                                                        + ".["
-                                                                        + manyToOne.ColumnName
-                                                                        + manyToOne.ParentMapping.TableName
-                                                                        + ForeignID.ColumnName
-                                                                        + "] = @"
-                                                                        + manyToOne.ColumnName
-                                                                        + manyToOne.ParentMapping.TableName
-                                                                        + ForeignID.ColumnName);
+                parametersList.Append(Splitter).Append("[" + ForeignIDs.SchemaName + "].[" + ForeignIDs.TableName + "].[" + ForeignIDs.ColumnName + "] = @" + ForeignIDs.ColumnName);
                 Splitter = " AND ";
             }
             Splitter = "";
-            foreach (var IDProperty in foreignIDProperties)
+            foreach (var ForeignIDs in manyToOne.GetColumnInfo().Where(x => !x.IsForeign))
             {
-                whereList.Append(Splitter).Append(GetColumnName(IDProperty) + " = " + GetParameterName(IDProperty));
+                whereList.Append(Splitter).Append("[" + ForeignIDs.SchemaName + "].[" + ForeignIDs.TableName + "].[" + ForeignIDs.ColumnName + "] = @" + ForeignIDs.ColumnName);
                 Splitter = " AND ";
             }
         }

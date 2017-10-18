@@ -87,7 +87,8 @@ namespace Inflatable.ClassMapper.Default
                     ColumnName = Prefix + x.ParentMapping.TableName + x.ColumnName,
                     CompiledExpression = y => y,
                     SchemaName = ParentMapping.SchemaName,
-                    TableName = TableName
+                    TableName = TableName,
+                    IsForeign = false
                 };
             }));
             TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
@@ -99,7 +100,8 @@ namespace Inflatable.ClassMapper.Default
                     ColumnName = x.ParentMapping.TableName + x.ColumnName,
                     CompiledExpression = CompiledExpression,
                     SchemaName = ParentMapping.SchemaName,
-                    TableName = TableName
+                    TableName = TableName,
+                    IsForeign = true
                 };
             }));
             Columns = TempColumns.ToArray();

@@ -143,8 +143,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal(1, Result.Parameters[1].InternalValue);
             Assert.Equal("ManyToOneManyProperties_ID_", Result.Parameters[0].ID);
-            Assert.Equal("ID", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID;", Result.QueryString);
+            Assert.Equal("ID_", Result.Parameters[1].ID);
+            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID_;", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
             Result = TestObject.GenerateQueries(TempManyToOneMany, ManyToOneManyProperty)[1];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
@@ -152,8 +152,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal(2, Result.Parameters[1].InternalValue);
             Assert.Equal("ManyToOneManyProperties_ID_", Result.Parameters[0].ID);
-            Assert.Equal("ID", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID;", Result.QueryString);
+            Assert.Equal("ID_", Result.Parameters[1].ID);
+            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID_;", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
         }
 

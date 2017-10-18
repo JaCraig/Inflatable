@@ -187,7 +187,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 Builder.Append(DeclareProperties.ToString());
             }
-            if (Mapping.IDProperties.All(x => x.AutoIncrement) && Mapping.ReferenceProperties.Count == 0)
+            if (Mapping.IDProperties.All(x => x.AutoIncrement) && Mapping.ReferenceProperties.Count == 0 && Mapping.AutoIDProperties.Count == 0)
             {
                 Builder.AppendLineFormat("INSERT INTO {0} DEFAULT VALUES;", GetTableName(Mapping));
             }

@@ -52,6 +52,12 @@ namespace Inflatable.ClassMapper.Column
         public Func<TClassType, IList<TDataType>> CompiledExpression { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is foreign.
+        /// </summary>
+        /// <value><c>true</c> if this instance is foreign; otherwise, <c>false</c>.</value>
+        public bool IsForeign { get; set; }
+
+        /// <summary>
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>

@@ -82,7 +82,8 @@ namespace Inflatable.ClassMapper.Default
                     ColumnName = ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + IDColumnInfo.ColumnName,
                     CompiledExpression = CompiledExpression,
                     SchemaName = ParentMapping.SchemaName,
-                    TableName = ParentMapping.TableName
+                    TableName = ParentMapping.TableName,
+                    IsForeign = true
                 };
             }));
             TempColumns.AddRange(ParentMapping.IDProperties.SelectMany(x => x.GetColumnInfo()));

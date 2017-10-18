@@ -46,6 +46,12 @@ namespace Inflatable.ClassMapper.Column
         public Func<TDataType> DefaultValue { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is foreign.
+        /// </summary>
+        /// <value><c>true</c> if this instance is foreign; otherwise, <c>false</c>.</value>
+        public bool IsForeign { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is nullable.
         /// </summary>
         /// <value><c>true</c> if this instance is nullable; otherwise, <c>false</c>.</value>

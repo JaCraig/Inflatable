@@ -71,17 +71,19 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(MappingSource mappings)
         {
+            var ActualParent = mappings.GetParentMapping<ClassType>().FirstOrDefault(x => x.IDProperties.Any());
             List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ParentMapping.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ActualParent.IDProperties.ForEach(x =>
             {
                 var IDColumnInfo = x.GetColumnInfo()[0];
                 return new ComplexColumnInfo<ClassType, ClassType>
                 {
                     Child = IDColumnInfo,
-                    ColumnName = ColumnName + ParentMapping.TableName + x.ColumnName,
+                    ColumnName = ColumnName + x.ParentMapping.TableName + x.ColumnName,
                     CompiledExpression = y => y,
                     SchemaName = ForeignMapping.SchemaName,
-                    TableName = ForeignMapping.TableName
+                    TableName = ForeignMapping.TableName,
+                    IsForeign = true
                 };
             }));
             TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
@@ -90,10 +92,11 @@ namespace Inflatable.ClassMapper.Default
                 return new ComplexListColumnInfo<ClassType, DataType>
                 {
                     Child = IDColumnInfo,
-                    ColumnName = x.Name,
+                    ColumnName = x.ColumnName,
                     CompiledExpression = CompiledExpression,
                     SchemaName = x.ParentMapping.SchemaName,
-                    TableName = x.ParentMapping.TableName
+                    TableName = x.ParentMapping.TableName,
+                    IsForeign = false
                 };
             }));
             Columns = TempColumns.ToArray();

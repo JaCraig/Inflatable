@@ -32,6 +32,12 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         string ColumnName { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is foreign.
+        /// </summary>
+        /// <value><c>true</c> if this instance is foreign; otherwise, <c>false</c>.</value>
+        bool IsForeign { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the property.
         /// </summary>
         /// <value>The name of the property.</value>

@@ -101,7 +101,8 @@ namespace Inflatable.ClassMapper.Default
                     SchemaName=ParentMapping.SchemaName,
                     TableName=ParentMapping.TableName,
                     SetAction=SetAction,
-                    IsNullable=true
+                    IsNullable=true,
+                    IsForeign=false
                 }
             };
         }
