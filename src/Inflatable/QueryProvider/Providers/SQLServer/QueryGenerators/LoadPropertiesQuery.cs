@@ -89,7 +89,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
-            var ParentMappings = MappingInformation.GetParentMapping(AssociatedType);
+            var ParentMappings = MappingInformation.GetChildMappings(AssociatedType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct().ToList();
             switch (property)
             {
                 case IMapProperty Property:
@@ -202,7 +202,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Separator = " AND ";
             }
             Result.AppendLine();
-            Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(MappingInformation.GetParentMapping(AssociatedType)
+            Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(MappingInformation.GetChildMappings(AssociatedType)
+                                                                                        .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                                                                         .First(x => x.IDProperties.Count > 0)),
                                                          TempIDProperties);
             return Result.ToString();

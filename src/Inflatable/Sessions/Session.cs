@@ -366,7 +366,7 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
-            var ParentMappings = source.GetParentMapping(typeof(TObject));
+            var ParentMappings = source.GetChildMappings(typeof(TObject)).SelectMany(x => source.GetParentMapping(x.ObjectType)).Distinct();
             IClassProperty Property = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
             if (Property != null)
                 return Property;
