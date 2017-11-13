@@ -196,10 +196,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Separator = " AND ";
             }
             Result.AppendLine();
-            Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(MappingInformation.GetChildMappings(AssociatedType)
-                                                                                        .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
-                                                                                        .First(x => x.IDProperties.Count > 0)),
-                                                         TempIDProperties);
+            Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(property.ParentMapping), TempIDProperties);
             return Result.ToString();
         }
 
@@ -265,6 +262,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
             FromClause.Append(GenerateParentFromClause(property));
+            FromClause.Append(GenerateFromClause(node.Root));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
