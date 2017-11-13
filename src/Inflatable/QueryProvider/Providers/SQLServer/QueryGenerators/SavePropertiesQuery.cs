@@ -192,7 +192,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             string TableName = "";
             if (manyToOne is IManyToOneListProperty)
             {
-                GenerateJoinSaveQueryMultiple(foreignIDProperties, manyToOne, WhereList, ParametersList);
+                GenerateJoinSaveQueryMultiple(manyToOne, WhereList, ParametersList);
                 TableName = GetTableName(manyToOne.ForeignMapping);
             }
             else
@@ -204,8 +204,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return Builder.ToString();
         }
 
-        private void GenerateJoinSaveQueryMultiple(IEnumerable<IIDProperty> foreignIDProperties,
-                    IManyToOneProperty manyToOne,
+        /// <summary>
+        /// Generates the join save query multiple.
+        /// </summary>
+        /// <param name="manyToOne">The many to one.</param>
+        /// <param name="whereList">The where list.</param>
+        /// <param name="parametersList">The parameters list.</param>
+        private void GenerateJoinSaveQueryMultiple(IManyToOneProperty manyToOne,
                     StringBuilder whereList,
                     StringBuilder parametersList)
         {

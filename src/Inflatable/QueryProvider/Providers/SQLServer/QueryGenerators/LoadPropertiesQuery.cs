@@ -17,7 +17,6 @@ limitations under the License.
 using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
@@ -93,7 +92,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             switch (property)
             {
                 case IMapProperty Property:
-                    return LoadMapProperty(ParentMappings, Property, queryObject);
+                    return LoadMapProperty(Property, queryObject);
 
                 case IManyToManyProperty ManyToManyProperty:
                     return LoadManyToManyProperty(ManyToManyProperty, queryObject);
@@ -556,11 +555,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <summary>
         /// Loads the map property.
         /// </summary>
-        /// <param name="parentMappings">The parent mappings.</param>
         /// <param name="property">The property.</param>
         /// <param name="queryObject">The query object.</param>
-        /// <returns></returns>
-        private IQuery[] LoadMapProperty(IEnumerable<IMapping> parentMappings, IMapProperty property, TMappedClass queryObject)
+        /// <returns>The queries to load the map property.</returns>
+        private IQuery[] LoadMapProperty(IMapProperty property, TMappedClass queryObject)
         {
             var ChildMappings = MappingInformation.GetChildMappings(property.PropertyType);
 
@@ -615,7 +613,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 }
                 foreach (var Property in ParentMapping.MapProperties)
                 {
-                    LoadMapProperty(ParentMappings, Property, default(TMappedClass));
+                    LoadMapProperty(Property, default(TMappedClass));
                 }
             }
         }

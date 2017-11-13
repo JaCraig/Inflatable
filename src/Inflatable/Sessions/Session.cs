@@ -269,6 +269,46 @@ namespace Inflatable.Sessions
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The appropriate property value</returns>
+        public IList<TData> LoadProperties<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+            where TObject : class
+            where TData : class
+        {
+            List<QueryResults> Results = new List<QueryResults>();
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead
+                                                                  && x.Mappings.ContainsKey(typeof(TObject)))
+                                                         .OrderBy(x => x.Order))
+            {
+                var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
+                IClassProperty Property = FindProperty<TObject, TData>(Source, propertyName);
+                var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
+                foreach (var TempQuery in Queries)
+                {
+                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                }
+                var ResultLists = Batch.Execute();
+                for (int x = 0; x < ResultLists.Count; ++x)
+                {
+                    var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
+                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
+                    var Result = Results.FirstOrDefault(y => y.CanCopy(TempQuery, IDProperties));
+                    if (Result != null)
+                        Result.CopyOrAdd(TempQuery, IDProperties);
+                    else
+                        Results.Add(TempQuery);
+                }
+            }
+            return Results.SelectMany(x => x.ConvertValues<TData>()).ToObservableList(x => x);
+        }
+
+        /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TData">The type of the data.</typeparam>
+        /// <param name="objectToLoadProperty">The object to load property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The appropriate property value</returns>
         public async Task<IList<TData>> LoadPropertiesAsync<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
             where TData : class
@@ -299,6 +339,21 @@ namespace Inflatable.Sessions
                 }
             }
             return Results.SelectMany(x => x.ConvertValues<TData>()).ToObservableList(x => x);
+        }
+
+        /// <summary>
+        /// Loads a property (primarily used internally for lazy loading)
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <typeparam name="TData">The type of the data.</typeparam>
+        /// <param name="objectToLoadProperty">The object to load property.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The appropriate property value</returns>
+        public TData LoadProperty<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+            where TObject : class
+            where TData : class
+        {
+            return LoadProperties<TObject, TData>(objectToLoadProperty, propertyName).FirstOrDefault();
         }
 
         /// <summary>

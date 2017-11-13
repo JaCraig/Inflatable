@@ -52,7 +52,7 @@ namespace Inflatable.Aspect.EndMethod
         {
             builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.InternalFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadPropertiesAsync<{1},{2}>(this,\"{3}\").GetAwaiter().GetResult();",
+                .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
                         property.InternalFieldName,
                         property.ParentMapping.ObjectType.GetName(),
                         property.TypeName,
@@ -75,7 +75,7 @@ namespace Inflatable.Aspect.EndMethod
         {
             builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.InternalFieldName + "Loaded")
                 .AppendLine("{")
-                .AppendLineFormat("{0}=Session0.LoadPropertyAsync<{1},{2}>(this,\"{3}\").GetAwaiter().GetResult();",
+                .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
                         property.InternalFieldName,
                         property.ParentMapping.ObjectType.GetName(),
                         property.TypeName,
