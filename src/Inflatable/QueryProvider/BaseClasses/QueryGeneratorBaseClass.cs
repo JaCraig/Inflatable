@@ -76,40 +76,44 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the name of the column.
         /// </summary>
         /// <param name="idProperty">The identifier property.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string GetColumnName(IIDProperty idProperty)
+        protected string GetColumnName(IIDProperty idProperty, string suffix = "")
         {
-            return GetTableName(idProperty.ParentMapping) + ".[" + idProperty.ColumnName + "]";
+            return GetTableName(idProperty.ParentMapping, suffix) + ".[" + idProperty.ColumnName + "]";
         }
 
         /// <summary>
         /// Gets the name of the column.
         /// </summary>
         /// <param name="idProperty">The identifier property.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string GetColumnName(IAutoIDProperty idProperty)
+        protected string GetColumnName(IAutoIDProperty idProperty, string suffix = "")
         {
-            return GetTableName(idProperty.ParentMapping) + ".[" + idProperty.ColumnName + "]";
+            return GetTableName(idProperty.ParentMapping, suffix) + ".[" + idProperty.ColumnName + "]";
         }
 
         /// <summary>
         /// Gets the name of the column.
         /// </summary>
         /// <param name="referenceProperty">The reference property.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string GetColumnName(IProperty referenceProperty)
+        protected string GetColumnName(IProperty referenceProperty, string suffix = "")
         {
-            return GetTableName(referenceProperty.ParentMapping) + ".[" + referenceProperty.ColumnName + "]";
+            return GetTableName(referenceProperty.ParentMapping, suffix) + ".[" + referenceProperty.ColumnName + "]";
         }
 
         /// <summary>
         /// Gets the name of the column.
         /// </summary>
         /// <param name="mapProperty">The map property.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string GetColumnName(IMapProperty mapProperty)
+        protected string GetColumnName(IMapProperty mapProperty, string suffix = "")
         {
-            return mapProperty.ForeignMapping.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping)
+            return mapProperty.ForeignMapping.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping, suffix)
                                                                         + ".[" + mapProperty.ForeignMapping.TableName
                                                                         + mapProperty.ParentMapping.Prefix
                                                                         + mapProperty.Name
@@ -206,10 +210,11 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="childMapping">The child mapping.</param>
         /// <param name="autoIDProperty">The automatic identifier property.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The parent column name</returns>
-        protected string GetParentColumnName(IMapping childMapping, IAutoIDProperty autoIDProperty)
+        protected string GetParentColumnName(IMapping childMapping, IAutoIDProperty autoIDProperty, string suffix = "")
         {
-            return GetTableName(childMapping) + ".[" + autoIDProperty.ParentMapping.TableName + autoIDProperty.ColumnName + "]";
+            return GetTableName(childMapping, suffix) + ".[" + autoIDProperty.ParentMapping.TableName + autoIDProperty.ColumnName + "]";
         }
 
         /// <summary>
@@ -217,10 +222,11 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="childMapping">The child mapping.</param>
         /// <param name="iDProperty">The i d property.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The parent column name</returns>
-        protected string GetParentColumnName(IMapping childMapping, IIDProperty iDProperty)
+        protected string GetParentColumnName(IMapping childMapping, IIDProperty iDProperty, string suffix = "")
         {
-            return GetTableName(childMapping) + ".[" + iDProperty.ParentMapping.TableName + iDProperty.ColumnName + "]";
+            return GetTableName(childMapping, suffix) + ".[" + iDProperty.ParentMapping.TableName + iDProperty.ColumnName + "]";
         }
 
         /// <summary>
@@ -247,10 +253,13 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the name of the table.
         /// </summary>
         /// <param name="parentMapping">The parent mapping.</param>
+        /// <param name="suffix">The suffix.</param>
         /// <returns>The name of the table</returns>
-        protected string GetTableName(IMapping parentMapping)
+        protected string GetTableName(IMapping parentMapping, string suffix = "")
         {
-            return "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]";
+            if (string.IsNullOrEmpty(suffix))
+                return "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]";
+            return "[" + parentMapping.TableName + suffix + "]";
         }
 
         /// <summary>

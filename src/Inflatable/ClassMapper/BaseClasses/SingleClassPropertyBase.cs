@@ -141,6 +141,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         public bool Unique { get; protected set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [set null on delete].
+        /// </summary>
+        /// <value><c>true</c> if [set null on delete]; otherwise, <c>false</c>.</value>
+        protected bool SetNullOnDelete { get; set; }
+
+        /// <summary>
         /// != operator
         /// </summary>
         /// <param name="first">First item</param>
@@ -219,7 +225,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                                 "",
                                 false,
                                 false,
-                                true);
+                                SetNullOnDelete);
             });
         }
 
