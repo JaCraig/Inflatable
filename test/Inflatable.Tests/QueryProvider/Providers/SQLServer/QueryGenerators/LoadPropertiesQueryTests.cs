@@ -213,7 +213,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         public void GenerateQueryWithMapToSelf()
         {
             var Mappings = new MappingSource(new IMapping[] {
-                new MapPropertyReferencesSelfMapping()
+                new MapPropertyReferencesSelfMapping(),
+                new IMapPropertiesInterfaceMapping()
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
@@ -226,7 +227,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[MapPropertyReferencesSelf_].[ID_] AS [ID],[dbo].[MapPropertyReferencesSelf_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[MapPropertyReferencesSelf_]\r\nINNER JOIN [dbo].[MapPropertyReferencesSelf_] as [MapPropertyReferencesSelf_2] ON [MapPropertyReferencesSelf_2].[MapPropertyReferencesSelf_MappedClass_ID_]=[dbo].[MapPropertyReferencesSelf_].[ID_]\r\nWHERE [MapPropertyReferencesSelf_2].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal("SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[MapPropertyReferencesSelf_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertyReferencesSelf_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]\r\nINNER JOIN [dbo].[MapPropertyReferencesSelf_] as [MapPropertyReferencesSelf_2] ON [MapPropertyReferencesSelf_2].[IMapPropertiesInterface_MappedClass_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] AS [IMapPropertiesInterface_2] ON [MapPropertyReferencesSelf_2].[IMapPropertiesInterface_ID_]=[IMapPropertiesInterface_2].[ID_]\r\nWHERE [IMapPropertiesInterface_2].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(QueryType.LoadProperty, Result.QueryType);
         }
     }

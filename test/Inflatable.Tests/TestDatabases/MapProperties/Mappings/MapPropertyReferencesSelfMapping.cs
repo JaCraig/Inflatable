@@ -7,8 +7,6 @@ namespace Inflatable.Tests.TestDatabases.MapProperties.Mappings
     {
         public MapPropertyReferencesSelfMapping()
         {
-            ID(x => x.ID).IsAutoIncremented();
-            Reference(x => x.BoolValue);
             Map(x => x.MappedClass);
         }
     }

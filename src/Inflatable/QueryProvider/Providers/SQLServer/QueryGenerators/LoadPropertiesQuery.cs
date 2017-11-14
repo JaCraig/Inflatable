@@ -132,7 +132,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Separator = " AND ";
                 }
                 Result.AppendLine();
-                Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping, suffix), TempIDProperties);
+                var AsStatement = "";
+                if (!string.IsNullOrEmpty(suffix))
+                    AsStatement = " AS " + GetTableName(ParentMapping, suffix);
+                Result.AppendFormat("INNER JOIN {0}{1} ON {2}", GetTableName(ParentMapping), AsStatement, TempIDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
             return Result.ToString();
@@ -448,7 +451,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             string Separator = "";
             foreach (var ParentNode in node.Nodes)
             {
-                var ParentResult = GenerateWhereClause(ParentNode);
+                var ParentResult = GenerateWhereClause(ParentNode, suffix);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
                     Result.Append(Separator + ParentResult);

@@ -2,7 +2,7 @@
 
 namespace Inflatable.Tests.TestDatabases.MapProperties
 {
-    public class MapPropertyReferencesSelf
+    public class MapPropertyReferencesSelf : IMapPropertiesInterface
     {
         [BoolGenerator]
         public bool BoolValue { get; set; }
