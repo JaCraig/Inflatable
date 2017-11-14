@@ -265,7 +265,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
             var SameObject = "";
 
-            if (MappingInformation.GetParentMapping(Mapping.ObjectType).Contains(ForeignMapping))
+            if (MappingInformation.GetChildMappings(Mapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Contains(ForeignMapping))
                 SameObject = "2";
 
             //Get From Clause

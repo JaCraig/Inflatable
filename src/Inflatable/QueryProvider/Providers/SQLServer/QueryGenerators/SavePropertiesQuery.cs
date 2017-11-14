@@ -109,6 +109,36 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         /// <summary>
+        /// Generates from clause.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns></returns>
+        private string GenerateFromClause(Utils.TreeNode<Type> node)
+        {
+            StringBuilder Result = new StringBuilder();
+            var Mapping = MappingInformation.Mappings[node.Data];
+            foreach (var ParentNode in node.Nodes)
+            {
+                var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
+                StringBuilder IDProperties = new StringBuilder();
+                string Separator = "";
+                foreach (var IDProperty in ParentMapping.IDProperties)
+                {
+                    IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
+                    Separator = " AND ";
+                }
+                foreach (var IDProperty in ParentMapping.AutoIDProperties)
+                {
+                    IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
+                    Separator = " AND ";
+                }
+                Result.AppendFormat(" INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
+                Result.Append(GenerateFromClause(ParentNode));
+            }
+            return Result.ToString();
+        }
+
+        /// <summary>
         /// Generates the join save query.
         /// </summary>
         /// <param name="foreignIDProperties">The foreign identifier properties.</param>
@@ -119,6 +149,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder Builder = new StringBuilder();
             StringBuilder WhereList = new StringBuilder();
             StringBuilder ParametersList = new StringBuilder();
+            StringBuilder FromList = new StringBuilder();
             string Splitter2 = "";
             foreach (var ForeignID in foreignIDProperties)
             {
@@ -143,7 +174,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 WhereList.Append(Splitter2).Append(GetColumnName(IDProperty) + " = " + GetParameterName(IDProperty));
                 Splitter2 = " AND ";
             }
-            Builder.AppendFormat("UPDATE {0} SET {1} WHERE {2};", GetTableName(mapProperty.ParentMapping), ParametersList, WhereList);
+            FromList.Append(GetTableName(mapProperty.ParentMapping));
+            FromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[mapProperty.ParentMapping.ObjectType].Root));
+
+            Builder.AppendFormat("UPDATE {0} SET {1} FROM {2} WHERE {3};", GetTableName(mapProperty.ParentMapping), ParametersList, FromList, WhereList);
             return Builder.ToString();
         }
 
