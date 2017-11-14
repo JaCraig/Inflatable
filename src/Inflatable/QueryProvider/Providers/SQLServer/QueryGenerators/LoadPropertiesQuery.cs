@@ -272,7 +272,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
             FromClause.Append(GenerateParentFromClause(property, SameObject));
-            FromClause.Append(GenerateFromClause(node.Root, SameObject));
+            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[property.ParentMapping.ObjectType].Root, SameObject));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));

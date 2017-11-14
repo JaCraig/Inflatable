@@ -230,5 +230,27 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[MapPropertyReferencesSelf_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertyReferencesSelf_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]\r\nINNER JOIN [dbo].[MapPropertyReferencesSelf_] as [MapPropertyReferencesSelf_2] ON [MapPropertyReferencesSelf_2].[IMapPropertiesInterface_MappedClass_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] AS [IMapPropertiesInterface_2] ON [MapPropertyReferencesSelf_2].[IMapPropertiesInterface_ID_]=[IMapPropertiesInterface_2].[ID_]\r\nWHERE [IMapPropertiesInterface_2].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(QueryType.LoadProperty, Result.QueryType);
         }
+
+        [Fact]
+        public void GenerateQueryWithMapToSelfOnInterface()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new MapPropertiesWithMapOnInterfaceMapping(),
+                new IMapPropertiesInterfaceWithMapMapping()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            var MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties.First();
+            MapProperty.Setup(Mappings);
+            var TestObject = new LoadPropertiesQuery<MapPropertiesWithMapOnInterface>(Mappings);
+            var Result = TestObject.GenerateQueries(new MapPropertiesWithMapOnInterface { ID = 10, BoolValue = true }, MapProperty)[0];
+            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
+            Assert.Single(Result.Parameters);
+            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("SELECT [dbo].[IMapPropertiesInterfaceWithMap_].[ID_] AS [ID],[dbo].[MapPropertiesWithMapOnInterface_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[MapPropertiesWithMapOnInterface_]\r\nINNER JOIN [dbo].[IMapPropertiesInterfaceWithMap_] ON [dbo].[MapPropertiesWithMapOnInterface_].[IMapPropertiesInterfaceWithMap_ID_]=[dbo].[IMapPropertiesInterfaceWithMap_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterfaceWithMap_] as [IMapPropertiesInterfaceWithMap_2] ON [IMapPropertiesInterfaceWithMap_2].[IMapPropertiesInterfaceWithMap_MappedClass_ID_]=[dbo].[IMapPropertiesInterfaceWithMap_].[ID_]\r\nWHERE [IMapPropertiesInterfaceWithMap_2].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+        }
     }
 }
