@@ -85,7 +85,8 @@ namespace Inflatable.ClassMapper.Default
                     IsForeign = true
                 };
             }));
-            TempColumns.AddRange(ParentMapping.IDProperties.SelectMany(x => x.GetColumnInfo()));
+            var ActualParent = mappings.GetChildMappings<ClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Any());
+            TempColumns.AddRange(ActualParent.IDProperties.SelectMany(x => x.GetColumnInfo()));
             Columns = TempColumns.ToArray();
         }
 
