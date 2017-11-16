@@ -71,7 +71,7 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(MappingSource mappings)
         {
-            var ActualParent = mappings.GetParentMapping<ClassType>().FirstOrDefault(x => x.IDProperties.Any());
+            var ActualParent = mappings.GetChildMappings<ClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Any());
             List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ActualParent.IDProperties.ForEach(x =>
             {
