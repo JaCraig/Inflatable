@@ -119,6 +119,38 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         [Fact]
+        public void GenerateQueryWithManyToOneManyFromComplexGraphProperties()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new ManyToOneManyFromComplexClassMapping(),
+                new IManyToOneManyMapping(),
+                new AllReferencesAndIDMappingWithDatabase()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+
+            var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyFromComplexClass)].ManyToOneProperties.First();
+            ManyToOneManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
+            ManyToOneManyProperty.SetColumnInfo(Mappings);
+
+            var TestObject = new SavePropertiesQuery<ManyToOneManyFromComplexClass>(Mappings);
+            var TempManyToOneMany = new ManyToOneManyFromComplexClass { ID = 10, BoolValue = true };
+            TempManyToOneMany.ManyToOneClass.Add(new AllReferencesAndID { ID = 1 });
+            TempManyToOneMany.ManyToOneClass.Add(new AllReferencesAndID { ID = 2 });
+
+            var Result = TestObject.GenerateQueries(TempManyToOneMany, ManyToOneManyProperty)[0];
+            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
+            Assert.Equal(2, Result.Parameters.Length);
+            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[1].InternalValue);
+            Assert.Equal("IManyToOneMany_ID_", Result.Parameters[0].ID);
+            Assert.Equal("ID_", Result.Parameters[1].ID);
+            Assert.Equal("UPDATE [dbo].[AllReferencesAndID_] SET [dbo].[AllReferencesAndID_].[IManyToOneMany_ID_] = @IManyToOneMany_ID_ FROM [dbo].[AllReferencesAndID_] WHERE [dbo].[AllReferencesAndID_].[ID_] = @ID_;", Result.QueryString);
+            Assert.Equal(QueryType.JoinsSave, Result.QueryType);
+        }
+
+        [Fact]
         public void GenerateQueryWithManyToOneManyProperties()
         {
             var Mappings = new MappingSource(new IMapping[] {
@@ -145,7 +177,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(1, Result.Parameters[1].InternalValue);
             Assert.Equal("ManyToOneManyProperties_ID_", Result.Parameters[0].ID);
             Assert.Equal("ID_", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID_;", Result.QueryString);
+            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ FROM [dbo].[ManyToOneOneProperties_] WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID_;", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
             Result = TestObject.GenerateQueries(TempManyToOneMany, ManyToOneManyProperty)[1];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
@@ -154,7 +186,38 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(2, Result.Parameters[1].InternalValue);
             Assert.Equal("ManyToOneManyProperties_ID_", Result.Parameters[0].ID);
             Assert.Equal("ID_", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID_;", Result.QueryString);
+            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ FROM [dbo].[ManyToOneOneProperties_] WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID_;", Result.QueryString);
+            Assert.Equal(QueryType.JoinsSave, Result.QueryType);
+        }
+
+        [Fact]
+        public void GenerateQueryWithManyToOneOneFromComplexGraphProperties()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new ManyToOneOneFromComplexClassMapping(),
+                new IManyToOneOneMapping(),
+                new AllReferencesAndIDMappingWithDatabase()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+
+            var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneOneFromComplexClass)].ManyToOneProperties.First();
+            ManyToOneManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger));
+            ManyToOneManyProperty.SetColumnInfo(Mappings);
+
+            var TestObject = new SavePropertiesQuery<ManyToOneOneFromComplexClass>(Mappings);
+            var TempManyToOneMany = new ManyToOneOneFromComplexClass { ID = 10, BoolValue = true };
+            TempManyToOneMany.ManyToOneClass = new AllReferencesAndID { ID = 1 };
+
+            var Result = TestObject.GenerateQueries(TempManyToOneMany, ManyToOneManyProperty)[0];
+            Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
+            Assert.Equal(2, Result.Parameters.Length);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
+            Assert.Equal(10, Result.Parameters[1].InternalValue);
+            Assert.Equal("AllReferencesAndID_ID_", Result.Parameters[0].ID);
+            Assert.Equal("ID", Result.Parameters[1].ID);
+            Assert.Equal("UPDATE [dbo].[ManyToOneOneFromComplexClass_] SET [dbo].[ManyToOneOneFromComplexClass_].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_ FROM [dbo].[ManyToOneOneFromComplexClass_] INNER JOIN [dbo].[IManyToOneOne_] ON [dbo].[ManyToOneOneFromComplexClass_].[IManyToOneOne_ID_]=[dbo].[IManyToOneOne_].[ID_] WHERE [dbo].[IManyToOneOne_].[ID_] = @ID;", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
         }
 
@@ -183,7 +246,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(10, Result.Parameters[1].InternalValue);
             Assert.Equal("ManyToOneManyProperties_ID_", Result.Parameters[0].ID);
             Assert.Equal("ID", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID;", Result.QueryString);
+            Assert.Equal("UPDATE [dbo].[ManyToOneOneProperties_] SET [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_] = @ManyToOneManyProperties_ID_ FROM [dbo].[ManyToOneOneProperties_] WHERE [dbo].[ManyToOneOneProperties_].[ID_] = @ID;", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
         }
 

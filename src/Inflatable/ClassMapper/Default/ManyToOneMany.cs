@@ -117,12 +117,13 @@ namespace Inflatable.ClassMapper.Default
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
             var ForeignTable = dataModel.SourceSpec.Tables.FirstOrDefault(x => x.Name == ForeignMapping.TableName);
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
+            var ParentIDs = ParentMappings.SelectMany(x => x.IDProperties);
             var SetNullOnDelete = !ParentMappings.Contains(ForeignMapping);
-            foreach (var IDMapping in ParentMapping.IDProperties)
+            foreach (var IDMapping in ParentIDs)
             {
-                if (ForeignTable.Columns.Any(x => x.Name == ColumnName + ParentMapping.TableName + IDMapping.ColumnName))
+                if (ForeignTable.Columns.Any(x => x.Name == ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName))
                     continue;
-                ForeignTable.AddColumn<object>(ColumnName + ParentMapping.TableName + IDMapping.ColumnName,
+                ForeignTable.AddColumn<object>(ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName,
                                 IDMapping.PropertyType.To(DbType.Int32),
                                 IDMapping.MaxLength,
                                 true,
@@ -130,7 +131,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 false,
                                 false,
-                                ParentMapping.TableName,
+                                IDMapping.ParentMapping.TableName,
                                 IDMapping.ColumnName,
                                 null,
                                 "",

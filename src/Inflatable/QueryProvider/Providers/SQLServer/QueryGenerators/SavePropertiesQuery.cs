@@ -223,18 +223,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder Builder = new StringBuilder();
             StringBuilder WhereList = new StringBuilder();
             StringBuilder ParametersList = new StringBuilder();
+            StringBuilder FromList = new StringBuilder();
             string TableName = "";
             if (manyToOne is IManyToOneListProperty)
             {
-                GenerateJoinSaveQueryMultiple(manyToOne, WhereList, ParametersList);
+                GenerateJoinSaveQueryMultiple(manyToOne, WhereList, ParametersList, FromList);
                 TableName = GetTableName(manyToOne.ForeignMapping);
             }
             else
             {
-                GenerateJoinSaveQuerySingle(foreignIDProperties, manyToOne, WhereList, ParametersList);
+                GenerateJoinSaveQuerySingle(foreignIDProperties, manyToOne, WhereList, ParametersList, FromList);
                 TableName = GetTableName(manyToOne.ParentMapping);
             }
-            Builder.AppendFormat("UPDATE {0} SET {1} WHERE {2};", TableName, ParametersList, WhereList);
+            Builder.AppendFormat("UPDATE {0} SET {1} FROM {2} WHERE {3};", TableName, ParametersList, FromList, WhereList);
             return Builder.ToString();
         }
 
@@ -244,9 +245,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="manyToOne">The many to one.</param>
         /// <param name="whereList">The where list.</param>
         /// <param name="parametersList">The parameters list.</param>
+        /// <param name="fromList">From list.</param>
         private void GenerateJoinSaveQueryMultiple(IManyToOneProperty manyToOne,
                     StringBuilder whereList,
-                    StringBuilder parametersList)
+                    StringBuilder parametersList,
+                    StringBuilder fromList)
         {
             string Splitter = "";
             foreach (var ForeignIDs in manyToOne.GetColumnInfo().Where(x => x.IsForeign))
@@ -260,12 +263,23 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 whereList.Append(Splitter).Append("[" + ForeignIDs.SchemaName + "].[" + ForeignIDs.TableName + "].[" + ForeignIDs.ColumnName + "] = @" + ForeignIDs.ColumnName);
                 Splitter = " AND ";
             }
+            fromList.Append(GetTableName(manyToOne.ForeignMapping));
+            fromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[manyToOne.ForeignMapping.ObjectType].Root));
         }
 
+        /// <summary>
+        /// Generates the join save query single.
+        /// </summary>
+        /// <param name="foreignIDProperties">The foreign identifier properties.</param>
+        /// <param name="manyToOne">The many to one.</param>
+        /// <param name="whereList">The where list.</param>
+        /// <param name="parametersList">The parameters list.</param>
+        /// <param name="fromList">From list.</param>
         private void GenerateJoinSaveQuerySingle(IEnumerable<IIDProperty> foreignIDProperties,
                     IManyToOneProperty manyToOne,
                     StringBuilder whereList,
-                    StringBuilder parametersList)
+                    StringBuilder parametersList,
+                    StringBuilder fromList)
         {
             string Splitter = "";
             foreach (var ForeignID in foreignIDProperties)
@@ -287,6 +301,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 whereList.Append(Splitter).Append(GetColumnName(IDProperty) + " = " + GetParameterName(IDProperty));
                 Splitter = " AND ";
             }
+            fromList.Append(GetTableName(manyToOne.ParentMapping));
+            fromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[manyToOne.ParentMapping.ObjectType].Root));
         }
 
         /// <summary>

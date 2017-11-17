@@ -184,6 +184,36 @@ namespace Inflatable.Interfaces
         void Copy(IMapping mapping);
 
         /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        void CopyProperty(IIDProperty prop);
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        void CopyProperty(IProperty prop);
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        void CopyProperty(IMapProperty prop);
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        void CopyProperty(IManyToOneProperty prop);
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        void CopyProperty(IManyToManyProperty prop);
+
+        /// <summary>
         /// Gets the name of the column based on property name.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>

@@ -210,24 +210,69 @@ namespace Inflatable.BaseClasses
         {
             foreach (var prop in mapping.IDProperties.Where(x => !IDProperties.Any(y => y.Name == x.Name)))
             {
-                IDProperties.Add(prop.Convert<ClassType>(this));
+                CopyProperty(prop);
             }
             foreach (var prop in mapping.ReferenceProperties.Where(x => !ReferenceProperties.Any(y => y.Name == x.Name)))
             {
-                ReferenceProperties.Add(prop.Convert<ClassType>(this));
+                CopyProperty(prop);
             }
             foreach (var prop in mapping.MapProperties.Where(x => !MapProperties.Any(y => y.Name == x.Name)))
             {
-                MapProperties.Add(prop.Convert<ClassType>(this));
+                CopyProperty(prop);
             }
             foreach (var prop in mapping.ManyToManyProperties.Where(x => !ManyToManyProperties.Any(y => y.Name == x.Name)))
             {
-                ManyToManyProperties.Add(prop.Convert<ClassType>(this));
+                CopyProperty(prop);
             }
             foreach (var prop in mapping.ManyToOneProperties.Where(x => !ManyToOneProperties.Any(y => y.Name == x.Name)))
             {
-                ManyToOneProperties.Add(prop.Convert<ClassType>(this));
+                CopyProperty(prop);
             }
+        }
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        public void CopyProperty(IIDProperty prop)
+        {
+            IDProperties.Add(prop.Convert<ClassType>(this));
+        }
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        public void CopyProperty(IProperty prop)
+        {
+            ReferenceProperties.Add(prop.Convert<ClassType>(this));
+        }
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        public void CopyProperty(IMapProperty prop)
+        {
+            MapProperties.Add(prop.Convert<ClassType>(this));
+        }
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        public void CopyProperty(IManyToOneProperty prop)
+        {
+            ManyToOneProperties.Add(prop.Convert<ClassType>(this));
+        }
+
+        /// <summary>
+        /// Copies the property.
+        /// </summary>
+        /// <param name="prop">The property.</param>
+        public void CopyProperty(IManyToManyProperty prop)
+        {
+            ManyToManyProperties.Add(prop.Convert<ClassType>(this));
         }
 
         /// <summary>
