@@ -341,7 +341,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
 
             //Get Where Clause
-            WhereClause.Append(GenerateWhereClause(manyToOne));
+            //WhereClause.Append(GenerateWhereClause(manyToOne));
+            WhereClause.Append(GenerateWhereClause(foreignNode.Root));
 
             //Generate final query
             Builder.Append($"SELECT {ParameterList}" +
