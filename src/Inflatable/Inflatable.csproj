@@ -40,7 +40,7 @@
     <PackageReference Include="Valkyrie" Version="1.0.6" />
     <PackageReference Include="Mirage" Version="1.0.10" />
     <PackageReference Include="Aspectus" Version="2.0.23" />
-    <PackageReference Include="BigBook" Version="1.0.34" />
+    <PackageReference Include="BigBook" Version="1.0.35" />
   </ItemGroup>
 
 </Project>
