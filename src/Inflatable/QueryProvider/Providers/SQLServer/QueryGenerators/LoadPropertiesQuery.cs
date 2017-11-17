@@ -341,8 +341,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
 
             //Get Where Clause
-            //WhereClause.Append(GenerateWhereClause(manyToOne));
-            WhereClause.Append(GenerateWhereClause(foreignNode.Root));
+            WhereClause.Append(GenerateWhereClause(manyToOne));
 
             //Generate final query
             Builder.Append($"SELECT {ParameterList}" +
@@ -409,7 +408,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             StringBuilder Result = new StringBuilder();
             string Separator = "";
-            var ParentIDMappings = MappingInformation.GetParentMapping(manyToOne.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            var ParentIDMappings = MappingInformation.GetChildMappings(manyToOne.ParentMapping.ObjectType)
+                                                     .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                                                     .Distinct()
+                                                     .SelectMany(x => x.IDProperties);
             foreach (var ParentIDMapping in ParentIDMappings)
             {
                 Result.AppendFormat("{0}{1}={2}",
