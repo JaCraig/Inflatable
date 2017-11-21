@@ -129,7 +129,7 @@ namespace Inflatable.QueryProvider
         public IList<TObject> ConvertValues<TObject>()
             where TObject : class
         {
-            return new ObservableList<TObject>(Values.ForEachParallel(x => (TObject)ConvertValue(x)));
+            return new ObservableList<TObject>(Values.ForEach(x => (TObject)ConvertValue(x)));
         }
 
         /// <summary>
