@@ -63,6 +63,10 @@ namespace Inflatable.ClassMapper.Default
                 Expression = Expression
             }.Convert<TResult>();
             var ReturnObject = new Map<TResult, DataType>(Result, mapping);
+            if (Cascade)
+                ReturnObject.CascadeChanges();
+            if (LoadPropertyQuery != null)
+                ReturnObject.LoadUsing(LoadPropertyQuery.QueryString, LoadPropertyQuery.DatabaseCommandType);
             return ReturnObject;
         }
 

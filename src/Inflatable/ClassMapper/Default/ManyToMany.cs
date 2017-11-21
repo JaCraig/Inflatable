@@ -62,6 +62,12 @@ namespace Inflatable.ClassMapper.Default
                 Expression = Expression
             }.Convert<TResult>();
             var ReturnObject = new ManyToMany<TResult, DataType>(Result, mapping);
+            if (Cascade)
+                ReturnObject.CascadeChanges();
+            if (LoadPropertyQuery != null)
+                ReturnObject.LoadUsing(LoadPropertyQuery.QueryString, LoadPropertyQuery.DatabaseCommandType);
+            if (!string.IsNullOrEmpty(TableName))
+                ReturnObject.SetTableName(TableName);
             return ReturnObject;
         }
 
