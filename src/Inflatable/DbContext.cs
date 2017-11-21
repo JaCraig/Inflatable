@@ -106,21 +106,7 @@ namespace Inflatable
         /// </summary>
         public DbContext()
         {
-            InternalSession = Canister.Builder.Bootstrapper.Resolve<Session>();
-            Translator = Canister.Builder.Bootstrapper.Resolve<QueryTranslator<TObject>>();
         }
-
-        /// <summary>
-        /// Gets or sets the internal session.
-        /// </summary>
-        /// <value>The internal session.</value>
-        private Session InternalSession { get; set; }
-
-        /// <summary>
-        /// Gets or sets the translator.
-        /// </summary>
-        /// <value>The translator.</value>
-        private QueryTranslator<TObject> Translator { get; set; }
 
         /// <summary>
         /// Creates a query.
@@ -165,7 +151,7 @@ namespace Inflatable
         public override object Execute(Expression expression)
         {
             var Results = Translate(expression);
-            var DatabaseValues = InternalSession.ExecuteAsync<TObject>(Results).GetAwaiter().GetResult();
+            var DatabaseValues = Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(Results).GetAwaiter().GetResult();
             return Results.Values.First().Top == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 
@@ -186,7 +172,7 @@ namespace Inflatable
         /// <returns></returns>
         private IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
         {
-            return Translator.Translate(expression);
+            return Canister.Builder.Bootstrapper.Resolve<QueryTranslator<TObject>>().Translate(expression);
         }
     }
 }
