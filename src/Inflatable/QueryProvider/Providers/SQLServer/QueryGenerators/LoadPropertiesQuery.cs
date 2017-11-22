@@ -264,10 +264,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             var Mapping = MappingInformation.Mappings[node.Root.Data];
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
-            var SameObject = "";
+            var SameObject = "2";
 
-            if (MappingInformation.GetChildMappings(Mapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Contains(ForeignMapping))
-                SameObject = "2";
+            //if (MappingInformation.GetChildMappings(Mapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Contains(ForeignMapping))
+            //    SameObject = "2";
 
             //Get From Clause
             FromClause.Append(GetTableName(ForeignMapping));
@@ -360,10 +360,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Mapping = MappingInformation.Mappings[node.Root.Data];
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
-            var SameObject = "";
+            var SameObject = "2";
 
-            if (MappingInformation.GetChildMappings(Mapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Contains(ForeignMapping))
-                SameObject = "2";
+            //if (MappingInformation.GetChildMappings(Mapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Contains(ForeignMapping))
+            //    SameObject = "2";
 
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
