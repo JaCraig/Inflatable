@@ -214,7 +214,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Splitter = ",";
                 Splitter2 = " AND ";
             }
-            Builder.AppendFormat("IF NOT EXISTS (SELECT * FROM {0} WHERE {3}) BEGIN INSERT INTO {0}({1}) VALUES ({2}) END;", GetTableName(property), PropertyNames, PropertyValues, ParametersList);
+            Builder.AppendFormat("IF NOT EXISTS (SELECT TOP 1 ID_ FROM {0} WHERE {3}) BEGIN INSERT INTO {0}({1}) VALUES ({2}) END;", GetTableName(property), PropertyNames, PropertyValues, ParametersList);
             return Builder.ToString();
         }
 
