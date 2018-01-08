@@ -160,9 +160,9 @@ namespace Inflatable.ClassMapper.Default
                                 ParentIDMapping.ColumnName,
                                 null,
                                 "",
-                                DatabaseJoinsCascade,
-                                DatabaseJoinsCascade,
-                                !DatabaseJoinsCascade);
+                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                !OnDeleteDoNothingValue && !DatabaseJoinsCascade);
             }
             foreach (var ForeignIDMapping in ForeignMapping.IDProperties)
             {
@@ -178,9 +178,9 @@ namespace Inflatable.ClassMapper.Default
                                 ForeignIDMapping.ColumnName,
                                 null,
                                 "",
-                                DatabaseJoinsCascade,
-                                DatabaseJoinsCascade,
-                                !DatabaseJoinsCascade);
+                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                !OnDeleteDoNothingValue && !DatabaseJoinsCascade);
             }
         }
     }

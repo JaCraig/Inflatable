@@ -60,6 +60,12 @@ namespace Inflatable.ClassMapper.Interfaces
         ReturnType LoadUsing(string queryText, CommandType type);
 
         /// <summary>
+        /// Called when you want to override the default referential integrity and do nothing on delete.
+        /// </summary>
+        /// <returns>This</returns>
+        ReturnType OnDeleteDoNothing();
+
+        /// <summary>
         /// Sets the name of the column.
         /// </summary>
         /// <param name="columnName">Name of the column.</param>

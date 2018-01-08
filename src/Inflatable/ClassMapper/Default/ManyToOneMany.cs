@@ -143,7 +143,7 @@ namespace Inflatable.ClassMapper.Default
                                 "",
                                 false,
                                 false,
-                                SetNullOnDelete);
+                                !OnDeleteDoNothingValue && SetNullOnDelete);
             }
         }
     }

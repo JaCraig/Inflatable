@@ -136,6 +136,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         public string TypeName { get; protected set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [on delete do nothing].
+        /// </summary>
+        /// <value><c>true</c> if [on delete do nothing]; otherwise, <c>false</c>.</value>
+        protected bool OnDeleteDoNothingValue { get; set; }
+
+        /// <summary>
         /// != operator
         /// </summary>
         /// <param name="first">First item</param>
@@ -264,6 +270,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType LoadUsing(string queryText, CommandType type)
         {
             LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
+            return (ReturnType)((IManyToManyProperty<ClassType, IList<DataType>, ReturnType>)this);
+        }
+
+        /// <summary>
+        /// Called when you want to override the default referential integrity and do nothing on delete.
+        /// </summary>
+        /// <returns>This</returns>
+        public ReturnType OnDeleteDoNothing()
+        {
+            OnDeleteDoNothingValue = true;
             return (ReturnType)((IManyToManyProperty<ClassType, IList<DataType>, ReturnType>)this);
         }
 
