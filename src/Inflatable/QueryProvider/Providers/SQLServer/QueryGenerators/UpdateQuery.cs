@@ -100,8 +100,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 StringBuilder TempIDProperties = new StringBuilder();
                 string Separator = "";
@@ -118,6 +119,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendLineFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping), TempIDProperties);
                 Result.Append(GenerateFromClause(ParentNode, queryObject));
             }
+
             return Result.ToString();
         }
 
@@ -149,8 +151,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             string Splitter = "";
 
             //Generate parent queries
-            foreach (var Parent in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var Parent = node.Nodes[x];
                 var Result = GenerateUpdateQuery(Parent, queryObject);
                 if (!string.IsNullOrEmpty(Result))
                 {
@@ -200,8 +203,9 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             string Separator = "";
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentResult = GenerateWhereClause(ParentNode, queryObject);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
@@ -209,6 +213,7 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
                     Separator = "\r\nAND ";
                 }
             }
+
             foreach (var IDProperty in Mapping.IDProperties)
             {
                 Result.AppendFormat("{0}{1}={2}", Separator, GetColumnName(IDProperty), GetParameterName(IDProperty));

@@ -37,7 +37,7 @@
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="2.0.0" />
     <PackageReference Include="Mirage" Version="2.0.0" />
-    <PackageReference Include="Aspectus" Version="3.0.1" />
+    <PackageReference Include="Aspectus" Version="3.0.4" />
     <PackageReference Include="BigBook" Version="2.0.0" />
   </ItemGroup>
 

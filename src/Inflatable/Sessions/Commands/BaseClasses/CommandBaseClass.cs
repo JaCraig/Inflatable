@@ -83,7 +83,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <returns>True if the items are merged, false otherwise.</returns>
         public bool Merge(ICommand command)
         {
-            if (ReferenceEquals(command, null))
+            if (command is null)
                 return true;
             if (command.CommandType != CommandType)
                 return false;
@@ -160,6 +160,11 @@ namespace Inflatable.Sessions.Commands.BaseClasses
             return objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
         }
 
+        /// <summary>
+        /// Gets the actual type.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <returns>The actual object type</returns>
         private static Type GetActualType(object @object)
         {
             var TempType = @object.GetType();

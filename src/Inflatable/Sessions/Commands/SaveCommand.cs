@@ -61,19 +61,23 @@ namespace Inflatable.Sessions.Commands
         /// <returns>The number of rows that are modified.</returns>
         public override async Task<int> Execute(MappingSource source)
         {
-            if (Objects.Length == 0)
+            var ObjectsLength = Objects.Length;
+            if (ObjectsLength == 0)
                 return 0;
             var ReturnValue = 0;
             var Batch = QueryProviderManager.CreateBatch(source.Source);
             var DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
             List<object> ObjectsSeen = new List<object>();
-            for (int x = 0; x < Objects.Length; ++x)
+            for (int x = 0; x < ObjectsLength; ++x)
             {
                 Save(Objects[x], source, Batch, DeclarationBatch, ObjectsSeen);
             }
             if (!ObjectsSeen.Any())
                 return 0;
-            ObjectsSeen.ForEach(x => x.Validate());
+            for (int x = 0, ObjectsSeenLength = ObjectsSeen.Count; x < ObjectsSeenLength; ++x)
+            {
+                ObjectsSeen[x].Validate();
+            }
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.ExecuteScalarAsync<int>();
             Batch = Batch.CreateBatch();
@@ -91,9 +95,10 @@ namespace Inflatable.Sessions.Commands
         private static void SetupInsertDeclarations(IGenerator generator, SQLHelper.SQLHelper declarationBatch)
         {
             var DeclarationQuery = generator.GenerateDeclarations(QueryType.Insert);
-            for (int x = 0; x < DeclarationQuery.Length; ++x)
+            for (int x = 0, DeclarationQueryLength = DeclarationQuery.Length; x < DeclarationQueryLength; ++x)
             {
-                declarationBatch.AddQuery(DeclarationQuery[x].QueryString, DeclarationQuery[x].DatabaseCommandType, DeclarationQuery[x].Parameters);
+                var CurrentDeclarationQuery = DeclarationQuery[x];
+                declarationBatch.AddQuery(CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.Parameters);
             }
         }
 
@@ -200,8 +205,9 @@ namespace Inflatable.Sessions.Commands
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
             SetupInsertDeclarations(Generator, declarationBatch);
             var ObjectQueries = Generator.GenerateQueries(QueryType.Insert, @object);
-            foreach (var ObjectQuery in ObjectQueries)
+            for (int x = 0, ObjectQueriesLength = ObjectQueries.Length; x < ObjectQueriesLength; ++x)
             {
+                var ObjectQuery = ObjectQueries[x];
                 var IDProperty = idProperties.FirstOrDefault(y => y.AutoIncrement);
                 var ReturnedID = batch.AddQuery((Command, ResultList, InsertObject) =>
                                                 {
@@ -263,8 +269,9 @@ namespace Inflatable.Sessions.Commands
         /// <param name="objectsSeen">The objects seen.</param>
         private void SaveJoins(MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen)
         {
-            foreach (var TempObject in objectsSeen)
+            for (int i = 0, objectsSeenCount = objectsSeen.Count; i < objectsSeenCount; i++)
             {
+                var TempObject = objectsSeen[i];
                 var ParentMappings = source.GetParentMapping(TempObject.GetType());
                 foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties))
                 {
@@ -292,13 +299,16 @@ namespace Inflatable.Sessions.Commands
         {
             var LinksGenerator = QueryProviderManager.CreateGenerator(property.ParentMapping.ObjectType, source);
             var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, property);
-            foreach (var TempQuery in TempQueries)
+            for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
+                var TempQuery = TempQueries[x];
                 batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
             }
+
             TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, property);
-            foreach (var TempQuery in TempQueries)
+            for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
+                var TempQuery = TempQueries[x];
                 batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
             }
         }
@@ -313,8 +323,9 @@ namespace Inflatable.Sessions.Commands
         {
             var Generator = QueryProviderManager.CreateGenerator(updateObject.GetType(), source);
             var Queries = Generator.GenerateQueries(QueryType.Update, updateObject);
-            foreach (var TempQuery in Queries)
+            for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
             {
+                var TempQuery = Queries[x];
                 batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
             }
         }

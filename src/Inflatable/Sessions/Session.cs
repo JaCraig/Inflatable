@@ -107,22 +107,25 @@ namespace Inflatable.Sessions
         public async Task<int> ExecuteAsync()
         {
             int Result = 0;
-            for (int x = 0; x < Commands.Count; ++x)
+            int CommandsCount = Commands.Count;
+            for (int x = 0; x < CommandsCount; ++x)
             {
-                for (int y = x + 1; y < Commands.Count; ++y)
+                for (int y = x + 1; y < CommandsCount; ++y)
                 {
                     if (Commands[x].Merge(Commands[y]))
                     {
                         Commands.RemoveAt(y);
                         --y;
+                        --CommandsCount;
                     }
                 }
             }
+            CommandsCount = Commands.Count;
             foreach (var Source in MappingManager.Sources
                                                  .Where(x => x.CanWrite)
                                                  .OrderBy(x => x.Order))
             {
-                for (int x = 0; x < Commands.Count; ++x)
+                for (int x = 0; x < CommandsCount; ++x)
                 {
                     Result += await Commands[x].Execute(Source);
                 }
@@ -196,18 +199,15 @@ namespace Inflatable.Sessions
             }
             List<QueryResults> Results = new List<QueryResults>();
             bool FirstRun = true;
-            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null
-                                                   && x.Value.Source.CanRead
-                                                   && x.Value.Source.GetChildMappings(typeof(TObject)).Any())
-                                          .OrderBy(x => x.Key.Order))
+            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+                                              .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source);
                 FirstRun = false;
             }
-            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator == null
-                                                   && x.Value.Source.CanRead
-                                                   && x.Value.Source.GetChildMappings(typeof(TObject)).Any())
-                                          .OrderBy(x => x.Key.Order))
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator == null)
+                                              .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source);
                 FirstRun = false;
@@ -282,12 +282,14 @@ namespace Inflatable.Sessions
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 IClassProperty Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
-                foreach (var TempQuery in Queries)
+                for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
+                    var TempQuery = Queries[x];
                     Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
                 }
+
                 var ResultLists = Batch.Execute();
-                for (int x = 0; x < ResultLists.Count; ++x)
+                for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
                     var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
@@ -322,12 +324,14 @@ namespace Inflatable.Sessions
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 IClassProperty Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
-                foreach (var TempQuery in Queries)
+                for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
+                    var TempQuery = Queries[x];
                     Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
                 }
+
                 var ResultLists = await Batch.ExecuteAsync();
-                for (int x = 0; x < ResultLists.Count; ++x)
+                for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
                     var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
@@ -392,11 +396,11 @@ namespace Inflatable.Sessions
         private static List<IParameter> ConvertParameters(object[] parameters)
         {
             var Parameters = new List<IParameter>();
-            foreach (object CurrentParameter in parameters)
+            for (int x = 0, parametersLength = parameters.Length; x < parametersLength; x++)
             {
-                var TempQueryParameter = CurrentParameter as IParameter;
+                object CurrentParameter = parameters[x];
                 var TempParameter = CurrentParameter as string;
-                if (TempQueryParameter != null)
+                if (CurrentParameter is IParameter TempQueryParameter)
                     Parameters.Add(TempQueryParameter);
                 else if (CurrentParameter == null)
                     Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), null));
@@ -445,12 +449,14 @@ namespace Inflatable.Sessions
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
             var ResultingQueries = Generator.GenerateQueries(source.Value);
             var Batch = QueryProviderManager.CreateBatch(source.Key.Source);
-            foreach (var ResultingQuery in ResultingQueries)
+            for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
             {
+                var ResultingQuery = ResultingQueries[x];
                 Batch.AddQuery(ResultingQuery.QueryString, ResultingQuery.DatabaseCommandType, ResultingQuery.Parameters);
             }
+
             var Result = await Batch.ExecuteAsync();
-            for (int x = 0; x < Result.Count; ++x)
+            for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)
             {
                 var IDProperties = source.Key.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
                 var TempResult = new QueryResults(ResultingQueries[x], Result[x].Select(y => (Dynamo)y), this);

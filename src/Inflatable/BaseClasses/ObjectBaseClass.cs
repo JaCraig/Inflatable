@@ -154,7 +154,7 @@ namespace Inflatable.BaseClasses
         public override bool Equals(object obj)
         {
             var TempObject = obj as ObjectBaseClass<ObjectType, IDType>;
-            if (ReferenceEquals(TempObject, null))
+            if (TempObject is null)
                 return false;
             return TempObject.GetHashCode() == GetHashCode();
         }

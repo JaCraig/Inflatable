@@ -116,8 +116,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 StringBuilder TempIDProperties = new StringBuilder();
                 string Separator = "";
@@ -138,6 +139,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat("INNER JOIN {0}{1} ON {2}", GetTableName(ParentMapping), AsStatement, TempIDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
+
             return Result.ToString();
         }
 
@@ -151,8 +153,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             string Separator = "";
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentResult = GenerateParameterList(ParentNode);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
@@ -160,6 +163,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Separator = ",";
                 }
             }
+
             foreach (var IDProperty in Mapping.IDProperties)
             {
                 Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
@@ -458,8 +462,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             string Separator = "";
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentResult = GenerateWhereClause(ParentNode, suffix);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
@@ -467,6 +472,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Separator = "\r\nAND ";
                 }
             }
+
             foreach (var IDProperty in Mapping.IDProperties)
             {
                 Result.AppendFormat("{0}{1}={2}", Separator, GetColumnName(IDProperty, suffix), GetParameterName(IDProperty));

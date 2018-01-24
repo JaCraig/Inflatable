@@ -105,7 +105,7 @@ namespace Inflatable.ClassMapper.Column
         public IParameter GetAsParameter(object objectValue)
         {
             var TempObject = objectValue as TClassType;
-            object ParamValue = ReferenceEquals(objectValue, null) ? null : (object)CompiledExpression(TempObject).FirstOrDefault();
+            object ParamValue = objectValue is null ? null : (object)CompiledExpression(TempObject).FirstOrDefault();
             return GetAsParameter(objectValue, ParamValue);
         }
 

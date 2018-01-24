@@ -253,7 +253,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public object GetValue(object Object)
         {
             var TempObject = Object as ClassType;
-            if (ReferenceEquals(TempObject, null))
+            if (TempObject is null)
                 return null;
             return CompiledExpression(TempObject);
         }

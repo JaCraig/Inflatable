@@ -62,10 +62,12 @@ namespace Inflatable.ClassMapper.Default
                 ReturnObject.IsUnique();
             ReturnObject.WithColumnName(ColumnName);
             ReturnObject.WithComputedColumnSpecification(ComputedColumnSpecification);
-            foreach (var Constraint in Constraints)
+            for (int x = 0, ConstraintsCount = Constraints.Count; x < ConstraintsCount; x++)
             {
+                var Constraint = Constraints[x];
                 ReturnObject.WithConstraint(Constraint);
             }
+
             ReturnObject.WithDefaultValue(DefaultValue);
             ReturnObject.WithMaxLength(MaxLength);
             return ReturnObject;

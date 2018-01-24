@@ -61,7 +61,7 @@ namespace Inflatable.Sessions.Commands
             var ReturnValue = 0;
             var Batch = QueryProviderManager.CreateBatch(source.Source);
             List<object> ObjectsSeen = new List<object>();
-            for (int x = 0; x < Objects.Length; ++x)
+            for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
             {
                 Delete(Objects[x], source, Batch, ObjectsSeen);
             }
@@ -89,15 +89,13 @@ namespace Inflatable.Sessions.Commands
                 {
                     var ManyToManyValueList = ManyToManyValue as IList;
                     List<object> FinalList = new List<object>();
-                    int ManyToManyValueListCount = ManyToManyValueList.Count;
-                    for (int x = 0; x < ManyToManyValueListCount; ++x)
+                    for (int x = 0, ManyToManyValueListCount = ManyToManyValueList.Count; x < ManyToManyValueListCount; ++x)
                     {
                         var Item = ManyToManyValueList[x];
                         FinalList.Add(Item);
                     }
                     DeleteJoins(@object, source, batch, ManyToManyProperty, ManyToManyValueList);
-                    int FinalListCount = FinalList.Count;
-                    for (int x = 0; x < FinalListCount; ++x)
+                    for (int x = 0, FinalListCount = FinalList.Count; x < FinalListCount; ++x)
                     {
                         var Item = FinalList[x];
                         Delete(Item, source, batch, objectsSeen);
@@ -124,14 +122,12 @@ namespace Inflatable.Sessions.Commands
                     if (ManyToOneValue is IList ManyToOneValueList)
                     {
                         List<object> FinalList = new List<object>();
-                        int ManyToManyValueListCount = ManyToOneValueList.Count;
-                        for (int x = 0; x < ManyToManyValueListCount; ++x)
+                        for (int x = 0, ManyToManyValueListCount = ManyToOneValueList.Count; x < ManyToManyValueListCount; ++x)
                         {
                             var Item = ManyToOneValueList[x];
                             FinalList.Add(Item);
                         }
-                        int FinalListCount = FinalList.Count;
-                        for (int x = 0; x < FinalListCount; ++x)
+                        for (int x = 0, FinalListCount = FinalList.Count; x < FinalListCount; ++x)
                         {
                             var Item = FinalList[x];
                             Delete(Item, source, batch, objectsSeen);
@@ -178,8 +174,7 @@ namespace Inflatable.Sessions.Commands
             DeleteCascade(@object, source, batch, objectsSeen);
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
             var Queries = Generator.GenerateQueries(QueryType.Delete, @object);
-            int QueriesLength = Queries.Length;
-            for (int x = 0; x < QueriesLength; x++)
+            for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
             {
                 var TempQuery = Queries[x];
                 batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
@@ -218,8 +213,7 @@ namespace Inflatable.Sessions.Commands
             ManyToManyValueList.Clear();
             var LinksGenerator = QueryProviderManager.CreateGenerator(ManyToManyProperty.ParentMapping.ObjectType, source);
             var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, ManyToManyProperty);
-            int TempQueriesLength = TempQueries.Length;
-            for (int x = 0; x < TempQueriesLength; ++x)
+            for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; ++x)
             {
                 var TempQuery = TempQueries[x];
                 batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);

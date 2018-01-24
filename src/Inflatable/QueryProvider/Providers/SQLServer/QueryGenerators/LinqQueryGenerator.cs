@@ -89,8 +89,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 StringBuilder IDProperties = new StringBuilder();
                 string Separator = "";
@@ -108,6 +109,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
+
             return Result.ToString();
         }
 
@@ -144,8 +146,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             string Separator = "";
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentResult = GenerateParameterList(ParentNode, data);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
@@ -153,6 +156,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Separator = ",";
                 }
             }
+
             foreach (var IDProperty in Mapping.IDProperties)
             {
                 Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");

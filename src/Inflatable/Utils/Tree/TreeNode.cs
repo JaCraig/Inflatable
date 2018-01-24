@@ -97,10 +97,12 @@ namespace Inflatable.Utils
             {
                 Data
             };
-            foreach (var Node in Nodes)
+            for (int x = 0, NodesCount = Nodes.Count; x < NodesCount; x++)
             {
+                var Node = Nodes[x];
                 ReturnList.AddRange(Node.ToList());
             }
+
             return ReturnList;
         }
 

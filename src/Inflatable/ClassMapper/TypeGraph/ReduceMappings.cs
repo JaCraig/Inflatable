@@ -58,8 +58,10 @@ namespace Inflatable.ClassMapper.TypeGraph
         {
             var Mapping = Mappings[typeGraph.Root.Data];
             Mapping.Reduce(Logger);
-            foreach (var ParentType in typeGraph.ToList())
+            var GraphList = typeGraph.ToList();
+            for (int x = 0, maxCount = GraphList.Count; x < maxCount; x++)
             {
+                var ParentType = GraphList[x];
                 var ParentMapping = Mappings[ParentType];
                 if (Mapping != ParentMapping)
                 {

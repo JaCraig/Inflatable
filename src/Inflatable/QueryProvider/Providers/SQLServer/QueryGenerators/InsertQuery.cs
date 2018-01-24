@@ -127,8 +127,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Generate parent queries
-            foreach (var Parent in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var Parent = node.Nodes[x];
                 Builder.AppendLine(GenerateInsertQuery(Parent));
             }
 
@@ -220,8 +221,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var TempParentMappings = MappingInformation.GetParentMapping(ChildMapping.ObjectType);
                 ParentMappings.AddIfUnique(TempParentMappings);
             }
-            foreach (var ParentMapping in ParentMappings)
+            for (int x = 0, ParentMappingsCount = ParentMappings.Count; x < ParentMappingsCount; x++)
             {
+                var ParentMapping = ParentMappings[x];
                 //ID Properties to pass to the next set of queries
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {

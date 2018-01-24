@@ -117,8 +117,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             StringBuilder Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            foreach (var ParentNode in node.Nodes)
+            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
+                var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 StringBuilder IDProperties = new StringBuilder();
                 string Separator = "";
@@ -135,6 +136,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat(" INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
+
             return Result.ToString();
         }
 
