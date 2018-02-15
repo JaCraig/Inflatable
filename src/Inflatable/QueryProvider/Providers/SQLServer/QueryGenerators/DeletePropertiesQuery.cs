@@ -112,30 +112,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             string Prefix = "";
             if (ParentWithID == property.ForeignMapping)
                 Prefix = "Parent_";
-            string Splitter = "";
             string Splitter2 = "";
             foreach (var IDProperty in IDProperties)
             {
                 ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
                 Splitter2 = " AND ";
-            }
-            if (itemCount > 0)
-            {
-                ParametersList.Append(" AND NOT (");
-                Splitter = "";
-                for (int x = 0; x < itemCount; ++x)
-                {
-                    Splitter2 = "";
-                    ParametersList.Append(Splitter).Append("(");
-                    foreach (var ForeignID in foreignIDProperties)
-                    {
-                        ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "] = @" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + x);
-                        Splitter2 = " AND ";
-                    }
-                    ParametersList.Append(")");
-                    Splitter = " OR ";
-                }
-                ParametersList.Append(")");
             }
             Builder.AppendFormat("DELETE FROM {0} WHERE {1};", GetTableName(property), ParametersList);
             return Builder.ToString();
@@ -152,7 +133,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var ItemList = propertyItem as IEnumerable;
             List<IParameter> ReturnValues = new List<IParameter>();
-            int Count = 0;
             var ParentMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType);
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
             string Prefix = "";
@@ -173,23 +153,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     x.PropertyType.To<Type, SqlDbType>(),
                     Value);
             }));
-            foreach (var Item in ItemList)
-            {
-                ReturnValues.AddRange(ForeignIDs.ForEach<IIDProperty, IParameter>(x =>
-                {
-                    var Value = x.GetColumnInfo()[0].GetValue(Item);
-                    if (x.PropertyType == typeof(string))
-                    {
-                        var TempParameter = Value as string;
-                        return new StringParameter(x.ParentMapping.TableName + x.ColumnName + Count,
-                            TempParameter);
-                    }
-                    return new Parameter<object>(x.ParentMapping.TableName + x.ColumnName + Count,
-                        x.PropertyType.To<Type, SqlDbType>(),
-                        Value);
-                }));
-                ++Count;
-            }
             return ReturnValues.ToArray();
         }
 

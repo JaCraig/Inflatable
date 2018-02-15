@@ -73,8 +73,15 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract Task<int> Execute(MappingSource source);
+        public abstract int Execute(MappingSource source);
+
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns>The number of rows that are modified.</returns>
+        public abstract Task<int> ExecuteAsync(MappingSource source);
 
         /// <summary>
         /// Merges the specified command.

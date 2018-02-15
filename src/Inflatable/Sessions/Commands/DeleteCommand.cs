@@ -53,23 +53,30 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> Execute(MappingSource source)
+        public override int Execute(MappingSource source)
         {
             if (Objects.Length == 0)
                 return 0;
-            var ReturnValue = 0;
-            var Batch = QueryProviderManager.CreateBatch(source.Source);
-            List<object> ObjectsSeen = new List<object>();
-            for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
-            {
-                Delete(Objects[x], source, Batch, ObjectsSeen);
-            }
+            CreateBatch(source, out SQLHelper.SQLHelper Batch, out List<object> ObjectsSeen);
             if (!ObjectsSeen.Any())
                 return 0;
-            ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
+            return Batch.RemoveDuplicateCommands().ExecuteScalar<int>();
+        }
 
-            return ReturnValue;
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns>The number of rows that are modified.</returns>
+        public override async Task<int> ExecuteAsync(MappingSource source)
+        {
+            if (Objects.Length == 0)
+                return 0;
+            CreateBatch(source, out SQLHelper.SQLHelper Batch, out List<object> ObjectsSeen);
+            if (!ObjectsSeen.Any())
+                return 0;
+            return await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
         }
 
         /// <summary>
@@ -154,6 +161,22 @@ namespace Inflatable.Sessions.Commands
             foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties).Where(x => x.Cascade))
             {
                 Delete(MapProperty.GetValue(@object), source, batch, objectsSeen);
+            }
+        }
+
+        /// <summary>
+        /// Creates the batch and gets the list of objects seen.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="Batch">The batch.</param>
+        /// <param name="ObjectsSeen">The objects seen.</param>
+        private void CreateBatch(MappingSource source, out SQLHelper.SQLHelper Batch, out List<object> ObjectsSeen)
+        {
+            Batch = QueryProviderManager.CreateBatch(source.Source);
+            ObjectsSeen = new List<object>();
+            for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
+            {
+                Delete(Objects[x], source, Batch, ObjectsSeen);
             }
         }
 

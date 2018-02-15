@@ -7,3 +7,6 @@ src/Inflatable/Inflatable.xproj.user
 *.xproj.user
 */project.lock.json
 Log.txt
+*.vspx
+*.psess
+Inflatable.SpeedTests/FinalReports/*

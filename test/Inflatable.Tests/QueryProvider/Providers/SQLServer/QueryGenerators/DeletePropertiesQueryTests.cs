@@ -103,14 +103,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             TempManyToMany.ManyToManyClass.Add(new TestDatabases.SimpleTest.AllReferencesAndID { ID = 2 });
             var Result = TestObject.GenerateQueries(TempManyToMany, ManyToManyProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Equal(3, Result.Parameters.Length);
+            Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
-            Assert.Equal(1, Result.Parameters[1].InternalValue);
-            Assert.Equal(2, Result.Parameters[2].InternalValue);
             Assert.Equal("ManyToManyProperties_ID_", Result.Parameters[0].ID);
-            Assert.Equal("AllReferencesAndID_ID_0", Result.Parameters[1].ID);
-            Assert.Equal("AllReferencesAndID_ID_1", Result.Parameters[2].ID);
-            Assert.Equal("DELETE FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_ AND NOT (([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_0) OR ([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_1));", Result.QueryString);
+            Assert.Equal("DELETE FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_;", Result.QueryString);
             Assert.Equal(QueryType.JoinsDelete, Result.QueryType);
         }
 

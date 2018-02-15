@@ -114,7 +114,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(1, Result.Parameters[1].InternalValue);
             Assert.Equal("AllReferencesAndID_ID_", Result.Parameters[1].ID);
             Assert.Equal("ManyToManyProperties_ID_", Result.Parameters[0].ID);
-            Assert.Equal("IF NOT EXISTS (SELECT TOP 1 ID_ FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_] = @AllReferencesAndID_ID_ AND [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_) BEGIN INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_],[dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_]) VALUES (@AllReferencesAndID_ID_,@ManyToManyProperties_ID_) END;", Result.QueryString);
+            Assert.Equal("INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_],[dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_]) VALUES (@AllReferencesAndID_ID_,@ManyToManyProperties_ID_);", Result.QueryString);
             Assert.Equal(QueryType.JoinsSave, Result.QueryType);
         }
 

@@ -201,7 +201,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 PropertyNames.Append(Splitter).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "]");
                 PropertyValues.Append(Splitter).Append("@" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName);
-                ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName + "] = @" + ForeignID.ParentMapping.TableName + ForeignID.ColumnName);
                 Splitter = ",";
                 Splitter2 = " AND ";
             }
@@ -212,11 +211,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 PropertyNames.Append(Splitter).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "]");
                 PropertyValues.Append(Splitter).Append("@" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
-                ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
                 Splitter = ",";
                 Splitter2 = " AND ";
             }
-            Builder.AppendFormat("IF NOT EXISTS (SELECT TOP 1 ID_ FROM {0} WHERE {3}) BEGIN INSERT INTO {0}({1}) VALUES ({2}) END;", GetTableName(property), PropertyNames, PropertyValues, ParametersList);
+            Builder.AppendFormat("INSERT INTO {0}({1}) VALUES ({2});", GetTableName(property), PropertyNames, PropertyValues);
             return Builder.ToString();
         }
 

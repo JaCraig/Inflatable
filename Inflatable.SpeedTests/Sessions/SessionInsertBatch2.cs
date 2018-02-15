@@ -5,17 +5,17 @@ using Sundial.Core.Interfaces;
 namespace Inflatable.SpeedTests.Sessions
 {
     [Series("InsertBatch", 10, "HTML")]
-    public class SessionInsertBatch : ITimedTask
+    public class SessionInsertBatchAsync : ITimedTask
     {
-        public SessionInsertBatch()
+        public SessionInsertBatchAsync()
         {
             TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
         }
 
         private readonly Session TempSession;
-        public bool Baseline => false;
+        public bool Baseline => true;
 
-        public string Name => "Session Insert Batch";
+        public string Name => "Session Insert Batch Async";
 
         public void Dispose()
         {
@@ -32,7 +32,9 @@ namespace Inflatable.SpeedTests.Sessions
                 }
                 TempSession.Save(TempItem);
             }
-            TempSession.Execute();
+            TempSession.ExecuteAsync()
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

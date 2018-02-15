@@ -58,26 +58,39 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> Execute(MappingSource source)
+        public override int Execute(MappingSource source)
         {
-            var ObjectsLength = Objects.Length;
-            if (ObjectsLength == 0)
+            if (Objects.Length == 0)
                 return 0;
             var ReturnValue = 0;
-            var Batch = QueryProviderManager.CreateBatch(source.Source);
-            var DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
-            List<object> ObjectsSeen = new List<object>();
-            for (int x = 0; x < ObjectsLength; ++x)
-            {
-                Save(Objects[x], source, Batch, DeclarationBatch, ObjectsSeen);
-            }
+            CreateBatch(source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
             if (!ObjectsSeen.Any())
                 return 0;
-            for (int x = 0, ObjectsSeenLength = ObjectsSeen.Count; x < ObjectsSeenLength; ++x)
-            {
-                ObjectsSeen[x].Validate();
-            }
+            ValidateObjects(ObjectsSeen);
+            Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
+            ReturnValue += Batch.ExecuteScalar<int>();
+            Batch = Batch.CreateBatch();
+            SaveJoins(source, Batch, ObjectsSeen);
+            ReturnValue += Batch.RemoveDuplicateCommands().ExecuteScalar<int>();
+
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns>The number of rows that are modified.</returns>
+        public override async Task<int> ExecuteAsync(MappingSource source)
+        {
+            if (Objects.Length == 0)
+                return 0;
+            var ReturnValue = 0;
+            CreateBatch(source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
+            if (!ObjectsSeen.Any())
+                return 0;
+            ValidateObjects(ObjectsSeen);
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.ExecuteScalarAsync<int>();
             Batch = Batch.CreateBatch();
@@ -99,6 +112,18 @@ namespace Inflatable.Sessions.Commands
             {
                 var CurrentDeclarationQuery = DeclarationQuery[x];
                 declarationBatch.AddQuery(CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.Parameters);
+            }
+        }
+
+        /// <summary>
+        /// Validates the objects.
+        /// </summary>
+        /// <param name="ObjectsSeen">The objects seen.</param>
+        private static void ValidateObjects(List<object> ObjectsSeen)
+        {
+            for (int x = 0, ObjectsSeenLength = ObjectsSeen.Count; x < ObjectsSeenLength; ++x)
+            {
+                ObjectsSeen[x].Validate();
             }
         }
 
@@ -189,6 +214,17 @@ namespace Inflatable.Sessions.Commands
             {
                 var MapValue = MapProperty.GetValue(@object);
                 Save(MapValue, source, batch, declarationBatch, objectsSeen);
+            }
+        }
+
+        private void CreateBatch(MappingSource source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen)
+        {
+            Batch = QueryProviderManager.CreateBatch(source.Source);
+            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
+            ObjectsSeen = new List<object>();
+            for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
+            {
+                Save(Objects[x], source, Batch, DeclarationBatch, ObjectsSeen);
             }
         }
 

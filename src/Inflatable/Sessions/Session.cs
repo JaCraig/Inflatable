@@ -104,30 +104,38 @@ namespace Inflatable.Sessions
         /// Executes all queued commands.
         /// </summary>
         /// <returns>The number of rows affected.</returns>
-        public async Task<int> ExecuteAsync()
+        public int Execute()
         {
             int Result = 0;
-            int CommandsCount = Commands.Count;
-            for (int x = 0; x < CommandsCount; ++x)
-            {
-                for (int y = x + 1; y < CommandsCount; ++y)
-                {
-                    if (Commands[x].Merge(Commands[y]))
-                    {
-                        Commands.RemoveAt(y);
-                        --y;
-                        --CommandsCount;
-                    }
-                }
-            }
-            CommandsCount = Commands.Count;
+            RemoveDuplicateCommands();
             foreach (var Source in MappingManager.Sources
                                                  .Where(x => x.CanWrite)
                                                  .OrderBy(x => x.Order))
             {
-                for (int x = 0; x < CommandsCount; ++x)
+                for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += await Commands[x].Execute(Source);
+                    Result += Commands[x].Execute(Source);
+                }
+            }
+            Commands.Clear();
+            return Result;
+        }
+
+        /// <summary>
+        /// Executes all queued commands.
+        /// </summary>
+        /// <returns>The number of rows affected.</returns>
+        public async Task<int> ExecuteAsync()
+        {
+            int Result = 0;
+            RemoveDuplicateCommands();
+            foreach (var Source in MappingManager.Sources
+                                                 .Where(x => x.CanWrite)
+                                                 .OrderBy(x => x.Order))
+            {
+                for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
+                {
+                    Result += await Commands[x].ExecuteAsync(Source);
                 }
             }
             Commands.Clear();
@@ -467,6 +475,26 @@ namespace Inflatable.Sessions
                     CopyResult.CopyOrAdd(TempResult, IDProperties);
                 else
                     CopyResult.Copy(TempResult, IDProperties);
+            }
+        }
+
+        /// <summary>
+        /// Removes the duplicate commands.
+        /// </summary>
+        private void RemoveDuplicateCommands()
+        {
+            int CommandsCount = Commands.Count;
+            for (int x = 0; x < CommandsCount; ++x)
+            {
+                for (int y = x + 1; y < CommandsCount; ++y)
+                {
+                    if (Commands[x].Merge(Commands[y]))
+                    {
+                        Commands.RemoveAt(y);
+                        --y;
+                        --CommandsCount;
+                    }
+                }
             }
         }
     }

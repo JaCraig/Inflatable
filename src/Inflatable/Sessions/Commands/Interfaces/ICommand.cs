@@ -35,7 +35,14 @@ namespace Inflatable.Sessions.Commands.Interfaces
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        Task<int> Execute(MappingSource source);
+        int Execute(MappingSource source);
+
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns>The number of rows that are modified.</returns>
+        Task<int> ExecuteAsync(MappingSource source);
 
         /// <summary>
         /// Merges the specified command.
