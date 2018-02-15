@@ -67,7 +67,7 @@ namespace Inflatable.QueryProvider
         /// Gets the values.
         /// </summary>
         /// <value>The values.</value>
-        public IList<Dynamo> Values { get; }
+        public List<Dynamo> Values { get; }
 
         /// <summary>
         /// Gets the cached items as a list.
@@ -141,8 +141,9 @@ namespace Inflatable.QueryProvider
         {
             if (!CanCopy(results, idProperties))
                 return;
-            foreach (var Value in results.Values)
+            for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
             {
+                var Value = results.Values[i];
                 var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
                 if (MyValue != null)
                     Value.CopyTo(MyValue);
@@ -163,8 +164,9 @@ namespace Inflatable.QueryProvider
                 Values.Add(results.Values);
                 return;
             }
-            foreach (var Value in results.Values)
+            for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
             {
+                var Value = results.Values[i];
                 var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
                 if (MyValue == null)
                     Values.Add(Value);
