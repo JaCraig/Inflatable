@@ -306,5 +306,29 @@ namespace Inflatable.Tests.ClassMapper.Default
             Assert.Equal("System.Int32", TestObject.TypeName);
             Assert.True(TestObject.Unique);
         }
+
+        [Fact]
+        public void WithMAXMaxLength()
+        {
+            var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
+            TestObject.WithMaxLength(-1);
+            Assert.NotNull(TestObject);
+            Assert.False(TestObject.AutoIncrement);
+            Assert.Equal("ID_", TestObject.ColumnName);
+            Assert.NotNull(TestObject.CompiledExpression);
+            Assert.Empty(TestObject.ComputedColumnSpecification);
+            Assert.Empty(TestObject.Constraints);
+            Assert.Equal(0, TestObject.DefaultValue());
+            Assert.True(TestObject.Index);
+            Assert.Equal("_IDDerived", TestObject.InternalFieldName);
+            Assert.Equal(-1, TestObject.MaxLength);
+            Assert.Equal("ID", TestObject.Name);
+            Assert.False(TestObject.Nullable);
+            Assert.Same(MappingObject, TestObject.ParentMapping);
+            Assert.Equal(typeof(int), TestObject.PropertyType);
+            Assert.False(TestObject.ReadOnly);
+            Assert.Equal("System.Int32", TestObject.TypeName);
+            Assert.True(TestObject.Unique);
+        }
     }
 }

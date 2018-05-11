@@ -39,7 +39,7 @@ namespace Inflatable.Tests.TestDatabases.SimpleTestWithDatabase
             Reference(x => x.SByteValue);
             Reference(x => x.ShortValue);
             Reference(x => x.StringValue1).WithMaxLength(20);
-            Reference(x => x.StringValue2).WithMaxLength(-1);
+            Reference(x => x.StringValue2).WithMaxLength();
             Reference(x => x.TimeSpanValue);
             Reference(x => x.UIntValue);
             Reference(x => x.ULongValue);

@@ -272,5 +272,28 @@ namespace Inflatable.Tests.ClassMapper.Default
             Assert.Equal("System.DateTime", TestObject.TypeName);
             Assert.False(TestObject.Unique);
         }
+
+        [Fact]
+        public void WithMAXMaxLength()
+        {
+            var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
+            TestObject.WithMaxLength(-1);
+            Assert.NotNull(TestObject);
+            Assert.Equal("DateTimeValue_", TestObject.ColumnName);
+            Assert.NotNull(TestObject.CompiledExpression);
+            Assert.Empty(TestObject.ComputedColumnSpecification);
+            Assert.Empty(TestObject.Constraints);
+            Assert.Equal(DateTime.MinValue, TestObject.DefaultValue());
+            Assert.False(TestObject.Index);
+            Assert.Equal("_DateTimeValueDerived", TestObject.InternalFieldName);
+            Assert.Equal(-1, TestObject.MaxLength);
+            Assert.Equal("DateTimeValue", TestObject.Name);
+            Assert.False(TestObject.Nullable);
+            Assert.Same(MappingObject, TestObject.ParentMapping);
+            Assert.Equal(typeof(DateTime), TestObject.PropertyType);
+            Assert.False(TestObject.ReadOnly);
+            Assert.Equal("System.DateTime", TestObject.TypeName);
+            Assert.False(TestObject.Unique);
+        }
     }
 }

@@ -436,5 +436,14 @@ namespace Inflatable.ClassMapper.BaseClasses
             MaxLength = maxLength;
             return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
         }
+
+        /// <summary>
+        /// Sets the length for the property to MAX.
+        /// </summary>
+        /// <returns>this.</returns>
+        public ReturnType WithMaxLength()
+        {
+            return WithMaxLength(-1);
+        }
     }
 }

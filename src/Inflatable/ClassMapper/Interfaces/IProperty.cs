@@ -85,6 +85,12 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <param name="maxLength">Max length</param>
         /// <returns>this</returns>
         ReturnType WithMaxLength(int maxLength);
+
+        /// <summary>
+        /// Sets the length for the property to MAX.
+        /// </summary>
+        /// <returns>this.</returns>
+        ReturnType WithMaxLength();
     }
 
     /// <summary>
