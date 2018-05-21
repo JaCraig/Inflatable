@@ -54,7 +54,7 @@ namespace Inflatable.Tests.Sessions
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Results = DbContext<ManyToOneManyCascadeProperties>.CreateQuery().ToArray();
-            Assert.Equal(3, Results.Count());
+            Assert.Equal(3, Results.Length);
         }
 
         [Fact]

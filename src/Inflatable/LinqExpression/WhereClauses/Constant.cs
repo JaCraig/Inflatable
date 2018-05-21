@@ -93,7 +93,7 @@ namespace Inflatable.LinqExpression.WhereClauses
             {
                 ReturnValue.Add(new Parameter<object>(Count.ToString(), null));
             }
-            else if (Value as string != null)
+            else if (Value is string)
             {
                 ReturnValue.Add(new StringParameter(Count.ToString(), Value as string));
             }

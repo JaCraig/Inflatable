@@ -121,19 +121,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
-                var IDProperties = new StringBuilder();
+                var TempIDProperties = new StringBuilder();
                 string Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
-                    IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
+                    TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
                 foreach (var IDProperty in ParentMapping.AutoIDProperties)
                 {
-                    IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
+                    TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
-                Result.AppendFormat(" INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
+                Result.AppendFormat(" INNER JOIN {0} ON {1}", GetTableName(ParentMapping), TempIDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
 

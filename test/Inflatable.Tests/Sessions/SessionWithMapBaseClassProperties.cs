@@ -58,7 +58,7 @@ namespace Inflatable.Tests.Sessions
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
             SetupData();
             var Results = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().ToArray();
-            Assert.Equal(3, Results.Count());
+            Assert.Equal(3, Results.Length);
         }
 
         [Fact]
@@ -162,7 +162,7 @@ namespace Inflatable.Tests.Sessions
             Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.True(Results.All(x => x.MappedClass.ID > 3));
-            Assert.True(Results.All(x => (x.MappedClass as MapProperty1) != null));
+            Assert.True(Results.All(x => x.MappedClass is MapProperty1));
         }
 
         [Fact]

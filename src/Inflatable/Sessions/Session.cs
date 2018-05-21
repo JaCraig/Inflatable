@@ -179,7 +179,7 @@ namespace Inflatable.Sessions
                                                                                                 command,
                                                                                                 QueryType.LinqQuery,
                                                                                                 Parameters.ToArray()),
-                                                                                    x.Select(y => (Dynamo)y),
+                                                                                    x.Cast<Dynamo>(),
                                                                                     this))
                                                       .ToList();
 
@@ -306,7 +306,7 @@ namespace Inflatable.Sessions
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
-                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
+                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this);
                     var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));
                     if (Result != null)
                     {
@@ -352,7 +352,7 @@ namespace Inflatable.Sessions
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
-                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
+                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this);
                     var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));
                     if (Result != null)
                     {
@@ -428,15 +428,15 @@ namespace Inflatable.Sessions
                 }
                 else if (CurrentParameter == null)
                 {
-                    Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), null));
+                    Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), null));
                 }
                 else if (TempParameter != null)
                 {
-                    Parameters.Add(new StringParameter(Parameters.Count().ToString(CultureInfo.InvariantCulture), TempParameter));
+                    Parameters.Add(new StringParameter(Parameters.Count.ToString(CultureInfo.InvariantCulture), TempParameter));
                 }
                 else
                 {
-                    Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), CurrentParameter));
+                    Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), CurrentParameter));
                 }
             }
 
@@ -490,7 +490,7 @@ namespace Inflatable.Sessions
             for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)
             {
                 var IDProperties = source.Key.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
-                var TempResult = new QueryResults(ResultingQueries[x], Result[x].Select(y => (Dynamo)y), this);
+                var TempResult = new QueryResults(ResultingQueries[x], Result[x].Cast<Dynamo>(), this);
                 var CopyResult = results.Find(y => y.CanCopy(TempResult, IDProperties));
                 if (CopyResult == null && firstRun)
                 {

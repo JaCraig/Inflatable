@@ -193,8 +193,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     }
 
     /// <summary>
+    /// Extension helpers
     /// </summary>
-    /// <seealso cref="Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass{TMappedClass}"/>
+    /// <seealso cref="PropertyQueryGeneratorBaseClass{TMappedClass}"/>
     internal static class ExtensionHelpers
     {
         /// <summary>

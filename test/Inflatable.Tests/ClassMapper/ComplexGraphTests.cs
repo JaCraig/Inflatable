@@ -40,7 +40,7 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Contains(typeof(ConcreteClass2), TestObject.Mappings.Keys);
             Assert.Contains(typeof(ConcreteClass3), TestObject.Mappings.Keys);
             Assert.Contains(typeof(IInterface1), TestObject.Mappings.Keys);
-            Assert.Equal(5, TestObject.TypeGraphs.Count());
+            Assert.Equal(5, TestObject.TypeGraphs.Count);
             Assert.Equal(typeof(ConcreteClass1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Data);
             Assert.Equal(typeof(ConcreteClass2), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Data);
             Assert.Equal(typeof(ConcreteClass3), TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Data);

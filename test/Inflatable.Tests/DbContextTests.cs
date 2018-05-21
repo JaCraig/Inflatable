@@ -253,11 +253,11 @@ namespace Inflatable.Tests
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).ToList();
-            Assert.Equal(3, Results.Count());
+            Assert.Equal(3, Results.Count);
             Assert.True(Results.All(x => x.IntValue == 0));
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Results = TestObject.Select(x => new AllReferencesAndID { BoolValue = x.BoolValue, IntValue = x.IntValue }).ToList();
-            Assert.Equal(5, Results.Count());
+            Assert.Equal(5, Results.Count);
             Assert.True(Results.All(x => x.IntValue == 10));
             Assert.Equal(3, Results.Count(x => x.BoolValue));
         }
