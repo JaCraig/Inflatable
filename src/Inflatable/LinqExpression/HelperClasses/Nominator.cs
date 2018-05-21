@@ -51,7 +51,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// The function can be evaluated
         /// </summary>
         /// <value>The function can be evaluated.</value>
-        private Func<Expression, bool> FunctionCanBeEvaluated { get; set; }
+        private Func<Expression, bool> FunctionCanBeEvaluated { get; }
 
         /// <summary>
         /// Nominates the specified expression.

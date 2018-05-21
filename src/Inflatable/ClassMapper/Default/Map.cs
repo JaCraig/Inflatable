@@ -47,7 +47,9 @@ namespace Inflatable.ClassMapper.Default
         public Map(Expression<Func<ClassType, DataType>> expression, IMapping mapping) : base(expression, mapping)
         {
             if (typeof(DataType).Is(typeof(IEnumerable)))
+            {
                 throw new ArgumentException("Expression is an IEnumerable, use ManyToOne or ManyToMany instead");
+            }
         }
 
         /// <summary>
@@ -64,9 +66,15 @@ namespace Inflatable.ClassMapper.Default
             }.Convert<TResult>();
             var ReturnObject = new Map<TResult, DataType>(Result, mapping);
             if (Cascade)
+            {
                 ReturnObject.CascadeChanges();
+            }
+
             if (LoadPropertyQuery != null)
+            {
                 ReturnObject.LoadUsing(LoadPropertyQuery.QueryString, LoadPropertyQuery.DatabaseCommandType);
+            }
+
             return ReturnObject;
         }
 
@@ -76,7 +84,7 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(MappingSource mappings)
         {
-            List<IQueryColumnInfo> TempColumns = new List<IQueryColumnInfo>();
+            var TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
             {
                 var IDColumnInfo = x.GetColumnInfo()[0];
@@ -106,9 +114,12 @@ namespace Inflatable.ClassMapper.Default
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
-                                     .FirstOrDefault(x => x.IDProperties.Any());
+                                     .FirstOrDefault(x => x.IDProperties.Count > 0);
             if (ForeignMapping == null)
+            {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
+            }
+
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             SetNullOnDelete = !OnDeleteDoNothingValue && !ParentMappings.Contains(ForeignMapping);
         }

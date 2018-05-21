@@ -13,7 +13,7 @@ namespace Inflatable.Tests.ClassMapper
             TestObject = new MapPropertiesMapping();
         }
 
-        private MapPropertiesMapping TestObject { get; set; }
+        private MapPropertiesMapping TestObject { get; }
 
         [Fact]
         public void Creation()

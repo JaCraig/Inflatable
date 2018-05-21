@@ -49,7 +49,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <returns>The concrete types of the mapping tree</returns>
         public IEnumerable<Type> FindConcreteTypes()
         {
-            ConcurrentBag<Type> Result = new ConcurrentBag<Type>();
+            var Result = new ConcurrentBag<Type>();
             for (int x = 0; x < TypeTrees.Keys.Count; ++x)
             {
                 var KeyToCheck = TypeTrees.Keys.ElementAt(x);
@@ -61,7 +61,9 @@ namespace Inflatable.ClassMapper.TypeGraph
                     {
                         Found = TypeTrees[CurrentKey].ContainsNode(KeyToCheck, (i, j) => i == j);
                         if (Found)
+                        {
                             break;
+                        }
                     }
                 }
                 if (!Found)

@@ -63,11 +63,17 @@ namespace Inflatable.Sessions.Commands
         public override int Execute(MappingSource source)
         {
             if (Objects.Length == 0)
+            {
                 return 0;
+            }
+
             var ReturnValue = 0;
             CreateBatch(source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
-            if (!ObjectsSeen.Any())
+            if (ObjectsSeen.Count == 0)
+            {
                 return 0;
+            }
+
             ValidateObjects(ObjectsSeen);
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += Batch.ExecuteScalar<int>();
@@ -81,21 +87,28 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
         public override async Task<int> ExecuteAsync(MappingSource source)
         {
             if (Objects.Length == 0)
+            {
                 return 0;
+            }
+
             var ReturnValue = 0;
             CreateBatch(source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
-            if (!ObjectsSeen.Any())
+            if (ObjectsSeen.Count == 0)
+            {
                 return 0;
+            }
+
             ValidateObjects(ObjectsSeen);
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
-            ReturnValue += await Batch.ExecuteScalarAsync<int>();
+            ReturnValue += await Batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
             Batch = Batch.CreateBatch();
             SaveJoins(source, Batch, ObjectsSeen);
-            ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
+            ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false);
 
             return ReturnValue;
         }
@@ -143,15 +156,16 @@ namespace Inflatable.Sessions.Commands
             IList<object> objectsSeen,
             IEnumerable<IMapping> parentMappings)
         {
-            IORMObject ORMObject = @object as IORMObject;
+            var ORMObject = @object as IORMObject;
             foreach (var ManyToManyProperty in parentMappings.SelectMany(x => x.ManyToManyProperties)
                                                              .Where(x => x.Cascade
-                                                                      && (ORMObject == null
-                                                                         || ORMObject.PropertiesChanged0.Contains(x.Name))))
+                                                                      && (ORMObject?.PropertiesChanged0.Contains(x.Name) != false)))
             {
-                var ManyToManyValue = ManyToManyProperty.GetValue(@object) as IEnumerable;
-                if (ManyToManyValue == null)
+                if (!(ManyToManyProperty.GetValue(@object) is IEnumerable ManyToManyValue))
+                {
                     continue;
+                }
+
                 foreach (var Item in ManyToManyValue)
                 {
                     Save(Item, source, batch, declarationBatch, objectsSeen);
@@ -166,17 +180,18 @@ namespace Inflatable.Sessions.Commands
             IList<object> objectsSeen,
             IEnumerable<IMapping> parentMappings)
         {
-            IORMObject ORMObject = @object as IORMObject;
+            var ORMObject = @object as IORMObject;
             foreach (var ManyToOneProperty in parentMappings.SelectMany(x => x.ManyToOneProperties)
                                                              .Where(x => x.Cascade
-                                                                      && (ORMObject == null
-                                                                         || ORMObject.PropertiesChanged0.Contains(x.Name))))
+                                                                      && (ORMObject?.PropertiesChanged0.Contains(x.Name) != false)))
             {
                 var ManyToOneValue = ManyToOneProperty.GetValue(@object);
                 if (ManyToOneValue == null)
+                {
                     continue;
-                var ManyToOneListValue = ManyToOneValue as IEnumerable;
-                if (ManyToOneListValue == null)
+                }
+
+                if (!(ManyToOneValue is IEnumerable ManyToOneListValue))
                 {
                     Save(ManyToOneValue, source, batch, declarationBatch, objectsSeen);
                 }
@@ -206,11 +221,10 @@ namespace Inflatable.Sessions.Commands
             IList<object> objectsSeen,
             IEnumerable<IMapping> ParentMappings)
         {
-            IORMObject ORMObject = @object as IORMObject;
+            var ORMObject = @object as IORMObject;
             foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties)
                                                               .Where(x => x.Cascade
-                                                                       && (ORMObject == null
-                                                                          || ORMObject.PropertiesChanged0.Contains(x.Name))))
+                                                                       && (ORMObject?.PropertiesChanged0.Contains(x.Name) != false)))
             {
                 var MapValue = MapProperty.GetValue(@object);
                 Save(MapValue, source, batch, declarationBatch, objectsSeen);
@@ -247,7 +261,7 @@ namespace Inflatable.Sessions.Commands
                 var IDProperty = idProperties.FirstOrDefault(y => y.AutoIncrement);
                 var ReturnedID = batch.AddQuery((Command, ResultList, InsertObject) =>
                                                 {
-                                                    if (IDProperty != null && IDProperty.AutoIncrement)
+                                                    if (IDProperty?.AutoIncrement == true)
                                                     {
                                                         IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0]));
                                                     }
@@ -272,7 +286,10 @@ namespace Inflatable.Sessions.Commands
             if (@object == null
                 || WasObjectSeen(@object, objectsSeen, source)
                 || !CanExecute(@object, source))
+            {
                 return;
+            }
+
             objectsSeen.Add(@object);
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
             var CurrentObjectType = @object.GetType();
@@ -283,15 +300,21 @@ namespace Inflatable.Sessions.Commands
             CascadeManyToOneProperties(@object, source, batch, declarationBatch, objectsSeen, ParentMappings);
 
             if (@object is IORMObject UpdateObject)
+            {
                 Update(UpdateObject, source, batch);
+            }
             else
             {
                 var IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
                 var IsUpdatable = IDProperties.Any() && IDProperties.All(y => y.AutoIncrement && y.GetColumnInfo().All(z => !z.IsDefault(@object)));
                 if (IsUpdatable)
+                {
                     Update(@object, source, batch);
+                }
                 else
+                {
                     Insert(@object, source, batch, declarationBatch, ParentMappings.SelectMany(x => x.IDProperties));
+                }
             }
 
             RemoveItemsFromCache(@object);

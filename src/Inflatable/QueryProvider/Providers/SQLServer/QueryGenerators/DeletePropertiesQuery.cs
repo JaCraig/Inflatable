@@ -64,13 +64,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; set; }
+        private IEnumerable<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets or sets the queries.
         /// </summary>
         /// <value>The queries.</value>
-        private ListMapping<string, QueryGeneratorData> Queries { get; set; }
+        private ListMapping<string, QueryGeneratorData> Queries { get; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -90,7 +90,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
             if (property is IManyToManyProperty Property)
+            {
                 return ManyToManyProperty(Property, queryObject);
+            }
+
             return new IQuery[0];
         }
 
@@ -103,19 +106,22 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateJoinDeleteQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property, int itemCount)
         {
-            StringBuilder Builder = new StringBuilder();
-            StringBuilder PropertyNames = new StringBuilder();
-            StringBuilder PropertyValues = new StringBuilder();
-            StringBuilder ParametersList = new StringBuilder();
+            var Builder = new StringBuilder();
+            var PropertyNames = new StringBuilder();
+            var PropertyValues = new StringBuilder();
+            var ParametersList = new StringBuilder();
             var ParentMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType);
-            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
+            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             string Prefix = "";
             if (ParentWithID == property.ForeignMapping)
+            {
                 Prefix = "Parent_";
+            }
+
             string Splitter2 = "";
             foreach (var IDProperty in IDProperties)
             {
-                ParametersList.Append(Splitter2).Append("[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName + "] = @" + Prefix + IDProperty.ParentMapping.TableName + IDProperty.ColumnName);
+                ParametersList.Append(Splitter2).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
                 Splitter2 = " AND ";
             }
             Builder.AppendFormat("DELETE FROM {0} WHERE {1};", GetTableName(property), ParametersList);
@@ -132,12 +138,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToManyProperty property, object propertyItem)
         {
             var ItemList = propertyItem as IEnumerable;
-            List<IParameter> ReturnValues = new List<IParameter>();
+            var ReturnValues = new List<IParameter>();
             var ParentMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType);
-            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Any());
+            var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             string Prefix = "";
             if (ParentWithID == property.ForeignMapping)
+            {
                 Prefix = "Parent_";
+            }
+
             var ParentIDs = ParentMappings.SelectMany(x => x.IDProperties);
             var ForeignIDs = MappingInformation.GetParentMapping(property.PropertyType).SelectMany(x => x.IDProperties);
             ReturnValues.AddRange(ParentIDs.ForEach<IIDProperty, IParameter>(x =>
@@ -171,7 +180,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-            List<IQuery> ReturnValue = new List<IQuery>
+            var ReturnValue = new List<IQuery>
             {
                 new Query(property.PropertyType,
                 CommandType.Text,
@@ -196,7 +205,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public static int Count(this IEnumerable list)
         {
             if (list == null)
+            {
                 return 0;
+            }
+
             int FinalCount = 0;
             foreach (var Item in list)
             {

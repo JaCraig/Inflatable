@@ -46,7 +46,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             : base(mappingInformation)
         {
             if (!MappingInformation.TypeGraphs.ContainsKey(AssociatedType))
+            {
                 return;
+            }
+
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
             QueryDeclarationText = GenerateInsertQueryDeclarations();
             QueryText = GenerateInsertQuery(TypeGraph.Root);
@@ -66,25 +69,25 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; set; }
+        private IEnumerable<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets or sets the query declaration text.
         /// </summary>
         /// <value>The query declaration text.</value>
-        private string[] QueryDeclarationText { get; set; }
+        private string[] QueryDeclarationText { get; }
 
         /// <summary>
         /// Gets or sets the query text.
         /// </summary>
         /// <value>The query text.</value>
-        private string QueryText { get; set; }
+        private string QueryText { get; }
 
         /// <summary>
         /// Gets or sets the reference properties.
         /// </summary>
         /// <value>The reference properties.</value>
-        private IEnumerable<IProperty> ReferenceProperties { get; set; }
+        private IEnumerable<IProperty> ReferenceProperties { get; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -92,7 +95,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting declarations.</returns>
         public override IQuery[] GenerateDeclarations()
         {
-            List<IQuery> ReturnValue = new List<IQuery>();
+            var ReturnValue = new List<IQuery>();
             for (int x = 0; x < QueryDeclarationText.Length; ++x)
             {
                 ReturnValue.Add(new Query(AssociatedType, CommandType.Text, QueryDeclarationText[x], QueryType));
@@ -117,12 +120,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         private string GenerateInsertQuery(Utils.TreeNode<Type> node)
         {
-            StringBuilder Builder = new StringBuilder();
-            StringBuilder ParameterList = new StringBuilder();
-            StringBuilder ValueList = new StringBuilder();
-            StringBuilder DeclareProperties = new StringBuilder();
-            StringBuilder SetProperties = new StringBuilder();
-            StringBuilder IDReturn = new StringBuilder();
+            var Builder = new StringBuilder();
+            var ParameterList = new StringBuilder();
+            var ValueList = new StringBuilder();
+            var DeclareProperties = new StringBuilder();
+            var SetProperties = new StringBuilder();
+            var IDReturn = new StringBuilder();
             string Splitter = "";
             var Mapping = MappingInformation.Mappings[node.Data];
 
@@ -137,16 +140,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             foreach (var ReferenceProperty in Mapping.ReferenceProperties
                                                      .Where(x => string.IsNullOrEmpty(x.ComputedColumnSpecification)))
             {
-                ParameterList.Append(Splitter + GetColumnName(ReferenceProperty));
-                ValueList.Append(Splitter + GetParameterName(ReferenceProperty));
+                ParameterList.Append(Splitter).Append(GetColumnName(ReferenceProperty));
+                ValueList.Append(Splitter).Append(GetParameterName(ReferenceProperty));
                 Splitter = ",";
             }
 
             //Non auto incremented ID Properties
             foreach (var IDProperty in Mapping.IDProperties.Where(x => !x.AutoIncrement))
             {
-                ParameterList.Append(Splitter + GetColumnName(IDProperty));
-                ValueList.Append(Splitter + GetParameterName(IDProperty));
+                ParameterList.Append(Splitter).Append(GetColumnName(IDProperty));
+                ValueList.Append(Splitter).Append(GetParameterName(IDProperty));
                 Splitter = ",";
             }
 
@@ -155,14 +158,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
-                    ParameterList.Append(Splitter + GetParentColumnName(Mapping, IDProperty));
-                    ValueList.Append(Splitter + GetParentParameterName(IDProperty));
+                    ParameterList.Append(Splitter).Append(GetParentColumnName(Mapping, IDProperty));
+                    ValueList.Append(Splitter).Append(GetParentParameterName(IDProperty));
                     Splitter = ",";
                 }
                 foreach (var AutoIDProperty in ParentMapping.AutoIDProperties)
                 {
-                    ParameterList.Append(Splitter + GetParentColumnName(Mapping, AutoIDProperty));
-                    ValueList.Append(Splitter + GetParentParameterName(AutoIDProperty));
+                    ParameterList.Append(Splitter).Append(GetParentColumnName(Mapping, AutoIDProperty));
+                    ValueList.Append(Splitter).Append(GetParentParameterName(AutoIDProperty));
                     Splitter = ",";
                 }
             }
@@ -170,7 +173,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //ID Properties to pass to the next set of queries
             foreach (var IDProperty in Mapping.IDProperties)
             {
-                SetProperties.AppendLine("SET " + GetParentParameterName(IDProperty) + "=" + (IDProperty.AutoIncrement ? "SCOPE_IDENTITY()" : GetParameterName(IDProperty)) + ";");
+                SetProperties.Append("SET ").Append(GetParentParameterName(IDProperty)).Append("=").Append(IDProperty.AutoIncrement ? "SCOPE_IDENTITY()" : GetParameterName(IDProperty)).AppendLine(";");
                 if (IDProperty.AutoIncrement)
                 {
                     IDReturn.AppendLineFormat("SELECT {0} AS [{1}];", GetParentParameterName(IDProperty), IDProperty.Name);
@@ -180,7 +183,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //Auto ID properties to pass to the next set of queries
             foreach (var AutoIDProperty in Mapping.AutoIDProperties)
             {
-                SetProperties.AppendLine("SET " + GetParentParameterName(AutoIDProperty) + "=SCOPE_IDENTITY();");
+                SetProperties.Append("SET ").Append(GetParentParameterName(AutoIDProperty)).AppendLine("=SCOPE_IDENTITY();");
             }
 
             //Build the actual queries
@@ -213,8 +216,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         private string[] GenerateInsertQueryDeclarations()
         {
-            List<string> Builder = new List<string>();
-            List<IMapping> ParentMappings = new List<IMapping>();
+            var Builder = new List<string>();
+            var ParentMappings = new List<IMapping>();
             var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
             foreach (var ChildMapping in ChildMappings)
             {

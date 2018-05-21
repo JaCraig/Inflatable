@@ -23,6 +23,7 @@ namespace Inflatable.Interfaces
     /// <summary>
     /// Object interface
     /// </summary>
+    /// <typeparam name="IDType">The type of the d type.</typeparam>
     public interface IObject<IDType>
     {
         /// <summary>

@@ -15,17 +15,17 @@ namespace Inflatable.Tests.LinqExpression
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            int LocalVariable = 45;
-            TestQuery = TestQuery.Where(x => x.BoolValue == false)
+            const int LocalVariable = 45;
+            TestQuery = TestQuery.Where(x => !x.BoolValue)
                                  .Where(x => x.ByteValue > 14)
                                  .Where(x => x.IntValue < LocalVariable);
             var TempData = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(2, TempData.Count);
             var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE ((([dbo].[AllReferencesAndID_].[BoolValue_] = @1) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) > @2)) AND ([dbo].[AllReferencesAndID_].[IntValue_] < @3))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE ((([dbo].[AllReferencesAndID_].[BoolValue_] <> @0) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) > @2)) AND ([dbo].[AllReferencesAndID_].[IntValue_] < @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
-            Assert.Equal("1", Parameters[0].ID);
-            Assert.False((bool)Parameters[0].InternalValue);
+            Assert.Equal("0", Parameters[0].ID);
+            Assert.True((bool)Parameters[0].InternalValue);
             Assert.Equal(DbType.Boolean, Parameters[0].DatabaseType);
             Assert.Equal("2", Parameters[1].ID);
             Assert.Equal(14, Parameters[1].InternalValue);
@@ -40,16 +40,16 @@ namespace Inflatable.Tests.LinqExpression
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            TestQuery = TestQuery.Where(x => x.BoolValue == false || x.ByteValue > 14);
+            TestQuery = TestQuery.Where(x => !x.BoolValue || x.ByteValue > 14);
             var TempData = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(2, TempData.Count);
             var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] = @1) OR (([dbo].[AllReferencesAndID_].[ByteValue_]) > @3))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] <> @0) OR (([dbo].[AllReferencesAndID_].[ByteValue_]) > @2))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
-            Assert.Equal("1", Parameters[0].ID);
-            Assert.False((bool)Parameters[0].InternalValue);
+            Assert.Equal("0", Parameters[0].ID);
+            Assert.True((bool)Parameters[0].InternalValue);
             Assert.Equal(DbType.Boolean, Parameters[0].DatabaseType);
-            Assert.Equal("3", Parameters[1].ID);
+            Assert.Equal("2", Parameters[1].ID);
             Assert.Equal(14, Parameters[1].InternalValue);
             Assert.Equal(DbType.Int32, Parameters[1].DatabaseType);
         }
@@ -59,16 +59,16 @@ namespace Inflatable.Tests.LinqExpression
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            TestQuery = TestQuery.Where(x => !(x.BoolValue == false || x.ByteValue > 14));
+            TestQuery = TestQuery.Where(x => !(!x.BoolValue || x.ByteValue > 14));
             var TempData = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(2, TempData.Count);
             var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] <> @1) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) <= @3))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[BoolValue_] = @0) AND (([dbo].[AllReferencesAndID_].[ByteValue_]) <= @2))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
-            Assert.Equal("1", Parameters[0].ID);
-            Assert.False((bool)Parameters[0].InternalValue);
+            Assert.Equal("0", Parameters[0].ID);
+            Assert.True((bool)Parameters[0].InternalValue);
             Assert.Equal(DbType.Boolean, Parameters[0].DatabaseType);
-            Assert.Equal("3", Parameters[1].ID);
+            Assert.Equal("2", Parameters[1].ID);
             Assert.Equal(14, Parameters[1].InternalValue);
             Assert.Equal(DbType.Int32, Parameters[1].DatabaseType);
         }

@@ -37,8 +37,8 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <seealso cref="Interfaces.IManyToOneProperty{ClassType, DataType}"/>
     public abstract class ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> : IManyToOneProperty<ClassType, DataType, ReturnType>, IManyToOneProperty<ClassType, DataType>
         where ClassType : class
-        where ReturnType : IManyToOneProperty<ClassType, DataType, ReturnType>
         where DataType : class
+        where ReturnType : IManyToOneProperty<ClassType, DataType, ReturnType>
     {
         /// <summary>
         /// Constructor
@@ -48,7 +48,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         protected ManyToOneOnePropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
         {
             if (expression == null)
+            {
                 throw new ArgumentNullException(nameof(expression));
+            }
+
             Name = expression.PropertyName();
             CompiledExpression = expression.Compile();
             Expression = expression;
@@ -157,9 +160,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator <(ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> first, ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() < second.GetHashCode();
         }
 
@@ -172,9 +181,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator ==(ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> first, ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return true;
+            }
 
-            if ((object)first == null || (object)second == null) return false;
+            if ((object)first == null || (object)second == null)
+            {
+                return false;
+            }
 
             return first.GetHashCode() == second.GetHashCode();
         }
@@ -188,9 +202,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator >(ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> first, ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() > second.GetHashCode();
         }
 
@@ -220,9 +240,11 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            var SecondObj = obj as ManyToOneOnePropertyBase<ClassType, DataType, ReturnType>;
-            if (((object)SecondObj) == null)
+            if (!(obj is ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> SecondObj))
+            {
                 return false;
+            }
+
             return this == SecondObj;
         }
 
@@ -251,9 +273,11 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>The value of the property</returns>
         public object GetValue(object Object)
         {
-            var TempObject = Object as ClassType;
-            if (TempObject is null)
+            if (!(Object is ClassType TempObject))
+            {
                 return null;
+            }
+
             return CompiledExpression(TempObject);
         }
 

@@ -31,6 +31,8 @@ namespace Inflatable.LinqExpression
     /// <summary>
     /// Query translator
     /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    /// <seealso cref="System.Linq.Expressions.ExpressionVisitor"/>
     /// <seealso cref="ExpressionVisitor"/>
     public class QueryTranslator<TObject> : ExpressionVisitor
         where TObject : class
@@ -69,7 +71,7 @@ namespace Inflatable.LinqExpression
         /// Gets the builder.
         /// </summary>
         /// <value>The builder.</value>
-        private Dictionary<MappingSource, QueryData<TObject>> Builders { get; set; }
+        private Dictionary<MappingSource, QueryData<TObject>> Builders { get; }
 
         /// <summary>
         /// Gets the count.
@@ -113,7 +115,7 @@ namespace Inflatable.LinqExpression
                 {
                     node = (MethodCallExpression)Evaluator.PartialEval(node);
                     Visit(node.Arguments[0]);
-                    LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
                     var CurrentClause = new WhereVisitor<TObject>(Count).WhereProjection(lambda.Body);
                     ++Count;
                     foreach (var Source in Builders.Keys)
@@ -125,7 +127,7 @@ namespace Inflatable.LinqExpression
                 if (node.Method.Name == "Select")
                 {
                     Visit(node.Arguments[0]);
-                    LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
                     var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
@@ -148,7 +150,7 @@ namespace Inflatable.LinqExpression
                     || node.Method.Name == "ThenByDescending")
                 {
                     Visit(node.Arguments[0]);
-                    LambdaExpression lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
                     var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
@@ -193,7 +195,7 @@ namespace Inflatable.LinqExpression
                     Visit(node.Arguments[0]);
                     foreach (var Source in Builders.Keys)
                     {
-                        Builders[Source].Top = (int)(node.Arguments[1] as ConstantExpression).Value;
+                        Builders[Source].Top = (int)(node.Arguments[1] as ConstantExpression)?.Value;
                     }
                     return node;
                 }

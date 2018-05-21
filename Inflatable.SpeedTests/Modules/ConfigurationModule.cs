@@ -14,7 +14,10 @@ namespace Inflatable.Tests.Modules
         public void Load(IBootstrapper bootstrapper)
         {
             if (bootstrapper == null)
+            {
                 return;
+            }
+
             var dict = new Dictionary<string, string>
                 {
                     { "ConnectionStrings:Default", ConnectionString },

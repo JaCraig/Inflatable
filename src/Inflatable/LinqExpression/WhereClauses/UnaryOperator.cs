@@ -44,7 +44,9 @@ namespace Inflatable.LinqExpression.WhereClauses
             InternalOperator.Parent = this;
             TypeCode = InternalOperator.TypeCode;
             if (Operator == ExpressionType.Convert)
+            {
                 TypeCode = nodeType;
+            }
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the type code.
         /// </summary>
         /// <value>The type code.</value>
-        public Type TypeCode { get; private set; }
+        public Type TypeCode { get; }
 
         /// <summary>
         /// Copies this instance.
@@ -105,7 +107,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         public IOperator LogicallyNegate()
         {
             if (Operator == ExpressionType.Not)
+            {
                 return InternalOperator;
+            }
+
             InternalOperator = InternalOperator.LogicallyNegate();
             return this;
         }
@@ -119,9 +124,15 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             InternalOperator = InternalOperator.Optimize(mappingSource);
             if (InternalOperator == null)
+            {
                 return null;
+            }
+
             if (Operator == ExpressionType.Not)
+            {
                 return InternalOperator.LogicallyNegate();
+            }
+
             return this;
         }
 

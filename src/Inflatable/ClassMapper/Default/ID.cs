@@ -55,11 +55,20 @@ namespace Inflatable.ClassMapper.Default
             }.Convert<TResult>();
             var ReturnObject = new ID<TResult, DataType>(Result, mapping);
             if (Index)
+            {
                 ReturnObject.IsIndexed();
+            }
+
             if (ReadOnly)
+            {
                 ReturnObject.IsReadOnly();
+            }
+
             if (Unique)
+            {
                 ReturnObject.IsUnique();
+            }
+
             ReturnObject.WithColumnName(ColumnName);
             ReturnObject.WithComputedColumnSpecification(ComputedColumnSpecification);
             for (int x = 0, ConstraintsCount = Constraints.Count; x < ConstraintsCount; x++)
@@ -69,7 +78,10 @@ namespace Inflatable.ClassMapper.Default
             }
 
             if (AutoIncrement)
+            {
                 ReturnObject.IsAutoIncremented();
+            }
+
             ReturnObject.WithDefaultValue(DefaultValue);
             ReturnObject.WithMaxLength(MaxLength);
             return ReturnObject;
@@ -90,7 +102,10 @@ namespace Inflatable.ClassMapper.Default
         public override void Setup()
         {
             if (Columns != null)
+            {
                 return;
+            }
+
             Columns = new Column.SimpleColumnInfo<ClassType, DataType>[]
             {
                 new Column.SimpleColumnInfo<ClassType,DataType>

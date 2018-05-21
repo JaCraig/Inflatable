@@ -29,6 +29,8 @@ namespace Inflatable.QueryProvider.BaseClasses
     /// <summary>
     /// Generator base class
     /// </summary>
+    /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
+    /// <seealso cref="IQueryGenerator{TMappedClass}"/>
     public abstract class QueryGeneratorBaseClass<TMappedClass> : IQueryGenerator<TMappedClass>
         where TMappedClass : class
     {
@@ -258,7 +260,10 @@ namespace Inflatable.QueryProvider.BaseClasses
         protected string GetTableName(IMapping parentMapping, string suffix = "")
         {
             if (string.IsNullOrEmpty(suffix))
+            {
                 return "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]";
+            }
+
             return "[" + parentMapping.TableName + suffix + "]";
         }
 

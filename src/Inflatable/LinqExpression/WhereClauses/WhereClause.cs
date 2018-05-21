@@ -80,7 +80,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         public WhereClause<TObject> Combine(IOperator clause)
         {
             if (clause is WhereClause<TObject> TempWhere)
+            {
                 clause = TempWhere.InternalOperator;
+            }
+
             InternalOperator = InternalOperator != null ?
                 new BinaryOperator(InternalOperator, clause, ExpressionType.And) :
                 clause;
@@ -124,13 +127,19 @@ namespace Inflatable.LinqExpression.WhereClauses
         public IOperator Optimize(MappingSource mappingSource)
         {
             if (InternalOperator == null)
+            {
                 return this;
-            bool IsValid = mappingSource.GetChildMappings(ObjectType).Any();
+            }
+
+            var IsValid = mappingSource.GetChildMappings(ObjectType).Any();
             InternalOperator = IsValid ?
                 InternalOperator.Optimize(mappingSource) :
                 null;
             if (InternalOperator?.TypeCode != typeof(bool))
+            {
                 InternalOperator = null;
+            }
+
             return this;
         }
 

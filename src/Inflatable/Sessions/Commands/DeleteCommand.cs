@@ -58,25 +58,38 @@ namespace Inflatable.Sessions.Commands
         public override int Execute(MappingSource source)
         {
             if (Objects.Length == 0)
+            {
                 return 0;
+            }
+
             CreateBatch(source, out SQLHelper.SQLHelper Batch, out List<object> ObjectsSeen);
-            if (!ObjectsSeen.Any())
+            if (ObjectsSeen.Count == 0)
+            {
                 return 0;
+            }
+
             return Batch.RemoveDuplicateCommands().ExecuteScalar<int>();
         }
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">Mapping source.</param>
         /// <returns>The number of rows that are modified.</returns>
         public override async Task<int> ExecuteAsync(MappingSource source)
         {
             if (Objects.Length == 0)
+            {
                 return 0;
+            }
+
             CreateBatch(source, out SQLHelper.SQLHelper Batch, out List<object> ObjectsSeen);
-            if (!ObjectsSeen.Any())
+            if (ObjectsSeen.Count == 0)
+            {
                 return 0;
-            return await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
+            }
+
+            return await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -95,7 +108,7 @@ namespace Inflatable.Sessions.Commands
                 if (ManyToManyValue != null)
                 {
                     var ManyToManyValueList = ManyToManyValue as IList;
-                    List<object> FinalList = new List<object>();
+                    var FinalList = new List<object>();
                     for (int x = 0, ManyToManyValueListCount = ManyToManyValueList.Count; x < ManyToManyValueListCount; ++x)
                     {
                         var Item = ManyToManyValueList[x];
@@ -128,7 +141,7 @@ namespace Inflatable.Sessions.Commands
                 {
                     if (ManyToOneValue is IList ManyToOneValueList)
                     {
-                        List<object> FinalList = new List<object>();
+                        var FinalList = new List<object>();
                         for (int x = 0, ManyToManyValueListCount = ManyToOneValueList.Count; x < ManyToManyValueListCount; ++x)
                         {
                             var Item = ManyToOneValueList[x];
@@ -192,7 +205,10 @@ namespace Inflatable.Sessions.Commands
             if (@object == null
                 || WasObjectSeen(@object, objectsSeen, source)
                 || !CanExecute(@object, source))
+            {
                 return;
+            }
+
             objectsSeen.Add(@object);
             DeleteCascade(@object, source, batch, objectsSeen);
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
@@ -232,7 +248,10 @@ namespace Inflatable.Sessions.Commands
         private void DeleteJoins(object @object, MappingSource source, SQLHelper.SQLHelper batch, IManyToManyProperty ManyToManyProperty, IList ManyToManyValueList)
         {
             if (ManyToManyProperty.DatabaseJoinsCascade)
+            {
                 return;
+            }
+
             ManyToManyValueList.Clear();
             var LinksGenerator = QueryProviderManager.CreateGenerator(ManyToManyProperty.ParentMapping.ObjectType, source);
             var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, ManyToManyProperty);

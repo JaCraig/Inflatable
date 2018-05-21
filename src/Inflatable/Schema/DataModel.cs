@@ -45,7 +45,10 @@ namespace Inflatable.Schema
         public DataModel(MappingSource source, IConfiguration config, ILogger logger)
         {
             if (config == null)
+            {
                 throw new ArgumentNullException(nameof(config));
+            }
+
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             Source = source ?? throw new ArgumentNullException(nameof(source));
 
@@ -55,7 +58,7 @@ namespace Inflatable.Schema
             AnalyzeSchema();
         }
 
-        private static string[] DefaultSchemas = {
+        private static readonly string[] DefaultSchemas = {
             "dbo",
             "guest",
             "INFORMATION_SCHEMA",
@@ -108,7 +111,10 @@ namespace Inflatable.Schema
         {
             if (!Source.ApplyAnalysis
                 && !Source.GenerateAnalysis)
+            {
                 return;
+            }
+
             Logger.Information("Analyzing {Info:l} for suggestions.", SourceConnection.DatabaseName);
             var Results = Holmes.Sherlock.Analyze(SourceConnection);
             var Batch = new SQLHelper.SQLHelper(SourceConnection);
@@ -137,8 +143,11 @@ namespace Inflatable.Schema
         {
             if (!Source.UpdateSchema
                 && !Source.GenerateSchema)
+            {
                 return;
-            bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
+            }
+
+            var Debug = Logger.IsEnabled(LogEventLevel.Debug);
 
             var Generator = DataModeler.GetSchemaGenerator(source.Source.Provider);
 
@@ -155,7 +164,9 @@ namespace Inflatable.Schema
             }
 
             if (!Source.UpdateSchema)
+            {
                 return;
+            }
 
             Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);
             Generator.Setup(SourceSpec, SourceConnection);
@@ -179,7 +190,10 @@ namespace Inflatable.Schema
             foreach (var Mapping in Source.Mappings.Values.OrderBy(x => x.Order))
             {
                 if (!DefaultSchemas.Contains(Mapping.SchemaName))
+                {
                     SourceSpec.Schemas.AddIfUnique(Mapping.SchemaName);
+                }
+
                 var Table = SourceSpec.AddTable(Mapping.TableName, Mapping.SchemaName);
                 var Tree = Source.TypeGraphs[Mapping.ObjectType];
                 var ParentMappings = Tree.Root.Nodes.ForEach(x => Source.Mappings[x.Data]);

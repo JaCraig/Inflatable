@@ -66,7 +66,7 @@ namespace Inflatable.QueryProvider
         /// Gets or sets the internal dictionary.
         /// </summary>
         /// <value>The internal dictionary.</value>
-        private ConcurrentDictionary<QueryType, IQuery> InternalDictionary { get; set; }
+        private ConcurrentDictionary<QueryType, IQuery> InternalDictionary { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="IQuery"/> with the specified key.
@@ -144,7 +144,10 @@ namespace Inflatable.QueryProvider
             foreach (var item in InternalDictionary)
             {
                 if (array.Length <= arrayIndex)
+                {
                     return;
+                }
+
                 array[arrayIndex] = item;
             }
         }

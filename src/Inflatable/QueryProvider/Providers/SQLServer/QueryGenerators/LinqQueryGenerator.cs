@@ -70,7 +70,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
-            List<IQuery> ReturnValue = new List<IQuery>();
+            var ReturnValue = new List<IQuery>();
             var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
             foreach (var ChildMapping in ChildMappings)
             {
@@ -87,13 +87,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateFromClause(Utils.TreeNode<Type> node)
         {
-            StringBuilder Result = new StringBuilder();
+            var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
-                StringBuilder IDProperties = new StringBuilder();
+                var IDProperties = new StringBuilder();
                 string Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
@@ -120,10 +120,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateOrderByClause(QueryData<TMappedClass> data)
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             string Splitter = "";
             if (data.OrderByValues.Count == 0)
+            {
                 return "";
+            }
+
             Builder.Append("ORDER BY ");
             foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
             {
@@ -143,7 +146,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateParameterList(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
-            StringBuilder Result = new StringBuilder();
+            var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             string Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
@@ -152,7 +155,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentResult = GenerateParameterList(ParentNode, data);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
-                    Result.Append(Separator + ParentResult);
+                    Result.Append(Separator).Append(ParentResult);
                     Separator = ",";
                 }
             }
@@ -179,11 +182,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateSelectQuery(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
-            StringBuilder Builder = new StringBuilder();
-            StringBuilder ParameterList = new StringBuilder();
-            StringBuilder FromClause = new StringBuilder();
-            StringBuilder WhereClause = new StringBuilder();
-            StringBuilder OrderByClause = new StringBuilder();
+            var Builder = new StringBuilder();
+            var ParameterList = new StringBuilder();
+            var FromClause = new StringBuilder();
+            var WhereClause = new StringBuilder();
+            var OrderByClause = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Get From Clause
@@ -202,7 +205,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             Builder.Append(($"SELECT{(data.Distinct ? " DISTINCT" : "")}{(data.Top > 0 ? $" TOP {data.Top}" : "")} {ParameterList}" +
                 $"\r\nFROM {FromClause}" +
                 $"\r\n{WhereClause}" +
-                $"\r\n{OrderByClause}").TrimEnd('\r', '\n', ' ', '\t') + ";");
+                $"\r\n{OrderByClause}").TrimEnd('\r', '\n', ' ', '\t')).Append(";");
             return Builder.ToString();
         }
 

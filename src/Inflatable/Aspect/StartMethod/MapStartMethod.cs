@@ -39,7 +39,10 @@ namespace Inflatable.Aspect.StartMethod
         {
             var Property = mapping.MapProperties.FirstOrDefault(x => x.Name == method.Name.Replace("set_", ""));
             if (Property == null)
+            {
                 return;
+            }
+
             builder.AppendLineFormat("{0} = value;", Property.InternalFieldName);
             builder.AppendLineFormat("{0} = true;", Property.InternalFieldName + "Loaded");
             builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);

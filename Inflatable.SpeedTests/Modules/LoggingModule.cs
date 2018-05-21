@@ -22,7 +22,10 @@ namespace Inflatable.Tests.Modules
         public void Load(IBootstrapper bootstrapper)
         {
             if (bootstrapper == null)
+            {
                 return;
+            }
+
             Log.Logger = new LoggerConfiguration()
                                             .WriteTo
                                             .File("./Log.txt")

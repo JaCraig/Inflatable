@@ -140,13 +140,18 @@ namespace Inflatable.QueryProvider
         public void Copy(QueryResults results, IEnumerable<IIDProperty> idProperties)
         {
             if (!CanCopy(results, idProperties))
+            {
                 return;
+            }
+
             for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
             {
                 var Value = results.Values[i];
-                var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
+                var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
                 if (MyValue != null)
+                {
                     Value.CopyTo(MyValue);
+                }
             }
         }
 
@@ -158,7 +163,10 @@ namespace Inflatable.QueryProvider
         public void CopyOrAdd(QueryResults results, IEnumerable<IIDProperty> idProperties)
         {
             if (results == null || results.Query.ReturnType != Query.ReturnType)
+            {
                 return;
+            }
+
             if (!idProperties.Any())
             {
                 Values.Add(results.Values);
@@ -167,11 +175,15 @@ namespace Inflatable.QueryProvider
             for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
             {
                 var Value = results.Values[i];
-                var MyValue = Values.FirstOrDefault(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
+                var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x).Equals(y.GetColumnInfo()[0].GetValue(Value))));
                 if (MyValue == null)
+                {
                     Values.Add(Value);
+                }
                 else
+                {
                     Value.CopyTo(MyValue);
+                }
             }
         }
 
@@ -183,7 +195,10 @@ namespace Inflatable.QueryProvider
         private object ConvertValue(Dynamo value)
         {
             if (value == null)
+            {
                 return null;
+            }
+
             var Value = value.To(Query.ReturnType);
             ((IORMObject)Value).Session0 = Session;
             return Value;

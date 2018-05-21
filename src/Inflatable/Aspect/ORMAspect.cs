@@ -68,7 +68,7 @@ namespace Inflatable.Aspect
         /// <summary>
         /// Set of assemblies that the aspect requires
         /// </summary>
-        public ICollection<MetadataReference> AssembliesUsing { get; private set; }
+        public ICollection<MetadataReference> AssembliesUsing { get; }
 
         /// <summary>
         /// Gets the class manager.
@@ -178,7 +178,10 @@ namespace Inflatable.Aspect
         public string SetupEndMethod(MethodInfo method, Type baseType, string returnValueName)
         {
             if (!method.Name.StartsWith("get_", StringComparison.Ordinal))
+            {
                 return "";
+            }
+
             var Builder = new StringBuilder();
             foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
             {
@@ -229,7 +232,10 @@ namespace Inflatable.Aspect
         public string SetupStartMethod(MethodInfo method, Type baseType)
         {
             if (!method.Name.StartsWith("set_", StringComparison.Ordinal))
+            {
                 return "";
+            }
+
             var Builder = new StringBuilder();
             foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
             {

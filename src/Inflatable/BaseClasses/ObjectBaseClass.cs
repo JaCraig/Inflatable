@@ -86,9 +86,15 @@ namespace Inflatable.BaseClasses
         public static bool operator <(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() < second.GetHashCode();
         }
 
@@ -101,10 +107,14 @@ namespace Inflatable.BaseClasses
         public static bool operator ==(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return true;
+            }
 
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
 
             return first.GetHashCode() == second.GetHashCode();
         }
@@ -118,9 +128,15 @@ namespace Inflatable.BaseClasses
         public static bool operator >(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() > second.GetHashCode();
         }
 
@@ -131,8 +147,11 @@ namespace Inflatable.BaseClasses
         /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
         public int CompareTo(object obj)
         {
-            if (obj is ObjectBaseClass<ObjectType, IDType>)
-                return CompareTo((ObjectType)obj);
+            if (obj is ObjectBaseClass<ObjectType, IDType> objectBaseClass)
+            {
+                return CompareTo(objectBaseClass);
+            }
+
             return -1;
         }
 
@@ -153,9 +172,11 @@ namespace Inflatable.BaseClasses
         /// <returns>true if they are the same, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            var TempObject = obj as ObjectBaseClass<ObjectType, IDType>;
-            if (TempObject is null)
+            if (!(obj is ObjectBaseClass<ObjectType, IDType> TempObject))
+            {
                 return false;
+            }
+
             return TempObject.GetHashCode() == GetHashCode();
         }
 

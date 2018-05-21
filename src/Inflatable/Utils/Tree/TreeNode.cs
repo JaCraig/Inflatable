@@ -93,7 +93,7 @@ namespace Inflatable.Utils
         /// <returns>The resulting list.</returns>
         public List<TData> ToList()
         {
-            List<TData> ReturnList = new List<TData>
+            var ReturnList = new List<TData>
             {
                 Data
             };

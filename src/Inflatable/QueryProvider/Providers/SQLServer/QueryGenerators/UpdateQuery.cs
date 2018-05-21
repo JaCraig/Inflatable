@@ -62,13 +62,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; set; }
+        private IEnumerable<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets or sets the reference properties.
         /// </summary>
         /// <value>The reference properties.</value>
-        private IEnumerable<IProperty> ReferenceProperties { get; set; }
+        private IEnumerable<IProperty> ReferenceProperties { get; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -98,13 +98,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The from clause</returns>
         private string GenerateFromClause(Utils.TreeNode<Type> node, TMappedClass queryObject)
         {
-            StringBuilder Result = new StringBuilder();
+            var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
-                StringBuilder TempIDProperties = new StringBuilder();
+                var TempIDProperties = new StringBuilder();
                 string Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
@@ -144,10 +144,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateUpdateQuery(Utils.TreeNode<Type> node, TMappedClass queryObject)
         {
-            StringBuilder Builder = new StringBuilder();
-            StringBuilder ParameterList = new StringBuilder();
-            StringBuilder WhereClause = new StringBuilder();
-            StringBuilder FromClause = new StringBuilder();
+            var Builder = new StringBuilder();
+            var ParameterList = new StringBuilder();
+            var WhereClause = new StringBuilder();
+            var FromClause = new StringBuilder();
             string Splitter = "";
 
             //Generate parent queries
@@ -164,16 +164,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ORMObject = queryObject as IORMObject;
             var Mapping = MappingInformation.Mappings[node.Data];
             if (ORMObject != null
-                && !Mapping.ReferenceProperties.Any())
+                && Mapping.ReferenceProperties.Count == 0)
+            {
                 return Builder.ToString();
+            }
+
             if (ORMObject == null
                 && Mapping.ReferenceProperties.Count == 0)
+            {
                 return Builder.ToString();
+            }
 
             //Adding reference properties
             foreach (var ReferenceProperty in Mapping.ReferenceProperties)
             {
-                ParameterList.Append(Splitter + GetColumnName(ReferenceProperty) + "=" + GetParameterName(ReferenceProperty));
+                ParameterList.Append(Splitter).Append(GetColumnName(ReferenceProperty)).Append("=").Append(GetParameterName(ReferenceProperty));
                 Splitter = ",";
             }
 
@@ -200,7 +205,7 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
         /// <returns>The where clause</returns>
         private string GenerateWhereClause(Utils.TreeNode<Type> node, TMappedClass queryObject)
         {
-            StringBuilder Result = new StringBuilder();
+            var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             string Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
@@ -209,7 +214,7 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
                 var ParentResult = GenerateWhereClause(ParentNode, queryObject);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
-                    Result.Append(Separator + ParentResult);
+                    Result.Append(Separator).Append(ParentResult);
                     Separator = "\r\nAND ";
                 }
             }

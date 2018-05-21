@@ -48,7 +48,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Gets or sets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        private IDictionary<Type, IMapping> Mappings { get; set; }
+        private IDictionary<Type, IMapping> Mappings { get; }
 
         /// <summary>
         /// Reduces the mapping

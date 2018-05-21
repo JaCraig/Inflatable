@@ -50,11 +50,11 @@ namespace Inflatable.Tests.Sessions
                     BaseClassValue1=3
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.ID > 3).ToArray();
 
-            var ResultCount = await TempSession.Delete(TestObject).ExecuteAsync();
+            var ResultCount = await TempSession.Delete(TestObject).ExecuteAsync().ConfigureAwait(false);
             Assert.Equal(3, ResultCount);
             TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(3, TestObject.Length);
@@ -100,7 +100,7 @@ namespace Inflatable.Tests.Sessions
                     BaseClassValue1=3
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(6, TestObject.Length);
@@ -145,14 +145,11 @@ namespace Inflatable.Tests.Sessions
                     BaseClassValue1=3
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
-            TestObject.ForEach(x =>
-            {
-                x.BaseClassValue1 = 10;
-            });
-            var ResultCount = await TempSession.Save(TestObject).ExecuteAsync();
+            TestObject.ForEach(x => x.BaseClassValue1 = 10);
+            var ResultCount = await TempSession.Save(TestObject).ExecuteAsync().ConfigureAwait(false);
             Assert.Equal(12, ResultCount);
             TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(6, TestObject.Length);

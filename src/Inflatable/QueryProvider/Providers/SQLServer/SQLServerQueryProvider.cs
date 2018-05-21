@@ -58,7 +58,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Gets or sets the dictionary.
         /// </summary>
         /// <value>The dictionary.</value>
-        private ConcurrentDictionary<Tuple<Type, MappingSource>, IGenerator> CachedResults { get; set; }
+        private ConcurrentDictionary<Tuple<Type, MappingSource>, IGenerator> CachedResults { get; }
 
         /// <summary>
         /// Creates a batch for running commands
@@ -81,7 +81,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         {
             var Key = new Tuple<Type, MappingSource>(typeof(TMappedClass), mappingInformation);
             if (CachedResults.ContainsKey(Key))
+            {
                 return (IGenerator<TMappedClass>)CachedResults[Key];
+            }
+
             var ReturnValue = new SQLServerGenerator<TMappedClass>(mappingInformation);
             CachedResults.AddOrUpdate(Key, ReturnValue, (x, y) => y);
             return ReturnValue;

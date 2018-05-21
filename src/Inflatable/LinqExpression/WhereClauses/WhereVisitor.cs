@@ -88,7 +88,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         protected override Expression VisitConstant(ConstantExpression node)
         {
             if (node.Value is IQueryable)
+            {
                 return node;
+            }
+
             CurrentClause = new Constant(node.Value, Count);
             ++Count;
             return node;
@@ -102,7 +105,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         protected override Expression VisitMember(MemberExpression node)
         {
             var TempProperty = node.Member as PropertyInfo;
-            if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter && TempProperty != null)
+            if (node.Expression?.NodeType == ExpressionType.Parameter && TempProperty != null)
             {
                 CurrentClause = new Property<TObject>(TempProperty, Count);
                 ++Count;

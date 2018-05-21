@@ -162,7 +162,10 @@ namespace Inflatable.ClassMapper.Column
         public bool IsDefault(object @object)
         {
             if (ReferenceEquals(@object, default(TClassType)))
+            {
                 return true;
+            }
+
             var ParamValue = CompiledExpression(@object as TClassType).FirstOrDefault();
             return IsDefault(@object, ParamValue);
         }
@@ -186,7 +189,10 @@ namespace Inflatable.ClassMapper.Column
         public void SetValue(object objectToSet, object propertyValue)
         {
             if (ReferenceEquals(objectToSet, default(TClassType)))
+            {
                 return;
+            }
+
             var TempPropertyValue = CompiledExpression(objectToSet as TClassType).FirstOrDefault();
             SetValue(objectToSet, TempPropertyValue, propertyValue);
         }
@@ -210,7 +216,10 @@ namespace Inflatable.ClassMapper.Column
         private object GetValue(TClassType @object)
         {
             if (ReferenceEquals(@object, default(TClassType)))
+            {
                 return null;
+            }
+
             var ParamValue = CompiledExpression(@object).FirstOrDefault();
             return GetValue(ParamValue);
         }

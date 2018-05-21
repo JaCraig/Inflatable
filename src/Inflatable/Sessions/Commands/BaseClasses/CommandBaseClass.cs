@@ -80,6 +80,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Executes this instance.
         /// </summary>
+        /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
         public abstract Task<int> ExecuteAsync(MappingSource source);
 
@@ -91,13 +92,21 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         public bool Merge(ICommand command)
         {
             if (command is null)
+            {
                 return true;
+            }
+
             if (command.CommandType != CommandType)
+            {
                 return false;
-            var TempCommand = command as CommandBaseClass;
-            if (TempCommand == null)
+            }
+
+            if (!(command is CommandBaseClass TempCommand))
+            {
                 return false;
-            List<object> Values = new List<object>();
+            }
+
+            var Values = new List<object>();
             Values.AddRange(Objects);
             Values.AddRange(TempCommand.Objects);
             Objects = Values.ToArray();
@@ -114,7 +123,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// </returns>
         protected bool CanExecute(object @object, MappingSource source)
         {
-            Type TempType = GetActualType(@object);
+            var TempType = GetActualType(@object);
             return source.Mappings.ContainsKey(TempType);
         }
 
@@ -128,19 +137,30 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         protected bool CompareObjects(object obj1, object obj2, MappingSource source)
         {
             if (ReferenceEquals(obj1, obj2))
+            {
                 return true;
+            }
+
             var Object1Type = obj1.GetType();
             if (Object1Type != obj2.GetType())
+            {
                 return false;
+            }
+
             var ObjectIDs = source.GetParentMapping(Object1Type).SelectMany(x => x.IDProperties);
             if (!ObjectIDs.Any())
+            {
                 return false;
+            }
+
             foreach (var ObjectID in ObjectIDs)
             {
                 var Value1 = ObjectID.GetColumnInfo()[0].GetValue(obj1);
                 var Value2 = ObjectID.GetColumnInfo()[0].GetValue(obj2);
                 if (!Equals(Value1, Value2) || ObjectID.GetColumnInfo()[0].IsDefault(obj1))
+                {
                     return false;
+                }
             }
             return true;
         }
@@ -151,7 +171,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="object">The object.</param>
         protected void RemoveItemsFromCache(object @object)
         {
-            Type TempType = GetActualType(@object);
+            var TempType = GetActualType(@object);
             QueryResults.RemoveCacheTag(TempType.GetName());
         }
 
@@ -176,7 +196,10 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         {
             var TempType = @object.GetType();
             if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+            {
                 TempType = TempType.GetTypeInfo().BaseType;
+            }
+
             return TempType;
         }
     }

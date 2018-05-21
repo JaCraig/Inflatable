@@ -13,7 +13,7 @@ namespace Inflatable.Tests.ClassMapper.Default
             MappingObject = new MockMapping();
         }
 
-        private MockMapping MappingObject { get; set; }
+        private MockMapping MappingObject { get; }
 
         [Fact]
         public void Creation()

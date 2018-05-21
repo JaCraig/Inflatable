@@ -32,7 +32,7 @@ namespace Inflatable.Tests.Schema
         [Fact]
         public void Creation()
         {
-            SchemaManager TestObject = new SchemaManager(Mappings, Configuration, Logger);
+            var TestObject = new SchemaManager(Mappings, Configuration, Logger);
             Assert.Equal(Mappings, TestObject.Mappings);
             Assert.Single(TestObject.Models);
             var TestModel = TestObject.Models.First();

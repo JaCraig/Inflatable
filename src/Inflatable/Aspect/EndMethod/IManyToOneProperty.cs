@@ -41,11 +41,18 @@ namespace Inflatable.Aspect.EndMethod
         {
             var Property = mapping.ManyToOneProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
             if (Property == null)
+            {
                 return;
+            }
+
             if (Property is IManyToOneListProperty)
+            {
                 LoadList(returnValueName, method, mapping, builder, Property);
+            }
             else
+            {
                 LoadSingle(returnValueName, method, mapping, builder, Property);
+            }
         }
 
         private void LoadList(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder, IManyToOneProperty property)

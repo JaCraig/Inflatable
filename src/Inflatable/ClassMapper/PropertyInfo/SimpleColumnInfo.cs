@@ -26,6 +26,9 @@ namespace Inflatable.ClassMapper.Column
     /// <summary>
     /// Column information
     /// </summary>
+    /// <typeparam name="TClassType">The type of the class type.</typeparam>
+    /// <typeparam name="TDataType">The type of the data type.</typeparam>
+    /// <seealso cref="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo"/>
     public class SimpleColumnInfo<TClassType, TDataType> : IQueryColumnInfo
         where TClassType : class
     {
@@ -115,7 +118,10 @@ namespace Inflatable.ClassMapper.Column
         {
             var ParamValue = GetValue(objectValue);
             if (Equals(ParamValue, DefaultValue()))
+            {
                 ParamValue = IsNullable ? null : (object)DefaultValue();
+            }
+
             if (PropertyType == typeof(string))
             {
                 var TempParameter = ParamValue as string;
@@ -174,7 +180,10 @@ namespace Inflatable.ClassMapper.Column
         public bool IsDefault(object @object)
         {
             if (ReferenceEquals(@object, default(TClassType)))
+            {
                 return true;
+            }
+
             return Equals(GetValue(@object), DefaultValue());
         }
 
@@ -198,7 +207,10 @@ namespace Inflatable.ClassMapper.Column
         {
             var TempObject = objectToSet as TClassType;
             if (ReferenceEquals(TempObject, default(TClassType)))
+            {
                 return;
+            }
+
             var TempPropertyValue = (TDataType)propertyValue;
             SetAction(TempObject, TempPropertyValue);
         }
@@ -222,7 +234,10 @@ namespace Inflatable.ClassMapper.Column
         private object GetValue(TClassType @object)
         {
             if (ReferenceEquals(@object, default(TClassType)))
+            {
                 return null;
+            }
+
             return CompiledExpression(@object);
         }
     }

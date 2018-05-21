@@ -48,7 +48,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Gets or sets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        private IDictionary<Type, IMapping> Mappings { get; set; }
+        private IDictionary<Type, IMapping> Mappings { get; }
 
         /// <summary>
         /// Merges this instance.
@@ -58,7 +58,10 @@ namespace Inflatable.ClassMapper.TypeGraph
         {
             var CurrentNode = typeGraph.Root;
             if (CurrentNode.Nodes.Count == 0)
+            {
                 return;
+            }
+
             for (int x = 0; x < CurrentNode.Nodes.Count; ++x)
             {
                 if (MergeNode(CurrentNode.Nodes[x]))

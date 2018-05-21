@@ -44,7 +44,7 @@ namespace Inflatable
         /// Gets or sets the internal session.
         /// </summary>
         /// <value>The internal session.</value>
-        private Session InternalSession { get; set; }
+        private Session InternalSession { get; }
 
         /// <summary>
         /// Executes the query asynchronously.
@@ -54,14 +54,15 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query</returns>
-        public static async Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
+        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
         {
-            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
+            return Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
         }
 
         /// <summary>
         /// Adds a delete command.
         /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="objectsToDelete">The objects to delete.</param>
         /// <returns>This</returns>
         public DbContext Delete<TObject>(params TObject[] objectsToDelete)
@@ -75,14 +76,15 @@ namespace Inflatable
         /// Executes the various save and delete commands asynchronous.
         /// </summary>
         /// <returns>The number of rows modified or the first ID if inserting new items.</returns>
-        public async Task<int> ExecuteAsync()
+        public Task<int> ExecuteAsync()
         {
-            return await InternalSession.ExecuteAsync();
+            return InternalSession.ExecuteAsync();
         }
 
         /// <summary>
         /// Adds a save command.
         /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="objectsToSave">The objects to save.</param>
         /// <returns>This</returns>
         public DbContext Save<TObject>(params TObject[] objectsToSave)
@@ -102,13 +104,6 @@ namespace Inflatable
         where TObject : class
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbContext{TObject}"/> class.
-        /// </summary>
-        public DbContext()
-        {
-        }
-
-        /// <summary>
         /// Creates a query.
         /// </summary>
         /// <returns>The resulting query.</returns>
@@ -125,9 +120,9 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query.</returns>
-        public static async Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
+        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
         {
-            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(command, type, connection, parameters);
+            return Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(command, type, connection, parameters);
         }
 
         /// <summary>
@@ -138,9 +133,9 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The first object returned by the query.</returns>
-        public static async Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters)
+        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters)
         {
-            return await Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters);
+            return Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters);
         }
 
         /// <summary>

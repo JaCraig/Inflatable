@@ -47,9 +47,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         protected PropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
         {
             if (expression == null)
+            {
                 throw new ArgumentNullException(nameof(expression));
+            }
+
             if (mapping == null)
+            {
                 throw new ArgumentNullException(nameof(mapping));
+            }
+
             var DataTypeInfo = typeof(DataType).GetTypeInfo();
 
             Name = expression.PropertyName();
@@ -85,7 +91,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Compiled version of the expression
         /// </summary>
-        public Func<ClassType, DataType> CompiledExpression { get; private set; }
+        public Func<ClassType, DataType> CompiledExpression { get; }
 
         /// <summary>
         /// Gets the computed column specification.
@@ -97,7 +103,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the constraints if the data source supports them.
         /// </summary>
         /// <value>The constraints if the data source supports them.</value>
-        public IList<string> Constraints { get; private set; }
+        public IList<string> Constraints { get; }
 
         /// <summary>
         /// Default value for this property
@@ -107,7 +113,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
-        public Expression<Func<ClassType, DataType>> Expression { get; private set; }
+        public Expression<Func<ClassType, DataType>> Expression { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IProperty"/> is indexed.
@@ -119,7 +125,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the name of the internal field.
         /// </summary>
         /// <value>The name of the internal field.</value>
-        public string InternalFieldName { get; private set; }
+        public string InternalFieldName { get; }
 
         /// <summary>
         /// Gets the maximum length.
@@ -131,25 +137,25 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IProperty"/> is nullable.
         /// </summary>
         /// <value><c>true</c> if nullable; otherwise, <c>false</c>.</value>
-        public bool Nullable { get; private set; }
+        public bool Nullable { get; }
 
         /// <summary>
         /// Gets the parent mapping.
         /// </summary>
         /// <value>The parent mapping.</value>
-        public IMapping ParentMapping { get; private set; }
+        public IMapping ParentMapping { get; }
 
         /// <summary>
         /// Gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
-        public Type PropertyType { get; private set; }
+        public Type PropertyType { get; }
 
         /// <summary>
         /// Gets a value indicating whether [read only].
@@ -161,7 +167,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the name of the type.
         /// </summary>
         /// <value>The name of the type.</value>
-        public string TypeName { get; private set; }
+        public string TypeName { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IProperty"/> is unique.
@@ -195,9 +201,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator <(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() < second.GetHashCode();
         }
 
@@ -210,10 +222,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator ==(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return true;
+            }
 
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
 
             return first.GetHashCode() == second.GetHashCode();
         }
@@ -227,9 +243,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator >(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() > second.GetHashCode();
         }
 
@@ -269,9 +291,11 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            var SecondObj = obj as PropertyBase<ClassType, DataType, ReturnType>;
-            if (((object)SecondObj) == null)
+            if (!(obj is PropertyBase<ClassType, DataType, ReturnType> SecondObj))
+            {
                 return false;
+            }
+
             return this == SecondObj;
         }
 
@@ -282,7 +306,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         public IQueryColumnInfo[] GetColumnInfo()
         {
             if (Columns == null)
+            {
                 SetColumnInfo(null);
+            }
+
             return Columns;
         }
 

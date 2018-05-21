@@ -69,25 +69,25 @@ namespace Inflatable.ClassMapper
         /// Gets a value indicating whether to [apply analysis].
         /// </summary>
         /// <value><c>true</c> if you should [apply analysis]; otherwise, <c>false</c>.</value>
-        public bool ApplyAnalysis => Source?.SourceOptions?.Analysis.HasFlag(SchemaAnalysis.ApplyAnalysis) ?? false;
+        public bool ApplyAnalysis => Source?.SourceOptions?.Analysis == SchemaAnalysis.ApplyAnalysis;
 
         /// <summary>
         /// Gets a value indicating whether this instance can be read.
         /// </summary>
         /// <value><c>true</c> if this instance can be read; otherwise, <c>false</c>.</value>
-        public bool CanRead => Source?.SourceOptions?.Access.HasFlag(SourceAccess.Read) ?? false;
+        public bool CanRead => (Source?.SourceOptions?.Access & SourceAccess.Read) != 0;
 
         /// <summary>
         /// Gets a value indicating whether this instance can be written to.
         /// </summary>
         /// <value><c>true</c> if this instance can be written to; otherwise, <c>false</c>.</value>
-        public bool CanWrite => Source?.SourceOptions?.Access.HasFlag(SourceAccess.Write) ?? false;
+        public bool CanWrite => (Source?.SourceOptions?.Access & SourceAccess.Write) != 0;
 
         /// <summary>
         /// Gets the child types.
         /// </summary>
         /// <value>The child types.</value>
-        public ListMapping<Type, Type> ChildTypes { get; private set; }
+        public ListMapping<Type, Type> ChildTypes { get; }
 
         /// <summary>
         /// Gets the concrete types.
@@ -99,13 +99,13 @@ namespace Inflatable.ClassMapper
         /// Gets a value indicating whether to [generate analysis].
         /// </summary>
         /// <value><c>true</c> if you should [generate analysis]; otherwise, <c>false</c>.</value>
-        public bool GenerateAnalysis => Source?.SourceOptions?.Analysis.HasFlag(SchemaAnalysis.GenerateAnalysis) ?? false;
+        public bool GenerateAnalysis => Source?.SourceOptions?.Analysis == SchemaAnalysis.GenerateAnalysis;
 
         /// <summary>
         /// Gets a value indicating whether to [generate schema].
         /// </summary>
         /// <value><c>true</c> if you should [generate schema]; otherwise, <c>false</c>.</value>
-        public bool GenerateSchema => Source?.SourceOptions?.SchemaUpdate.HasFlag(SchemaGeneration.GenerateSchemaChanges) ?? false;
+        public bool GenerateSchema => Source?.SourceOptions?.SchemaUpdate == SchemaGeneration.GenerateSchemaChanges;
 
         /// <summary>
         /// Logger for the system
@@ -116,18 +116,18 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        public IDictionary<Type, IMapping> Mappings { get; private set; }
+        public IDictionary<Type, IMapping> Mappings { get; }
 
         /// <summary>
         /// Order that the source is used
         /// </summary>
-        public int Order { get; private set; }
+        public int Order { get; }
 
         /// <summary>
         /// Gets the parent types.
         /// </summary>
         /// <value>The parent types.</value>
-        public ListMapping<Type, Type> ParentTypes { get; private set; }
+        public ListMapping<Type, Type> ParentTypes { get; }
 
         /// <summary>
         /// Gets the query provider.
@@ -138,19 +138,19 @@ namespace Inflatable.ClassMapper
         /// <summary>
         /// Source info
         /// </summary>
-        public IDatabase Source { get; private set; }
+        public IDatabase Source { get; }
 
         /// <summary>
         /// Gets or sets the type graph.
         /// </summary>
         /// <value>The type graph.</value>
-        public IDictionary<Type, Tree<Type>> TypeGraphs { get; private set; }
+        public IDictionary<Type, Tree<Type>> TypeGraphs { get; }
 
         /// <summary>
         /// Gets a value indicating whether to [update schema].
         /// </summary>
         /// <value><c>true</c> if you should [update schema]; otherwise, <c>false</c>.</value>
-        public bool UpdateSchema => Source?.SourceOptions?.SchemaUpdate.HasFlag(SchemaGeneration.UpdateSchema) ?? false;
+        public bool UpdateSchema => Source?.SourceOptions?.SchemaUpdate == SchemaGeneration.UpdateSchema;
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
@@ -184,7 +184,10 @@ namespace Inflatable.ClassMapper
         public IEnumerable<IMapping> GetChildMappings(Type objectType)
         {
             if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+            {
                 objectType = objectType.GetTypeInfo().BaseType;
+            }
+
             return ChildTypes.ContainsKey(objectType) ? ChildTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
         }
 
@@ -219,7 +222,10 @@ namespace Inflatable.ClassMapper
         public IEnumerable<IMapping> GetParentMapping(Type objectType)
         {
             if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+            {
                 objectType = objectType.GetTypeInfo().BaseType;
+            }
+
             return ParentTypes.ContainsKey(objectType) ? ParentTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
         }
 
@@ -229,7 +235,7 @@ namespace Inflatable.ClassMapper
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             Builder.AppendLineFormat("Source: {0}", Source.Name);
             foreach (var Mapping in Mappings.Values)
             {
@@ -287,7 +293,11 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void MergeMappings()
         {
-            if (!Source.SourceOptions.Optimize) return;
+            if (!Source.SourceOptions.Optimize)
+            {
+                return;
+            }
+
             Logger.Information("Merging mappings for {Name:l}", Source.Name);
             var MappingMerger = new MergeMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
@@ -301,7 +311,11 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void ReduceMappings()
         {
-            if (!Source.SourceOptions.Optimize) return;
+            if (!Source.SourceOptions.Optimize)
+            {
+                return;
+            }
+
             Logger.Information("Reducing mappings for {Name:l}", Source.Name);
             var ReduceMapping = new ReduceMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
@@ -315,7 +329,11 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void RemoveDeadMappings()
         {
-            if (!Source.SourceOptions.Optimize) return;
+            if (!Source.SourceOptions.Optimize)
+            {
+                return;
+            }
+
             var NeededTypes = new List<Type>();
             foreach (var Mapping in Mappings.Keys)
             {
@@ -336,12 +354,19 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void SetupAutoIDs()
         {
-            if (!Source.SourceOptions.Optimize) return;
+            if (!Source.SourceOptions.Optimize)
+            {
+                return;
+            }
+
             foreach (var CurrentTree in TypeGraphs.Values)
             {
                 var CurrentMapping = Mappings[CurrentTree.Root.Data];
                 if (CurrentMapping.IDProperties.Count > 0)
+                {
                     continue;
+                }
+
                 Logger.Debug("Adding identity key to {Name:l} in {Source:l} as one is not defined.", CurrentMapping, Source.Name);
                 CurrentMapping.AddAutoKey();
             }

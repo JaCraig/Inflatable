@@ -39,8 +39,8 @@ namespace Inflatable.Utils
         /// <returns></returns>
         public Expression<Func<TNewType, TReturn>> Convert<TNewType>()
         {
-            ParameterExpression param = System.Linq.Expressions.Expression.Parameter(typeof(TNewType));
-            Expression body = new Visitor(param).Visit(Expression.Body);
+            var param = System.Linq.Expressions.Expression.Parameter(typeof(TNewType));
+            var body = new Visitor(param).Visit(Expression.Body);
             return System.Linq.Expressions.Expression.Lambda<Func<TNewType, TReturn>>(body, param);
         }
     }

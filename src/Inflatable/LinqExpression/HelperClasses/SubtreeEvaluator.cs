@@ -38,7 +38,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// Gets or sets the candidates.
         /// </summary>
         /// <value>The candidates.</value>
-        private HashSet<Expression> Candidates { get; set; }
+        private HashSet<Expression> Candidates { get; }
 
         /// <summary>
         /// Evals the specified exp.
@@ -61,9 +61,15 @@ namespace Inflatable.LinqExpression.HelperClasses
         public override Expression Visit(Expression node)
         {
             if (node == null)
+            {
                 return null;
+            }
+
             if (Candidates.Contains(node))
+            {
                 return Evaluate(node);
+            }
+
             return base.Visit(node);
         }
 
@@ -75,7 +81,10 @@ namespace Inflatable.LinqExpression.HelperClasses
         private Expression Evaluate(Expression expression)
         {
             if (expression.NodeType == ExpressionType.Constant)
+            {
                 return expression;
+            }
+
             var Result = Expression.Lambda(expression)
                                     .Compile()
                                     .DynamicInvoke(null);

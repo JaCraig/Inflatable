@@ -44,7 +44,7 @@ namespace Inflatable.ClassMapper
         {
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             mappings = mappings ?? new ConcurrentBag<IMapping>();
-            bool Debug = Logger.IsEnabled(LogEventLevel.Debug);
+            var Debug = Logger.IsEnabled(LogEventLevel.Debug);
             Logger.Information("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
             mappings.ForEachParallel(x => TempSourceMappings.Add(x.DatabaseConfigType, x));
@@ -59,7 +59,7 @@ namespace Inflatable.ClassMapper
             Sources = FinalList;
             if (Debug)
             {
-                StringBuilder Builder = new StringBuilder();
+                var Builder = new StringBuilder();
                 Builder.AppendLine("Final Mappings:");
                 foreach (var Source in Sources)
                 {
@@ -87,7 +87,7 @@ namespace Inflatable.ClassMapper
         /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (var Source in Sources)
             {
                 Builder.AppendLine(Source.ToString());

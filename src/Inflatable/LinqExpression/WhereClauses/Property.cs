@@ -30,6 +30,8 @@ namespace Inflatable.LinqExpression.WhereClauses
     /// <summary>
     /// Property operator
     /// </summary>
+    /// <typeparam name="TObject">The type of the object.</typeparam>
+    /// <seealso cref="Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator"/>
     /// <seealso cref="IOperator"/>
     public class Property<TObject> : IOperator
     {
@@ -56,7 +58,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the property.
         /// </summary>
         /// <value>The property.</value>
-        public PropertyInfo InternalProperty { get; private set; }
+        public PropertyInfo InternalProperty { get; }
 
         /// <summary>
         /// Gets or sets the parent.
@@ -135,7 +137,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             var ParentMapping = mappingSource.GetParentMapping(mapping.ObjectType).FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
             if (ParentMapping == null)
+            {
                 return;
+            }
+
             Column = ParentMapping.GetColumnName(InternalProperty.Name);
         }
 

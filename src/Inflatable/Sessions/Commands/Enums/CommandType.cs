@@ -25,6 +25,7 @@ namespace Inflatable.Sessions.Commands.Enums
         /// The delete type
         /// </summary>
         Delete,
+
         /// <summary>
         /// The save type
         /// </summary>

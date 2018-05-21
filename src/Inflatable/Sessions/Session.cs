@@ -61,31 +61,31 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
+        /// Gets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        private readonly Aspectus.Aspectus AOPManager;
+
+        /// <summary>
+        /// The mapping manager
+        /// </summary>
+        private readonly MappingManager MappingManager;
+
+        /// <summary>
         /// The query provider manager
         /// </summary>
         private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
-        /// Gets the aop manager.
-        /// </summary>
-        /// <value>The aop manager.</value>
-        private Aspectus.Aspectus AOPManager;
-
-        /// <summary>
-        /// The mapping manager
-        /// </summary>
-        private MappingManager MappingManager;
-
-        /// <summary>
         /// The schema manager
         /// </summary>
-        private SchemaManager SchemaManager;
+        private readonly SchemaManager SchemaManager;
 
         /// <summary>
         /// Gets or sets the commands.
         /// </summary>
         /// <value>The commands.</value>
-        private IList<Commands.Interfaces.ICommand> Commands { get; set; }
+        private IList<Commands.Interfaces.ICommand> Commands { get; }
 
         /// <summary>
         /// Adds the objects for deletion.
@@ -135,7 +135,7 @@ namespace Inflatable.Sessions
             {
                 for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += await Commands[x].ExecuteAsync(Source);
+                    Result += await Commands[x].ExecuteAsync(Source).ConfigureAwait(false);
                 }
             }
             Commands.Clear();
@@ -156,22 +156,25 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             parameters = parameters ?? new IParameter[0];
-            List<IParameter> Parameters = ConvertParameters(parameters);
+            var Parameters = ConvertParameters(parameters);
             string KeyName = command + "_" + connection;
-            Parameters.ForEach(x => { KeyName = x.AddParameter(KeyName); });
+            Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
             if (QueryResults.IsCached(KeyName))
             {
                 return QueryResults.GetCached(KeyName).SelectMany(x => x.ConvertValues<TObject>());
             }
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
+            {
                 throw new ArgumentException($"Source not found {connection}");
+            }
+
             var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
             Batch.AddQuery(command, type, Parameters.ToArray());
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
-            var Results = (await Batch.ExecuteAsync()).Select(x => new QueryResults(new Query(ObjectType,
+            var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).Select(x => new QueryResults(new Query(ObjectType,
                                                                                                 CommandType.Text,
                                                                                                 command,
                                                                                                 QueryType.LinqQuery,
@@ -193,31 +196,28 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
-            string KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
+            var KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
             queries.Values
                 .SelectMany(x => x.Parameters)
                 .Distinct()
-                .ForEach(x =>
-                {
-                    KeyName = x.AddParameter(KeyName);
-                });
+                .ForEach(x => KeyName = x.AddParameter(KeyName));
             if (QueryResults.IsCached(KeyName))
             {
                 return QueryResults.GetCached(KeyName).SelectMany(x => x.ConvertValues<TObject>());
             }
-            List<QueryResults> Results = new List<QueryResults>();
+            var Results = new List<QueryResults>();
             bool FirstRun = true;
             var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
             foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
                                               .OrderBy(x => x.Key.Order))
             {
-                await GenerateQueryAsync(Results, FirstRun, Source);
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
             foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator == null)
                                               .OrderBy(x => x.Key.Order))
             {
-                await GenerateQueryAsync(Results, FirstRun, Source);
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
             QueryResults.CacheValues(KeyName, Results);
@@ -236,13 +236,16 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<dynamic>> ExecuteDynamicAsync(string command, CommandType type, string connection, params object[] parameters)
         {
             parameters = parameters ?? new IParameter[0];
-            List<IParameter> Parameters = ConvertParameters(parameters);
+            var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
+            {
                 throw new ArgumentException($"Source not found {connection}");
+            }
+
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
             Batch.AddQuery(command, type, Parameters.ToArray());
-            return (await Batch.ExecuteAsync())[0];
+            return (await Batch.ExecuteAsync().ConfigureAwait(false))[0];
         }
 
         /// <summary>
@@ -255,18 +258,21 @@ namespace Inflatable.Sessions
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects</returns>
         /// <exception cref="System.ArgumentException"></exception>
-        public async Task<TObject> ExecuteScalarAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
+        public Task<TObject> ExecuteScalarAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
         {
             parameters = parameters ?? new IParameter[0];
-            List<IParameter> Parameters = ConvertParameters(parameters);
+            var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
+            {
                 throw new ArgumentException($"Source not found {connection}");
+            }
+
             var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
 
             Batch.AddQuery(command, type, Parameters.ToArray());
-            return await Batch.ExecuteScalarAsync<TObject>();
+            return Batch.ExecuteScalarAsync<TObject>();
         }
 
         /// <summary>
@@ -281,14 +287,14 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
-            List<QueryResults> Results = new List<QueryResults>();
+            var Results = new List<QueryResults>();
             foreach (var Source in MappingManager.Sources.Where(x => x.CanRead
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
                                                          .OrderBy(x => x.Order))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
-                IClassProperty Property = FindProperty<TObject, TData>(Source, propertyName);
+                var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
@@ -301,11 +307,15 @@ namespace Inflatable.Sessions
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
                     var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
-                    var Result = Results.FirstOrDefault(y => y.CanCopy(TempQuery, IDProperties));
+                    var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));
                     if (Result != null)
+                    {
                         Result.CopyOrAdd(TempQuery, IDProperties);
+                    }
                     else
+                    {
                         Results.Add(TempQuery);
+                    }
                 }
             }
             return Results.SelectMany(x => x.ConvertValues<TData>()).ToObservableList(x => x);
@@ -323,14 +333,14 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
-            List<QueryResults> Results = new List<QueryResults>();
+            var Results = new List<QueryResults>();
             foreach (var Source in MappingManager.Sources.Where(x => x.CanRead
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
                                                          .OrderBy(x => x.Order))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
-                IClassProperty Property = FindProperty<TObject, TData>(Source, propertyName);
+                var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
@@ -338,16 +348,20 @@ namespace Inflatable.Sessions
                     Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
                 }
 
-                var ResultLists = await Batch.ExecuteAsync();
+                var ResultLists = await Batch.ExecuteAsync().ConfigureAwait(false);
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
                     var TempQuery = new QueryResults(Queries[x], ResultLists[x].Select(y => (Dynamo)y), this);
-                    var Result = Results.FirstOrDefault(y => y.CanCopy(TempQuery, IDProperties));
+                    var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));
                     if (Result != null)
+                    {
                         Result.CopyOrAdd(TempQuery, IDProperties);
+                    }
                     else
+                    {
                         Results.Add(TempQuery);
+                    }
                 }
             }
             return Results.SelectMany(x => x.ConvertValues<TData>()).ToObservableList(x => x);
@@ -380,7 +394,7 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
-            return (await LoadPropertiesAsync<TObject, TData>(objectToLoadProperty, propertyName)).FirstOrDefault();
+            return (await LoadPropertiesAsync<TObject, TData>(objectToLoadProperty, propertyName).ConfigureAwait(false)).FirstOrDefault();
         }
 
         /// <summary>
@@ -409,13 +423,21 @@ namespace Inflatable.Sessions
                 object CurrentParameter = parameters[x];
                 var TempParameter = CurrentParameter as string;
                 if (CurrentParameter is IParameter TempQueryParameter)
+                {
                     Parameters.Add(TempQueryParameter);
+                }
                 else if (CurrentParameter == null)
+                {
                     Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), null));
+                }
                 else if (TempParameter != null)
+                {
                     Parameters.Add(new StringParameter(Parameters.Count().ToString(CultureInfo.InvariantCulture), TempParameter));
+                }
                 else
+                {
                     Parameters.Add(new Parameter<object>(Parameters.Count().ToString(CultureInfo.InvariantCulture), CurrentParameter));
+                }
             }
 
             return Parameters;
@@ -436,11 +458,12 @@ namespace Inflatable.Sessions
             var ParentMappings = source.GetChildMappings(typeof(TObject)).SelectMany(x => source.GetParentMapping(x.ObjectType)).Distinct();
             IClassProperty Property = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
             if (Property != null)
+            {
                 return Property;
+            }
+
             Property = ParentMappings.SelectMany(x => x.ManyToOneProperties).FirstOrDefault(x => x.Name == propertyName);
-            if (Property != null)
-                return Property;
-            return ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
+            return Property ?? ParentMappings.SelectMany(x => x.MapProperties).FirstOrDefault(x => x.Name == propertyName);
         }
 
         /// <summary>
@@ -463,18 +486,24 @@ namespace Inflatable.Sessions
                 Batch.AddQuery(ResultingQuery.QueryString, ResultingQuery.DatabaseCommandType, ResultingQuery.Parameters);
             }
 
-            var Result = await Batch.ExecuteAsync();
+            var Result = await Batch.ExecuteAsync().ConfigureAwait(false);
             for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)
             {
                 var IDProperties = source.Key.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
                 var TempResult = new QueryResults(ResultingQueries[x], Result[x].Select(y => (Dynamo)y), this);
-                var CopyResult = results.FirstOrDefault(y => y.CanCopy(TempResult, IDProperties));
+                var CopyResult = results.Find(y => y.CanCopy(TempResult, IDProperties));
                 if (CopyResult == null && firstRun)
+                {
                     results.Add(TempResult);
+                }
                 else if (firstRun)
+                {
                     CopyResult.CopyOrAdd(TempResult, IDProperties);
+                }
                 else
+                {
                     CopyResult.Copy(TempResult, IDProperties);
+                }
             }
         }
 

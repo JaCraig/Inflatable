@@ -87,11 +87,20 @@ namespace Inflatable.QueryProvider
         public SQLHelper.SQLHelper CreateBatch(IDatabase source)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException(nameof(source));
+            }
+
             if (!Providers.TryGetValue(source.Provider, out Interfaces.IQueryProvider QueryProvider))
+            {
                 throw new ArgumentException("Provider not found: " + source.Provider);
+            }
+
             if (IsDebug)
+            {
                 Logger.Debug("Creating batch for data source {SourceName:l}", source.Name);
+            }
+
             return QueryProvider.Batch(source);
         }
 
@@ -107,12 +116,21 @@ namespace Inflatable.QueryProvider
             where TMappedClass : class
         {
             if (mappingInfo == null)
+            {
                 throw new ArgumentNullException(nameof(mappingInfo));
+            }
+
             var provider = mappingInfo.Source.Provider;
             if (!Providers.TryGetValue(provider, out Interfaces.IQueryProvider QueryProvider))
+            {
                 throw new ArgumentException("Provider not found: " + provider);
+            }
+
             if (IsDebug)
+            {
                 Logger.Debug("Creating generator for type {TypeName:l} in {SourceName:l}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
+            }
+
             return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);
         }
 
@@ -125,7 +143,10 @@ namespace Inflatable.QueryProvider
         public IGenerator CreateGenerator(Type type, MappingSource mappingInfo)
         {
             if (type.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+            {
                 type = type.GetTypeInfo().BaseType;
+            }
+
             return (IGenerator)typeof(QueryProviderManager).GetTypeInfo().GetMethod("CreateGenerator", new Type[] { typeof(MappingSource) })
                                                            .MakeGenericMethod(type)
                                                            .Invoke(this, new object[] { mappingInfo });

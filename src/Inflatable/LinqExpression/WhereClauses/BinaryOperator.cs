@@ -65,6 +65,23 @@ namespace Inflatable.LinqExpression.WhereClauses
         };
 
         /// <summary>
+        /// The negation converter
+        /// </summary>
+        private static readonly IDictionary<ExpressionType, ExpressionType> NegationConverter = new Dictionary<ExpressionType, ExpressionType>
+        {
+            [ExpressionType.And] = ExpressionType.Or,
+            [ExpressionType.Or] = ExpressionType.And,
+            [ExpressionType.Equal] = ExpressionType.NotEqual,
+            [ExpressionType.NotEqual] = ExpressionType.Equal,
+            [ExpressionType.LessThan] = ExpressionType.GreaterThanOrEqual,
+            [ExpressionType.LessThanOrEqual] = ExpressionType.GreaterThan,
+            [ExpressionType.GreaterThan] = ExpressionType.LessThanOrEqual,
+            [ExpressionType.GreaterThanOrEqual] = ExpressionType.LessThan,
+            [ExpressionType.OrElse] = ExpressionType.AndAlso,
+            [ExpressionType.AndAlso] = ExpressionType.OrElse
+        };
+
+        /// <summary>
         /// The type code converter
         /// </summary>
         private static readonly IDictionary<ExpressionType, Func<BinaryOperator, Type>> TypeCodeConverter = new Dictionary<ExpressionType, Func<BinaryOperator, Type>>
@@ -79,23 +96,6 @@ namespace Inflatable.LinqExpression.WhereClauses
             [ExpressionType.GreaterThanOrEqual] = x => typeof(bool),
             [ExpressionType.OrElse] = x => typeof(bool),
             [ExpressionType.AndAlso] = x => typeof(bool)
-        };
-
-        /// <summary>
-        /// The negation converter
-        /// </summary>
-        private static IDictionary<ExpressionType, ExpressionType> NegationConverter = new Dictionary<ExpressionType, ExpressionType>
-        {
-            [ExpressionType.And] = ExpressionType.Or,
-            [ExpressionType.Or] = ExpressionType.And,
-            [ExpressionType.Equal] = ExpressionType.NotEqual,
-            [ExpressionType.NotEqual] = ExpressionType.Equal,
-            [ExpressionType.LessThan] = ExpressionType.GreaterThanOrEqual,
-            [ExpressionType.LessThanOrEqual] = ExpressionType.GreaterThan,
-            [ExpressionType.GreaterThan] = ExpressionType.LessThanOrEqual,
-            [ExpressionType.GreaterThanOrEqual] = ExpressionType.LessThan,
-            [ExpressionType.OrElse] = ExpressionType.AndAlso,
-            [ExpressionType.AndAlso] = ExpressionType.OrElse
         };
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the type code.
         /// </summary>
         /// <value>The type code.</value>
-        public Type TypeCode { get; private set; }
+        public Type TypeCode { get; }
 
         /// <summary>
         /// Copies this instance.
@@ -143,7 +143,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>A list of parameters associated with the operator.</returns>
         public List<IParameter> GetParameters()
         {
-            List<IParameter> ReturnValue = new List<IParameter>();
+            var ReturnValue = new List<IParameter>();
             ReturnValue.AddRange(Left.GetParameters());
             ReturnValue.AddRange(Right.GetParameters());
             return ReturnValue;
@@ -171,20 +171,34 @@ namespace Inflatable.LinqExpression.WhereClauses
             Left = Left.Optimize(mappingSource);
             Right = Right.Optimize(mappingSource);
             if (Left == null && Right == null)
+            {
                 return null;
+            }
+
             if (Left == null)
+            {
                 return Right;
+            }
+
             if (Right == null)
+            {
                 return Left;
+            }
+
             if (Operator == ExpressionType.And
                 || Operator == ExpressionType.Or
                 || Operator == ExpressionType.OrElse
                 || Operator == ExpressionType.AndAlso)
             {
                 if (Left.TypeCode != typeof(bool))
+                {
                     return Right;
+                }
+
                 if (Right.TypeCode != typeof(bool))
+                {
                     return Left;
+                }
             }
             return this;
         }

@@ -44,7 +44,10 @@ namespace Inflatable.Modules
         public void Load(IBootstrapper bootstrapper)
         {
             if (bootstrapper == null)
+            {
                 return;
+            }
+
             bootstrapper.RegisterAll<IMapping>();
             bootstrapper.RegisterAll<IDatabase>();
             bootstrapper.RegisterAll<QueryProvider.Interfaces.IQueryProvider>();

@@ -40,7 +40,10 @@ namespace Inflatable.Aspect.EndMethod
         {
             var Property = mapping.MapProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
             if (Property == null)
+            {
                 return;
+            }
+
             builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",

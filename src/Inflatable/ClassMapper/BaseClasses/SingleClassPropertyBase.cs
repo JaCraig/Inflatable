@@ -37,8 +37,8 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <seealso cref="Inflatable.ClassMapper.Interfaces.IProperty{ClassType, DataType}"/>
     public abstract class SingleClassPropertyBase<ClassType, DataType, ReturnType> : IMapProperty<ClassType, DataType, ReturnType>, IMapProperty<ClassType, DataType>
         where ClassType : class
-        where ReturnType : IMapProperty<ClassType, DataType, ReturnType>
         where DataType : class
+        where ReturnType : IMapProperty<ClassType, DataType, ReturnType>
     {
         /// <summary>
         /// Constructor
@@ -48,9 +48,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         protected SingleClassPropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
         {
             if (expression == null)
+            {
                 throw new ArgumentNullException(nameof(expression));
+            }
+
             if (mapping == null)
+            {
                 throw new ArgumentNullException(nameof(mapping));
+            }
 
             Name = expression.PropertyName();
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
@@ -126,7 +131,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
-        public Type PropertyType { get; private set; }
+        public Type PropertyType { get; }
 
         /// <summary>
         /// Gets the name of the type.
@@ -172,9 +177,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator <(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() < second.GetHashCode();
         }
 
@@ -187,9 +198,14 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator ==(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return true;
+            }
 
-            if ((object)first == null || (object)second == null) return false;
+            if ((object)first == null || (object)second == null)
+            {
+                return false;
+            }
 
             return first.GetHashCode() == second.GetHashCode();
         }
@@ -203,9 +219,15 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator >(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
         {
             if (ReferenceEquals(first, second))
+            {
                 return false;
+            }
+
             if ((object)first == null || (object)second == null)
+            {
                 return false;
+            }
+
             return first.GetHashCode() > second.GetHashCode();
         }
 
@@ -261,9 +283,11 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            var SecondObj = obj as SingleClassPropertyBase<ClassType, DataType, ReturnType>;
-            if (((object)SecondObj) == null)
+            if (!(obj is SingleClassPropertyBase<ClassType, DataType, ReturnType> SecondObj))
+            {
                 return false;
+            }
+
             return this == SecondObj;
         }
 
@@ -292,9 +316,11 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>The value of the property</returns>
         public object GetValue(object Object)
         {
-            var TempObject = Object as ClassType;
-            if (TempObject is null)
+            if (!(Object is ClassType TempObject))
+            {
                 return null;
+            }
+
             return CompiledExpression(TempObject);
         }
 
@@ -339,6 +365,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
+        /// <param name="mappings">The mappings.</param>
         public abstract void Setup(MappingSource mappings);
 
         /// <summary>

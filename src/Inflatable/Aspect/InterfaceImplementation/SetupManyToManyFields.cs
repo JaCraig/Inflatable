@@ -59,9 +59,14 @@ namespace Inflatable.Aspect.InterfaceImplementation
                     {
                         aspect.ManyToOneFields.Add(Property);
                         if (Property is IManyToOneListProperty)
+                        {
                             Builder.AppendLineFormat("private {0} {1};", "IList<" + Property.TypeName + ">", Property.InternalFieldName);
+                        }
                         else
+                        {
                             Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.InternalFieldName);
+                        }
+
                         Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
                     }
                 }

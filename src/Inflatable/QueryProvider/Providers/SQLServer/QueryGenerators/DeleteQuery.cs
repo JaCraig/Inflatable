@@ -61,13 +61,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; set; }
+        private IEnumerable<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets or sets the parent mappings.
         /// </summary>
         /// <value>The parent mappings.</value>
-        private IEnumerable<IMapping> ParentMappings { get; set; }
+        private IEnumerable<IMapping> ParentMappings { get; }
 
         /// <summary>
         /// Gets or sets the query text.
@@ -109,7 +109,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         private void GenerateQuery()
         {
-            StringBuilder Builder = new StringBuilder();
+            var Builder = new StringBuilder();
             foreach (var ParentMapping in ParentMappings.Where(x => x.IDProperties.Count > 0).OrderBy(x => x.Order))
             {
                 Builder.AppendLineFormat("DELETE FROM {0} WHERE {1};",

@@ -51,7 +51,7 @@ namespace Inflatable.Tests
                     BaseClassValue1=3
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<BaseClass1>.CreateQuery();
             //var Result = TestObject.OrderBy(x => x.BaseClassValue1).ThenByDescending(x => x.ID).First();
@@ -104,7 +104,7 @@ namespace Inflatable.Tests
                     Name="B"
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var Results = TestObject.Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).Distinct().ToList();
@@ -145,7 +145,7 @@ namespace Inflatable.Tests
                     IntValue=4,
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).First();
@@ -199,7 +199,7 @@ namespace Inflatable.Tests
                     IntValue=4,
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).ToList();
@@ -249,7 +249,7 @@ namespace Inflatable.Tests
                     IntValue=10,
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).ToList();
@@ -294,7 +294,7 @@ namespace Inflatable.Tests
                     IntValue=4,
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync();
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Take(3).ToList();

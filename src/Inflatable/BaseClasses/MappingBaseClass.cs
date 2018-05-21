@@ -37,8 +37,8 @@ namespace Inflatable.BaseClasses
     /// <seealso cref="Inflatable.Interfaces.IMapping"/>
     /// <seealso cref="Inflatable.Interfaces.IMapping{ClassType}"/>
     public abstract class MappingBaseClass<ClassType, DatabaseType> : IMapping, IMapping<ClassType>
-        where DatabaseType : IDatabase
         where ClassType : class
+        where DatabaseType : IDatabase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MappingBaseClass{ClassType, DatabaseType}"/> class.
@@ -71,7 +71,7 @@ namespace Inflatable.BaseClasses
         /// Gets the automatic identifier properties.
         /// </summary>
         /// <value>The automatic identifier properties.</value>
-        public ICollection<IAutoIDProperty> AutoIDProperties { get; private set; }
+        public ICollection<IAutoIDProperty> AutoIDProperties { get; }
 
         /// <summary>
         /// Gets the type of the database configuration.
@@ -83,25 +83,25 @@ namespace Inflatable.BaseClasses
         /// ID properties
         /// </summary>
         /// <value>The identifier properties.</value>
-        public ICollection<IIDProperty> IDProperties { get; private set; }
+        public ICollection<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets the many to many properties.
         /// </summary>
         /// <value>The many to many properties.</value>
-        public ICollection<IManyToManyProperty> ManyToManyProperties { get; private set; }
+        public ICollection<IManyToManyProperty> ManyToManyProperties { get; }
 
         /// <summary>
         /// Gets the many to one properties.
         /// </summary>
         /// <value>The many to one properties.</value>
-        public ICollection<IManyToOneProperty> ManyToOneProperties { get; private set; }
+        public ICollection<IManyToOneProperty> ManyToOneProperties { get; }
 
         /// <summary>
         /// Gets the map properties.
         /// </summary>
         /// <value>The map properties.</value>
-        public ICollection<IMapProperty> MapProperties { get; private set; }
+        public ICollection<IMapProperty> MapProperties { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Inflatable.Interfaces.IMapping"/>
@@ -120,43 +120,43 @@ namespace Inflatable.BaseClasses
         /// Order that the mappings are initialized
         /// </summary>
         /// <value>The order.</value>
-        public int Order { get; private set; }
+        public int Order { get; }
 
         /// <summary>
         /// Prefix used for defining properties/table name
         /// </summary>
         /// <value>The prefix.</value>
-        public string Prefix { get; private set; }
+        public string Prefix { get; }
 
         /// <summary>
         /// Gets the queries.
         /// </summary>
         /// <value>The queries.</value>
-        public IQueries Queries { get; private set; }
+        public IQueries Queries { get; }
 
         /// <summary>
         /// Reference Properties list
         /// </summary>
         /// <value>The reference properties.</value>
-        public ICollection<IProperty> ReferenceProperties { get; private set; }
+        public ICollection<IProperty> ReferenceProperties { get; }
 
         /// <summary>
         /// Gets the name of the schema.
         /// </summary>
         /// <value>The name of the schema.</value>
-        public string SchemaName { get; private set; }
+        public string SchemaName { get; }
 
         /// <summary>
         /// Suffix used for defining properties/table name
         /// </summary>
         /// <value>The suffix.</value>
-        public string Suffix { get; private set; }
+        public string Suffix { get; }
 
         /// <summary>
         /// Table name
         /// </summary>
         /// <value>The name of the table.</value>
-        public string TableName { get; private set; }
+        public string TableName { get; }
 
         /// <summary>
         /// Determines if the two items are not equal
@@ -282,9 +282,11 @@ namespace Inflatable.BaseClasses
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            var Object2 = obj as MappingBaseClass<ClassType, DatabaseType>;
-            if ((object)Object2 == null)
+            if (!(obj is MappingBaseClass<ClassType, DatabaseType> Object2))
+            {
                 return false;
+            }
+
             return string.Equals(TableName, Object2.TableName, StringComparison.Ordinal)
                 && DatabaseConfigType == Object2.DatabaseConfigType;
         }
@@ -298,10 +300,16 @@ namespace Inflatable.BaseClasses
         {
             var IDProperty = IDProperties.FirstOrDefault(x => x.Name == propertyName);
             if (IDProperty != null)
+            {
                 return "[" + SchemaName + "].[" + TableName + "].[" + IDProperty.ColumnName + "]";
+            }
+
             var ReferenceProperty = ReferenceProperties.FirstOrDefault(x => x.Name == propertyName);
             if (ReferenceProperty != null)
+            {
                 return "[" + SchemaName + "].[" + TableName + "].[" + ReferenceProperty.ColumnName + "]";
+            }
+
             return "";
         }
 
@@ -323,7 +331,11 @@ namespace Inflatable.BaseClasses
         /// <exception cref="ArgumentNullException">expression</exception>
         public ID<ClassType, DataType> ID<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
         {
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var ReturnValue = new ID<ClassType, DataType>(expression, this);
             IDProperties.Add(ReturnValue);
             return ReturnValue;
@@ -338,7 +350,11 @@ namespace Inflatable.BaseClasses
         public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
             where DataType : class
         {
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var ReturnValue = new ManyToMany<ClassType, DataType>(expression, this);
             ManyToManyProperties.Add(ReturnValue);
             return ReturnValue;
@@ -353,7 +369,11 @@ namespace Inflatable.BaseClasses
         public ManyToOneMany<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
             where DataType : class
         {
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var ReturnValue = new ManyToOneMany<ClassType, DataType>(expression, this);
             ManyToOneProperties.Add(ReturnValue);
             return ReturnValue;
@@ -368,7 +388,11 @@ namespace Inflatable.BaseClasses
         public ManyToOneSingle<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
             where DataType : class
         {
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var ReturnValue = new ManyToOneSingle<ClassType, DataType>(expression, this);
             ManyToOneProperties.Add(ReturnValue);
             return ReturnValue;
@@ -384,7 +408,11 @@ namespace Inflatable.BaseClasses
         public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
             where DataType : class
         {
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var ReturnValue = new Map<ClassType, DataType>(expression, this);
             MapProperties.Add(ReturnValue);
             return ReturnValue;
@@ -509,7 +537,7 @@ namespace Inflatable.BaseClasses
                 var ReferenceProperty1 = parentMapping.ManyToManyProperties.ElementAt(x);
                 for (int y = x + 1; y < ManyToManyProperties.Count; ++y)
                 {
-                    IManyToManyProperty ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
+                    var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         logger.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
@@ -524,7 +552,7 @@ namespace Inflatable.BaseClasses
                 var ReferenceProperty1 = parentMapping.ManyToOneProperties.ElementAt(x);
                 for (int y = x + 1; y < ManyToOneProperties.Count; ++y)
                 {
-                    IManyToOneProperty ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
+                    var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         logger.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
@@ -544,7 +572,11 @@ namespace Inflatable.BaseClasses
         /// <exception cref="ArgumentNullException">expression</exception>
         public Reference<ClassType, DataType> Reference<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
         {
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             var ReturnValue = new Reference<ClassType, DataType>(expression, this);
             ReferenceProperties.Add(ReturnValue);
             return ReturnValue;
@@ -561,7 +593,11 @@ namespace Inflatable.BaseClasses
         /// <exception cref="ArgumentNullException">queryString</exception>
         public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters)
         {
-            if (string.IsNullOrEmpty(queryString)) throw new ArgumentNullException(nameof(queryString));
+            if (string.IsNullOrEmpty(queryString))
+            {
+                throw new ArgumentNullException(nameof(queryString));
+            }
+
             Queries.Add(queryType, new Query(ObjectType, databaseCommandType, queryString, queryType, parameters));
             return this;
         }

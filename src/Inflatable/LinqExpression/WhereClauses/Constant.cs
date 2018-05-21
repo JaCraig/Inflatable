@@ -44,7 +44,9 @@ namespace Inflatable.LinqExpression.WhereClauses
             Count = count;
             Value = value;
             if (value != null)
+            {
                 TypeCode = Value.GetType();
+            }
         }
 
         /// <summary>
@@ -86,7 +88,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>A list of parameters associated with the operator.</returns>
         public List<IParameter> GetParameters()
         {
-            List<IParameter> ReturnValue = new List<IParameter>();
+            var ReturnValue = new List<IParameter>();
             if (Value == null)
             {
                 ReturnValue.Add(new Parameter<object>(Count.ToString(), null));
@@ -137,9 +139,15 @@ namespace Inflatable.LinqExpression.WhereClauses
         public override string ToString()
         {
             if (Value is IQueryable TempQuery)
+            {
                 return "SELECT * FROM " + TempQuery.ElementType.Name;
+            }
+
             if (Value == null)
+            {
                 return "NULL";
+            }
+
             return "@" + Count;
         }
     }

@@ -13,7 +13,7 @@ namespace Inflatable.Tests.ClassMapper
             TestObject = new AllReferencesAndIDMappingNoDatabase();
         }
 
-        private AllReferencesAndIDMappingNoDatabase TestObject { get; set; }
+        private AllReferencesAndIDMappingNoDatabase TestObject { get; }
 
         [Fact]
         public void Creation()

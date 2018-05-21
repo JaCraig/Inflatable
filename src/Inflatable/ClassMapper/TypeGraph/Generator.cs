@@ -40,7 +40,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Gets or sets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        private IDictionary<Type, IMapping> Mappings { get; set; }
+        private IDictionary<Type, IMapping> Mappings { get; }
 
         /// <summary>
         /// Generates the specified mapping type.
@@ -50,7 +50,10 @@ namespace Inflatable.ClassMapper.TypeGraph
         public Tree<Type> Generate(Type mappingType)
         {
             if (!Mappings.Keys.Contains(mappingType))
+            {
                 return null;
+            }
+
             var TempTypeGraph = new Tree<Type>(mappingType);
             mappingType = mappingType.GetTypeInfo().BaseType;
             var CurrentNode = TempTypeGraph.Root;
@@ -80,7 +83,10 @@ namespace Inflatable.ClassMapper.TypeGraph
                     for (int x = 0; x < MaxLength; ++x)
                     {
                         if (PotentialNodes[x] == null)
+                        {
                             continue;
+                        }
+
                         for (int y = 0; y < MaxLength; ++y)
                         {
                             if (x != y && PotentialNodes[x].ContainsNode(CurrentInterfaces[y], (i, j) => i == j))

@@ -48,7 +48,10 @@ namespace Inflatable.QueryProvider.BaseClasses
         {
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
             if (!MappingInformation.GetChildMappings(AssociatedType).Any())
+            {
                 throw new ArgumentException("Mapping not found for type: " + AssociatedType);
+            }
+
             queryGenerators = queryGenerators ?? throw new ArgumentNullException(nameof(queryGenerators));
             QueryGenerators = queryGenerators.ToDictionary(x => x.QueryType);
             LinqQueryGenerator = (ILinqQueryGenerator<TMappedClass>)queryGenerators.FirstOrDefault(x => x.QueryType == QueryType.LinqQuery);
