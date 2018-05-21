@@ -152,7 +152,7 @@ namespace Inflatable
         {
             var Results = Translate(expression);
             var DatabaseValues = Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(Results).GetAwaiter().GetResult();
-            return Results.Values.First().Top == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
+            return (Results.Values.FirstOrDefault()?.Top ?? 0) == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 
         /// <summary>
