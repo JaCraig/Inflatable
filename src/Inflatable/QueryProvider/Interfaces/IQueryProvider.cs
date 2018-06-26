@@ -16,6 +16,7 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
+using SQLHelperDB;
 using System.Data.Common;
 
 namespace Inflatable.QueryProvider.Interfaces
@@ -35,7 +36,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>A batch object</returns>
-        SQLHelper.SQLHelper Batch(IDatabase source);
+        SQLHelper Batch(IDatabase source);
 
         /// <summary>
         /// Creates a generator object

@@ -16,7 +16,7 @@ limitations under the License.
 
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 

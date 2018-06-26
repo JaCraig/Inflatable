@@ -17,7 +17,7 @@ limitations under the License.
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

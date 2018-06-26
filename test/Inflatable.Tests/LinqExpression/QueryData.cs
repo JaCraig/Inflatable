@@ -4,7 +4,7 @@ using Inflatable.QueryProvider;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
-using SQLHelper.HelperClasses;
+using SQLHelperDB.HelperClasses;
 using System.Collections.Generic;
 using System.Data;
 using Xunit;

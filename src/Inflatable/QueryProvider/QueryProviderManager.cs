@@ -20,6 +20,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
 using Serilog;
 using Serilog.Events;
+using SQLHelperDB;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ namespace Inflatable.QueryProvider
         /// <returns>Creates a batch</returns>
         /// <exception cref="System.ArgumentNullException">source</exception>
         /// <exception cref="System.ArgumentException">Provider not found</exception>
-        public SQLHelper.SQLHelper CreateBatch(IDatabase source)
+        public SQLHelper CreateBatch(IDatabase source)
         {
             if (source == null)
             {

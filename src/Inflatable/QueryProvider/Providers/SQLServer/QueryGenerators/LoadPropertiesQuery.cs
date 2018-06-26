@@ -22,7 +22,7 @@ using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses;
 using Inflatable.Utils;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -18,6 +18,7 @@ using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
 using Microsoft.Extensions.Configuration;
+using SQLHelperDB;
 using System;
 using System.Collections.Concurrent;
 using System.Data.Common;
@@ -65,9 +66,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper.SQLHelper Batch(IDatabase source)
+        public SQLHelper Batch(IDatabase source)
         {
-            return new SQLHelper.SQLHelper(Configuration, Provider, source.Name);
+            return new SQLHelper(Configuration, Provider, source.Name);
         }
 
         /// <summary>

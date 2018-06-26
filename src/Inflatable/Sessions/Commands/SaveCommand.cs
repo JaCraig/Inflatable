@@ -24,6 +24,7 @@ using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.Sessions.Commands.BaseClasses;
 using Inflatable.Sessions.Commands.Enums;
+using SQLHelperDB;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,7 @@ namespace Inflatable.Sessions.Commands
             }
 
             var ReturnValue = 0;
-            CreateBatch(source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
+            CreateBatch(source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -97,7 +98,7 @@ namespace Inflatable.Sessions.Commands
             }
 
             var ReturnValue = 0;
-            CreateBatch(source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
+            CreateBatch(source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -118,7 +119,7 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="generator">The generator.</param>
         /// <param name="declarationBatch">The declaration batch.</param>
-        private static void SetupInsertDeclarations(IGenerator generator, SQLHelper.SQLHelper declarationBatch)
+        private static void SetupInsertDeclarations(IGenerator generator, SQLHelper declarationBatch)
         {
             var DeclarationQuery = generator.GenerateDeclarations(QueryType.Insert);
             for (int x = 0, DeclarationQueryLength = DeclarationQuery.Length; x < DeclarationQueryLength; ++x)
@@ -151,8 +152,8 @@ namespace Inflatable.Sessions.Commands
         /// <param name="parentMappings">The parent mappings.</param>
         private void CascadeManyToManyProperties(object @object,
             MappingSource source,
-            SQLHelper.SQLHelper batch,
-            SQLHelper.SQLHelper declarationBatch,
+            SQLHelper batch,
+            SQLHelper declarationBatch,
             IList<object> objectsSeen,
             IEnumerable<IMapping> parentMappings)
         {
@@ -175,8 +176,8 @@ namespace Inflatable.Sessions.Commands
 
         private void CascadeManyToOneProperties(object @object,
             MappingSource source,
-            SQLHelper.SQLHelper batch,
-            SQLHelper.SQLHelper declarationBatch,
+            SQLHelper batch,
+            SQLHelper declarationBatch,
             IList<object> objectsSeen,
             IEnumerable<IMapping> parentMappings)
         {
@@ -216,8 +217,8 @@ namespace Inflatable.Sessions.Commands
         /// <param name="ParentMappings">The parent mappings.</param>
         private void CascadeMapProperties(object @object,
             MappingSource source,
-            SQLHelper.SQLHelper batch,
-            SQLHelper.SQLHelper declarationBatch,
+            SQLHelper batch,
+            SQLHelper declarationBatch,
             IList<object> objectsSeen,
             IEnumerable<IMapping> ParentMappings)
         {
@@ -231,7 +232,7 @@ namespace Inflatable.Sessions.Commands
             }
         }
 
-        private void CreateBatch(MappingSource source, out SQLHelper.SQLHelper Batch, out SQLHelper.SQLHelper DeclarationBatch, out List<object> ObjectsSeen)
+        private void CreateBatch(MappingSource source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen)
         {
             Batch = QueryProviderManager.CreateBatch(source.Source);
             DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
@@ -250,7 +251,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="declarationBatch">The declaration batch.</param>
         /// <param name="idProperties">The identifier properties.</param>
-        private void Insert(object @object, MappingSource source, SQLHelper.SQLHelper batch, SQLHelper.SQLHelper declarationBatch, IEnumerable<IIDProperty> idProperties)
+        private void Insert(object @object, MappingSource source, SQLHelper batch, SQLHelper declarationBatch, IEnumerable<IIDProperty> idProperties)
         {
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
             SetupInsertDeclarations(Generator, declarationBatch);
@@ -281,7 +282,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="declarationBatch">The declaration batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void Save(object @object, MappingSource source, SQLHelper.SQLHelper batch, SQLHelper.SQLHelper declarationBatch, IList<object> objectsSeen)
+        private void Save(object @object, MappingSource source, SQLHelper batch, SQLHelper declarationBatch, IList<object> objectsSeen)
         {
             if (@object == null
                 || WasObjectSeen(@object, objectsSeen, source)
@@ -326,7 +327,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void SaveJoins(MappingSource source, SQLHelper.SQLHelper batch, IList<object> objectsSeen)
+        private void SaveJoins(MappingSource source, SQLHelper batch, IList<object> objectsSeen)
         {
             for (int i = 0, objectsSeenCount = objectsSeen.Count; i < objectsSeenCount; i++)
             {
@@ -354,7 +355,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="property">The property.</param>
-        private void SavePropertyJoins(object @object, MappingSource source, SQLHelper.SQLHelper batch, IClassProperty property)
+        private void SavePropertyJoins(object @object, MappingSource source, SQLHelper batch, IClassProperty property)
         {
             var LinksGenerator = QueryProviderManager.CreateGenerator(property.ParentMapping.ObjectType, source);
             var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, property);
@@ -378,7 +379,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="updateObject">The update object.</param>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
-        private void Update(object updateObject, MappingSource source, SQLHelper.SQLHelper batch)
+        private void Update(object updateObject, MappingSource source, SQLHelper batch)
         {
             var Generator = QueryProviderManager.CreateGenerator(updateObject.GetType(), source);
             var Queries = Generator.GenerateQueries(QueryType.Update, updateObject);

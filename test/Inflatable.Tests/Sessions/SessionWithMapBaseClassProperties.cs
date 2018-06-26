@@ -11,6 +11,7 @@ using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.MapProperties.Mappings;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
+using SQLHelperDB;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -184,7 +185,7 @@ namespace Inflatable.Tests.Sessions
 
         private void SetupData()
         {
-            new SQLHelper.SQLHelper(Configuration, SqlClientFactory.Instance)
+            new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
                 .AddQuery(@"INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
 INSERT INTO [dbo].[MapPropertyBaseClass_]([BaseValue1_],[IMapPropertyInterface_ID_]) VALUES (1,1);

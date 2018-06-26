@@ -21,8 +21,9 @@ using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
-using SQLHelper.HelperClasses;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB;
+using SQLHelperDB.HelperClasses;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -117,7 +118,7 @@ namespace Inflatable.Schema
 
             Logger.Information("Analyzing {Info:l} for suggestions.", SourceConnection.DatabaseName);
             var Results = Holmes.Sherlock.Analyze(SourceConnection);
-            var Batch = new SQLHelper.SQLHelper(SourceConnection);
+            var Batch = new SQLHelper(SourceConnection);
             foreach (var Result in Results)
             {
                 Logger.Information("Finding: {Info:l}", Result.Text);

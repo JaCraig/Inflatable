@@ -19,7 +19,7 @@ using Inflatable.ClassMapper;
 using Inflatable.LinqExpression.Interfaces;
 using Inflatable.LinqExpression.OrderBy;
 using Inflatable.LinqExpression.WhereClauses;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

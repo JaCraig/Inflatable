@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 using Inflatable.QueryProvider.Enums;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Data;
 

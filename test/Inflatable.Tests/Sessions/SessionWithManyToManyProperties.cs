@@ -11,6 +11,7 @@ using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
+using SQLHelperDB;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -271,7 +272,7 @@ namespace Inflatable.Tests.Sessions
 
         private void SetupData()
         {
-            new SQLHelper.SQLHelper(Configuration, SqlClientFactory.Instance)
+            new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
                 .AddQuery(@"INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)

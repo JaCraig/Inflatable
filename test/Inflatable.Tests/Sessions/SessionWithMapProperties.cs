@@ -11,6 +11,7 @@ using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
+using SQLHelperDB;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -268,7 +269,7 @@ namespace Inflatable.Tests.Sessions
 
         private void SetupData()
         {
-            new SQLHelper.SQLHelper(Configuration, SqlClientFactory.Instance)
+            new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
                 .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]

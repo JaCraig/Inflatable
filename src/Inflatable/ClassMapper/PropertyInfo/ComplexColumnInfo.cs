@@ -16,7 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.Column.Interfaces;
-using SQLHelper.HelperClasses.Interfaces;
+using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 
 namespace Inflatable.ClassMapper.Column

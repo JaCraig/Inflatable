@@ -10,6 +10,7 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties.Mappings;
 using Serilog;
+using SQLHelperDB;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -242,7 +243,7 @@ namespace Inflatable.Tests.Sessions
 
         private void SetupData()
         {
-            new SQLHelper.SQLHelper(Configuration, SqlClientFactory.Instance)
+            new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
                 .AddQuery(@"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)

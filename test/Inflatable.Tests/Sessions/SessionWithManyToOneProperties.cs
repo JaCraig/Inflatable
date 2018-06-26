@@ -10,6 +10,7 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties.Mappings;
 using Serilog;
+using SQLHelperDB;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -245,7 +246,7 @@ namespace Inflatable.Tests.Sessions
 
         private void SetupData()
         {
-            new SQLHelper.SQLHelper(Configuration, SqlClientFactory.Instance)
+            new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
                 .AddQuery(@"INSERT INTO [dbo].[ManyToOneManyProperties_]([BoolValue_]) VALUES (1);
 INSERT INTO [dbo].[ManyToOneManyCascadeProperties_]([BoolValue_]) VALUES (1);
