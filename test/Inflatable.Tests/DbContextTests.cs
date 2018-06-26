@@ -4,6 +4,7 @@ using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
+using Inflatable.Tests.TestDatabases.LoadPropertyUsingQuery;
 using Inflatable.Tests.TestDatabases.SimpleClassNoAutoID;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using System.Linq;
@@ -75,6 +76,33 @@ namespace Inflatable.Tests
         {
             var TestObject = new DbContext<AllReferencesAndID>();
             Assert.NotNull(TestObject);
+        }
+
+        [Fact]
+        public async Task CustomPropertyLoading()
+        {
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+
+            var TestObject = new MapPropertiesCustomLoad
+            {
+                BoolValue = true,
+                MappedClass = new AllReferencesAndID()
+                {
+                    BoolValue = true,
+                    IntValue = 4,
+                    CharValue = 'q'
+                }
+            };
+            await TempSession.Save(TestObject).ExecuteAsync().ConfigureAwait(false);
+
+            var Result = DbContext<MapPropertiesCustomLoad>.CreateQuery().Where(x => x.ID == 1).FirstOrDefault();
+            Assert.NotNull(Result);
+            Assert.NotNull(Result.MappedClass);
+            Assert.True(Result.BoolValue);
+            Assert.False(Result.MappedClass.BoolValue);
+            Assert.Equal(0, Result.MappedClass.IntValue);
+            Assert.Equal('q', Result.MappedClass.CharValue);
         }
 
         [Fact]

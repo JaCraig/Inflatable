@@ -481,6 +481,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
         private IQuery[] LoadManyToManyProperty(IManyToManyProperty property, TMappedClass queryObject)
         {
+            if (property.LoadPropertyQuery != null)
+            {
+                return new IQuery[] {
+                    new Query(property.LoadPropertyQuery.ReturnType,
+                    property.LoadPropertyQuery.DatabaseCommandType,
+                    property.LoadPropertyQuery.QueryString,
+                    property.LoadPropertyQuery.QueryType,
+                    GenerateParameters(queryObject, IDProperties))
+                    };
+            }
             var ChildMappings = MappingInformation.GetChildMappings(property.PropertyType);
             var ReturnValue = new List<IQuery>();
 
@@ -514,6 +524,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private IQuery[] LoadManyToOneProperty(IManyToOneProperty manyToOne, TMappedClass queryObject)
         {
+            if (manyToOne.LoadPropertyQuery != null)
+            {
+                return new IQuery[] {
+                    new Query(manyToOne.LoadPropertyQuery.ReturnType,
+                    manyToOne.LoadPropertyQuery.DatabaseCommandType,
+                    manyToOne.LoadPropertyQuery.QueryString,
+                    manyToOne.LoadPropertyQuery.QueryType,
+                    GenerateParameters(queryObject, IDProperties))
+                    };
+            }
             var ChildMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType);
 
             var ReturnValue = new List<IQuery>();
@@ -548,6 +568,17 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private IQuery[] LoadManyToOneProperty(IManyToOneListProperty manyToOne, TMappedClass queryObject)
         {
+            if (manyToOne.LoadPropertyQuery != null)
+            {
+                return new IQuery[] {
+                    new Query(manyToOne.LoadPropertyQuery.ReturnType,
+                    manyToOne.LoadPropertyQuery.DatabaseCommandType,
+                    manyToOne.LoadPropertyQuery.QueryString,
+                    manyToOne.LoadPropertyQuery.QueryType,
+                    GenerateParameters(queryObject, IDProperties))
+                    };
+            }
+
             var ChildMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType);
 
             var ReturnValue = new List<IQuery>();
@@ -582,6 +613,17 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The queries to load the map property.</returns>
         private IQuery[] LoadMapProperty(IMapProperty property, TMappedClass queryObject)
         {
+            if (property.LoadPropertyQuery != null)
+            {
+                return new IQuery[] {
+                    new Query(property.LoadPropertyQuery.ReturnType,
+                    property.LoadPropertyQuery.DatabaseCommandType,
+                    property.LoadPropertyQuery.QueryString,
+                    property.LoadPropertyQuery.QueryType,
+                    GenerateParameters(queryObject, IDProperties))
+                    };
+            }
+
             var ChildMappings = MappingInformation.GetChildMappings(property.PropertyType);
 
             var ReturnValue = new List<IQuery>();
