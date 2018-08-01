@@ -198,13 +198,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var PropertyValues = new StringBuilder();
             var ParametersList = new StringBuilder();
             string Splitter = "";
-            string Splitter2 = "";
             foreach (var ForeignID in foreignIDProperties)
             {
                 PropertyNames.Append(Splitter).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(ForeignID.ParentMapping.TableName).Append(ForeignID.ColumnName).Append("]");
                 PropertyValues.Append(Splitter).Append("@").Append(ForeignID.ParentMapping.TableName).Append(ForeignID.ColumnName);
                 Splitter = ",";
-                Splitter2 = " AND ";
             }
             string Prefix = "";
             if (IDProperties.Any(x => x.ParentMapping == property.ForeignMapping))
@@ -217,7 +215,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 PropertyNames.Append(Splitter).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("]");
                 PropertyValues.Append(Splitter).Append("@").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
                 Splitter = ",";
-                Splitter2 = " AND ";
             }
             Builder.AppendFormat("INSERT INTO {0}({1}) VALUES ({2});", GetTableName(property), PropertyNames, PropertyValues);
             return Builder.ToString();
