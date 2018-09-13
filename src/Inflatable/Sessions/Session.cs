@@ -197,13 +197,14 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             var KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
-            queries.Values
-                .SelectMany(x => x.Parameters)
-                .Distinct()
-                .ForEach(x => KeyName = x.AddParameter(KeyName));
+            (queries?.Values
+                ?.SelectMany(x => x.Parameters)
+                ?.Distinct()
+                ?? new List<IParameter>())
+                ?.ForEach(x => KeyName = x.AddParameter(KeyName));
             if (QueryResults.IsCached(KeyName))
             {
-                return QueryResults.GetCached(KeyName).SelectMany(x => x.ConvertValues<TObject>());
+                return QueryResults.GetCached(KeyName)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
             }
             var Results = new List<QueryResults>();
             bool FirstRun = true;
@@ -221,7 +222,7 @@ namespace Inflatable.Sessions
                 FirstRun = false;
             }
             QueryResults.CacheValues(KeyName, Results);
-            return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
+            return Results?.SelectMany(x => x.ConvertValues<TObject>())?.ToArray() ?? Array.Empty<TObject>();
         }
 
         /// <summary>
