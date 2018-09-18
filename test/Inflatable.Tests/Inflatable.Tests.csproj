@@ -28,7 +28,7 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="FileCurator" Version="2.0.8" />
+    <PackageReference Include="FileCurator" Version="2.0.9" />
   </ItemGroup>
 
   <ItemGroup>
