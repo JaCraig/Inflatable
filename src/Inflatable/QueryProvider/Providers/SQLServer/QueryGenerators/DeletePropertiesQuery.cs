@@ -110,7 +110,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var PropertyNames = new StringBuilder();
             var PropertyValues = new StringBuilder();
             var ParametersList = new StringBuilder();
-            var ParentMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType);
+            var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             string Prefix = "";
             if (ParentWithID == property.ForeignMapping)
@@ -139,7 +139,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var ItemList = propertyItem as IEnumerable;
             var ReturnValues = new List<IParameter>();
-            var ParentMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType);
+            var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             string Prefix = "";
             if (ParentWithID == property.ForeignMapping)

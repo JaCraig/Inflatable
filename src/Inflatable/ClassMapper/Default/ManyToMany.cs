@@ -87,7 +87,7 @@ namespace Inflatable.ClassMapper.Default
         public override void SetColumnInfo(MappingSource mappings)
         {
             string Prefix = "";
-            var ParentMappings = mappings.GetParentMapping(ParentMapping.ObjectType);
+            var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             if (ParentWithID == ForeignMapping)
