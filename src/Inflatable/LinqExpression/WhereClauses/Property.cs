@@ -121,7 +121,14 @@ namespace Inflatable.LinqExpression.WhereClauses
             }
             Column = ParentMapping.GetColumnName(InternalProperty.Name);
 
-            if (InternalProperty.PropertyType == typeof(bool) && !(Parent is BinaryOperator))
+            var BinaryParent = Parent as BinaryOperator;
+
+            if (InternalProperty.PropertyType == typeof(bool)
+                && (BinaryParent == null
+                    || BinaryParent.Operator == ExpressionType.And
+                    || BinaryParent.Operator == ExpressionType.AndAlso
+                    || BinaryParent.Operator == ExpressionType.Or
+                    || BinaryParent.Operator == ExpressionType.OrElse))
             {
                 return new BinaryOperator(this, new Constant(true, Count), ExpressionType.Equal);
             }
