@@ -351,17 +351,20 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (!Queries.ContainsKey(property.Name))
             {
-                var ForeignIDProperties = MappingInformation.GetChildMappings(property.PropertyType)
+                var ForeignMappings = MappingInformation.GetChildMappings(property.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
-                                            .Distinct()
-                                            .SelectMany(x => x.IDProperties);
+                                            .Distinct();
+                var ForeignIDProperties = ForeignMappings.SelectMany(x => x.IDProperties);
 
-                Queries.Add(property.Name, new QueryGeneratorData
+                foreach (var ForeignMapping in ForeignMappings)
                 {
-                    AssociatedMapping = MappingInformation.Mappings[property.PropertyType],
-                    IDProperties = IDProperties,
-                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, property)
-                });
+                    Queries.Add(property.Name, new QueryGeneratorData
+                    {
+                        AssociatedMapping = MappingInformation.Mappings[ForeignMapping.ObjectType],
+                        IDProperties = IDProperties,
+                        QueryText = GenerateJoinSaveQuery(ForeignIDProperties, property)
+                    });
+                }
             }
             if (!(property.GetValue(queryObject) is IEnumerable ItemList))
             {
@@ -393,17 +396,20 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                var ForeignIDProperties = MappingInformation.GetChildMappings(manyToOne.PropertyType)
+                var ForeignMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
-                                            .Distinct()
-                                            .SelectMany(x => x.IDProperties);
+                                            .Distinct();
+                var ForeignIDProperties = ForeignMappings.SelectMany(x => x.IDProperties);
 
-                Queries.Add(manyToOne.Name, new QueryGeneratorData
+                foreach (var ForeignMapping in ForeignMappings)
                 {
-                    AssociatedMapping = MappingInformation.Mappings[manyToOne.PropertyType],
-                    IDProperties = IDProperties,
-                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
-                });
+                    Queries.Add(manyToOne.Name, new QueryGeneratorData
+                    {
+                        AssociatedMapping = MappingInformation.Mappings[ForeignMapping.ObjectType],
+                        IDProperties = IDProperties,
+                        QueryText = GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
+                    });
+                }
             }
             if (!(manyToOne.GetValue(queryObject) is IEnumerable ItemList))
             {
@@ -437,17 +443,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                var ForeignIDProperties = MappingInformation.GetChildMappings(manyToOne.PropertyType)
+                var ForeignMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
-                                            .Distinct()
+                                            .Distinct();
+                var ForeignIDProperties = ForeignMappings
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(manyToOne.Name, new QueryGeneratorData
+                foreach (var ForeignMapping in ForeignMappings)
                 {
-                    AssociatedMapping = MappingInformation.Mappings[manyToOne.PropertyType],
-                    IDProperties = IDProperties,
-                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
-                });
+                    Queries.Add(manyToOne.Name, new QueryGeneratorData
+                    {
+                        AssociatedMapping = MappingInformation.Mappings[ForeignMapping.ObjectType],
+                        IDProperties = IDProperties,
+                        QueryText = GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
+                    });
+                }
             }
             var ReturnValue = new List<IQuery>();
             foreach (var TempQuery in Queries[manyToOne.Name])
@@ -473,17 +483,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(mapProperty.Name))
             {
-                var ForeignIDProperties = MappingInformation.GetChildMappings(mapProperty.PropertyType)
+                var ForeignMappings = MappingInformation.GetChildMappings(mapProperty.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
-                                            .Distinct()
+                                            .Distinct();
+                var ForeignIDProperties = ForeignMappings
                                             .SelectMany(x => x.IDProperties);
 
-                Queries.Add(mapProperty.Name, new QueryGeneratorData
+                foreach (var ForeignMapping in ForeignMappings)
                 {
-                    AssociatedMapping = MappingInformation.Mappings[mapProperty.PropertyType],
-                    IDProperties = IDProperties,
-                    QueryText = GenerateJoinSaveQuery(ForeignIDProperties, mapProperty)
-                });
+                    Queries.Add(mapProperty.Name, new QueryGeneratorData
+                    {
+                        AssociatedMapping = MappingInformation.Mappings[ForeignMapping.ObjectType],
+                        IDProperties = IDProperties,
+                        QueryText = GenerateJoinSaveQuery(ForeignIDProperties, mapProperty)
+                    });
+                }
             }
             var ReturnValue = new List<IQuery>();
             foreach (var TempQuery in Queries[mapProperty.Name])
