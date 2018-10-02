@@ -431,7 +431,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             string Separator = "";
-            var ParentIDMappings = MappingInformation.GetParentMapping(property.ParentMapping.ObjectType).SelectMany(x => x.IDProperties);
+            var ParentIDMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType)
+                                                     .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                                                     .Distinct()
+                                                     .SelectMany(x => x.IDProperties);
             var Prefix = "";
             if (ParentIDMappings.Any(x => x.ParentMapping == property.ForeignMapping))
             {
