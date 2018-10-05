@@ -516,8 +516,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         private void SetupQueries()
         {
-            var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
-            foreach (var ParentMapping in ParentMappings)
+            foreach (var ParentMapping in MappingInformation.GetParentMapping(typeof(TMappedClass)))
             {
                 foreach (var Property in ParentMapping.ManyToManyProperties)
                 {

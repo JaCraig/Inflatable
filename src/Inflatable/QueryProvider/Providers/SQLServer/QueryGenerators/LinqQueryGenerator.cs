@@ -71,8 +71,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
             var ReturnValue = new List<IQuery>();
-            var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
-            foreach (var ChildMapping in ChildMappings)
+            foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
                 ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph.Root, data), QueryType, data.Parameters.ToArray()));

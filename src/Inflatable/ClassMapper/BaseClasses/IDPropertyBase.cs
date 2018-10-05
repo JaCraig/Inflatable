@@ -33,8 +33,8 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <typeparam name="ClassType">The type of the lass type.</typeparam>
     /// <typeparam name="DataType">The type of the ata type.</typeparam>
     /// <typeparam name="ReturnType">The type of the eturn type.</typeparam>
-    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IIDProperty{ClassType, DataType, ReturnType}"/>
-    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IIDProperty{ClassType, DataType}"/>
+    /// <seealso cref="Interfaces.IIDProperty{ClassType, DataType, ReturnType}"/>
+    /// <seealso cref="Interfaces.IIDProperty{ClassType, DataType}"/>
     public abstract class IDPropertyBase<ClassType, DataType, ReturnType> : IIDProperty<ClassType, DataType, ReturnType>, IIDProperty<ClassType, DataType>
         where ClassType : class
         where ReturnType : IIDProperty<ClassType, DataType, ReturnType>
@@ -205,17 +205,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if ((object)first == null || (object)second == null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second)
+                && !(first is null)
+                && !(second is null)
+                && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -226,17 +219,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return true;
-            }
-
-            if ((object)first == null || (object)second == null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() == second.GetHashCode();
+            return ReferenceEquals(first, second)
+                || (!(first is null)
+                    && !(second is null)
+                    && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -247,17 +233,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if ((object)first == null || (object)second == null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(first, second)
+                && !(first is null)
+                && !(second is null)
+                && first.GetHashCode() > second.GetHashCode();
         }
 
         /// <summary>

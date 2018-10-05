@@ -218,8 +218,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Builder = new List<string>();
             var ParentMappings = new List<IMapping>();
-            var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));
-            foreach (var ChildMapping in ChildMappings)
+            foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TempParentMappings = MappingInformation.GetParentMapping(ChildMapping.ObjectType);
                 ParentMappings.AddIfUnique(TempParentMappings);

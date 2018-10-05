@@ -205,7 +205,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 return false;
             }
 
-            if ((object)first == null || (object)second == null)
+            if (first is null || second is null)
             {
                 return false;
             }
@@ -226,7 +226,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 return true;
             }
 
-            if ((object)first == null || (object)second == null)
+            if (first is null || second is null)
             {
                 return false;
             }
@@ -247,7 +247,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 return false;
             }
 
-            if ((object)first == null || (object)second == null)
+            if (first is null || second is null)
             {
                 return false;
             }

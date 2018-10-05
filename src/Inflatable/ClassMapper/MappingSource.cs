@@ -340,8 +340,7 @@ namespace Inflatable.ClassMapper
                 NeededTypes.AddIfUnique(ChildTypes[Mapping]);
                 NeededTypes.AddIfUnique(ParentTypes[Mapping]);
             }
-            var Items = Mappings.Keys.Where(x => !NeededTypes.Contains(x));
-            foreach (var Item in Items)
+            foreach (var Item in Mappings.Keys.Where(x => !NeededTypes.Contains(x)))
             {
                 Logger.Debug("Removing mapping {MappingName:l} from {SourceName:l} as mapping has been merged.", Item.Name, Source.Name);
                 Mappings.Remove(Item);
@@ -383,8 +382,7 @@ namespace Inflatable.ClassMapper
             ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
             foreach (var ConcreteType in ConcreteTypes)
             {
-                var Parents = TypeGraphs[ConcreteType].ToList();
-                foreach (var Parent in Parents)
+                foreach (var Parent in TypeGraphs[ConcreteType].ToList())
                 {
                     ChildTypes.Add(Parent, ConcreteType);
                 }
@@ -399,8 +397,7 @@ namespace Inflatable.ClassMapper
             Logger.Information("Setting up parent type discovery for {Name:l}", Source.Name);
             foreach (var ConcreteType in ConcreteTypes)
             {
-                var Parents = TypeGraphs[ConcreteType].ToList();
-                foreach (var Parent in Parents)
+                foreach (var Parent in TypeGraphs[ConcreteType].ToList())
                 {
                     ParentTypes.Add(ConcreteType, Parent);
                 }
