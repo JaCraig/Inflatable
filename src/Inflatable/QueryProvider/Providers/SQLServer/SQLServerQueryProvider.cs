@@ -87,7 +87,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
             }
 
             var ReturnValue = new SQLServerGenerator<TMappedClass>(mappingInformation);
-            CachedResults.AddOrUpdate(Key, ReturnValue, (x, y) => y);
+            CachedResults.AddOrUpdate(Key, ReturnValue, (_, y) => y);
             return ReturnValue;
         }
     }

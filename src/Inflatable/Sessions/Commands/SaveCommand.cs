@@ -260,7 +260,7 @@ namespace Inflatable.Sessions.Commands
             {
                 var ObjectQuery = ObjectQueries[x];
                 var IDProperty = idProperties.FirstOrDefault(y => y.AutoIncrement);
-                var ReturnedID = batch.AddQuery((Command, ResultList, InsertObject) =>
+                var ReturnedID = batch.AddQuery((_, ResultList, InsertObject) =>
                                                 {
                                                     if (IDProperty?.AutoIncrement == true)
                                                     {
