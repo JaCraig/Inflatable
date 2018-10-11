@@ -22,6 +22,7 @@ using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
 using Inflatable.Sessions.Commands;
+using Serilog;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -45,19 +46,22 @@ namespace Inflatable.Sessions
         /// <param name="schemaManager">The schema manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="aopManager">The aop manager.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">
         /// cacheManager or aopManager or mappingManager or schemaManager or queryProviderManager
         /// </exception>
         public Session(MappingManager mappingManager,
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,
-            Aspectus.Aspectus aopManager)
+            Aspectus.Aspectus aopManager,
+            ILogger logger)
         {
             AOPManager = aopManager ?? throw new ArgumentNullException(nameof(aopManager));
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             SchemaManager = schemaManager ?? throw new ArgumentNullException(nameof(schemaManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -86,6 +90,12 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <value>The commands.</value>
         private IList<Commands.Interfaces.ICommand> Commands { get; }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>The logger.</value>
+        private ILogger Logger { get; }
 
         /// <summary>
         /// Adds the objects for deletion.
@@ -174,17 +184,25 @@ namespace Inflatable.Sessions
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
             Batch.AddQuery(command, type, Parameters.ToArray());
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
-            var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).Select(x => new QueryResults(new Query(ObjectType,
-                                                                                                CommandType.Text,
-                                                                                                command,
-                                                                                                QueryType.LinqQuery,
-                                                                                                Parameters.ToArray()),
-                                                                                    x.Cast<Dynamo>(),
-                                                                                    this))
-                                                      .ToList();
+            try
+            {
+                var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).Select(x => new QueryResults(new Query(ObjectType,
+                                                                                                    CommandType.Text,
+                                                                                                    command,
+                                                                                                    QueryType.LinqQuery,
+                                                                                                    Parameters.ToArray()),
+                                                                                        x.Cast<Dynamo>(),
+                                                                                        this))
+                                                          .ToList();
 
-            QueryResults.CacheValues(KeyName, Results);
-            return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
+                QueryResults.CacheValues(KeyName, Results);
+                return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
+            }
+            catch
+            {
+                Logger.Debug("Failed on query: " + Batch);
+                throw;
+            }
         }
 
         /// <summary>
@@ -246,7 +264,15 @@ namespace Inflatable.Sessions
 
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
             Batch.AddQuery(command, type, Parameters.ToArray());
-            return (await Batch.ExecuteAsync().ConfigureAwait(false))[0];
+            try
+            {
+                return (await Batch.ExecuteAsync().ConfigureAwait(false))[0];
+            }
+            catch
+            {
+                Logger.Debug("Failed on query: " + Batch.ToString());
+                throw;
+            }
         }
 
         /// <summary>
@@ -273,7 +299,15 @@ namespace Inflatable.Sessions
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
 
             Batch.AddQuery(command, type, Parameters.ToArray());
-            return Batch.ExecuteScalarAsync<TObject>();
+            try
+            {
+                return Batch.ExecuteScalarAsync<TObject>();
+            }
+            catch
+            {
+                Logger.Debug("Failed on query: " + Batch.ToString());
+                throw;
+            }
         }
 
         /// <summary>
@@ -302,8 +336,17 @@ namespace Inflatable.Sessions
                     var TempQuery = Queries[x];
                     Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
                 }
+                List<List<dynamic>> ResultLists = null;
 
-                var ResultLists = Batch.Execute();
+                try
+                {
+                    ResultLists = Batch.Execute();
+                }
+                catch
+                {
+                    Logger.Debug("Failed on query: " + Batch.ToString());
+                    throw;
+                }
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
@@ -349,7 +392,18 @@ namespace Inflatable.Sessions
                     Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
                 }
 
-                var ResultLists = await Batch.ExecuteAsync().ConfigureAwait(false);
+                List<List<dynamic>> ResultLists = null;
+
+                try
+                {
+                    ResultLists = await Batch.ExecuteAsync().ConfigureAwait(false);
+                }
+                catch
+                {
+                    Logger.Debug("Failed on query: " + Batch);
+                    throw;
+                }
+
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
@@ -487,7 +541,16 @@ namespace Inflatable.Sessions
                 Batch.AddQuery(ResultingQuery.QueryString, ResultingQuery.DatabaseCommandType, ResultingQuery.Parameters);
             }
 
-            var Result = await Batch.ExecuteAsync().ConfigureAwait(false);
+            List<List<dynamic>> Result = null;
+            try
+            {
+                Result = await Batch.ExecuteAsync().ConfigureAwait(false);
+            }
+            catch
+            {
+                Logger.Debug("Failed on query: " + Batch);
+                throw;
+            }
             for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)
             {
                 var IDProperties = source.Key.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
