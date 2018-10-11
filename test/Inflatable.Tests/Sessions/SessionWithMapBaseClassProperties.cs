@@ -56,7 +56,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
@@ -65,7 +65,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -78,7 +78,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -88,7 +88,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Result1 = new MapPropertiesWithBaseClasses
             {
@@ -137,7 +137,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void LoadMapPropertyWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Result = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().Where(x => x.ID == 1).First();
             Assert.NotNull(Result.MappedClass);
@@ -147,7 +147,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
@@ -169,7 +169,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager);
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
