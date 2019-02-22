@@ -86,16 +86,16 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         private static readonly IDictionary<ExpressionType, Func<BinaryOperator, Type>> TypeCodeConverter = new Dictionary<ExpressionType, Func<BinaryOperator, Type>>
         {
-            [ExpressionType.And] = x => typeof(bool),
-            [ExpressionType.Or] = x => typeof(bool),
-            [ExpressionType.Equal] = x => typeof(bool),
-            [ExpressionType.NotEqual] = x => typeof(bool),
-            [ExpressionType.LessThan] = x => typeof(bool),
-            [ExpressionType.LessThanOrEqual] = x => typeof(bool),
-            [ExpressionType.GreaterThan] = x => typeof(bool),
-            [ExpressionType.GreaterThanOrEqual] = x => typeof(bool),
-            [ExpressionType.OrElse] = x => typeof(bool),
-            [ExpressionType.AndAlso] = x => typeof(bool)
+            [ExpressionType.And] = _ => typeof(bool),
+            [ExpressionType.Or] = _ => typeof(bool),
+            [ExpressionType.Equal] = _ => typeof(bool),
+            [ExpressionType.NotEqual] = _ => typeof(bool),
+            [ExpressionType.LessThan] = _ => typeof(bool),
+            [ExpressionType.LessThanOrEqual] = _ => typeof(bool),
+            [ExpressionType.GreaterThan] = _ => typeof(bool),
+            [ExpressionType.GreaterThanOrEqual] = _ => typeof(bool),
+            [ExpressionType.OrElse] = _ => typeof(bool),
+            [ExpressionType.AndAlso] = _ => typeof(bool)
         };
 
         /// <summary>

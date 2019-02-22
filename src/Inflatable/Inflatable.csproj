@@ -16,7 +16,7 @@
     <PackageId>Inflatable</PackageId>
     <PackageTags>ORM;SQL</PackageTags>
     <PackageProjectUrl>https://github.com/JaCraig/Inflatable</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/JaCraig/Inflatable/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -29,16 +29,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FileCurator" Version="2.0.9" />
-    <PackageReference Include="Holmes" Version="2.0.7" />
-    <PackageReference Include="Serilog" Version="2.7.1" />
-    <PackageReference Include="SQLHelper.DB" Version="2.0.11" />
-    <PackageReference Include="Data.Modeler" Version="2.0.8" />
+    <PackageReference Include="FileCurator" Version="2.0.14" />
+    <PackageReference Include="Holmes" Version="2.0.9" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="SQLHelper.DB" Version="2.0.13" />
+    <PackageReference Include="Data.Modeler" Version="2.0.9" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
-    <PackageReference Include="Valkyrie" Version="2.0.4" />
-    <PackageReference Include="Mirage" Version="2.0.9" />
-    <PackageReference Include="Aspectus" Version="3.1.0" />
-    <PackageReference Include="BigBook" Version="2.1.6" />
+    <PackageReference Include="Valkyrie" Version="2.0.5" />
+    <PackageReference Include="Mirage" Version="2.0.10" />
+    <PackageReference Include="Aspectus" Version="3.1.1" />
+    <PackageReference Include="BigBook" Version="2.1.7" />
   </ItemGroup>
 
 </Project>

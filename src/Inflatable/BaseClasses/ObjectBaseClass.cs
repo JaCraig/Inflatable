@@ -25,8 +25,8 @@ namespace Inflatable.BaseClasses
     /// Object base class helper. This is not required but automatically sets up basic functions and
     /// properties to simplify things a bit.
     /// </summary>
-    /// <typeparam name="IDType">ID type</typeparam>
     /// <typeparam name="ObjectType">Object type (must be the child object type)</typeparam>
+    /// <typeparam name="IDType">ID type</typeparam>
     public abstract class ObjectBaseClass<ObjectType, IDType> : IComparable, IComparable<ObjectType>, IObject<IDType>
         where ObjectType : ObjectBaseClass<ObjectType, IDType>, new()
         where IDType : IComparable
