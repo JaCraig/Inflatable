@@ -103,7 +103,18 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 case IManyToOneProperty ManyToOne:
                     return LoadManyToOneProperty(ManyToOne, queryObject);
             }
-            return new IQuery[0];
+            return Array.Empty<IQuery>();
+        }
+
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="idProperties">The identifier properties.</param>
+        /// <returns>The parameters</returns>
+        private static IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties)
+        {
+            return idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
         }
 
         /// <summary>
@@ -178,17 +189,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Separator = ",";
             }
             return Result.ToString();
-        }
-
-        /// <summary>
-        /// Generates the parameters.
-        /// </summary>
-        /// <param name="queryObject">The query object.</param>
-        /// <param name="idProperties">The identifier properties.</param>
-        /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties)
-        {
-            return idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
         }
 
         /// <summary>

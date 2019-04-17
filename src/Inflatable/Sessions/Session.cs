@@ -165,7 +165,7 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
             where TObject : class
         {
-            parameters = parameters ?? new IParameter[0];
+            parameters = parameters ?? Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             string KeyName = command + "_" + connection;
             Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
@@ -218,7 +218,7 @@ namespace Inflatable.Sessions
             (queries?.Values
                 ?.SelectMany(x => x.Parameters)
                 ?.Distinct()
-                ?? new List<IParameter>())
+                ?? Array.Empty<IParameter>())
                 ?.ForEach(x => KeyName = x.AddParameter(KeyName));
             if (QueryResults.IsCached(KeyName))
             {
@@ -254,7 +254,7 @@ namespace Inflatable.Sessions
         /// <exception cref="System.ArgumentException"></exception>
         public async Task<IEnumerable<dynamic>> ExecuteDynamicAsync(string command, CommandType type, string connection, params object[] parameters)
         {
-            parameters = parameters ?? new IParameter[0];
+            parameters = parameters ?? Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
@@ -287,7 +287,7 @@ namespace Inflatable.Sessions
         /// <exception cref="System.ArgumentException"></exception>
         public Task<TObject> ExecuteScalarAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
         {
-            parameters = parameters ?? new IParameter[0];
+            parameters = parameters ?? Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
@@ -506,7 +506,7 @@ namespace Inflatable.Sessions
         /// <param name="source">The source.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The property</returns>
-        private IClassProperty FindProperty<TObject, TData>(MappingSource source, string propertyName)
+        private static IClassProperty FindProperty<TObject, TData>(MappingSource source, string propertyName)
             where TObject : class
             where TData : class
         {

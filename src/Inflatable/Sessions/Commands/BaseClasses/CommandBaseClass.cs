@@ -42,7 +42,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, object[] objects)
         {
             QueryProviderManager = queryProviderManager;
-            Objects = (objects ?? new object[0]).Where(x => x != null).ToArray();
+            Objects = (objects ?? Array.Empty<object>()).Where(x => x != null).ToArray();
             MappingManager = mappingManager;
         }
 
@@ -121,7 +121,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <returns>
         /// <c>true</c> if this instance can execute the specified object; otherwise, <c>false</c>.
         /// </returns>
-        protected bool CanExecute(object @object, MappingSource source)
+        protected static bool CanExecute(object @object, MappingSource source)
         {
             var TempType = GetActualType(@object);
             return source.Mappings.ContainsKey(TempType);
@@ -134,7 +134,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="obj2">The obj2.</param>
         /// <param name="source">The source.</param>
         /// <returns>True if they're the same, false otherwise.</returns>
-        protected bool CompareObjects(object obj1, object obj2, MappingSource source)
+        protected static bool CompareObjects(object obj1, object obj2, MappingSource source)
         {
             if (ReferenceEquals(obj1, obj2))
             {
@@ -169,7 +169,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Removes the items from cache.
         /// </summary>
         /// <param name="object">The object.</param>
-        protected void RemoveItemsFromCache(object @object)
+        protected static void RemoveItemsFromCache(object @object)
         {
             var TempType = GetActualType(@object);
             QueryResults.RemoveCacheTag(TempType.GetName());
@@ -182,7 +182,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="objectsSeen">The objects seen already.</param>
         /// <param name="source">The source.</param>
         /// <returns>True if it was seen, otherwise false.</returns>
-        protected bool WasObjectSeen(object @object, IList<object> objectsSeen, MappingSource source)
+        protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, MappingSource source)
         {
             return objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
         }

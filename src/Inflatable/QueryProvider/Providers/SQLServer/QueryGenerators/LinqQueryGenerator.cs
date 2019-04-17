@@ -80,6 +80,31 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         /// <summary>
+        /// Generates the order by clause.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        private static string GenerateOrderByClause(QueryData<TMappedClass> data)
+        {
+            var Builder = new StringBuilder();
+            string Splitter = "";
+            if (data.OrderByValues.Count == 0)
+            {
+                return "";
+            }
+
+            Builder.Append("ORDER BY ");
+            foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
+            {
+                Builder.Append(Splitter)
+                       .Append(Column.Property.Name)
+                       .Append(Column.Direction == Direction.Descending ? " DESC" : "");
+                Splitter = ",";
+            }
+            return Builder.ToString();
+        }
+
+        /// <summary>
         /// Generates from clause.
         /// </summary>
         /// <param name="node">The node.</param>
@@ -110,31 +135,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
 
             return Result.ToString();
-        }
-
-        /// <summary>
-        /// Generates the order by clause.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
-        private string GenerateOrderByClause(QueryData<TMappedClass> data)
-        {
-            var Builder = new StringBuilder();
-            string Splitter = "";
-            if (data.OrderByValues.Count == 0)
-            {
-                return "";
-            }
-
-            Builder.Append("ORDER BY ");
-            foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
-            {
-                Builder.Append(Splitter)
-                       .Append(Column.Property.Name)
-                       .Append(Column.Direction == Direction.Descending ? " DESC" : "");
-                Splitter = ",";
-            }
-            return Builder.ToString();
         }
 
         /// <summary>

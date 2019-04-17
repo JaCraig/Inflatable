@@ -50,6 +50,7 @@ namespace Inflatable.Modules
         public void Setup(Aspectus.Aspectus manager)
         {
             manager.Setup(ClassManager.Sources.SelectMany(x => x.ConcreteTypes).Distinct().ToArray());
+            manager.FinalizeSetup();
         }
     }
 }

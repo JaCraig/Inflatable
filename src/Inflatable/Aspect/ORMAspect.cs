@@ -51,9 +51,9 @@ namespace Inflatable.Aspect
             IEnumerable<IEndMethodHelper> endMethodHelpers)
         {
             AssembliesUsing = new List<MetadataReference>();
-            EndMethodHelpers = endMethodHelpers ?? new List<IEndMethodHelper>();
-            InterfaceImplementationHelpers = interfaceImplementationHelpers ?? new List<IInterfaceImplementationHelper>();
-            StartMethodHelpers = startMethodHelpers ?? new List<IStartMethodHelper>();
+            EndMethodHelpers = endMethodHelpers ?? Array.Empty<IEndMethodHelper>();
+            InterfaceImplementationHelpers = interfaceImplementationHelpers ?? Array.Empty<IInterfaceImplementationHelper>();
+            StartMethodHelpers = startMethodHelpers ?? Array.Empty<IStartMethodHelper>();
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
@@ -97,7 +97,7 @@ namespace Inflatable.Aspect
         /// <summary>
         /// List of interfaces that need to be injected by this aspect
         /// </summary>
-        public ICollection<Type> InterfacesUsing => new Type[] { typeof(IORMObject) };
+        public ICollection<Type> InterfacesUsing { get; } = new Type[] { typeof(IORMObject) };
 
         /// <summary>
         /// Gets or sets the many to many fields.
@@ -132,7 +132,7 @@ namespace Inflatable.Aspect
         /// <summary>
         /// Using statements that the aspect requires
         /// </summary>
-        public ICollection<string> Usings => new string[]
+        public ICollection<string> Usings { get; } = new string[]
         {
             "Inflatable",
             "Inflatable.Sessions",

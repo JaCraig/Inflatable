@@ -78,7 +78,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The result</returns>
-        private Expression Evaluate(Expression expression)
+        private static Expression Evaluate(Expression expression)
         {
             if (expression.NodeType == ExpressionType.Constant)
             {

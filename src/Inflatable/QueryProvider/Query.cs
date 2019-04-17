@@ -41,7 +41,7 @@ namespace Inflatable.QueryProvider
             DatabaseCommandType = databaseCommandType;
             QueryType = queryType;
             QueryString = queryString;
-            Parameters = parameters ?? new IParameter[0];
+            Parameters = parameters ?? Array.Empty<IParameter>();
             ReturnType = returnType;
         }
 

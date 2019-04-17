@@ -47,15 +47,21 @@ namespace Inflatable.Aspect.EndMethod
 
             if (Property is IManyToOneListProperty)
             {
-                LoadList(returnValueName, method, mapping, builder, Property);
+                LoadList(returnValueName, builder, Property);
             }
             else
             {
-                LoadSingle(returnValueName, method, mapping, builder, Property);
+                LoadSingle(returnValueName, builder, Property);
             }
         }
 
-        private void LoadList(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder, IManyToOneProperty property)
+        /// <summary>
+        /// Loads the list.
+        /// </summary>
+        /// <param name="returnValueName">Name of the return value.</param>
+        /// <param name="builder">The builder.</param>
+        /// <param name="property">The property.</param>
+        private static void LoadList(string returnValueName, StringBuilder builder, IManyToOneProperty property)
         {
             builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.InternalFieldName + "Loaded")
                 .AppendLine("{")
@@ -78,7 +84,13 @@ namespace Inflatable.Aspect.EndMethod
                     property.InternalFieldName);
         }
 
-        private void LoadSingle(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder, IManyToOneProperty property)
+        /// <summary>
+        /// Loads the single.
+        /// </summary>
+        /// <param name="returnValueName">Name of the return value.</param>
+        /// <param name="builder">The builder.</param>
+        /// <param name="property">The property.</param>
+        private static void LoadSingle(string returnValueName, StringBuilder builder, IManyToOneProperty property)
         {
             builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.InternalFieldName + "Loaded")
                 .AppendLine("{")

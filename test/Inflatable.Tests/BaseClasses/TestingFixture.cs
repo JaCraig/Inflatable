@@ -22,13 +22,11 @@ namespace Inflatable.Tests.BaseClasses
             SetupDatabases();
         }
 
-        public IConfigurationRoot Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
+        protected static string DatabaseName = "TestDatabase";
+        protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
+        public static IConfigurationRoot Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
 
-        public ILogger Logger => Canister.Builder.Bootstrapper.Resolve<ILogger>();
-
-        protected string DatabaseName => "TestDatabase";
-
-        protected string MasterString => "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
+        public static ILogger Logger => Canister.Builder.Bootstrapper.Resolve<ILogger>();
 
         public void Dispose()
         {

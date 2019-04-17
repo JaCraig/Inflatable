@@ -104,7 +104,42 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     return ManyToOneProperty(ManyToOne, queryObject);
             }
 
-            return new IQuery[0];
+            return Array.Empty<IQuery>();
+        }
+
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="property">The property.</param>
+        /// <returns>The parameters</returns>
+        private static IParameter[] GenerateParameters(TMappedClass queryObject, IPropertyColumns property)
+        {
+            var ColumnInfos = property.GetColumnInfo();
+            var ReturnValues = new IParameter[ColumnInfos.Length];
+            for (int x = 0; x < ColumnInfos.Length; ++x)
+            {
+                ReturnValues[x] = ColumnInfos[x].GetAsParameter(queryObject);
+            }
+            return ReturnValues;
+        }
+
+        /// <summary>
+        /// Generates the parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="propertyItem">The property item.</param>
+        /// <returns>The parameters</returns>
+        private static IParameter[] GenerateParameters(TMappedClass queryObject, IPropertyColumns property, object propertyItem)
+        {
+            var ColumnInfos = property.GetColumnInfo();
+            var ReturnValues = new IParameter[ColumnInfos.Length];
+            for (int x = 0; x < ColumnInfos.Length; ++x)
+            {
+                ReturnValues[x] = ColumnInfos[x].GetAsParameter(queryObject, propertyItem);
+            }
+            return ReturnValues;
         }
 
         /// <summary>
@@ -307,41 +342,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         }
 
         /// <summary>
-        /// Generates the parameters.
-        /// </summary>
-        /// <param name="queryObject">The query object.</param>
-        /// <param name="property">The property.</param>
-        /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject, IPropertyColumns property)
-        {
-            var ColumnInfos = property.GetColumnInfo();
-            var ReturnValues = new IParameter[ColumnInfos.Length];
-            for (int x = 0; x < ColumnInfos.Length; ++x)
-            {
-                ReturnValues[x] = ColumnInfos[x].GetAsParameter(queryObject);
-            }
-            return ReturnValues;
-        }
-
-        /// <summary>
-        /// Generates the parameters.
-        /// </summary>
-        /// <param name="queryObject">The query object.</param>
-        /// <param name="property">The property.</param>
-        /// <param name="propertyItem">The property item.</param>
-        /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject, IPropertyColumns property, object propertyItem)
-        {
-            var ColumnInfos = property.GetColumnInfo();
-            var ReturnValues = new IParameter[ColumnInfos.Length];
-            for (int x = 0; x < ColumnInfos.Length; ++x)
-            {
-                ReturnValues[x] = ColumnInfos[x].GetAsParameter(queryObject, propertyItem);
-            }
-            return ReturnValues;
-        }
-
-        /// <summary>
         /// Manies to many property.
         /// </summary>
         /// <param name="property">The property.</param>
@@ -368,7 +368,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
             if (!(property.GetValue(queryObject) is IEnumerable ItemList))
             {
-                return new IQuery[0];
+                return Array.Empty<IQuery>();
             }
 
             var ReturnValue = new List<IQuery>();
@@ -413,7 +413,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
             if (!(manyToOne.GetValue(queryObject) is IEnumerable ItemList))
             {
-                return new IQuery[0];
+                return Array.Empty<IQuery>();
             }
 
             var ReturnValue = new List<IQuery>();

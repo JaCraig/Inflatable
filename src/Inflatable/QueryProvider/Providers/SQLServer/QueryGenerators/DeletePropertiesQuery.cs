@@ -94,7 +94,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 return ManyToManyProperty(Property, queryObject);
             }
 
-            return new IQuery[0];
+            return Array.Empty<IQuery>();
         }
 
         /// <summary>

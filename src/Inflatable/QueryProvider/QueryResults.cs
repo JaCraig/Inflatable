@@ -41,7 +41,7 @@ namespace Inflatable.QueryProvider
         public QueryResults(IQuery query, IEnumerable<Dynamo> values, Session session)
         {
             Session = session ?? throw new ArgumentNullException(nameof(session));
-            Values = (values ?? new List<Dynamo>()).ToList();
+            Values = values?.ToList() ?? new List<Dynamo>();
             Query = query ?? throw new ArgumentNullException(nameof(query));
         }
 

@@ -7,9 +7,8 @@ namespace Inflatable.Tests.Modules
 {
     public class ConfigurationModule : IModule
     {
+        protected readonly string ConnectionString = "Data Source=localhost;Initial Catalog=SpeedTestDatabase;Integrated Security=SSPI;Pooling=false";
         public int Order => 1;
-
-        protected string ConnectionString => "Data Source=localhost;Initial Catalog=SpeedTestDatabase;Integrated Security=SSPI;Pooling=false";
 
         public void Load(IBootstrapper bootstrapper)
         {

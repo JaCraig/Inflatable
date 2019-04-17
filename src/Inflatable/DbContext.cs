@@ -164,8 +164,8 @@ namespace Inflatable
         /// Translates the specified expression.
         /// </summary>
         /// <param name="expression">The expression.</param>
-        /// <returns></returns>
-        private IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
+        /// <returns>The translated expression</returns>
+        private static IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
         {
             return Canister.Builder.Bootstrapper.Resolve<QueryTranslator<TObject>>().Translate(expression);
         }
