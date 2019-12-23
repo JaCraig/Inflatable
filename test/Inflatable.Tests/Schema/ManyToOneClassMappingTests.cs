@@ -40,12 +40,12 @@ namespace Inflatable.Tests.Schema
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
             Assert.Equal(2, TestModel.Source.Mappings.Count);
             Assert.NotNull(TestModel.SourceSpec);
-            Assert.Equal(0, TestModel.SourceSpec.Functions.Count);
-            Assert.Equal(0, TestModel.SourceSpec.StoredProcedures.Count);
+            Assert.Empty(TestModel.SourceSpec.Functions);
+            Assert.Empty(TestModel.SourceSpec.StoredProcedures);
             Assert.Equal(2, TestModel.SourceSpec.Tables.Count);
             Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "ManyToOneManyProperties_");
             Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "ManyToOneOneProperties_");
-            Assert.Equal(0, TestModel.SourceSpec.Views.Count);
+            Assert.Empty(TestModel.SourceSpec.Views);
             Assert.Equal(4, TestModel.GeneratedSchemaChanges.Count());
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ManyToOneOneProperties_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY,[BoolValue_] Bit NOT NULL,[ManyToOneManyProperties_ID_] Int)", TestModel.GeneratedSchemaChanges);

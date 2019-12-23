@@ -147,7 +147,7 @@ namespace Inflatable.ClassMapper.Default
             {
                 string Class1 = ParentWithID.ObjectType.Name;
                 string Class2 = ForeignMapping.ObjectType.Name;
-                if (string.Compare(Class1, Class2, StringComparison.Ordinal) < 0)
+                if (string.CompareOrdinal(Class1, Class2) < 0)
                 {
                     SetTableName(Class1 + "_" + Class2);
                 }

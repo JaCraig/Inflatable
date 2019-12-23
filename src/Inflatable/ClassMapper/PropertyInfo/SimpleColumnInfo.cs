@@ -36,17 +36,17 @@ namespace Inflatable.ClassMapper.Column
         /// Gets the name of the column.
         /// </summary>
         /// <value>The name of the column.</value>
-        public string ColumnName { get; set; }
+        public string? ColumnName { get; set; }
 
         /// <summary>
         /// The compiled expression
         /// </summary>
-        public Func<TClassType, TDataType> CompiledExpression { get; set; }
+        public Func<TClassType, TDataType>? CompiledExpression { get; set; }
 
         /// <summary>
         /// Gets the default value.
         /// </summary>
-        public Func<TDataType> DefaultValue { get; set; }
+        public Func<TDataType>? DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -64,30 +64,30 @@ namespace Inflatable.ClassMapper.Column
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string PropertyName { get; set; }
+        public string? PropertyName { get; set; }
 
         /// <summary>
         /// Property type
         /// </summary>
-        public Type PropertyType { get; set; }
+        public Type? PropertyType { get; set; }
 
         /// <summary>
         /// Gets the schema name.
         /// </summary>
         /// <value>The schema name.</value>
-        public string SchemaName { get; set; }
+        public string? SchemaName { get; set; }
 
         /// <summary>
         /// Gets or sets the expression used to set the value.
         /// </summary>
         /// <value>The set expression.</value>
-        public Action<TClassType, TDataType> SetAction { get; set; }
+        public Action<TClassType, TDataType>? SetAction { get; set; }
 
         /// <summary>
         /// Gets the table name.
         /// </summary>
         /// <value>The table name.</value>
-        public string TableName { get; set; }
+        public string? TableName { get; set; }
 
         /// <summary>
         /// Creates a copy.
@@ -114,12 +114,12 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="objectValue"></param>
         /// <returns>The parameter version of the property</returns>
-        public IParameter GetAsParameter(object objectValue)
+        public IParameter? GetAsParameter(object? objectValue)
         {
             var ParamValue = GetValue(objectValue);
             if (Equals(ParamValue, DefaultValue()))
             {
-                ParamValue = IsNullable ? null : (object)DefaultValue();
+                ParamValue = IsNullable ? null : DefaultValue() as object;
             }
 
             if (PropertyType == typeof(string))
@@ -136,7 +136,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectValue">The object value.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The object value as a parameter.</returns>
-        public IParameter GetAsParameter(object objectValue, object paramValue)
+        public IParameter? GetAsParameter(object? objectValue, object? paramValue)
         {
             return GetAsParameter(objectValue);
         }
@@ -146,9 +146,9 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>The value specified</returns>
-        public object GetValue(Dynamo @object)
+        public object? GetValue(Dynamo? @object)
         {
-            return @object[PropertyName];
+            return @object?[PropertyName];
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>The value specified</returns>
-        public object GetValue(object @object)
+        public object? GetValue(object? @object)
         {
             return GetValue(@object as TClassType);
         }
@@ -167,7 +167,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The resulting value.</returns>
-        public object GetValue(object @object, object paramValue)
+        public object? GetValue(object? @object, object? paramValue)
         {
             return GetValue(@object);
         }
@@ -231,7 +231,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        private object GetValue(TClassType @object)
+        private object? GetValue(TClassType? @object)
         {
             if (ReferenceEquals(@object, default(TClassType)))
             {

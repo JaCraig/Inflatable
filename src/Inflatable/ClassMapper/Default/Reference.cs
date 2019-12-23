@@ -106,7 +106,7 @@ namespace Inflatable.ClassMapper.Default
                 new Column.SimpleColumnInfo<ClassType,DataType>
                 {
                     ColumnName=ColumnName,
-                    DefaultValue=()=>default(DataType),
+                    DefaultValue=()=>default!,
                     CompiledExpression=CompiledExpression,
                     PropertyName=Name,
                     PropertyType=PropertyType,

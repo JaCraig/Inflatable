@@ -142,7 +142,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 ForeignMapping.TableName,
                                 IDMapping.ColumnName,
-                                null,
+                                null!,
                                 "",
                                 false,
                                 false,

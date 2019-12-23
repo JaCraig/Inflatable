@@ -29,7 +29,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets or sets the name of the column.
         /// </summary>
         /// <value>The name of the column.</value>
-        string ColumnName { get; set; }
+        string? ColumnName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -53,13 +53,13 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets or sets the name of the schema.
         /// </summary>
         /// <value>The name of the schema.</value>
-        string SchemaName { get; set; }
+        string? SchemaName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the table.
         /// </summary>
         /// <value>The name of the table.</value>
-        string TableName { get; set; }
+        string? TableName { get; set; }
 
         /// <summary>
         /// Creates a copy.
@@ -72,7 +72,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// </summary>
         /// <param name="objectValue">The object value.</param>
         /// <returns>The object value as a parameter.</returns>
-        IParameter GetAsParameter(object objectValue);
+        IParameter? GetAsParameter(object? objectValue);
 
         /// <summary>
         /// Gets as parameter.
@@ -80,21 +80,21 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// <param name="objectValue">The object value.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The object value as a parameter.</returns>
-        IParameter GetAsParameter(object objectValue, object paramValue);
+        IParameter? GetAsParameter(object? objectValue, object? paramValue);
 
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns></returns>
-        object GetValue(Dynamo @object);
+        object? GetValue(Dynamo? @object);
 
         /// <summary>
         /// Gets the value.
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns>The resulting value.</returns>
-        object GetValue(object @object);
+        object? GetValue(object? @object);
 
         /// <summary>
         /// Gets the value.
@@ -102,7 +102,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The resulting value.</returns>
-        object GetValue(object @object, object paramValue);
+        object? GetValue(object? @object, object? paramValue);
 
         /// <summary>
         /// Determines whether the specified object is default.

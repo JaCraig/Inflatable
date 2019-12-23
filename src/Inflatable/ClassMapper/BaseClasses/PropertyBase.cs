@@ -62,9 +62,9 @@ namespace Inflatable.ClassMapper.BaseClasses
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
             CompiledExpression = expression.Compile();
             Constraints = new List<string>();
-            DefaultValue = () => default(DataType);
+            DefaultValue = () => default!;
             Expression = expression;
-            SetAction = Expression.PropertySetter<ClassType, DataType>().Compile();
+            SetAction = Expression.PropertySetter<ClassType, DataType>()?.Compile() ?? new Action<ClassType, DataType>((_, __) => { });
             InternalFieldName = "_" + Name + "Derived";
             MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
             Nullable = typeof(DataType) == typeof(string)
@@ -86,7 +86,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the columns associated with this property.
         /// </summary>
         /// <value>The columns associated with this property.</value>
-        public IQueryColumnInfo[] Columns { get; protected set; }
+        public IQueryColumnInfo[]? Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -310,7 +310,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 SetColumnInfo(null);
             }
 
-            return Columns;
+            return Columns ?? Array.Empty<IQueryColumnInfo>();
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public abstract void SetColumnInfo(MappingSource mappings);
+        public abstract void SetColumnInfo(MappingSource? mappings);
 
         /// <summary>
         /// Sets up the property (used internally)

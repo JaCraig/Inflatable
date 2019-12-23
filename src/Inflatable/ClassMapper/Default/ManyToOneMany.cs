@@ -154,7 +154,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 IDMapping.ParentMapping.TableName,
                                 IDMapping.ColumnName,
-                                null,
+                                null!,
                                 "",
                                 false,
                                 false,

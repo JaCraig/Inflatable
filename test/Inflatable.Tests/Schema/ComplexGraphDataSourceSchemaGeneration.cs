@@ -44,15 +44,15 @@ namespace Inflatable.Tests.Schema
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
             Assert.Equal(5, TestModel.Source.Mappings.Count);
             Assert.NotNull(TestModel.SourceSpec);
-            Assert.Equal(0, TestModel.SourceSpec.Functions.Count);
-            Assert.Equal(0, TestModel.SourceSpec.StoredProcedures.Count);
+            Assert.Empty(TestModel.SourceSpec.Functions);
+            Assert.Empty(TestModel.SourceSpec.StoredProcedures);
             Assert.Equal(5, TestModel.SourceSpec.Tables.Count);
             Assert.Contains("BaseClass1_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Contains("ConcreteClass1_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Contains("ConcreteClass2_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Contains("ConcreteClass3_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Contains("IInterface1_", TestModel.SourceSpec.Tables.Select(x => x.Name));
-            Assert.Equal(0, TestModel.SourceSpec.Views.Count);
+            Assert.Empty(TestModel.SourceSpec.Views);
             Assert.Equal(12, TestModel.GeneratedSchemaChanges.Count());
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ConcreteClass2_]([ID_] BigInt PRIMARY KEY IDENTITY,[InterfaceValue_] Int NOT NULL,[BaseClass1_ID_] BigInt NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
