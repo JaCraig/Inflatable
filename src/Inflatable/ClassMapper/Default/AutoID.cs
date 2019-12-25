@@ -24,7 +24,7 @@ namespace Inflatable.ClassMapper.Default
     /// <summary>
     /// Auto ID
     /// </summary>
-    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IAutoIDProperty"/>
+    /// <seealso cref="IAutoIDProperty"/>
     public class AutoID : IAutoIDProperty
     {
         /// <summary>
@@ -76,10 +76,7 @@ namespace Inflatable.ClassMapper.Default
         /// Adds this instance to the table.
         /// </summary>
         /// <param name="table">The table.</param>
-        public void AddToTable(ITable table)
-        {
-            table.AddColumn<long>(ColumnName, System.Data.DbType.Int64, identity: true, index: true, primaryKey: true);
-        }
+        public void AddToTable(ITable table) => table.AddColumn<long>(ColumnName, System.Data.DbType.Int64, identity: true, index: true, primaryKey: true);
 
         /// <summary>
         /// Sets up the property (used internally)
@@ -92,9 +89,6 @@ namespace Inflatable.ClassMapper.Default
         /// Gets the property as a string
         /// </summary>
         /// <returns>The string representation of the property</returns>
-        public override string ToString()
-        {
-            return typeof(long).GetName() + " " + ParentMapping + "." + ColumnName;
-        }
+        public override string ToString() => typeof(long).GetName() + " " + ParentMapping + "." + ColumnName;
     }
 }

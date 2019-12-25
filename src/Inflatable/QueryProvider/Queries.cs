@@ -76,63 +76,42 @@ namespace Inflatable.QueryProvider
         /// <returns></returns>
         public IQuery this[QueryType key]
         {
-            get
-            {
-                return InternalDictionary.GetValue(key);
-            }
+            get => InternalDictionary.GetValue(key);
 
-            set
-            {
-                InternalDictionary.SetValue(key, value);
-            }
+            set => InternalDictionary.SetValue(key, value);
         }
 
         /// <summary>
         /// Adds the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public void Add(KeyValuePair<QueryType, IQuery> item)
-        {
-            InternalDictionary.SetValue(item.Key, item.Value);
-        }
+        public void Add(KeyValuePair<QueryType, IQuery> item) => InternalDictionary.SetValue(item.Key, item.Value);
 
         /// <summary>
         /// Adds the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        public void Add(QueryType key, IQuery value)
-        {
-            InternalDictionary.SetValue(key, value);
-        }
+        public void Add(QueryType key, IQuery value) => InternalDictionary.SetValue(key, value);
 
         /// <summary>
         /// Clears this instance.
         /// </summary>
-        public void Clear()
-        {
-            InternalDictionary.Clear();
-        }
+        public void Clear() => InternalDictionary.Clear();
 
         /// <summary>
         /// Determines whether [contains] [the specified item].
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.</returns>
-        public bool Contains(KeyValuePair<QueryType, IQuery> item)
-        {
-            return InternalDictionary.Contains(item);
-        }
+        public bool Contains(KeyValuePair<QueryType, IQuery> item) => InternalDictionary.Contains(item);
 
         /// <summary>
         /// Determines whether the specified key contains key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns><c>true</c> if the specified key contains key; otherwise, <c>false</c>.</returns>
-        public bool ContainsKey(QueryType key)
-        {
-            return InternalDictionary.ContainsKey(key);
-        }
+        public bool ContainsKey(QueryType key) => InternalDictionary.ContainsKey(key);
 
         /// <summary>
         /// Copies to.
@@ -156,39 +135,27 @@ namespace Inflatable.QueryProvider
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<QueryType, IQuery>> GetEnumerator()
-        {
-            return InternalDictionary.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<QueryType, IQuery>> GetEnumerator() => InternalDictionary.GetEnumerator();
 
         /// <summary>
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return InternalDictionary.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => InternalDictionary.GetEnumerator();
 
         /// <summary>
         /// Removes the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>True if it is removed, false otherwise.</returns>
-        public bool Remove(KeyValuePair<QueryType, IQuery> item)
-        {
-            return InternalDictionary.TryRemove(item.Key, out IQuery Temp);
-        }
+        public bool Remove(KeyValuePair<QueryType, IQuery> item) => InternalDictionary.TryRemove(item.Key, out var Temp);
 
         /// <summary>
         /// Removes the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>True if it is removed, false otherwise.</returns>
-        public bool Remove(QueryType key)
-        {
-            return InternalDictionary.TryRemove(key, out IQuery Temp);
-        }
+        public bool Remove(QueryType key) => InternalDictionary.TryRemove(key, out var Temp);
 
         /// <summary>
         /// Tries the get value.
@@ -196,9 +163,6 @@ namespace Inflatable.QueryProvider
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <returns>True if it is found, false otherwise.</returns>
-        public bool TryGetValue(QueryType key, out IQuery value)
-        {
-            return InternalDictionary.TryGetValue(key, out value);
-        }
+        public bool TryGetValue(QueryType key, out IQuery value) => InternalDictionary.TryGetValue(key, out value);
     }
 }

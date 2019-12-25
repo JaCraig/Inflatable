@@ -37,7 +37,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <exception cref="ArgumentNullException">configuration</exception>
-        /// <exception cref="System.ArgumentNullException">configuration</exception>
+        /// <exception cref="ArgumentNullException">configuration</exception>
         public SQLServerQueryProvider(IConfiguration configuration)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -66,10 +66,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source)
-        {
-            return new SQLHelper(Configuration, Provider, source.Name);
-        }
+        public SQLHelper Batch(IDatabase source) => new SQLHelper(Configuration, Provider, source.Name);
 
         /// <summary>
         /// Creates a generator object

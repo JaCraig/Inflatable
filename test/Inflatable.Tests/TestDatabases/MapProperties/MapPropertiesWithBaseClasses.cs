@@ -1,9 +1,4 @@
-﻿using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
-using Inflatable.Tests.TestDatabases.ComplexGraph.Interfaces;
-using Mirage.Generators;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Mirage.Generators;
 
 namespace Inflatable.Tests.TestDatabases.MapProperties
 {
@@ -18,7 +13,7 @@ namespace Inflatable.Tests.TestDatabases.MapProperties
         public virtual MapPropertyBaseClass MappedClass { get; set; }
     }
 
-    public class MapProperty1:MapPropertyBaseClass
+    public class MapProperty1 : MapPropertyBaseClass
     {
         public int ChildValue1 { get; set; }
     }
@@ -28,7 +23,7 @@ namespace Inflatable.Tests.TestDatabases.MapProperties
         public int ChildValue2 { get; set; }
     }
 
-    public abstract class MapPropertyBaseClass:IMapPropertyInterface
+    public abstract class MapPropertyBaseClass : IMapPropertyInterface
     {
         public int ID { get; set; }
 

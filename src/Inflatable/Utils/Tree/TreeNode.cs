@@ -107,12 +107,9 @@ namespace Inflatable.Utils
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return Data.ToString();
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => Data.ToString();
     }
 }

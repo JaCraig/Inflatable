@@ -23,10 +23,10 @@ namespace Inflatable.SpeedTests.Sessions
 
         public void Run()
         {
-            for (int x = 0; x < 5; ++x)
+            for (var x = 0; x < 5; ++x)
             {
                 var TempItem = new ManyToManyProperties.ManyToManyPropertiesWithCascade();
-                for (int y = 0; y < 5; ++y)
+                for (var y = 0; y < 5; ++y)
                 {
                     TempItem.ManyToManyClass.Add(new ManyToManyProperties.AllReferencesAndID());
                 }

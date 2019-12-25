@@ -24,8 +24,8 @@ namespace Inflatable.QueryProvider.BaseClasses
     /// Linq query generator base class
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="BaseClasses.QueryGeneratorBaseClass{TObject}"/>
-    /// <seealso cref="Interfaces.ILinqQueryGenerator{TObject}"/>
+    /// <seealso cref="QueryGeneratorBaseClass{TObject}"/>
+    /// <seealso cref="ILinqQueryGenerator{TObject}"/>
     public abstract class LinqQueryGeneratorBaseClass<TObject> : QueryGeneratorBaseClass<TObject>, ILinqQueryGenerator<TObject>
         where TObject : class
     {
@@ -50,9 +50,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TObject queryObject)
-        {
-            return GenerateQueries(new QueryData<TObject>(MappingInformation));
-        }
+        public override IQuery[] GenerateQueries(TObject queryObject) => GenerateQueries(new QueryData<TObject>(MappingInformation));
     }
 }

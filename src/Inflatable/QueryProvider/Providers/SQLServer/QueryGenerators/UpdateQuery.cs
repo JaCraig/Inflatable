@@ -34,7 +34,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     /// Update query generator
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="BaseClasses.QueryGeneratorBaseClass{TMappedClass}"/>
+    /// <seealso cref="QueryGeneratorBaseClass{TMappedClass}"/>
     public class UpdateQuery<TMappedClass> : QueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
@@ -74,10 +74,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations()
-        {
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
-        }
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -105,7 +102,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var TempIDProperties = new StringBuilder();
-                string Separator = "";
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
@@ -148,7 +145,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ParameterList = new StringBuilder();
             var WhereClause = new StringBuilder();
             var FromClause = new StringBuilder();
-            string Splitter = "";
+            var Splitter = "";
 
             //Generate parent queries
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
@@ -207,7 +204,7 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
         {
             var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            string Separator = "";
+            var Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];

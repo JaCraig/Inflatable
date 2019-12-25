@@ -34,7 +34,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     /// Insert query generator
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="BaseClasses.QueryGeneratorBaseClass{TMappedClass}"/>
+    /// <seealso cref="QueryGeneratorBaseClass{TMappedClass}"/>
     public class InsertQuery<TMappedClass> : QueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
@@ -96,7 +96,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateDeclarations()
         {
             var ReturnValue = new List<IQuery>();
-            for (int x = 0; x < QueryDeclarationText.Length; ++x)
+            for (var x = 0; x < QueryDeclarationText.Length; ++x)
             {
                 ReturnValue.Add(new Query(AssociatedType, CommandType.Text, QueryDeclarationText[x], QueryType));
             }
@@ -108,10 +108,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject)
-        {
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
-        }
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
 
         /// <summary>
         /// Generates the insert query.
@@ -126,7 +123,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var DeclareProperties = new StringBuilder();
             var SetProperties = new StringBuilder();
             var IDReturn = new StringBuilder();
-            string Splitter = "";
+            var Splitter = "";
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Generate parent queries

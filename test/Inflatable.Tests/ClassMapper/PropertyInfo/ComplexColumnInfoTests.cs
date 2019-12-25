@@ -32,25 +32,24 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { new MapProperties(),null },
         };
 
-        private readonly ComplexColumnInfo<MapProperties, AllReferencesAndID> TestObject = new ComplexColumnInfo<MapProperties, AllReferencesAndID>
-        {
-            ColumnName = "MappedClass_ID_",
-            CompiledExpression = x => x.MappedClass,
-            Child = new SimpleColumnInfo<AllReferencesAndID, long>
-            {
-                DefaultValue = () => 0,
-                PropertyName = "ID",
-                PropertyType = typeof(long),
-                SchemaName = "dbo2",
-                ColumnName = "ID_",
-                CompiledExpression = x => x.ID,
-                TableName = "AllReferencesAndID_",
-                SetAction = (x, y) => x.ID = (int)y,
-                IsNullable = true
-            },
-            SchemaName = "dbo",
-            TableName = "MapProperties_",
-        };
+        private readonly ComplexColumnInfo<MapProperties, AllReferencesAndID> TestObject = new ComplexColumnInfo<MapProperties, AllReferencesAndID>(
+            new SimpleColumnInfo<AllReferencesAndID, long>(
+                "ID_",
+                x => x.ID,
+                () => 0,
+                false,
+                true,
+                "ID",
+                typeof(long),
+                "dbo2",
+                (x, y) => x.ID = (int)y,
+                "AllReferencesAndID_"
+            ),
+            "MappedClass_ID_",
+            x => x.MappedClass,
+            false,
+            "dbo",
+            "MapProperties_");
 
         [Fact]
         public void Creation()
@@ -77,10 +76,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 
         [Theory]
         [MemberData(nameof(ValueData))]
-        public void GetValue(MapProperties inputObject, object expectedResult)
-        {
-            Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
-        }
+        public void GetValue(MapProperties inputObject, object expectedResult) => Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
 
         [Fact]
         public void IsDefault()

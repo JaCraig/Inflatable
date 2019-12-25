@@ -31,8 +31,8 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Initializes a new instance of the <see cref="DiscoverConcreteTypes"/> class.
         /// </summary>
         /// <param name="typeTrees">The type trees.</param>
-        /// <exception cref="System.ArgumentNullException">typeTrees</exception>
-        public DiscoverConcreteTypes(IDictionary<Type, Tree<Type>> typeTrees)
+        /// <exception cref="ArgumentNullException">typeTrees</exception>
+        public DiscoverConcreteTypes(IDictionary<Type, Tree<Type>?> typeTrees)
         {
             TypeTrees = typeTrees ?? throw new ArgumentNullException(nameof(typeTrees));
         }
@@ -41,7 +41,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Gets or sets the type trees.
         /// </summary>
         /// <value>The type trees.</value>
-        public IDictionary<Type, Tree<Type>> TypeTrees { get; set; }
+        public IDictionary<Type, Tree<Type>?> TypeTrees { get; set; }
 
         /// <summary>
         /// Find concrete types
@@ -50,16 +50,16 @@ namespace Inflatable.ClassMapper.TypeGraph
         public IEnumerable<Type> FindConcreteTypes()
         {
             var Result = new ConcurrentBag<Type>();
-            for (int x = 0; x < TypeTrees.Keys.Count; ++x)
+            for (var x = 0; x < TypeTrees.Keys.Count; ++x)
             {
                 var KeyToCheck = TypeTrees.Keys.ElementAt(x);
                 var Found = false;
-                for (int y = 0; y < TypeTrees.Keys.Count; ++y)
+                for (var y = 0; y < TypeTrees.Keys.Count; ++y)
                 {
                     var CurrentKey = TypeTrees.Keys.ElementAt(y);
                     if (CurrentKey != KeyToCheck)
                     {
-                        Found = TypeTrees[CurrentKey].ContainsNode(KeyToCheck, (i, j) => i == j);
+                        Found = TypeTrees[CurrentKey]?.ContainsNode(KeyToCheck, (i, j) => i == j) == true;
                         if (Found)
                         {
                             break;

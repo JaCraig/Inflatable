@@ -45,10 +45,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// </summary>
         /// <param name="expression">The exp.</param>
         /// <returns>The resulting expression.</returns>
-        public Expression Eval(Expression expression)
-        {
-            return Visit(expression);
-        }
+        public Expression Eval(Expression expression) => Visit(expression);
 
         /// <summary>
         /// Dispatches the expression to one of the more specialized visit methods in this class.
@@ -60,17 +57,12 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// </returns>
         public override Expression Visit(Expression node)
         {
-            if (node == null)
+            if (node is null)
             {
-                return null;
+                return null!;
             }
 
-            if (Candidates.Contains(node))
-            {
-                return Evaluate(node);
-            }
-
-            return base.Visit(node);
+            return Candidates.Contains(node) ? Evaluate(node) : base.Visit(node);
         }
 
         /// <summary>

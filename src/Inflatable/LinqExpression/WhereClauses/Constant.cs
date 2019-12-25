@@ -43,10 +43,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             Count = count;
             Value = value;
-            if (value != null)
-            {
-                TypeCode = Value.GetType();
-            }
+            TypeCode = value is null ? typeof(object) : Value.GetType();
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public IOperator Parent { get; set; }
+        public IOperator? Parent { get; set; }
 
         /// <summary>
         /// Gets the type code.
@@ -77,10 +74,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy()
-        {
-            return new Constant(Value, Count);
-        }
+        public IOperator Copy() => new Constant(Value, Count);
 
         /// <summary>
         /// Gets the parameters associated with the operator.
@@ -89,17 +83,19 @@ namespace Inflatable.LinqExpression.WhereClauses
         public List<IParameter> GetParameters()
         {
             var ReturnValue = new List<IParameter>();
-            if (Value == null)
+            switch (Value)
             {
-                ReturnValue.Add(new Parameter<object>(Count.ToString(), null));
-            }
-            else if (Value is string)
-            {
-                ReturnValue.Add(new StringParameter(Count.ToString(), Value as string));
-            }
-            else
-            {
-                ReturnValue.Add(new Parameter<object>(Count.ToString(), Value.GetType().To(DbType.Int32), Value));
+                case null:
+                    ReturnValue.Add(new Parameter<object>(Count.ToString(), null!));
+                    break;
+
+                case string _:
+                    ReturnValue.Add(new StringParameter(Count.ToString(), (Value as string)!));
+                    break;
+
+                default:
+                    ReturnValue.Add(new Parameter<object>(Count.ToString(), Value.GetType().To(DbType.Int32), Value));
+                    break;
             }
             return ReturnValue;
         }
@@ -108,20 +104,14 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Does a logical negation of the operator.
         /// </summary>
         /// <returns>The resulting operator.</returns>
-        public IOperator LogicallyNegate()
-        {
-            return this;
-        }
+        public IOperator LogicallyNegate() => this;
 
         /// <summary>
         /// Optimizes the operator based on the mapping source.
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <returns>The result</returns>
-        public IOperator Optimize(MappingSource mappingSource)
-        {
-            return this;
-        }
+        public IOperator Optimize(MappingSource mappingSource) => this;
 
         /// <summary>
         /// Sets the column names.
@@ -133,9 +123,9 @@ namespace Inflatable.LinqExpression.WhereClauses
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             if (Value is IQueryable TempQuery)
@@ -143,12 +133,7 @@ namespace Inflatable.LinqExpression.WhereClauses
                 return "SELECT * FROM " + TempQuery.ElementType.Name;
             }
 
-            if (Value == null)
-            {
-                return "NULL";
-            }
-
-            return "@" + Count;
+            return Value == null ? "NULL" : "@" + Count;
         }
     }
 }

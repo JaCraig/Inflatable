@@ -85,18 +85,17 @@ namespace Inflatable.ClassMapper.Default
         public override void SetColumnInfo(MappingSource mappings)
         {
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
             {
                 var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexColumnInfo<ClassType, DataType>
-                {
-                    Child = IDColumnInfo,
-                    ColumnName = ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + IDColumnInfo.ColumnName,
-                    CompiledExpression = CompiledExpression,
-                    SchemaName = ParentMapping.SchemaName,
-                    TableName = ParentMapping.TableName,
-                    IsForeign = true
-                };
+                return new ComplexColumnInfo<ClassType, DataType>(
+                    IDColumnInfo,
+                    ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + IDColumnInfo.ColumnName,
+                    CompiledExpression,
+                    true,
+                    ParentMapping.SchemaName,
+                    ParentMapping.TableName
+                );
             }));
             TempColumns.AddRange(mappings.GetChildMappings(ParentMapping.ObjectType)
                                          .SelectMany(x => mappings.GetParentMapping(x.ObjectType))

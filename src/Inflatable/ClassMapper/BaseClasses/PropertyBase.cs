@@ -33,8 +33,8 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <typeparam name="ClassType">The type of the class type.</typeparam>
     /// <typeparam name="DataType">The type of the data type.</typeparam>
     /// <typeparam name="ReturnType">The type of the return type.</typeparam>
-    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IProperty{ClassType, DataType, ReturnType}"/>
-    /// <seealso cref="Inflatable.ClassMapper.Interfaces.IProperty{ClassType, DataType}"/>
+    /// <seealso cref="IProperty{ClassType, DataType, ReturnType}"/>
+    /// <seealso cref="IProperty{ClassType, DataType}"/>
     public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>, IProperty<ClassType, DataType>
         where ClassType : class
         where ReturnType : IProperty<ClassType, DataType, ReturnType>
@@ -200,17 +200,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -221,17 +211,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return true;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() == second.GetHashCode();
+            return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -242,17 +222,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() > second.GetHashCode();
         }
 
         /// <summary>
@@ -291,12 +261,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is PropertyBase<ClassType, DataType, ReturnType> SecondObj))
-            {
-                return false;
-            }
-
-            return this == SecondObj;
+            return (obj is PropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
         }
 
         /// <summary>
@@ -317,10 +282,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode()
-        {
-            return (Name.GetHashCode() * ParentMapping.GetHashCode()) % int.MaxValue;
-        }
+        public override int GetHashCode() => Name.GetHashCode() * ParentMapping.GetHashCode() % int.MaxValue;
 
         /// <summary>
         /// Determines whether this instance is indexed.
@@ -329,7 +291,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsIndexed()
         {
             Index = true;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -339,7 +301,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsReadOnly()
         {
             ReadOnly = true;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -349,7 +311,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsUnique()
         {
             Unique = true;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -378,10 +340,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the property as a string
         /// </summary>
         /// <returns>The string representation of the property</returns>
-        public override string ToString()
-        {
-            return PropertyType.GetName() + " " + ParentMapping + "." + Name;
-        }
+        public override string ToString() => PropertyType.GetName() + " " + ParentMapping + "." + Name;
 
         /// <summary>
         /// Sets the name of the field in the database.
@@ -391,7 +350,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithColumnName(string columnName)
         {
             ColumnName = columnName;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -402,7 +361,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithComputedColumnSpecification(string computedColumnSpecification)
         {
             ComputedColumnSpecification = computedColumnSpecification;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -413,7 +372,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithConstraint(string constraint)
         {
             Constraints.Add(constraint);
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -424,7 +383,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithDefaultValue(Func<DataType> value)
         {
             DefaultValue = value;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -435,16 +394,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithMaxLength(int maxLength)
         {
             MaxLength = maxLength;
-            return (ReturnType)((IProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
         /// Sets the length for the property to MAX.
         /// </summary>
         /// <returns>this.</returns>
-        public ReturnType WithMaxLength()
-        {
-            return WithMaxLength(-1);
-        }
+        public ReturnType WithMaxLength() => WithMaxLength(-1);
     }
 }

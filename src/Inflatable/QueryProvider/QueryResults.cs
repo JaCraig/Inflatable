@@ -74,39 +74,27 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="keyName">Name of the key.</param>
         /// <param name="results">The results.</param>
-        public static void CacheValues(string keyName, List<QueryResults> results)
-        {
-            Cache.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
-        }
+        public static void CacheValues(string keyName, List<QueryResults> results) => Cache.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
 
         /// <summary>
         /// Gets the cached value.
         /// </summary>
         /// <param name="keyName">Name of the key.</param>
         /// <returns>The cached value</returns>
-        public static List<QueryResults> GetCached(string keyName)
-        {
-            return (List<QueryResults>)Cache[keyName];
-        }
+        public static List<QueryResults> GetCached(string keyName) => (List<QueryResults>)Cache[keyName];
 
         /// <summary>
         /// Determines whether the specified key name is cached.
         /// </summary>
         /// <param name="keyName">Name of the key.</param>
         /// <returns><c>true</c> if the specified key name is cached; otherwise, <c>false</c>.</returns>
-        public static bool IsCached(string keyName)
-        {
-            return Cache.ContainsKey(keyName);
-        }
+        public static bool IsCached(string keyName) => Cache.ContainsKey(keyName);
 
         /// <summary>
         /// Removes the cache tag.
         /// </summary>
         /// <param name="name">The name.</param>
-        public static void RemoveCacheTag(string name)
-        {
-            Cache.RemoveByTag(name);
-        }
+        public static void RemoveCacheTag(string name) => Cache.RemoveByTag(name);
 
         /// <summary>
         /// Determines whether this instance can copy the specified results.
@@ -116,10 +104,7 @@ namespace Inflatable.QueryProvider
         /// <returns>
         /// <c>true</c> if this instance can copy the specified results; otherwise, <c>false</c>.
         /// </returns>
-        public bool CanCopy(QueryResults results, IEnumerable<IIDProperty> idProperties)
-        {
-            return results != null && idProperties.Any() && results.Query.ReturnType == Query.ReturnType;
-        }
+        public bool CanCopy(QueryResults results, IEnumerable<IIDProperty> idProperties) => results != null && idProperties.Any() && results.Query.ReturnType == Query.ReturnType;
 
         /// <summary>
         /// Converts the values.
@@ -127,10 +112,7 @@ namespace Inflatable.QueryProvider
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <returns>The resulting list of objects.</returns>
         public IList<TObject> ConvertValues<TObject>()
-            where TObject : class
-        {
-            return new ObservableList<TObject>(Values.ForEach(x => (TObject)ConvertValue(x)));
-        }
+            where TObject : class => new ObservableList<TObject>(Values.ForEach(x => (TObject)ConvertValue(x)));
 
         /// <summary>
         /// Copies the specified return value.

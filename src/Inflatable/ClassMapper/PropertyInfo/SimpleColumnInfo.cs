@@ -28,25 +28,62 @@ namespace Inflatable.ClassMapper.Column
     /// </summary>
     /// <typeparam name="TClassType">The type of the class type.</typeparam>
     /// <typeparam name="TDataType">The type of the data type.</typeparam>
-    /// <seealso cref="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo"/>
+    /// <seealso cref="IQueryColumnInfo"/>
     public class SimpleColumnInfo<TClassType, TDataType> : IQueryColumnInfo
         where TClassType : class
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleColumnInfo{TClassType, TDataType}"/> class.
+        /// </summary>
+        /// <param name="columnName">Name of the column.</param>
+        /// <param name="compiledExpression">The compiled expression.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="isForeign">if set to <c>true</c> [is foreign].</param>
+        /// <param name="isNullable">if set to <c>true</c> [is nullable].</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyType">Type of the property.</param>
+        /// <param name="schemaName">Name of the schema.</param>
+        /// <param name="setAction">The set action.</param>
+        /// <param name="tableName">Name of the table.</param>
+        public SimpleColumnInfo(
+            string columnName,
+            Func<TClassType, TDataType> compiledExpression,
+            Func<TDataType> defaultValue,
+            bool isForeign,
+            bool isNullable,
+            string propertyName,
+            Type propertyType,
+            string schemaName,
+            Action<TClassType, TDataType> setAction,
+            string tableName)
+        {
+            ColumnName = columnName;
+            CompiledExpression = compiledExpression;
+            DefaultValue = defaultValue;
+            IsForeign = isForeign;
+            IsNullable = isNullable;
+            PropertyName = propertyName;
+            PropertyType = propertyType;
+            SchemaName = schemaName;
+            SetAction = setAction;
+            TableName = tableName;
+        }
+
+        /// <summary>
         /// Gets the name of the column.
         /// </summary>
         /// <value>The name of the column.</value>
-        public string? ColumnName { get; set; }
+        public string ColumnName { get; set; }
 
         /// <summary>
         /// The compiled expression
         /// </summary>
-        public Func<TClassType, TDataType>? CompiledExpression { get; set; }
+        public Func<TClassType, TDataType> CompiledExpression { get; set; }
 
         /// <summary>
         /// Gets the default value.
         /// </summary>
-        public Func<TDataType>? DefaultValue { get; set; }
+        public Func<TDataType> DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -64,30 +101,30 @@ namespace Inflatable.ClassMapper.Column
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string? PropertyName { get; set; }
+        public string PropertyName { get; set; }
 
         /// <summary>
         /// Property type
         /// </summary>
-        public Type? PropertyType { get; set; }
+        public Type PropertyType { get; set; }
 
         /// <summary>
         /// Gets the schema name.
         /// </summary>
         /// <value>The schema name.</value>
-        public string? SchemaName { get; set; }
+        public string SchemaName { get; set; }
 
         /// <summary>
         /// Gets or sets the expression used to set the value.
         /// </summary>
         /// <value>The set expression.</value>
-        public Action<TClassType, TDataType>? SetAction { get; set; }
+        public Action<TClassType, TDataType> SetAction { get; set; }
 
         /// <summary>
         /// Gets the table name.
         /// </summary>
         /// <value>The table name.</value>
-        public string? TableName { get; set; }
+        public string TableName { get; set; }
 
         /// <summary>
         /// Creates a copy.
@@ -95,18 +132,18 @@ namespace Inflatable.ClassMapper.Column
         /// <returns>The resulting copy.</returns>
         public IQueryColumnInfo CreateCopy()
         {
-            return new SimpleColumnInfo<TClassType, TDataType>
-            {
-                ColumnName = ColumnName,
-                CompiledExpression = CompiledExpression,
-                DefaultValue = DefaultValue,
-                IsNullable = IsNullable,
-                PropertyName = PropertyName,
-                PropertyType = PropertyType,
-                SchemaName = SchemaName,
-                SetAction = SetAction,
-                TableName = TableName
-            };
+            return new SimpleColumnInfo<TClassType, TDataType>(
+                ColumnName,
+                CompiledExpression,
+                DefaultValue,
+                IsForeign,
+                IsNullable,
+                PropertyName,
+                PropertyType,
+                SchemaName,
+                SetAction,
+                TableName
+            );
         }
 
         /// <summary>
@@ -125,7 +162,7 @@ namespace Inflatable.ClassMapper.Column
             if (PropertyType == typeof(string))
             {
                 var TempParameter = ParamValue as string;
-                return new StringParameter(PropertyName, TempParameter);
+                return new StringParameter(PropertyName, TempParameter!);
             }
             return new Parameter<object>(PropertyName, PropertyType.To<Type, DbType>(), ParamValue);
         }
@@ -136,30 +173,21 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectValue">The object value.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The object value as a parameter.</returns>
-        public IParameter? GetAsParameter(object? objectValue, object? paramValue)
-        {
-            return GetAsParameter(objectValue);
-        }
+        public IParameter? GetAsParameter(object? objectValue, object? paramValue) => GetAsParameter(objectValue);
 
         /// <summary>
         /// Gets the value of the item
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>The value specified</returns>
-        public object? GetValue(Dynamo? @object)
-        {
-            return @object?[PropertyName];
-        }
+        public object? GetValue(Dynamo? @object) => @object?[PropertyName];
 
         /// <summary>
         /// Gets the value of the item
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>The value specified</returns>
-        public object? GetValue(object? @object)
-        {
-            return GetValue(@object as TClassType);
-        }
+        public object? GetValue(object? @object) => GetValue(@object as TClassType);
 
         /// <summary>
         /// Gets the value.
@@ -167,25 +195,14 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The resulting value.</returns>
-        public object? GetValue(object? @object, object? paramValue)
-        {
-            return GetValue(@object);
-        }
+        public object? GetValue(object? @object, object? paramValue) => GetValue(@object);
 
         /// <summary>
         /// Is this a default value?
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>True if it is, false otherwise.</returns>
-        public bool IsDefault(object @object)
-        {
-            if (ReferenceEquals(@object, default(TClassType)))
-            {
-                return true;
-            }
-
-            return Equals(GetValue(@object), DefaultValue());
-        }
+        public bool IsDefault(object @object) => ReferenceEquals(@object, default(TClassType)) || Equals(GetValue(@object), DefaultValue());
 
         /// <summary>
         /// Determines whether the specified object is default.
@@ -193,10 +210,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
-        public bool IsDefault(object @object, object paramValue)
-        {
-            return IsDefault(@object);
-        }
+        public bool IsDefault(object @object, object paramValue) => IsDefault(@object);
 
         /// <summary>
         /// Sets the property's value for the object sent in.
@@ -221,24 +235,13 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object paramValue, object propertyValue)
-        {
-            SetValue(objectToSet, propertyValue);
-        }
+        public void SetValue(object objectToSet, object paramValue, object propertyValue) => SetValue(objectToSet, propertyValue);
 
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        private object? GetValue(TClassType? @object)
-        {
-            if (ReferenceEquals(@object, default(TClassType)))
-            {
-                return null;
-            }
-
-            return CompiledExpression(@object);
-        }
+        private object? GetValue(TClassType? @object) => ReferenceEquals(@object, default(TClassType)) ? null : (object?)CompiledExpression(@object);
     }
 }

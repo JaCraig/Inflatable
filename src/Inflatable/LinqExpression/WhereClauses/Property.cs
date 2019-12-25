@@ -31,7 +31,7 @@ namespace Inflatable.LinqExpression.WhereClauses
     /// Property operator
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator"/>
+    /// <seealso cref="IOperator"/>
     /// <seealso cref="IOperator"/>
     public class Property<TObject> : IOperator
     {
@@ -82,28 +82,19 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy()
-        {
-            return new Property<TObject>(InternalProperty, Count);
-        }
+        public IOperator Copy() => new Property<TObject>(InternalProperty, Count);
 
         /// <summary>
         /// Gets the parameters associated with the operator.
         /// </summary>
         /// <returns>A list of parameters associated with the operator.</returns>
-        public List<IParameter> GetParameters()
-        {
-            return new List<IParameter>();
-        }
+        public List<IParameter> GetParameters() => new List<IParameter>();
 
         /// <summary>
         /// Does a logical negation of the operator.
         /// </summary>
         /// <returns>The resulting operator.</returns>
-        public IOperator LogicallyNegate()
-        {
-            return this;
-        }
+        public IOperator LogicallyNegate() => this;
 
         /// <summary>
         /// Optimizes the operator based on the mapping source.
@@ -152,12 +143,9 @@ namespace Inflatable.LinqExpression.WhereClauses
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(Column) ? InternalProperty.Name : Column;
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => string.IsNullOrEmpty(Column) ? InternalProperty.Name : Column;
     }
 }

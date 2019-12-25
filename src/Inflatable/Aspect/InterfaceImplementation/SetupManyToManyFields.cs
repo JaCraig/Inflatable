@@ -47,14 +47,14 @@ namespace Inflatable.Aspect.InterfaceImplementation
                 foreach (var ParentType in Source.ParentTypes[type])
                 {
                     Mapping = Source.Mappings[ParentType];
-                    foreach (IManyToManyProperty Property in Mapping.ManyToManyProperties
+                    foreach (var Property in Mapping.ManyToManyProperties
                                                           .Where(x => !aspect.ManyToManyFields.Any(y => y.Name == x.Name)))
                     {
                         aspect.ManyToManyFields.Add(Property);
                         Builder.AppendLineFormat("private {0} {1};", "IList<" + Property.TypeName + ">", Property.InternalFieldName);
                         Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
                     }
-                    foreach (IManyToOneProperty Property in Mapping.ManyToOneProperties
+                    foreach (var Property in Mapping.ManyToOneProperties
                                                           .Where(x => !aspect.ManyToOneFields.Any(y => y.Name == x.Name)))
                     {
                         aspect.ManyToOneFields.Add(Property);

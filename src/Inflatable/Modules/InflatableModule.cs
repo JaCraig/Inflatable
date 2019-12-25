@@ -29,7 +29,7 @@ namespace Inflatable.Modules
     /// <summary>
     /// Inflatable module
     /// </summary>
-    /// <seealso cref="Canister.Interfaces.IModule"/>
+    /// <seealso cref="IModule"/>
     public class InflatableModule : IModule
     {
         /// <summary>

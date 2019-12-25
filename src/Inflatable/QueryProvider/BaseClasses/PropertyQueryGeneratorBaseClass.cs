@@ -24,7 +24,7 @@ namespace Inflatable.QueryProvider.BaseClasses
     /// Property query generator base class
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass{TObject}"/>
+    /// <seealso cref="QueryGeneratorBaseClass{TObject}"/>
     /// <seealso cref="ILinqQueryGenerator{TObject}"/>
     public abstract class PropertyQueryGeneratorBaseClass<TObject> : QueryGeneratorBaseClass<TObject>, IPropertyQueryGenerator<TObject>
         where TObject : class
@@ -51,9 +51,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TObject queryObject)
-        {
-            return new IQuery[] { new Query(AssociatedType, System.Data.CommandType.Text, "", QueryType) };
-        }
+        public override IQuery[] GenerateQueries(TObject queryObject) => new IQuery[] { new Query(AssociatedType, System.Data.CommandType.Text, "", QueryType) };
     }
 }

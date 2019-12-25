@@ -32,25 +32,25 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { new ManyToManyProperties(),null },
         };
 
-        private readonly ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID> TestObject = new ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID>
-        {
-            ColumnName = "ManyToManyClass_ID_",
-            CompiledExpression = x => x.ManyToManyClass,
-            Child = new SimpleColumnInfo<AllReferencesAndID, long>
-            {
-                DefaultValue = () => 0,
-                PropertyName = "ID",
-                PropertyType = typeof(long),
-                SchemaName = "dbo2",
-                ColumnName = "ID_",
-                CompiledExpression = x => x.ID,
-                TableName = "AllReferencesAndID_",
-                SetAction = (x, y) => x.ID = (int)y,
-                IsNullable = true
-            },
-            SchemaName = "dbo",
-            TableName = "ManyToManyProperties_",
-        };
+        private readonly ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID> TestObject = new ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID>(
+            new SimpleColumnInfo<AllReferencesAndID, long>
+            (
+                 "ID_",
+                 x => x.ID,
+                 () => 0,
+                false,
+                true,
+                "ID",
+                typeof(long),
+                "dbo2",
+                (x, y) => x.ID = (int)y,
+                "AllReferencesAndID_"
+            ),
+            "ManyToManyClass_ID_",
+            x => x.ManyToManyClass,
+            false,
+            "dbo",
+            "ManyToManyProperties_");
 
         [Fact]
         public void Creation()
@@ -77,10 +77,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 
         [Theory]
         [MemberData(nameof(ValueData))]
-        public void GetValue(ManyToManyProperties inputObject, object expectedResult)
-        {
-            Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
-        }
+        public void GetValue(ManyToManyProperties inputObject, object expectedResult) => Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
 
         [Fact]
         public void IsDefault()

@@ -1,8 +1,5 @@
 ﻿using Inflatable.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inflatable.Tests.TestDatabases.MapProperties
 {

@@ -114,7 +114,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public IOperator Parent { get; set; }
+        public IOperator? Parent { get; set; }
 
         /// <summary>
         /// Gets the right.
@@ -132,10 +132,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy()
-        {
-            return new BinaryOperator(Left.Copy(), Right.Copy(), Operator);
-        }
+        public IOperator Copy() => new BinaryOperator(Left.Copy(), Right.Copy(), Operator);
 
         /// <summary>
         /// Gets the parameters associated with the operator.
@@ -170,19 +167,9 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             Left = Left.Optimize(mappingSource);
             Right = Right.Optimize(mappingSource);
-            if (Left == null && Right == null)
+            if (Left == null || Right == null)
             {
-                return null;
-            }
-
-            if (Left == null)
-            {
-                return Right;
-            }
-
-            if (Right == null)
-            {
-                return Left;
+                return (Left ?? Right)!;
             }
 
             if (Operator == ExpressionType.And
@@ -215,12 +202,9 @@ namespace Inflatable.LinqExpression.WhereClauses
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return "(" + Left + Converter[Operator] + Right + ")";
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => "(" + Left + Converter[Operator] + Right + ")";
     }
 }

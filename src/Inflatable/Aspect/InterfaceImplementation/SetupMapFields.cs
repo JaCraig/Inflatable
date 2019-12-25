@@ -46,7 +46,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
                 foreach (var ParentType in Source.ParentTypes[type])
                 {
                     Mapping = Source.Mappings[ParentType];
-                    foreach (IMapProperty Property in Mapping.MapProperties
+                    foreach (var Property in Mapping.MapProperties
                                                           .Where(x => !aspect.MapFields.Any(y => y.Name == x.Name)))
                     {
                         aspect.MapFields.Add(Property);

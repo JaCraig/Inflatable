@@ -54,10 +54,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query</returns>
-        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
-        {
-            return Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
-        }
+        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters);
 
         /// <summary>
         /// Adds a delete command.
@@ -76,10 +73,7 @@ namespace Inflatable
         /// Executes the various save and delete commands asynchronous.
         /// </summary>
         /// <returns>The number of rows modified or the first ID if inserting new items.</returns>
-        public Task<int> ExecuteAsync()
-        {
-            return InternalSession.ExecuteAsync();
-        }
+        public Task<int> ExecuteAsync() => InternalSession.ExecuteAsync();
 
         /// <summary>
         /// Adds a save command.
@@ -107,10 +101,7 @@ namespace Inflatable
         /// Creates a query.
         /// </summary>
         /// <returns>The resulting query.</returns>
-        public static IQueryable<TObject> CreateQuery()
-        {
-            return new Query<TObject>(new DbContext<TObject>());
-        }
+        public static IQueryable<TObject> CreateQuery() => new Query<TObject>(new DbContext<TObject>());
 
         /// <summary>
         /// Executes the query asynchronously.
@@ -120,10 +111,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query.</returns>
-        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters)
-        {
-            return Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(command, type, connection, parameters);
-        }
+        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(command, type, connection, parameters);
 
         /// <summary>
         /// Executes the query getting a scalar asynchronously.
@@ -133,10 +121,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The first object returned by the query.</returns>
-        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters)
-        {
-            return Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters);
-        }
+        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters);
 
         /// <summary>
         /// Executes the query represented by a specified expression tree.
@@ -146,7 +131,7 @@ namespace Inflatable
         public override object Execute(Expression expression)
         {
             var Results = Translate(expression);
-            var DatabaseValues = Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync<TObject>(Results).GetAwaiter().GetResult();
+            var DatabaseValues = Canister.Builder.Bootstrapper.Resolve<Session>().ExecuteAsync(Results).GetAwaiter().GetResult();
             return (Results.Values.FirstOrDefault()?.Top ?? 0) == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 
@@ -155,19 +140,13 @@ namespace Inflatable
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The query as a string</returns>
-        public override string GetQueryText(Expression expression)
-        {
-            return Translate(expression).First().Value.ToString();
-        }
+        public override string GetQueryText(Expression expression) => Translate(expression).First().Value.ToString();
 
         /// <summary>
         /// Translates the specified expression.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The translated expression</returns>
-        private static IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
-        {
-            return Canister.Builder.Bootstrapper.Resolve<QueryTranslator<TObject>>().Translate(expression);
-        }
+        private static IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression) => Canister.Builder.Bootstrapper.Resolve<QueryTranslator<TObject>>().Translate(expression);
     }
 }

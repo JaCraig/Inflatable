@@ -36,6 +36,7 @@ namespace Inflatable.BaseClasses
         /// </summary>
         protected ObjectBaseClass()
         {
+            ID = default!;
             Active = true;
             DateCreated = DateTime.Now;
             DateModified = DateTime.Now;
@@ -99,6 +100,17 @@ namespace Inflatable.BaseClasses
         }
 
         /// <summary>
+        /// Implements the operator &lt;=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator <=(ObjectBaseClass<ObjectType, IDType> left, ObjectBaseClass<ObjectType, IDType> right)
+        {
+            return left is null || left.CompareTo(right) <= 0;
+        }
+
+        /// <summary>
         /// The == operator
         /// </summary>
         /// <param name="first">First item</param>
@@ -141,6 +153,17 @@ namespace Inflatable.BaseClasses
         }
 
         /// <summary>
+        /// Implements the operator &gt;=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator >=(ObjectBaseClass<ObjectType, IDType> left, ObjectBaseClass<ObjectType, IDType> right)
+        {
+            return left is null ? right is null : left.CompareTo(right) >= 0;
+        }
+
+        /// <summary>
         /// Compares the object to another object
         /// </summary>
         /// <param name="obj">Object to compare to</param>
@@ -160,10 +183,7 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <param name="other">Object to compare to</param>
         /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public virtual int CompareTo(ObjectType other)
-        {
-            return other.ID.CompareTo(ID);
-        }
+        public virtual int CompareTo(ObjectType other) => other.ID.CompareTo(ID);
 
         /// <summary>
         /// Determines if two items are equal
@@ -184,17 +204,11 @@ namespace Inflatable.BaseClasses
         /// Returns the hash of this item
         /// </summary>
         /// <returns>the int hash of the item</returns>
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
+        public override int GetHashCode() => ID.GetHashCode();
 
         /// <summary>
         /// Sets up the object for saving purposes
         /// </summary>
-        public virtual void SetupObject()
-        {
-            DateModified = DateTime.Now;
-        }
+        public virtual void SetupObject() => DateModified = DateTime.Now;
     }
 }

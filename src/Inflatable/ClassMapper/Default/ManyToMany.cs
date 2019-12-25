@@ -86,7 +86,7 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(MappingSource mappings)
         {
-            string Prefix = "";
+            var Prefix = "";
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
@@ -98,29 +98,25 @@ namespace Inflatable.ClassMapper.Default
             var TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ParentIDMappings.ForEach(x =>
             {
-                var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexColumnInfo<ClassType, ClassType>
-                {
-                    Child = IDColumnInfo,
-                    ColumnName = Prefix + x.ParentMapping.TableName + x.ColumnName,
-                    CompiledExpression = y => y,
-                    SchemaName = ParentMapping.SchemaName,
-                    TableName = TableName,
-                    IsForeign = false
-                };
+                return new ComplexColumnInfo<ClassType, ClassType>(
+                    x.GetColumnInfo()[0],
+                    Prefix + x.ParentMapping.TableName + x.ColumnName,
+                    y => y,
+                    false,
+                    ParentMapping.SchemaName,
+                    TableName
+                );
             }));
-            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
             {
-                var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexListColumnInfo<ClassType, DataType>
-                {
-                    Child = IDColumnInfo,
-                    ColumnName = x.ParentMapping.TableName + x.ColumnName,
-                    CompiledExpression = CompiledExpression,
-                    SchemaName = ParentMapping.SchemaName,
-                    TableName = TableName,
-                    IsForeign = true
-                };
+                return new ComplexListColumnInfo<ClassType, DataType>(
+                    x.GetColumnInfo()[0],
+                    x.ParentMapping.TableName + x.ColumnName,
+                    CompiledExpression,
+                    true,
+                    ParentMapping.SchemaName,
+                    TableName ?? ""
+                );
             }));
             Columns = TempColumns.ToArray();
         }
@@ -145,8 +141,8 @@ namespace Inflatable.ClassMapper.Default
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             if (string.IsNullOrEmpty(TableName))
             {
-                string Class1 = ParentWithID.ObjectType.Name;
-                string Class2 = ForeignMapping.ObjectType.Name;
+                var Class1 = ParentWithID.ObjectType.Name;
+                var Class2 = ForeignMapping.ObjectType.Name;
                 if (string.CompareOrdinal(Class1, Class2) < 0)
                 {
                     SetTableName(Class1 + "_" + Class2);
@@ -161,11 +157,11 @@ namespace Inflatable.ClassMapper.Default
                 return;
             }
 
-            var JoinTable = dataModel.SourceSpec.AddTable(TableName, ParentMapping.SchemaName);
+            var JoinTable = dataModel.SourceSpec.AddTable(TableName ?? "", ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
-            string Prefix = "";
+            var Prefix = "";
             if (ParentWithID == ForeignMapping)
             {
                 Prefix = "Parent_";
@@ -183,7 +179,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 ParentIDMapping.ParentMapping.TableName,
                                 ParentIDMapping.ColumnName,
-                                null,
+                                null!,
                                 "",
                                 !OnDeleteDoNothingValue && DatabaseJoinsCascade,
                                 !OnDeleteDoNothingValue && DatabaseJoinsCascade,
@@ -201,7 +197,7 @@ namespace Inflatable.ClassMapper.Default
                                 false,
                                 ForeignIDMapping.ParentMapping.TableName,
                                 ForeignIDMapping.ColumnName,
-                                null,
+                                null!,
                                 "",
                                 !OnDeleteDoNothingValue && DatabaseJoinsCascade,
                                 !OnDeleteDoNothingValue && DatabaseJoinsCascade,

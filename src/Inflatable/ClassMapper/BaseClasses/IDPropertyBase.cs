@@ -33,8 +33,8 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <typeparam name="ClassType">The type of the lass type.</typeparam>
     /// <typeparam name="DataType">The type of the ata type.</typeparam>
     /// <typeparam name="ReturnType">The type of the eturn type.</typeparam>
-    /// <seealso cref="Interfaces.IIDProperty{ClassType, DataType, ReturnType}"/>
-    /// <seealso cref="Interfaces.IIDProperty{ClassType, DataType}"/>
+    /// <seealso cref="IIDProperty{ClassType, DataType, ReturnType}"/>
+    /// <seealso cref="IIDProperty{ClassType, DataType}"/>
     public abstract class IDPropertyBase<ClassType, DataType, ReturnType> : IIDProperty<ClassType, DataType, ReturnType>, IIDProperty<ClassType, DataType>
         where ClassType : class
         where ReturnType : IIDProperty<ClassType, DataType, ReturnType>
@@ -297,12 +297,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are equal, false otherwise</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is IDPropertyBase<ClassType, DataType, ReturnType> SecondObj))
-            {
-                return false;
-            }
-
-            return this == SecondObj;
+            return (obj is IDPropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
         }
 
         /// <summary>
@@ -311,7 +306,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>The column information.</returns>
         public IQueryColumnInfo[] GetColumnInfo()
         {
-            if (Columns == null)
+            if (Columns is null)
             {
                 SetColumnInfo(null);
             }
@@ -323,10 +318,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode()
-        {
-            return (Name.GetHashCode() * ParentMapping.GetHashCode()) % int.MaxValue;
-        }
+        public override int GetHashCode() => Name.GetHashCode() * ParentMapping.GetHashCode() % int.MaxValue;
 
         /// <summary>
         /// Determines whether this [is auto incremented].
@@ -335,7 +327,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsAutoIncremented()
         {
             AutoIncrement = true;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -345,7 +337,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsIndexed()
         {
             Index = true;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -355,7 +347,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsReadOnly()
         {
             ReadOnly = true;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -365,7 +357,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType IsUnique()
         {
             Unique = true;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -383,10 +375,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the property as a string
         /// </summary>
         /// <returns>The string representation of the property</returns>
-        public override string ToString()
-        {
-            return PropertyType.GetName() + " " + ParentMapping + "." + Name;
-        }
+        public override string ToString() => PropertyType.GetName() + " " + ParentMapping + "." + Name;
 
         /// <summary>
         /// Sets the name of the field in the database.
@@ -396,7 +385,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithColumnName(string columnName)
         {
             ColumnName = columnName;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -407,7 +396,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithComputedColumnSpecification(string computedColumnSpecification)
         {
             ComputedColumnSpecification = computedColumnSpecification;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -418,7 +407,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithConstraint(string constraint)
         {
             Constraints.Add(constraint);
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -429,7 +418,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithDefaultValue(Func<DataType> value)
         {
             DefaultValue = value;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
@@ -440,16 +429,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         public ReturnType WithMaxLength(int maxLength)
         {
             MaxLength = maxLength;
-            return (ReturnType)((IIDProperty<ClassType, DataType, ReturnType>)this);
+            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
         }
 
         /// <summary>
         /// Sets the length for the property to MAX.
         /// </summary>
         /// <returns>this.</returns>
-        public ReturnType WithMaxLength()
-        {
-            return WithMaxLength(-1);
-        }
+        public ReturnType WithMaxLength() => WithMaxLength(-1);
     }
 }

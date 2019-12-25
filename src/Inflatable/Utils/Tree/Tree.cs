@@ -52,18 +52,12 @@ namespace Inflatable.Utils
         /// Converts the tree to a list.
         /// </summary>
         /// <returns>The resulting list</returns>
-        public List<TData> ToList()
-        {
-            return Root.ToList();
-        }
+        public List<TData> ToList() => Root.ToList();
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return Root.ToString();
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => Root.ToString();
     }
 }

@@ -21,7 +21,7 @@ namespace Inflatable.Utils
     /// <summary>
     /// Visitor expression visitor
     /// </summary>
-    /// <seealso cref="System.Linq.Expressions.ExpressionVisitor"/>
+    /// <seealso cref="ExpressionVisitor"/>
     public class Visitor : ExpressionVisitor
     {
         /// <summary>
@@ -46,9 +46,6 @@ namespace Inflatable.Utils
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        protected override Expression VisitParameter(ParameterExpression node)
-        {
-            return _parameter;
-        }
+        protected override Expression VisitParameter(ParameterExpression node) => _parameter;
     }
 }

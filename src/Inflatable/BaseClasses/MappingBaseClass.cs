@@ -34,8 +34,8 @@ namespace Inflatable.BaseClasses
     /// </summary>
     /// <typeparam name="ClassType">The type of the lass type.</typeparam>
     /// <typeparam name="DatabaseType">The type of the atabase type.</typeparam>
-    /// <seealso cref="Inflatable.Interfaces.IMapping"/>
-    /// <seealso cref="Inflatable.Interfaces.IMapping{ClassType}"/>
+    /// <seealso cref="IMapping"/>
+    /// <seealso cref="IMapping{ClassType}"/>
     public abstract class MappingBaseClass<ClassType, DatabaseType> : IMapping, IMapping<ClassType>
         where ClassType : class
         where DatabaseType : IDatabase
@@ -183,10 +183,7 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Adds an automatic key.
         /// </summary>
-        public void AddAutoKey()
-        {
-            AutoIDProperties.Add(new AutoID(Prefix + "ID" + Suffix, this));
-        }
+        public void AddAutoKey() => AutoIDProperties.Add(new AutoID(Prefix + "ID" + Suffix, this));
 
         /// <summary>
         /// Determines whether the mapping contains a property.
@@ -234,46 +231,31 @@ namespace Inflatable.BaseClasses
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IIDProperty prop)
-        {
-            IDProperties.Add(prop.Convert<ClassType>(this));
-        }
+        public void CopyProperty(IIDProperty prop) => IDProperties.Add(prop.Convert<ClassType>(this));
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IProperty prop)
-        {
-            ReferenceProperties.Add(prop.Convert<ClassType>(this));
-        }
+        public void CopyProperty(IProperty prop) => ReferenceProperties.Add(prop.Convert<ClassType>(this));
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IMapProperty prop)
-        {
-            MapProperties.Add(prop.Convert<ClassType>(this));
-        }
+        public void CopyProperty(IMapProperty prop) => MapProperties.Add(prop.Convert<ClassType>(this));
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IManyToOneProperty prop)
-        {
-            ManyToOneProperties.Add(prop.Convert<ClassType>(this));
-        }
+        public void CopyProperty(IManyToOneProperty prop) => ManyToOneProperties.Add(prop.Convert<ClassType>(this));
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IManyToManyProperty prop)
-        {
-            ManyToManyProperties.Add(prop.Convert<ClassType>(this));
-        }
+        public void CopyProperty(IManyToManyProperty prop) => ManyToManyProperties.Add(prop.Convert<ClassType>(this));
 
         /// <summary>
         /// determines if the mappings are equal
@@ -317,10 +299,7 @@ namespace Inflatable.BaseClasses
         /// Gets the mapping's hash code
         /// </summary>
         /// <returns>Hash code for the mapping</returns>
-        public override int GetHashCode()
-        {
-            return (TableName.GetHashCode() * DatabaseConfigType.GetHashCode()) % int.MaxValue;
-        }
+        public override int GetHashCode() => (TableName.GetHashCode() * DatabaseConfigType.GetHashCode()) % int.MaxValue;
 
         /// <summary>
         /// Declares a property as an ID
@@ -424,10 +403,10 @@ namespace Inflatable.BaseClasses
         /// <param name="logger">The logger.</param>
         public void Reduce(ILogger logger)
         {
-            for (int x = 0; x < IDProperties.Count; ++x)
+            for (var x = 0; x < IDProperties.Count; ++x)
             {
                 var IDProperty1 = IDProperties.ElementAt(x);
-                for (int y = x + 1; y < IDProperties.Count; ++y)
+                for (var y = x + 1; y < IDProperties.Count; ++y)
                 {
                     var IDProperty2 = IDProperties.ElementAt(y);
                     if (IDProperty1 == IDProperty2)
@@ -438,10 +417,10 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
-            for (int x = 0; x < ReferenceProperties.Count; ++x)
+            for (var x = 0; x < ReferenceProperties.Count; ++x)
             {
                 var ReferenceProperty1 = ReferenceProperties.ElementAt(x);
-                for (int y = x + 1; y < ReferenceProperties.Count; ++y)
+                for (var y = x + 1; y < ReferenceProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -452,10 +431,10 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
-            for (int x = 0; x < MapProperties.Count; ++x)
+            for (var x = 0; x < MapProperties.Count; ++x)
             {
                 var ReferenceProperty1 = MapProperties.ElementAt(x);
-                for (int y = x + 1; y < MapProperties.Count; ++y)
+                for (var y = x + 1; y < MapProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = MapProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -466,10 +445,10 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
-            for (int x = 0; x < ManyToManyProperties.Count; ++x)
+            for (var x = 0; x < ManyToManyProperties.Count; ++x)
             {
                 var ReferenceProperty1 = ManyToManyProperties.ElementAt(x);
-                for (int y = x + 1; y < ManyToManyProperties.Count; ++y)
+                for (var y = x + 1; y < ManyToManyProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -481,10 +460,10 @@ namespace Inflatable.BaseClasses
                 }
             }
 
-            for (int x = 0; x < ManyToOneProperties.Count; ++x)
+            for (var x = 0; x < ManyToOneProperties.Count; ++x)
             {
                 var ReferenceProperty1 = ManyToOneProperties.ElementAt(x);
-                for (int y = x + 1; y < ManyToOneProperties.Count; ++y)
+                for (var y = x + 1; y < ManyToOneProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -504,10 +483,10 @@ namespace Inflatable.BaseClasses
         /// <param name="logger">The logger.</param>
         public void Reduce(IMapping parentMapping, ILogger logger)
         {
-            for (int x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
+            for (var x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.ReferenceProperties.ElementAt(x);
-                for (int y = 0; y < ReferenceProperties.Count; ++y)
+                for (var y = 0; y < ReferenceProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -518,10 +497,10 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
-            for (int x = 0; x < parentMapping.MapProperties.Count; ++x)
+            for (var x = 0; x < parentMapping.MapProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.MapProperties.ElementAt(x);
-                for (int y = x + 1; y < MapProperties.Count; ++y)
+                for (var y = x + 1; y < MapProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = MapProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -532,10 +511,10 @@ namespace Inflatable.BaseClasses
                     }
                 }
             }
-            for (int x = 0; x < parentMapping.ManyToManyProperties.Count; ++x)
+            for (var x = 0; x < parentMapping.ManyToManyProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.ManyToManyProperties.ElementAt(x);
-                for (int y = x + 1; y < ManyToManyProperties.Count; ++y)
+                for (var y = x + 1; y < ManyToManyProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -547,10 +526,10 @@ namespace Inflatable.BaseClasses
                 }
             }
 
-            for (int x = 0; x < parentMapping.ManyToOneProperties.Count; ++x)
+            for (var x = 0; x < parentMapping.ManyToOneProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.ManyToOneProperties.ElementAt(x);
-                for (int y = x + 1; y < ManyToOneProperties.Count; ++y)
+                for (var y = x + 1; y < ManyToOneProperties.Count; ++y)
                 {
                     var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
@@ -613,9 +592,6 @@ namespace Inflatable.BaseClasses
         /// Converts the mapping to a string
         /// </summary>
         /// <returns>The table name</returns>
-        public override string ToString()
-        {
-            return ObjectType.Name;
-        }
+        public override string ToString() => ObjectType.Name;
     }
 }

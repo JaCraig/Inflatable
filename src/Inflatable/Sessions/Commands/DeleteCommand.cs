@@ -31,7 +31,7 @@ namespace Inflatable.Sessions.Commands
     /// <summary>
     /// Delete command
     /// </summary>
-    /// <seealso cref="BaseClasses.CommandBaseClass"/>
+    /// <seealso cref="CommandBaseClass"/>
     public class DeleteCommand : CommandBaseClass
     {
         /// <summary>
@@ -63,7 +63,7 @@ namespace Inflatable.Sessions.Commands
                 return 0;
             }
 
-            CreateBatch(source, out SQLHelper Batch, out List<object> ObjectsSeen);
+            CreateBatch(source, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -84,7 +84,7 @@ namespace Inflatable.Sessions.Commands
                 return 0;
             }
 
-            CreateBatch(source, out SQLHelper Batch, out List<object> ObjectsSeen);
+            CreateBatch(source, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;

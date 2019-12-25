@@ -36,7 +36,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     /// Delete properties query
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="BaseClasses.PropertyQueryGeneratorBaseClass{TMappedClass}"/>
+    /// <seealso cref="PropertyQueryGeneratorBaseClass{TMappedClass}"/>
     public class DeletePropertiesQuery<TMappedClass> : PropertyQueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
@@ -76,10 +76,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations()
-        {
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
-        }
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -112,13 +109,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ParametersList = new StringBuilder();
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            string Prefix = "";
+            var Prefix = "";
             if (ParentWithID == property.ForeignMapping)
             {
                 Prefix = "Parent_";
             }
 
-            string Splitter2 = "";
+            var Splitter2 = "";
             foreach (var IDProperty in IDProperties)
             {
                 ParametersList.Append(Splitter2).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
@@ -141,7 +138,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ReturnValues = new List<IParameter>();
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            string Prefix = "";
+            var Prefix = "";
             if (ParentWithID == property.ForeignMapping)
             {
                 Prefix = "Parent_";
@@ -210,7 +207,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 return 0;
             }
 
-            int FinalCount = 0;
+            var FinalCount = 0;
             foreach (var Item in list)
             {
                 ++FinalCount;

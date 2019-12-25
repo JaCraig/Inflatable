@@ -47,7 +47,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// </summary>
         /// <param name="mappingType">Type of the mapping.</param>
         /// <returns>The type graph associated with the type.</returns>
-        public Tree<Type> Generate(Type mappingType)
+        public Tree<Type>? Generate(Type mappingType)
         {
             if (!Mappings.Keys.Contains(mappingType))
             {
@@ -68,11 +68,11 @@ namespace Inflatable.ClassMapper.TypeGraph
             while (CurrentNode != null)
             {
                 var CurrentInterfaces = CurrentNode.Data.GetInterfaces();
-                int MaxLength = CurrentInterfaces.Length;
+                var MaxLength = CurrentInterfaces.Length;
                 if (MaxLength != 0)
                 {
-                    Tree<Type>[] PotentialNodes = new Tree<Type>[MaxLength];
-                    for (int x = 0; x < MaxLength; x++)
+                    var PotentialNodes = new Tree<Type>?[MaxLength];
+                    for (var x = 0; x < MaxLength; x++)
                     {
                         var Interface = CurrentInterfaces[x];
                         if (!TempTypeGraph.ContainsNode(Interface, (z, y) => z == y))
@@ -80,28 +80,29 @@ namespace Inflatable.ClassMapper.TypeGraph
                             PotentialNodes[x] = Generate(Interface);
                         }
                     }
-                    for (int x = 0; x < MaxLength; ++x)
+                    for (var x = 0; x < MaxLength; ++x)
                     {
-                        if (PotentialNodes[x] == null)
+                        var PotentialNode = PotentialNodes[x];
+                        if (PotentialNode == null)
                         {
                             continue;
                         }
 
-                        for (int y = 0; y < MaxLength; ++y)
+                        for (var y = 0; y < MaxLength; ++y)
                         {
-                            if (x != y && PotentialNodes[x].ContainsNode(CurrentInterfaces[y], (i, j) => i == j))
+                            if (x != y && PotentialNode.ContainsNode(CurrentInterfaces[y], (i, j) => i == j))
                             {
                                 PotentialNodes[y] = null;
                             }
                         }
                     }
-                    for (int x = 0; x < MaxLength; ++x)
+                    for (var x = 0; x < MaxLength; ++x)
                     {
-                        if (PotentialNodes[x] != null)
-                        {
-                            PotentialNodes[x].Root.Parent = CurrentNode;
-                            CurrentNode.Nodes.Add(PotentialNodes[x].Root);
-                        }
+                        var PotentialNode = PotentialNodes[x];
+                        if (PotentialNode == null)
+                            continue;
+                        PotentialNode.Root.Parent = CurrentNode;
+                        CurrentNode.Nodes.Add(PotentialNode.Root);
                     }
                 }
                 CurrentNode = CurrentNode.Parent;

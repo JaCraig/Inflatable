@@ -32,7 +32,7 @@ namespace Inflatable.LinqExpression
     /// Query translator
     /// </summary>
     /// <typeparam name="TObject">The type of the object.</typeparam>
-    /// <seealso cref="System.Linq.Expressions.ExpressionVisitor"/>
+    /// <seealso cref="ExpressionVisitor"/>
     /// <seealso cref="ExpressionVisitor"/>
     public class QueryTranslator<TObject> : ExpressionVisitor
         where TObject : class
@@ -106,7 +106,7 @@ namespace Inflatable.LinqExpression
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (node.Method.DeclaringType == typeof(Queryable))

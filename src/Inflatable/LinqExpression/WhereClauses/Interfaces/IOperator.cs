@@ -31,7 +31,7 @@ namespace Inflatable.LinqExpression.WhereClauses.Interfaces
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        IOperator Parent { get; set; }
+        IOperator? Parent { get; set; }
 
         /// <summary>
         /// Gets the type code.

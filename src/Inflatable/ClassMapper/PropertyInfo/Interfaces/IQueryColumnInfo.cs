@@ -29,7 +29,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets or sets the name of the column.
         /// </summary>
         /// <value>The name of the column.</value>
-        string? ColumnName { get; set; }
+        string ColumnName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -53,13 +53,13 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets or sets the name of the schema.
         /// </summary>
         /// <value>The name of the schema.</value>
-        string? SchemaName { get; set; }
+        string SchemaName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the table.
         /// </summary>
         /// <value>The name of the table.</value>
-        string? TableName { get; set; }
+        string TableName { get; set; }
 
         /// <summary>
         /// Creates a copy.

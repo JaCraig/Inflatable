@@ -27,7 +27,7 @@ namespace Inflatable.Aspect.EndMethod
     /// <summary>
     /// Many to one lazy loading setup.
     /// </summary>
-    /// <seealso cref="Inflatable.Aspect.Interfaces.IEndMethodHelper"/>
+    /// <seealso cref="IEndMethodHelper"/>
     public class IManyToOnePropertyLazyLoad : IEndMethodHelper
     {
         /// <summary>

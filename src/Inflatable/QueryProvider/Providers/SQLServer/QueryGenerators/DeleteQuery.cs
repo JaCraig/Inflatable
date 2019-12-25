@@ -33,7 +33,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     /// Delete query generator
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="BaseClasses.QueryGeneratorBaseClass{TMappedClass}"/>
+    /// <seealso cref="QueryGeneratorBaseClass{TMappedClass}"/>
     public class DeleteQuery<TMappedClass> : QueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
@@ -79,30 +79,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations()
-        {
-            return new IQuery[] { new Query(typeof(object), CommandType.Text, "", QueryType) };
-        }
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(typeof(object), CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates a delete query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject)
-        {
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
-        }
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
 
         /// <summary>
         /// Generates the parameters.
         /// </summary>
         /// <param name="queryObject">The query object.</param>
         /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject)
-        {
-            return IDProperties.SelectMany(x => x.GetColumnInfo().Select(y => y.GetAsParameter(queryObject))).ToArray();
-        }
+        private IParameter[] GenerateParameters(TMappedClass queryObject) => IDProperties.SelectMany(x => x.GetColumnInfo().Select(y => y.GetAsParameter(queryObject))).ToArray();
 
         /// <summary>
         /// Generates the query.

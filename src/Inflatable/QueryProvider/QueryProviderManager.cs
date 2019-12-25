@@ -83,8 +83,8 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>Creates a batch</returns>
-        /// <exception cref="System.ArgumentNullException">source</exception>
-        /// <exception cref="System.ArgumentException">Provider not found</exception>
+        /// <exception cref="ArgumentNullException">source</exception>
+        /// <exception cref="ArgumentException">Provider not found</exception>
         public SQLHelper CreateBatch(IDatabase source)
         {
             if (source == null)
@@ -92,7 +92,7 @@ namespace Inflatable.QueryProvider
                 throw new ArgumentNullException(nameof(source));
             }
 
-            if (!Providers.TryGetValue(source.Provider, out Interfaces.IQueryProvider QueryProvider))
+            if (!Providers.TryGetValue(source.Provider, out var QueryProvider))
             {
                 throw new ArgumentException("Provider not found: " + source.Provider);
             }
@@ -122,7 +122,7 @@ namespace Inflatable.QueryProvider
             }
 
             var provider = mappingInfo.Source.Provider;
-            if (!Providers.TryGetValue(provider, out Interfaces.IQueryProvider QueryProvider))
+            if (!Providers.TryGetValue(provider, out var QueryProvider))
             {
                 throw new ArgumentException("Provider not found: " + provider);
             }

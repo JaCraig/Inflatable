@@ -29,17 +29,18 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
         };
 
         private readonly SimpleColumnInfo<AllReferencesAndID, long> TestObject = new SimpleColumnInfo<AllReferencesAndID, long>
-        {
-            ColumnName = "ID_",
-            CompiledExpression = x => x.ID,
-            DefaultValue = () => 0,
-            PropertyName = "ID",
-            PropertyType = typeof(long),
-            SchemaName = "dbo",
-            TableName = "AllReferencesAndID_",
-            SetAction = (x, y) => x.ID = (int)y,
-            IsNullable = true
-        };
+        (
+            "ID_",
+            x => x.ID,
+            () => 0,
+            false,
+            true,
+            "ID",
+            typeof(long),
+            "dbo",
+            (x, y) => x.ID = (int)y,
+            "AllReferencesAndID_"
+        );
 
         [Fact]
         public void Creation()
@@ -66,10 +67,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 
         [Theory]
         [MemberData(nameof(ValueData))]
-        public void GetValue(AllReferencesAndID inputObject, object expectedResult)
-        {
-            Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
-        }
+        public void GetValue(AllReferencesAndID inputObject, object expectedResult) => Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
 
         [Fact]
         public void IsDefault()

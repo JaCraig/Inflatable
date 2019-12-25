@@ -96,19 +96,13 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy()
-        {
-            return new WhereClause<TObject>(InternalOperator.Copy());
-        }
+        public IOperator Copy() => new WhereClause<TObject>(InternalOperator.Copy());
 
         /// <summary>
         /// Gets the parameters associated with the operator.
         /// </summary>
         /// <returns>A list of parameters associated with the operator.</returns>
-        public List<IParameter> GetParameters()
-        {
-            return InternalOperator == null ? new List<IParameter>() : InternalOperator.GetParameters();
-        }
+        public List<IParameter> GetParameters() => InternalOperator == null ? new List<IParameter>() : InternalOperator.GetParameters();
 
         /// <summary>
         /// Does a logical negation of the operator.
@@ -148,18 +142,12 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <param name="mapping">The mapping.</param>
-        public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
-        {
-            InternalOperator?.SetColumnNames(mappingSource, mapping);
-        }
+        public void SetColumnNames(MappingSource mappingSource, IMapping mapping) => InternalOperator?.SetColumnNames(mappingSource, mapping);
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return InternalOperator == null ? "" : "WHERE " + InternalOperator;
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => InternalOperator == null ? "" : "WHERE " + InternalOperator;
     }
 }

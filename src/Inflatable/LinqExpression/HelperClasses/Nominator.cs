@@ -33,6 +33,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         public Nominator(Func<Expression, bool> functionCanBeEvaluated)
         {
             FunctionCanBeEvaluated = functionCanBeEvaluated;
+            Candidates = new HashSet<Expression>();
         }
 
         /// <summary>
@@ -75,24 +76,23 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// </returns>
         public override Expression Visit(Expression node)
         {
-            if (node != null)
+            if (node == null)
+                return node!;
+            var saveCannotBeEvaluated = CanNotBeEvaluated;
+            CanNotBeEvaluated = false;
+            base.Visit(node);
+            if (!CanNotBeEvaluated)
             {
-                bool saveCannotBeEvaluated = CanNotBeEvaluated;
-                CanNotBeEvaluated = false;
-                base.Visit(node);
-                if (!CanNotBeEvaluated)
+                if (FunctionCanBeEvaluated(node))
                 {
-                    if (FunctionCanBeEvaluated(node))
-                    {
-                        Candidates.Add(node);
-                    }
-                    else
-                    {
-                        CanNotBeEvaluated = true;
-                    }
+                    Candidates.Add(node);
                 }
-                CanNotBeEvaluated |= saveCannotBeEvaluated;
+                else
+                {
+                    CanNotBeEvaluated = true;
+                }
             }
+            CanNotBeEvaluated |= saveCannotBeEvaluated;
             return node;
         }
     }

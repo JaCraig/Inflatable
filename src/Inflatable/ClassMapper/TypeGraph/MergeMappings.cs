@@ -54,15 +54,17 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Merges this instance.
         /// </summary>
         /// <param name="typeGraph">The type graph.</param>
-        public void Merge(Tree<Type> typeGraph)
+        public void Merge(Tree<Type>? typeGraph)
         {
+            if (typeGraph is null)
+                return;
             var CurrentNode = typeGraph.Root;
             if (CurrentNode.Nodes.Count == 0)
             {
                 return;
             }
 
-            for (int x = 0; x < CurrentNode.Nodes.Count; ++x)
+            for (var x = 0; x < CurrentNode.Nodes.Count; ++x)
             {
                 if (MergeNode(CurrentNode.Nodes[x]))
                 {
@@ -74,7 +76,7 @@ namespace Inflatable.ClassMapper.TypeGraph
 
         private bool MergeNode(TreeNode<Type> node)
         {
-            for (int x = 0; x < node.Nodes.Count; ++x)
+            for (var x = 0; x < node.Nodes.Count; ++x)
             {
                 if (MergeNode(node.Nodes[x]))
                 {

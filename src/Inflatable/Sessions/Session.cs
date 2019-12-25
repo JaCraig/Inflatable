@@ -116,7 +116,7 @@ namespace Inflatable.Sessions
         /// <returns>The number of rows affected.</returns>
         public int Execute()
         {
-            int Result = 0;
+            var Result = 0;
             RemoveDuplicateCommands();
             foreach (var Source in MappingManager.Sources
                                                  .Where(x => x.CanWrite)
@@ -137,7 +137,7 @@ namespace Inflatable.Sessions
         /// <returns>The number of rows affected.</returns>
         public async Task<int> ExecuteAsync()
         {
-            int Result = 0;
+            var Result = 0;
             RemoveDuplicateCommands();
             foreach (var Source in MappingManager.Sources
                                                  .Where(x => x.CanWrite)
@@ -161,13 +161,13 @@ namespace Inflatable.Sessions
         /// <param name="connection">The connection name.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects</returns>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
             where TObject : class
         {
-            parameters = parameters ?? Array.Empty<IParameter>();
+            parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            string KeyName = command + "_" + connection;
+            var KeyName = command + "_" + connection;
             Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
             if (QueryResults.IsCached(KeyName))
             {
@@ -225,7 +225,7 @@ namespace Inflatable.Sessions
                 return QueryResults.GetCached(KeyName)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
             }
             var Results = new List<QueryResults>();
-            bool FirstRun = true;
+            var FirstRun = true;
             var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
             foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
                                               .OrderBy(x => x.Key.Order))
@@ -251,10 +251,10 @@ namespace Inflatable.Sessions
         /// <param name="connection">The connection name.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects</returns>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<IEnumerable<dynamic>> ExecuteDynamicAsync(string command, CommandType type, string connection, params object[] parameters)
         {
-            parameters = parameters ?? Array.Empty<IParameter>();
+            parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
@@ -284,10 +284,10 @@ namespace Inflatable.Sessions
         /// <param name="connection">The connection name.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects</returns>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public Task<TObject> ExecuteScalarAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
         {
-            parameters = parameters ?? Array.Empty<IParameter>();
+            parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source == null)
@@ -432,10 +432,7 @@ namespace Inflatable.Sessions
         /// <returns>The appropriate property value</returns>
         public TData LoadProperty<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
-            where TData : class
-        {
-            return LoadProperties<TObject, TData>(objectToLoadProperty, propertyName).FirstOrDefault();
-        }
+            where TData : class => LoadProperties<TObject, TData>(objectToLoadProperty, propertyName).FirstOrDefault();
 
         /// <summary>
         /// Loads a property (primarily used internally for lazy loading)
@@ -447,10 +444,7 @@ namespace Inflatable.Sessions
         /// <returns>The appropriate property value</returns>
         public async Task<TData> LoadPropertyAsync<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
-            where TData : class
-        {
-            return (await LoadPropertiesAsync<TObject, TData>(objectToLoadProperty, propertyName).ConfigureAwait(false)).FirstOrDefault();
-        }
+            where TData : class => (await LoadPropertiesAsync<TObject, TData>(objectToLoadProperty, propertyName).ConfigureAwait(false)).FirstOrDefault();
 
         /// <summary>
         /// Adds the specified objects to save.
@@ -475,7 +469,7 @@ namespace Inflatable.Sessions
             var Parameters = new List<IParameter>();
             for (int x = 0, parametersLength = parameters.Length; x < parametersLength; x++)
             {
-                object CurrentParameter = parameters[x];
+                var CurrentParameter = parameters[x];
                 var TempParameter = CurrentParameter as string;
                 if (CurrentParameter is IParameter TempQueryParameter)
                 {
@@ -576,10 +570,10 @@ namespace Inflatable.Sessions
         /// </summary>
         private void RemoveDuplicateCommands()
         {
-            int CommandsCount = Commands.Count;
-            for (int x = 0; x < CommandsCount; ++x)
+            var CommandsCount = Commands.Count;
+            for (var x = 0; x < CommandsCount; ++x)
             {
-                for (int y = x + 1; y < CommandsCount; ++y)
+                for (var y = x + 1; y < CommandsCount; ++y)
                 {
                     if (Commands[x].Merge(Commands[y]))
                     {

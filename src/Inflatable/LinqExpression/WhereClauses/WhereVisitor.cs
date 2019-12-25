@@ -70,7 +70,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         protected override Expression VisitBinary(BinaryExpression node)
         {
             Visit(node.Left);
@@ -122,7 +122,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
         protected override Expression VisitUnary(UnaryExpression node)
         {
             Visit(node.Operand);

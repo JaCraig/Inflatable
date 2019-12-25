@@ -86,19 +86,13 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy()
-        {
-            return new UnaryOperator(InternalOperator.Copy(), Operator, TypeCode);
-        }
+        public IOperator Copy() => new UnaryOperator(InternalOperator.Copy(), Operator, TypeCode);
 
         /// <summary>
         /// Gets the parameters associated with the operator.
         /// </summary>
         /// <returns>A list of parameters associated with the operator.</returns>
-        public List<IParameter> GetParameters()
-        {
-            return InternalOperator.GetParameters();
-        }
+        public List<IParameter> GetParameters() => InternalOperator.GetParameters();
 
         /// <summary>
         /// Does a logical negation of the operator.
@@ -141,18 +135,12 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <param name="mapping">The mapping.</param>
-        public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
-        {
-            InternalOperator?.SetColumnNames(mappingSource, mapping);
-        }
+        public void SetColumnNames(MappingSource mappingSource, IMapping mapping) => InternalOperator?.SetColumnNames(mappingSource, mapping);
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return "(" + Converter[Operator](this) + ")";
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => "(" + Converter[Operator](this) + ")";
     }
 }

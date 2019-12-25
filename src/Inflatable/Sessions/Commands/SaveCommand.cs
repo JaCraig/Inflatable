@@ -69,7 +69,7 @@ namespace Inflatable.Sessions.Commands
             }
 
             var ReturnValue = 0;
-            CreateBatch(source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
+            CreateBatch(source, out var Batch, out var DeclarationBatch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -98,7 +98,7 @@ namespace Inflatable.Sessions.Commands
             }
 
             var ReturnValue = 0;
-            CreateBatch(source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen);
+            CreateBatch(source, out var Batch, out var DeclarationBatch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;

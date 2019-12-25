@@ -96,12 +96,9 @@ namespace Inflatable.LinqExpression
         public WhereClause<TObject> WhereClause { get; }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
-        }
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
+        public override string ToString() => $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
     }
 }

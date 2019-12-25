@@ -35,7 +35,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     /// Load properties query
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="BaseClasses.PropertyQueryGeneratorBaseClass{TMappedClass}"/>
+    /// <seealso cref="PropertyQueryGeneratorBaseClass{TMappedClass}"/>
     public class LoadPropertiesQuery<TMappedClass> : PropertyQueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
@@ -75,10 +75,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations()
-        {
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
-        }
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -112,10 +109,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="queryObject">The query object.</param>
         /// <param name="idProperties">The identifier properties.</param>
         /// <returns>The parameters</returns>
-        private static IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties)
-        {
-            return idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
-        }
+        private static IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties) => idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
 
         /// <summary>
         /// Generates from clause.
@@ -132,7 +126,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var TempIDProperties = new StringBuilder();
-                string Separator = "";
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty, suffix), GetColumnName(IDProperty, suffix));
@@ -166,7 +160,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            string Separator = "";
+            var Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
@@ -201,7 +195,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
-            string Separator = "";
+            var Separator = "";
             foreach (var IDProperty in property.ForeignMapping.IDProperties)
             {
                 TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, suffix), GetForeignColumnName(property));
@@ -222,7 +216,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
-            string Separator = "";
+            var Separator = "";
             foreach (var IDProperty in property.ForeignMapping.IDProperties)
             {
                 TempIDProperties.AppendFormat("{0}{1}={2}",
@@ -240,7 +234,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
-            string Separator = "";
+            var Separator = "";
             foreach (var IDProperty in manyToOne.ForeignMapping.IDProperties)
             {
                 TempIDProperties.AppendFormat("{0}{1}={2}",
@@ -384,7 +378,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateWhereClause(IManyToOneListProperty manyToOne)
         {
             var Result = new StringBuilder();
-            string Separator = "";
+            var Separator = "";
             var ParentIDMappings = MappingInformation.GetChildMappings(manyToOne.ParentMapping.ObjectType)
                                                      .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                                      .Distinct()
@@ -408,7 +402,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateWhereClause(IManyToManyProperty property)
         {
             var Result = new StringBuilder();
-            string Separator = "";
+            var Separator = "";
             var ParentIDMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType)
                                                      .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                                      .Distinct()
@@ -440,7 +434,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            string Separator = "";
+            var Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];

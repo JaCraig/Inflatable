@@ -30,20 +30,14 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// <param name="expression">The expression.</param>
         /// <param name="fnCanBeEvaluated">The function can be evaluated.</param>
         /// <returns>The resulting expression</returns>
-        public static Expression PartialEval(Expression expression, Func<Expression, bool> fnCanBeEvaluated)
-        {
-            return new SubtreeEvaluator(new Nominator(fnCanBeEvaluated).Nominate(expression)).Eval(expression);
-        }
+        public static Expression PartialEval(Expression expression, Func<Expression, bool> fnCanBeEvaluated) => new SubtreeEvaluator(new Nominator(fnCanBeEvaluated).Nominate(expression)).Eval(expression);
 
         /// <summary>
         /// Partial the eval.
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The resulting expression</returns>
-        public static Expression PartialEval(Expression expression)
-        {
-            return PartialEval(expression, CanBeEvaluatedLocally);
-        }
+        public static Expression PartialEval(Expression expression) => PartialEval(expression, CanBeEvaluatedLocally);
 
         /// <summary>
         /// Determines whether this instance [can be evaluated locally] the specified expression.
@@ -53,9 +47,6 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// <c>true</c> if this instance [can be evaluated locally] the specified expression;
         /// otherwise, <c>false</c>.
         /// </returns>
-        private static bool CanBeEvaluatedLocally(Expression expression)
-        {
-            return expression.NodeType != ExpressionType.Parameter;
-        }
+        private static bool CanBeEvaluatedLocally(Expression expression) => expression.NodeType != ExpressionType.Parameter;
     }
 }

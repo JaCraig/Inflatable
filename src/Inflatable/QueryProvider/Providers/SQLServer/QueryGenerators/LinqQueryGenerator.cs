@@ -34,7 +34,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
     /// SQL Server Linq query generator
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="Interfaces.ILinqQueryGenerator{TMappedClass}"/>
+    /// <seealso cref="ILinqQueryGenerator{TMappedClass}"/>
     public class LinqQueryGenerator<TMappedClass> : LinqQueryGeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
@@ -42,7 +42,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="LinqQueryGenerator{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        /// <exception cref="System.ArgumentNullException">mappingInformation</exception>
+        /// <exception cref="ArgumentNullException">mappingInformation</exception>
         public LinqQueryGenerator(MappingSource mappingInformation)
             : base(mappingInformation)
         {
@@ -58,10 +58,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations()
-        {
-            return new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
-        }
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -87,7 +84,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private static string GenerateOrderByClause(QueryData<TMappedClass> data)
         {
             var Builder = new StringBuilder();
-            string Splitter = "";
+            var Splitter = "";
             if (data.OrderByValues.Count == 0)
             {
                 return "";
@@ -118,7 +115,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var IDProperties = new StringBuilder();
-                string Separator = "";
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
@@ -147,7 +144,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
-            string Separator = "";
+            var Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];

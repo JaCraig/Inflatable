@@ -47,12 +47,13 @@ namespace Inflatable.ClassMapper
         {
             QueryProvider = queryProvider ?? throw new ArgumentNullException(nameof(queryProvider));
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
-            mappings = mappings ?? new ConcurrentBag<IMapping>();
+            ConcreteTypes = Array.Empty<Type>();
+            mappings ??= new ConcurrentBag<IMapping>();
             Source = source ?? throw new ArgumentNullException(nameof(source));
             Logger.Information("Setting up {Name:l}", source.Name);
             Order = Source.Order;
             Mappings = new ConcurrentDictionary<Type, IMapping>();
-            TypeGraphs = new ConcurrentDictionary<Type, Tree<Type>>();
+            TypeGraphs = new ConcurrentDictionary<Type, Tree<Type>?>();
             ChildTypes = new ListMapping<Type, Type>();
             ParentTypes = new ListMapping<Type, Type>();
             AddMappings(mappings);
@@ -144,7 +145,7 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the type graph.
         /// </summary>
         /// <value>The type graph.</value>
-        public IDictionary<Type, Tree<Type>> TypeGraphs { get; }
+        public IDictionary<Type, Tree<Type>?> TypeGraphs { get; }
 
         /// <summary>
         /// Gets a value indicating whether to [update schema].
@@ -153,17 +154,13 @@ namespace Inflatable.ClassMapper
         public bool UpdateSchema => Source?.SourceOptions?.SchemaUpdate == SchemaGeneration.UpdateSchema;
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/>, is equal to this instance.
+        /// Determines whether the specified <see cref="object"/>, is equal to this instance.
         /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <param name="obj">The <see cref="object"/> to compare with this instance.</param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-        /// otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="object"/> is equal to this instance; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj)
-        {
-            return ReferenceEquals(obj, this);
-        }
+        public override bool Equals(object obj) => ReferenceEquals(obj, this);
 
         /// <summary>
         /// Gets the child mappings.
@@ -172,8 +169,7 @@ namespace Inflatable.ClassMapper
         /// <returns>The IMapping list associated with the object type.</returns>
         public IEnumerable<IMapping> GetChildMappings<TObject>()
         {
-            var ObjectType = typeof(TObject);
-            return GetChildMappings(ObjectType);
+            return GetChildMappings(typeof(TObject));
         }
 
         /// <summary>
@@ -195,13 +191,10 @@ namespace Inflatable.ClassMapper
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures
-        /// like a hash table.
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table.
         /// </returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => base.GetHashCode();
 
         /// <summary>
         /// Gets the parent mappings.
@@ -210,8 +203,7 @@ namespace Inflatable.ClassMapper
         /// <returns>The IMapping list associated with the object type.</returns>
         public IEnumerable<IMapping> GetParentMapping<TObject>()
         {
-            var ObjectType = typeof(TObject);
-            return GetParentMapping(ObjectType);
+            return GetParentMapping(typeof(TObject));
         }
 
         /// <summary>
@@ -230,9 +222,9 @@ namespace Inflatable.ClassMapper
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             var Builder = new StringBuilder();
@@ -360,6 +352,8 @@ namespace Inflatable.ClassMapper
 
             foreach (var CurrentTree in TypeGraphs.Values)
             {
+                if (CurrentTree is null)
+                    continue;
                 var CurrentMapping = Mappings[CurrentTree.Root.Data];
                 if (CurrentMapping.IDProperties.Count > 0)
                 {
@@ -382,7 +376,12 @@ namespace Inflatable.ClassMapper
             ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
             foreach (var ConcreteType in ConcreteTypes)
             {
-                foreach (var Parent in TypeGraphs[ConcreteType].ToList())
+                if (ConcreteType is null)
+                    continue;
+                var Types = TypeGraphs[ConcreteType];
+                if (Types is null)
+                    continue;
+                foreach (var Parent in Types.ToList())
                 {
                     ChildTypes.Add(Parent, ConcreteType);
                 }
@@ -397,7 +396,10 @@ namespace Inflatable.ClassMapper
             Logger.Information("Setting up parent type discovery for {Name:l}", Source.Name);
             foreach (var ConcreteType in ConcreteTypes)
             {
-                foreach (var Parent in TypeGraphs[ConcreteType].ToList())
+                var Types = TypeGraphs[ConcreteType];
+                if (Types is null)
+                    continue;
+                foreach (var Parent in Types.ToList())
                 {
                     ParentTypes.Add(ConcreteType, Parent);
                 }

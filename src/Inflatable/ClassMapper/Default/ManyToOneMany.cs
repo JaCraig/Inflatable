@@ -90,29 +90,25 @@ namespace Inflatable.ClassMapper.Default
             var TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ActualParent.IDProperties.ForEach(x =>
             {
-                var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexColumnInfo<ClassType, ClassType>
-                {
-                    Child = IDColumnInfo,
-                    ColumnName = ColumnName + x.ParentMapping.TableName + x.ColumnName,
-                    CompiledExpression = y => y,
-                    SchemaName = ForeignMapping.SchemaName,
-                    TableName = ForeignMapping.TableName,
-                    IsForeign = true
-                };
+                return new ComplexColumnInfo<ClassType, ClassType>(
+                    x.GetColumnInfo()[0],
+                    ColumnName + x.ParentMapping.TableName + x.ColumnName,
+                    y => y,
+                    true,
+                    ForeignMapping?.SchemaName ?? "",
+                    ForeignMapping?.TableName ?? ""
+                );
             }));
-            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
             {
-                var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexListColumnInfo<ClassType, DataType>
-                {
-                    Child = IDColumnInfo,
-                    ColumnName = x.ColumnName,
-                    CompiledExpression = CompiledExpression,
-                    SchemaName = x.ParentMapping.SchemaName,
-                    TableName = x.ParentMapping.TableName,
-                    IsForeign = false
-                };
+                return new ComplexListColumnInfo<ClassType, DataType>(
+                    x.GetColumnInfo()[0],
+                    x.ColumnName,
+                    CompiledExpression,
+                    false,
+                    x.ParentMapping.SchemaName,
+                    x.ParentMapping.TableName
+                );
             }));
             Columns = TempColumns.ToArray();
         }
@@ -122,7 +118,7 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         /// <param name="mappings">The mappings.</param>
         /// <param name="dataModel">The data model.</param>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public override void Setup(MappingSource mappings, DataModel dataModel)
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
@@ -133,7 +129,7 @@ namespace Inflatable.ClassMapper.Default
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
             }
 
-            var ForeignTable = dataModel.SourceSpec.Tables.FirstOrDefault(x => x.Name == ForeignMapping.TableName);
+            var ForeignTable = dataModel.SourceSpec.Tables.Find(x => x.Name == ForeignMapping.TableName);
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentIDs = ParentMappings.SelectMany(x => x.IDProperties);
             var SetNullOnDelete = !ParentMappings.Contains(ForeignMapping);

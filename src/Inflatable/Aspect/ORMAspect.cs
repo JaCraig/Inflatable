@@ -44,7 +44,7 @@ namespace Inflatable.Aspect
         /// <param name="interfaceImplementationHelpers">The interface implementation helpers.</param>
         /// <param name="endMethodHelpers">The end method helpers.</param>
         /// <exception cref="ArgumentNullException">classManager</exception>
-        /// <exception cref="System.ArgumentNullException">classManager</exception>
+        /// <exception cref="ArgumentNullException">classManager</exception>
         public ORMAspect(MappingManager classManager,
             IEnumerable<IStartMethodHelper> startMethodHelpers,
             IEnumerable<IInterfaceImplementationHelper> interfaceImplementationHelpers,
@@ -58,7 +58,7 @@ namespace Inflatable.Aspect
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Dynamo).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Object).GetTypeInfo().Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(MulticastDelegate).GetTypeInfo().Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Task<>).GetTypeInfo().Assembly.Location));
             IDFields = new List<IIDProperty>();
@@ -103,19 +103,19 @@ namespace Inflatable.Aspect
         /// Gets or sets the many to many fields.
         /// </summary>
         /// <value>The many to many fields.</value>
-        public List<IManyToManyProperty> ManyToManyFields { get; set; }
+        public List<IManyToManyProperty>? ManyToManyFields { get; set; }
 
         /// <summary>
         /// Gets or sets the many to one fields.
         /// </summary>
         /// <value>The many to one fields.</value>
-        public List<IManyToOneProperty> ManyToOneFields { get; set; }
+        public List<IManyToOneProperty>? ManyToOneFields { get; set; }
 
         /// <summary>
         /// Gets or sets the map fields.
         /// </summary>
         /// <value>The map fields.</value>
-        public List<IMapProperty> MapFields { get; set; }
+        public List<IMapProperty>? MapFields { get; set; }
 
         /// <summary>
         /// The reference fields that have been completed already.
@@ -163,10 +163,7 @@ namespace Inflatable.Aspect
         /// </summary>
         /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        public string SetupDefaultConstructor(Type baseType)
-        {
-            return "";
-        }
+        public string SetupDefaultConstructor(Type baseType) => "";
 
         /// <summary>
         /// Used to insert code at the end of the method
@@ -203,10 +200,7 @@ namespace Inflatable.Aspect
         /// <param name="method">Overridding Method</param>
         /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        public string SetupExceptionMethod(MethodInfo method, Type baseType)
-        {
-            return "var Exception=CaughtException;";
-        }
+        public string SetupExceptionMethod(MethodInfo method, Type baseType) => "var Exception=CaughtException;";
 
         /// <summary>
         /// Sets up the interfaces.

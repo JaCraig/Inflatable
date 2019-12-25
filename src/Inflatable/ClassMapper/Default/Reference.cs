@@ -86,10 +86,7 @@ namespace Inflatable.ClassMapper.Default
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public override void SetColumnInfo(MappingSource mappings)
-        {
-            Setup();
-        }
+        public override void SetColumnInfo(MappingSource mappings) => Setup();
 
         /// <summary>
         /// Sets up the property (used internally)
@@ -103,19 +100,18 @@ namespace Inflatable.ClassMapper.Default
 
             Columns = new Column.SimpleColumnInfo<ClassType, DataType>[]
             {
-                new Column.SimpleColumnInfo<ClassType,DataType>
-                {
-                    ColumnName=ColumnName,
-                    DefaultValue=()=>default!,
-                    CompiledExpression=CompiledExpression,
-                    PropertyName=Name,
-                    PropertyType=PropertyType,
-                    SchemaName=ParentMapping.SchemaName,
-                    TableName=ParentMapping.TableName,
-                    SetAction=SetAction,
-                    IsNullable=Nullable,
-                    IsForeign=false
-                }
+                new Column.SimpleColumnInfo<ClassType,DataType>(
+                    ColumnName,
+                    CompiledExpression,
+                    ()=>default!,
+                    false,
+                    Nullable,
+                    Name,
+                    PropertyType,
+                    ParentMapping.SchemaName,
+                    SetAction,
+                    ParentMapping.TableName
+                )
             };
         }
     }

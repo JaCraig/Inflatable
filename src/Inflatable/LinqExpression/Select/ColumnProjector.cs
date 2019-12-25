@@ -27,6 +27,14 @@ namespace Inflatable.LinqExpression.Select
     public class ColumnProjector : ExpressionVisitor
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnProjector"/> class.
+        /// </summary>
+        public ColumnProjector()
+        {
+            FoundProperties = new List<PropertyInfo>();
+        }
+
+        /// <summary>
         /// Gets or sets the found properties.
         /// </summary>
         /// <value>The found properties.</value>
@@ -54,9 +62,10 @@ namespace Inflatable.LinqExpression.Select
         /// </returns>
         protected override Expression VisitMember(MemberExpression node)
         {
-            if (node.Expression?.NodeType == ExpressionType.Parameter)
+            if (node.Expression?.NodeType == ExpressionType.Parameter
+                && node.Member is PropertyInfo TempInfo)
             {
-                FoundProperties.Add(node.Member as PropertyInfo);
+                FoundProperties.Add(TempInfo);
             }
             return base.VisitMember(node);
         }

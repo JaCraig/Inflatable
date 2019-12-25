@@ -182,10 +182,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="objectsSeen">The objects seen already.</param>
         /// <param name="source">The source.</param>
         /// <returns>True if it was seen, otherwise false.</returns>
-        protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, MappingSource source)
-        {
-            return objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
-        }
+        protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, MappingSource source) => objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
 
         /// <summary>
         /// Gets the actual type.

@@ -87,18 +87,16 @@ namespace Inflatable.ClassMapper.Default
         public override void SetColumnInfo(MappingSource mappings)
         {
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ForeignMapping.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
             {
-                var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexColumnInfo<ClassType, DataType>
-                {
-                    Child = IDColumnInfo,
-                    ColumnName = ColumnName + ForeignMapping.TableName + x.ColumnName,
-                    CompiledExpression = CompiledExpression,
-                    SchemaName = ParentMapping.SchemaName,
-                    TableName = ParentMapping.TableName,
-                    IsForeign = true
-                };
+                return new ComplexColumnInfo<ClassType, DataType>(
+                    x.GetColumnInfo()[0],
+                    ColumnName + ForeignMapping.TableName + x.ColumnName,
+                    CompiledExpression,
+                    true,
+                    ParentMapping.SchemaName,
+                    ParentMapping.TableName
+                );
             }));
             var ActualParent = mappings.GetChildMappings<ClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
             TempColumns.AddRange(ActualParent.IDProperties.SelectMany(x => x.GetColumnInfo()));
@@ -110,7 +108,7 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         /// <param name="mappings">The mappings.</param>
         /// <param name="dataModel">The data model.</param>
-        /// <exception cref="System.ArgumentException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public override void Setup(MappingSource mappings, DataModel dataModel)
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
@@ -123,7 +121,7 @@ namespace Inflatable.ClassMapper.Default
 
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ActualParent = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var ParentTable = dataModel.SourceSpec.Tables.FirstOrDefault(x => x.Name == ActualParent.TableName);
+            var ParentTable = dataModel.SourceSpec.Tables.Find(x => x.Name == ActualParent.TableName);
             var SetNullOnDelete = !ParentMappings.Contains(ForeignMapping);
             foreach (var IDMapping in ForeignMapping.IDProperties)
             {

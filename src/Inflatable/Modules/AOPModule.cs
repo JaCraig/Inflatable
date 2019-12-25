@@ -31,7 +31,7 @@ namespace Inflatable.Modules
         /// Initializes a new instance of the <see cref="AOPModule"/> class.
         /// </summary>
         /// <param name="classManager">The class manager.</param>
-        /// <exception cref="System.ArgumentNullException">classManager</exception>
+        /// <exception cref="ArgumentNullException">classManager</exception>
         public AOPModule(MappingManager classManager)
         {
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));

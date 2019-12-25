@@ -43,7 +43,7 @@ namespace Inflatable.ClassMapper
         public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, QueryProviderManager queryProvider, ILogger logger)
         {
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
-            mappings = mappings ?? new ConcurrentBag<IMapping>();
+            mappings ??= new ConcurrentBag<IMapping>();
             var Debug = Logger.IsEnabled(LogEventLevel.Debug);
             Logger.Information("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
@@ -54,7 +54,7 @@ namespace Inflatable.ClassMapper
                 FinalList.Add(new MappingSource(TempSourceMappings[Key],
                                                 sources.FirstOrDefault(x => x.GetType() == Key),
                                                 queryProvider,
-                                                logger));
+                                                Logger));
             });
             Sources = FinalList;
             if (Debug)
@@ -82,9 +82,9 @@ namespace Inflatable.ClassMapper
         public IEnumerable<MappingSource> Sources { get; set; }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
+        /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
             var Builder = new StringBuilder();

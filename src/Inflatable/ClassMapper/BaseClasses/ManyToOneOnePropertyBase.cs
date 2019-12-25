@@ -33,8 +33,8 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <typeparam name="ClassType">The type of the class type.</typeparam>
     /// <typeparam name="DataType">The type of the data type.</typeparam>
     /// <typeparam name="ReturnType">The type of the return type.</typeparam>
-    /// <seealso cref="Interfaces.IManyToOneProperty{ClassType, DataType, ReturnType}"/>
-    /// <seealso cref="Interfaces.IManyToOneProperty{ClassType, DataType}"/>
+    /// <seealso cref="IManyToOneProperty{ClassType, DataType, ReturnType}"/>
+    /// <seealso cref="IManyToOneProperty{ClassType, DataType}"/>
     public abstract class ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> : IManyToOneProperty<ClassType, DataType, ReturnType>, IManyToOneProperty<ClassType, DataType>
         where ClassType : class
         where DataType : class
@@ -78,7 +78,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the columns associated with this property.
         /// </summary>
         /// <value>The columns associated with this property.</value>
-        public IQueryColumnInfo[] Columns { get; protected set; }
+        public IQueryColumnInfo[]? Columns { get; protected set; }
 
         /// <summary>
         /// Compiled version of the expression
@@ -96,7 +96,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        public IMapping ForeignMapping { get; protected set; }
+        public IMapping? ForeignMapping { get; protected set; }
 
         /// <summary>
         /// Gets the name of the internal field.
@@ -108,7 +108,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the load property query.
         /// </summary>
         /// <value>The load property query.</value>
-        public Query LoadPropertyQuery { get; protected set; }
+        public Query? LoadPropertyQuery { get; protected set; }
 
         /// <summary>
         /// Gets the name.
@@ -159,17 +159,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> first, ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -180,17 +170,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> first, ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return true;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() == second.GetHashCode();
+            return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -201,17 +181,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> first, ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> second)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() > second.GetHashCode();
         }
 
         /// <summary>
@@ -238,48 +208,26 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            if (!(obj is ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> SecondObj))
-            {
-                return false;
-            }
-
-            return this == SecondObj;
-        }
+        public override bool Equals(object obj) => (obj is ManyToOneOnePropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
         /// </summary>
         /// <returns>The column information.</returns>
-        public IQueryColumnInfo[] GetColumnInfo()
-        {
-            return Columns;
-        }
+        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? Array.Empty<IQueryColumnInfo>();
 
         /// <summary>
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode()
-        {
-            return (Name.GetHashCode() * ParentMapping.GetHashCode()) % int.MaxValue;
-        }
+        public override int GetHashCode() => (Name.GetHashCode() * ParentMapping.GetHashCode()) % int.MaxValue;
 
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        public object GetValue(object Object)
-        {
-            if (!(Object is ClassType TempObject))
-            {
-                return null;
-            }
-
-            return CompiledExpression(TempObject);
-        }
+        public object? GetValue(object Object) => !(Object is ClassType TempObject) ? null : CompiledExpression(TempObject);
 
         /// <summary>
         /// Loads the property using the query specified.
@@ -332,18 +280,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="secondProperty">The second property.</param>
         /// <returns>True if they are similar, false otherwise</returns>
-        public bool Similar(IManyToOneProperty secondProperty)
-        {
-            return secondProperty.Name == Name;
-        }
+        public bool Similar(IManyToOneProperty secondProperty) => secondProperty.Name == Name;
 
         /// <summary>
         /// Gets the property as a string
         /// </summary>
         /// <returns>The string representation of the property</returns>
-        public override string ToString()
-        {
-            return PropertyType.GetName() + " " + ParentMapping + "." + Name;
-        }
+        public override string ToString() => PropertyType.GetName() + " " + ParentMapping + "." + Name;
     }
 }

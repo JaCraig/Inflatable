@@ -26,7 +26,7 @@ namespace Inflatable.Aspect.StartMethod
     /// <summary>
     /// Map start method
     /// </summary>
-    /// <seealso cref="Inflatable.Aspect.Interfaces.IStartMethodHelper"/>
+    /// <seealso cref="IStartMethodHelper"/>
     public class MapStartMethod : IStartMethodHelper
     {
         /// <summary>

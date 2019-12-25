@@ -34,6 +34,26 @@ namespace Inflatable.ClassMapper.Column
         where TDataType : class
     {
         /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="ComplexListColumnInfo{TClassType, TDataType}"/> class.
+        /// </summary>
+        /// <param name="child">The child.</param>
+        /// <param name="columnName">Name of the column.</param>
+        /// <param name="compiledExpression">The compiled expression.</param>
+        /// <param name="isForeign">if set to <c>true</c> [is foreign].</param>
+        /// <param name="schemaName">Name of the schema.</param>
+        /// <param name="tableName">Name of the table.</param>
+        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType>> compiledExpression, bool isForeign, string schemaName, string tableName)
+        {
+            Child = child;
+            ColumnName = columnName;
+            CompiledExpression = compiledExpression;
+            IsForeign = isForeign;
+            SchemaName = schemaName;
+            TableName = tableName;
+        }
+
+        /// <summary>
         /// Gets or sets the child.
         /// </summary>
         /// <value>The child.</value>
@@ -87,14 +107,14 @@ namespace Inflatable.ClassMapper.Column
         /// <returns>The resulting copy.</returns>
         public IQueryColumnInfo CreateCopy()
         {
-            return new ComplexListColumnInfo<TClassType, TDataType>
-            {
-                Child = Child,
-                ColumnName = ColumnName,
-                CompiledExpression = CompiledExpression,
-                SchemaName = SchemaName,
-                TableName = TableName
-            };
+            return new ComplexListColumnInfo<TClassType, TDataType>(
+                Child,
+                ColumnName,
+                CompiledExpression,
+                IsForeign,
+                SchemaName,
+                TableName
+            );
         }
 
         /// <summary>
@@ -102,10 +122,9 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="objectValue"></param>
         /// <returns>The parameter version of the property</returns>
-        public IParameter GetAsParameter(object objectValue)
+        public IParameter? GetAsParameter(object? objectValue)
         {
-            var TempObject = objectValue as TClassType;
-            object ParamValue = objectValue is null ? null : (object)CompiledExpression(TempObject).FirstOrDefault();
+            var ParamValue = objectValue is null ? null : (object)CompiledExpression((objectValue as TClassType)!).FirstOrDefault();
             return GetAsParameter(objectValue, ParamValue);
         }
 
@@ -115,10 +134,11 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectValue">The object value.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The object value as a parameter.</returns>
-        public IParameter GetAsParameter(object objectValue, object paramValue)
+        public IParameter? GetAsParameter(object? objectValue, object? paramValue)
         {
-            var TempObject = objectValue as TClassType;
             var TempParameter = Child.GetAsParameter(paramValue);
+            if (TempParameter == null)
+                return TempParameter;
             TempParameter.ID = ColumnName;
             return TempParameter;
         }
@@ -128,20 +148,14 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>The value specified</returns>
-        public object GetValue(Dynamo @object)
-        {
-            return @object[PropertyName];
-        }
+        public object? GetValue(Dynamo? @object) => @object?[PropertyName];
 
         /// <summary>
         /// Gets the value of the item
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>The value specified</returns>
-        public object GetValue(object @object)
-        {
-            return GetValue(@object as TClassType);
-        }
+        public object? GetValue(object? @object) => GetValue(@object as TClassType);
 
         /// <summary>
         /// Gets the value.
@@ -149,10 +163,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The resulting value.</returns>
-        public object GetValue(object @object, object paramValue)
-        {
-            return GetValue(paramValue as TDataType);
-        }
+        public object? GetValue(object? @object, object? paramValue) => GetValue(paramValue as TDataType);
 
         /// <summary>
         /// Is this a default value?
@@ -161,13 +172,8 @@ namespace Inflatable.ClassMapper.Column
         /// <returns>True if it is, false otherwise.</returns>
         public bool IsDefault(object @object)
         {
-            if (ReferenceEquals(@object, default(TClassType)))
-            {
-                return true;
-            }
-
-            var ParamValue = CompiledExpression(@object as TClassType).FirstOrDefault();
-            return IsDefault(@object, ParamValue);
+            return ReferenceEquals(@object, default(TClassType))
+                || IsDefault(@object, CompiledExpression((@object as TClassType)!).FirstOrDefault());
         }
 
         /// <summary>
@@ -176,10 +182,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
-        public bool IsDefault(object @object, object paramValue)
-        {
-            return Child.IsDefault(paramValue);
-        }
+        public bool IsDefault(object @object, object paramValue) => Child.IsDefault(paramValue);
 
         /// <summary>
         /// Sets the property's value for the object sent in.
@@ -193,8 +196,7 @@ namespace Inflatable.ClassMapper.Column
                 return;
             }
 
-            var TempPropertyValue = CompiledExpression(objectToSet as TClassType).FirstOrDefault();
-            SetValue(objectToSet, TempPropertyValue, propertyValue);
+            SetValue(objectToSet, CompiledExpression((objectToSet as TClassType)!).FirstOrDefault(), propertyValue);
         }
 
         /// <summary>
@@ -203,35 +205,20 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object paramValue, object propertyValue)
-        {
-            Child.SetValue(paramValue, propertyValue);
-        }
+        public void SetValue(object objectToSet, object paramValue, object propertyValue) => Child.SetValue(paramValue, propertyValue);
 
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        private object GetValue(TClassType @object)
-        {
-            if (ReferenceEquals(@object, default(TClassType)))
-            {
-                return null;
-            }
-
-            var ParamValue = CompiledExpression(@object).FirstOrDefault();
-            return GetValue(ParamValue);
-        }
+        private object? GetValue(TClassType? @object) => ReferenceEquals(@object, default(TClassType)) ? null : GetValue(CompiledExpression(@object).FirstOrDefault());
 
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The value of the property</returns>
-        private object GetValue(TDataType paramValue)
-        {
-            return Child.GetValue(paramValue);
-        }
+        private object? GetValue(TDataType? paramValue) => Child.GetValue(paramValue);
     }
 }

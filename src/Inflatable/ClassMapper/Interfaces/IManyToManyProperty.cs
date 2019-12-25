@@ -110,7 +110,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        IMapping ForeignMapping { get; }
+        IMapping? ForeignMapping { get; }
 
         /// <summary>
         /// Gets the name of the internal field.
@@ -122,7 +122,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Gets the load property query.
         /// </summary>
         /// <value>The load property query.</value>
-        Query LoadPropertyQuery { get; }
+        Query? LoadPropertyQuery { get; }
 
         /// <summary>
         /// Gets the name.
@@ -140,7 +140,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Gets the name of the table.
         /// </summary>
         /// <value>The name of the table.</value>
-        string TableName { get; }
+        string? TableName { get; }
 
         /// <summary>
         /// Gets the name of the type.
@@ -162,7 +162,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        object GetValue(object Object);
+        object? GetValue(object Object);
 
         /// <summary>
         /// Sets up the property (used internally)

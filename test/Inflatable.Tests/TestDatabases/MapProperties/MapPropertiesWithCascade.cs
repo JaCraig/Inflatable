@@ -1,8 +1,5 @@
 ﻿using Inflatable.Tests.TestDatabases.SimpleTest;
 using Mirage.Generators;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Inflatable.Tests.TestDatabases.MapProperties
 {

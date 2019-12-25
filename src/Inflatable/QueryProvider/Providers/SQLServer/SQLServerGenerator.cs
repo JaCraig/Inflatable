@@ -25,7 +25,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
     /// SQL Server query generator
     /// </summary>
     /// <typeparam name="TMappedClass">The type of the mapped class.</typeparam>
-    /// <seealso cref="Inflatable.QueryProvider.Interfaces.IGenerator{TMappedClass}"/>
+    /// <seealso cref="IGenerator{TMappedClass}"/>
     public class SQLServerGenerator<TMappedClass> : GeneratorBaseClass<TMappedClass>
         where TMappedClass : class
     {
