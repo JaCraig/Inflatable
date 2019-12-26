@@ -74,7 +74,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public IOperator Parent { get; set; }
+        public IOperator? Parent { get; set; }
 
         /// <summary>
         /// Gets the type code.
@@ -119,15 +119,10 @@ namespace Inflatable.LinqExpression.WhereClauses
             InternalOperator = InternalOperator.Optimize(mappingSource);
             if (InternalOperator == null)
             {
-                return null;
+                return null!;
             }
 
-            if (Operator == ExpressionType.Not)
-            {
-                return InternalOperator.LogicallyNegate();
-            }
-
-            return this;
+            return Operator == ExpressionType.Not ? InternalOperator.LogicallyNegate() : (this);
         }
 
         /// <summary>

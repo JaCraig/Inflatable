@@ -85,14 +85,14 @@ namespace Inflatable.ClassMapper.TypeGraph
                 }
             }
             var Mapping = Mappings[node.Data];
-            if (node.Nodes.Count == 0 && Mapping.IDProperties.Count == 0)
+            if (node.Parent != null && node.Nodes.Count == 0 && Mapping.IDProperties.Count == 0)
             {
                 var MappingParent = Mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
                 Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
-            if (Mapping.Merge)
+            if (node.Parent != null && Mapping.Merge)
             {
                 var MappingParent = Mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);

@@ -39,7 +39,7 @@ namespace Inflatable.Schema
         {
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             Mappings = mappings;
-            Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger));
+            Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger!));
         }
 
         /// <summary>

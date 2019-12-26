@@ -195,7 +195,7 @@ namespace Inflatable.LinqExpression
                     Visit(node.Arguments[0]);
                     foreach (var Source in Builders.Keys)
                     {
-                        Builders[Source].Top = (int)(node.Arguments[1] as ConstantExpression)?.Value;
+                        Builders[Source].Top = (int)((node.Arguments[1] as ConstantExpression)?.Value ?? 1);
                     }
                     return node;
                 }

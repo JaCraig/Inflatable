@@ -57,10 +57,7 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToOneProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<ClassType, IList<DataType>>
-            {
-                Expression = Expression
-            }.Convert<TResult>();
+            var Result = new ExpressionTypeConverter<ClassType, IList<DataType>>(Expression).Convert<TResult>();
             var ReturnObject = new ManyToOneMany<TResult, DataType>(Result, mapping);
             if (Cascade)
             {

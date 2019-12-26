@@ -38,7 +38,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Initializes a new instance of the <see cref="WhereClause{TObject}"/> class.
         /// </summary>
         /// <param name="internalOperator">The internal operator.</param>
-        public WhereClause(IOperator internalOperator)
+        public WhereClause(IOperator? internalOperator)
         {
             InternalOperator = internalOperator;
             if (InternalOperator != null)
@@ -46,13 +46,17 @@ namespace Inflatable.LinqExpression.WhereClauses
                 InternalOperator.Parent = this;
                 TypeCode = InternalOperator.TypeCode;
             }
+            else
+            {
+                TypeCode = typeof(object);
+            }
         }
 
         /// <summary>
         /// Gets the internal operator.
         /// </summary>
         /// <value>The internal operator.</value>
-        public IOperator InternalOperator { get; private set; }
+        public IOperator? InternalOperator { get; private set; }
 
         /// <summary>
         /// Gets the type of the object.
@@ -64,7 +68,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public IOperator Parent { get; set; }
+        public IOperator? Parent { get; set; }
 
         /// <summary>
         /// Gets the type code.
@@ -81,7 +85,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             if (clause is WhereClause<TObject> TempWhere)
             {
-                clause = TempWhere.InternalOperator;
+                clause = TempWhere.InternalOperator!;
             }
 
             InternalOperator = InternalOperator != null ?
@@ -96,7 +100,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy() => new WhereClause<TObject>(InternalOperator.Copy());
+        public IOperator Copy() => new WhereClause<TObject>(InternalOperator?.Copy());
 
         /// <summary>
         /// Gets the parameters associated with the operator.
@@ -110,7 +114,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>The resulting operator.</returns>
         public IOperator LogicallyNegate()
         {
-            InternalOperator = InternalOperator.LogicallyNegate();
+            InternalOperator = InternalOperator?.LogicallyNegate();
             return this;
         }
 

@@ -86,21 +86,18 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
             var ParentMappings = MappingInformation.GetChildMappings(AssociatedType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct().ToList();
-            switch (property)
+            return property switch
             {
-                case IMapProperty Property:
-                    return LoadMapProperty(Property, queryObject);
+                IMapProperty Property => LoadMapProperty(Property, queryObject),
 
-                case IManyToManyProperty ManyToManyProperty:
-                    return LoadManyToManyProperty(ManyToManyProperty, queryObject);
+                IManyToManyProperty ManyToManyProperty => LoadManyToManyProperty(ManyToManyProperty, queryObject),
 
-                case IManyToOneListProperty ManyToOne:
-                    return LoadManyToOneProperty(ManyToOne, queryObject);
+                IManyToOneListProperty ManyToOne => LoadManyToOneProperty(ManyToOne, queryObject),
 
-                case IManyToOneProperty ManyToOne:
-                    return LoadManyToOneProperty(ManyToOne, queryObject);
-            }
-            return Array.Empty<IQuery>();
+                IManyToOneProperty ManyToOne => LoadManyToOneProperty(ManyToOne, queryObject),
+
+                _ => Array.Empty<IQuery>(),
+            };
         }
 
         /// <summary>
@@ -109,7 +106,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="queryObject">The query object.</param>
         /// <param name="idProperties">The identifier properties.</param>
         /// <returns>The parameters</returns>
-        private static IParameter[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties) => idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
+        private static IParameter?[] GenerateParameters(TMappedClass queryObject, IEnumerable<IIDProperty> idProperties) => idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(queryObject)).ToArray();
 
         /// <summary>
         /// Generates from clause.
@@ -117,8 +114,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="node">The node.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The from clause</returns>
-        private string GenerateFromClause(Utils.TreeNode<Type> node, string suffix = "")
+        private string GenerateFromClause(Utils.TreeNode<Type>? node, string suffix = "")
         {
+            if (node == null)
+                return "";
             var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
@@ -196,10 +195,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
             var Separator = "";
-            foreach (var IDProperty in property.ForeignMapping.IDProperties)
+            if (property.ForeignMapping != null)
             {
-                TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, suffix), GetForeignColumnName(property));
-                Separator = " AND ";
+                foreach (var IDProperty in property.ForeignMapping.IDProperties)
+                {
+                    TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, suffix), GetForeignColumnName(property));
+                    Separator = " AND ";
+                }
             }
             Result.AppendLine();
             var AsStatement = string.IsNullOrEmpty(suffix) ? "" : " as [" + property.ParentMapping.TableName + suffix + "]";
@@ -217,31 +219,43 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
             var Separator = "";
-            foreach (var IDProperty in property.ForeignMapping.IDProperties)
+            if (property.ForeignMapping != null)
             {
-                TempIDProperties.AppendFormat("{0}{1}={2}",
-                    Separator,
-                    "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + property.ForeignMapping.TableName + IDProperty.ColumnName + "]",
-                    GetColumnName(IDProperty));
-                Separator = " AND ";
+                foreach (var IDProperty in property.ForeignMapping.IDProperties)
+                {
+                    TempIDProperties.AppendFormat("{0}{1}={2}",
+                        Separator,
+                        "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + property.ForeignMapping.TableName + IDProperty.ColumnName + "]",
+                        GetColumnName(IDProperty));
+                    Separator = " AND ";
+                }
             }
             Result.AppendLine();
             Result.AppendFormat("INNER JOIN {0} ON {1}", "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "]", TempIDProperties);
             return Result.ToString();
         }
 
+        /// <summary>
+        /// Generates the parent from clause.
+        /// </summary>
+        /// <param name="manyToOne">The many to one.</param>
+        /// <param name="suffix">The suffix.</param>
+        /// <returns></returns>
         private string GenerateParentFromClause(IManyToOneProperty manyToOne, string suffix)
         {
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
             var Separator = "";
-            foreach (var IDProperty in manyToOne.ForeignMapping.IDProperties)
+            if (manyToOne.ForeignMapping != null)
             {
-                TempIDProperties.AppendFormat("{0}{1}={2}",
-                    Separator,
-                    GetTableName(manyToOne.ParentMapping, suffix) + ".[" + manyToOne.ColumnName + manyToOne.ForeignMapping.TableName + IDProperty.ColumnName + "]",
-                    GetColumnName(IDProperty));
-                Separator = " AND ";
+                foreach (var IDProperty in manyToOne.ForeignMapping.IDProperties)
+                {
+                    TempIDProperties.AppendFormat("{0}{1}={2}",
+                        Separator,
+                        GetTableName(manyToOne.ParentMapping, suffix) + ".[" + manyToOne.ColumnName + manyToOne.ForeignMapping.TableName + IDProperty.ColumnName + "]",
+                        GetColumnName(IDProperty));
+                    Separator = " AND ";
+                }
             }
             Result.AppendLine();
             var AsStatement = string.IsNullOrEmpty(suffix) ? "" : " as [" + manyToOne.ParentMapping.TableName + suffix + "]";
@@ -256,14 +270,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="node">The node.</param>
         /// <param name="property">The property.</param>
         /// <returns></returns>
-        private string GenerateSelectQuery(Tree<Type> foreignNode, Tree<Type> node, IMapProperty property)
+        private string GenerateSelectQuery(Tree<Type>? foreignNode, Tree<Type>? node, IMapProperty property)
         {
+            if (foreignNode is null || node is null)
+                return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
             var FromClause = new StringBuilder();
             var WhereClause = new StringBuilder();
 
-            var Mapping = MappingInformation.Mappings[node.Root.Data];
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
             const string SameObject = "2";
 
@@ -271,7 +286,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
             FromClause.Append(GenerateParentFromClause(property, SameObject));
-            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[property.ParentMapping.ObjectType].Root, SameObject));
+            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[property.ParentMapping.ObjectType]?.Root, SameObject));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
@@ -288,17 +303,17 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the select query.
         /// </summary>
         /// <param name="foreignNode">The foreign node.</param>
-        /// <param name="node">The node.</param>
         /// <param name="property">The property.</param>
         /// <returns></returns>
-        private string GenerateSelectQuery(Tree<Type> foreignNode, Tree<Type> node, IManyToManyProperty property)
+        private string GenerateSelectQuery(Tree<Type>? foreignNode, IManyToManyProperty property)
         {
+            if (foreignNode == null)
+                return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
             var FromClause = new StringBuilder();
             var WhereClause = new StringBuilder();
 
-            var Mapping = MappingInformation.Mappings[node.Root.Data];
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             //Get From Clause
@@ -317,14 +332,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return Builder.ToString();
         }
 
-        private string GenerateSelectQuery(Tree<Type> foreignNode, Tree<Type> node, IManyToOneListProperty manyToOne)
+        /// <summary>
+        /// Generates the select query.
+        /// </summary>
+        /// <param name="foreignNode">The foreign node.</param>
+        /// <param name="manyToOne">The many to one.</param>
+        /// <returns></returns>
+        private string GenerateSelectQuery(Tree<Type>? foreignNode, IManyToOneListProperty manyToOne)
         {
+            if (foreignNode == null)
+                return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
             var FromClause = new StringBuilder();
             var WhereClause = new StringBuilder();
 
-            var Mapping = MappingInformation.Mappings[node.Root.Data];
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             //Get From Clause
@@ -342,14 +364,22 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             return Builder.ToString();
         }
 
-        private string GenerateSelectQuery(Tree<Type> foreignNode, Tree<Type> node, IManyToOneProperty manyToOne)
+        /// <summary>
+        /// Generates the select query.
+        /// </summary>
+        /// <param name="foreignNode">The foreign node.</param>
+        /// <param name="node">The node.</param>
+        /// <param name="manyToOne">The many to one.</param>
+        /// <returns></returns>
+        private string GenerateSelectQuery(Tree<Type>? foreignNode, Tree<Type>? node, IManyToOneProperty manyToOne)
         {
+            if (foreignNode == null || node == null)
+                return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
             var FromClause = new StringBuilder();
             var WhereClause = new StringBuilder();
 
-            var Mapping = MappingInformation.Mappings[node.Root.Data];
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             const string SameObject = "2";
@@ -357,7 +387,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
             FromClause.Append(GenerateParentFromClause(manyToOne, SameObject));
-            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[manyToOne.ParentMapping.ObjectType].Root, SameObject));
+            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[manyToOne.ParentMapping.ObjectType]?.Root, SameObject));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
@@ -387,7 +417,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 Result.AppendFormat("{0}{1}={2}",
                     Separator,
-                    "[" + manyToOne.ForeignMapping.SchemaName + "].[" + manyToOne.ForeignMapping.TableName + "].[" + manyToOne.ColumnName + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
+                    "[" + manyToOne.ForeignMapping?.SchemaName + "].[" + manyToOne.ForeignMapping?.TableName + "].[" + manyToOne.ColumnName + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
                     GetParameterName(ParentIDMapping));
                 Separator = "\r\nAND ";
             }
@@ -476,12 +506,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(property.Name, new QueryGeneratorData
-                    {
-                        AssociatedMapping = ChildMapping,
-                        IDProperties = IDProperties,
-                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property),
-                    });
+                    Queries.Add(property.Name, new QueryGeneratorData(ChildMapping,
+                        IDProperties,
+                        GenerateSelectQuery(ForeignTypeGraph, property)
+                    ));
                 }
             }
             foreach (var TempQuery in Queries[property.Name])
@@ -520,12 +548,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(manyToOne.Name, new QueryGeneratorData
-                    {
-                        AssociatedMapping = ChildMapping,
-                        IDProperties = IDProperties,
-                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, manyToOne)
-                    });
+                    Queries.Add(manyToOne.Name, new QueryGeneratorData(
+                        ChildMapping,
+                        IDProperties,
+                        GenerateSelectQuery(ForeignTypeGraph, TypeGraph, manyToOne)
+                    ));
                 }
             }
             foreach (var TempQuery in Queries[manyToOne.Name])
@@ -565,12 +592,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(manyToOne.Name, new QueryGeneratorData
-                    {
-                        AssociatedMapping = ChildMapping,
-                        IDProperties = IDProperties,
-                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, manyToOne)
-                    });
+                    Queries.Add(manyToOne.Name, new QueryGeneratorData(
+                        ChildMapping,
+                        IDProperties,
+                        GenerateSelectQuery(ForeignTypeGraph, manyToOne)
+                    ));
                 }
             }
             foreach (var TempQuery in Queries[manyToOne.Name])
@@ -610,12 +636,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(property.Name, new QueryGeneratorData
-                    {
-                        AssociatedMapping = ChildMapping,
-                        IDProperties = IDProperties,
-                        QueryText = GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property)
-                    });
+                    Queries.Add(property.Name, new QueryGeneratorData(
+                        ChildMapping,
+                        IDProperties,
+                        GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property)
+                    ));
                 }
             }
             foreach (var TempQuery in Queries[property.Name])
@@ -634,24 +659,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 foreach (var Property in ParentMapping.ManyToManyProperties)
                 {
-                    LoadManyToManyProperty(Property, default);
+                    LoadManyToManyProperty(Property, default!);
                 }
                 foreach (var Property in ParentMapping.ManyToOneProperties)
                 {
                     switch (Property)
                     {
                         case IManyToOneListProperty ManyToOne:
-                            LoadManyToOneProperty(ManyToOne, default);
+                            LoadManyToOneProperty(ManyToOne, default!);
                             break;
 
                         case IManyToOneProperty ManyToOne:
-                            LoadManyToOneProperty(ManyToOne, default);
+                            LoadManyToOneProperty(ManyToOne, default!);
                             break;
                     }
                 }
                 foreach (var Property in ParentMapping.MapProperties)
                 {
-                    LoadMapProperty(Property, default);
+                    LoadMapProperty(Property, default!);
                 }
             }
         }

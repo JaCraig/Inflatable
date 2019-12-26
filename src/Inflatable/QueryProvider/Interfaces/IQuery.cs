@@ -36,7 +36,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Gets the parameters.
         /// </summary>
         /// <value>The parameters.</value>
-        IParameter[] Parameters { get; }
+        IParameter?[] Parameters { get; }
 
         /// <summary>
         /// Gets the query string.

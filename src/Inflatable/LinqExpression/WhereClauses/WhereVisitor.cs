@@ -37,6 +37,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         public WhereVisitor(int count)
         {
             Count = count;
+            CurrentClause = new EmptyClause();
         }
 
         /// <summary>

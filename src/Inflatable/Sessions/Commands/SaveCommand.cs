@@ -125,7 +125,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, DeclarationQueryLength = DeclarationQuery.Length; x < DeclarationQueryLength; ++x)
             {
                 var CurrentDeclarationQuery = DeclarationQuery[x];
-                declarationBatch.AddQuery(CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.Parameters);
+                declarationBatch.AddQuery(CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.Parameters!);
             }
         }
 
@@ -264,13 +264,13 @@ namespace Inflatable.Sessions.Commands
                                                 {
                                                     if (IDProperty?.AutoIncrement == true)
                                                     {
-                                                        IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0]));
+                                                        IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0])!);
                                                     }
                                                 },
                                                 @object,
                                                 ObjectQuery.QueryString,
                                                 ObjectQuery.DatabaseCommandType,
-                                                ObjectQuery.Parameters);
+                                                ObjectQuery.Parameters!);
             }
         }
 
@@ -282,7 +282,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="declarationBatch">The declaration batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void Save(object @object, MappingSource source, SQLHelper batch, SQLHelper declarationBatch, IList<object> objectsSeen)
+        private void Save(object? @object, MappingSource source, SQLHelper batch, SQLHelper declarationBatch, IList<object> objectsSeen)
         {
             if (@object == null
                 || WasObjectSeen(@object, objectsSeen, source)
@@ -362,14 +362,14 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
             }
 
             TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, property);
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
             }
         }
 
@@ -386,7 +386,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
             {
                 var TempQuery = Queries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
             }
         }
     }

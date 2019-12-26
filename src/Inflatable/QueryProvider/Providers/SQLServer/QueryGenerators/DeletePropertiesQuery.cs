@@ -20,7 +20,6 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
-using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -51,7 +50,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                              .Distinct()
                                              .SelectMany(x => x.IDProperties);
-            Queries = new ListMapping<string, QueryGeneratorData>();
         }
 
         /// <summary>
@@ -65,12 +63,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <value>The identifier properties.</value>
         private IEnumerable<IIDProperty> IDProperties { get; }
-
-        /// <summary>
-        /// Gets or sets the queries.
-        /// </summary>
-        /// <value>The queries.</value>
-        private ListMapping<string, QueryGeneratorData> Queries { get; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -97,11 +89,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <summary>
         /// Generates the join delete query.
         /// </summary>
-        /// <param name="foreignIDProperties">The foreign identifier properties.</param>
         /// <param name="property">The property.</param>
-        /// <param name="itemCount">The item count.</param>
         /// <returns></returns>
-        private string GenerateJoinDeleteQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property, int itemCount)
+        private string GenerateJoinDeleteQuery(IManyToManyProperty property)
         {
             var Builder = new StringBuilder();
             var PropertyNames = new StringBuilder();
@@ -153,7 +143,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 {
                     var TempParameter = Value as string;
                     return new StringParameter(Prefix + x.ParentMapping.TableName + x.ColumnName,
-                        TempParameter);
+                        TempParameter!);
                 }
                 return new Parameter<object>(Prefix + x.ParentMapping.TableName + x.ColumnName,
                     x.PropertyType.To<Type, SqlDbType>(),
@@ -181,9 +171,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 new Query(property.PropertyType,
                 CommandType.Text,
-                GenerateJoinDeleteQuery(ForeignIDProperties, property, ItemList.Count()),
+                GenerateJoinDeleteQuery(property),
                 QueryType,
-                GenerateParameters(queryObject, property, ItemList))
+                GenerateParameters(queryObject, property, ItemList!))
             };
             return ReturnValue.ToArray();
         }

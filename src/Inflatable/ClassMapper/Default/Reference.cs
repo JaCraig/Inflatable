@@ -49,10 +49,7 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<ClassType, DataType>
-            {
-                Expression = Expression
-            }.Convert<TResult>();
+            var Result = new ExpressionTypeConverter<ClassType, DataType>(Expression).Convert<TResult>();
             var ReturnObject = new Reference<TResult, DataType>(Result, mapping);
             if (Index)
             {
@@ -86,7 +83,7 @@ namespace Inflatable.ClassMapper.Default
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public override void SetColumnInfo(MappingSource mappings) => Setup();
+        public override void SetColumnInfo(MappingSource? mappings) => Setup();
 
         /// <summary>
         /// Sets up the property (used internally)

@@ -84,7 +84,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateQueries(TMappedClass queryObject)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new[] { new Query(AssociatedType, CommandType.Text, GenerateUpdateQuery(TypeGraph.Root, queryObject), QueryType, GenerateParameters(queryObject)) };
+            return new[] { new Query(AssociatedType, CommandType.Text, GenerateUpdateQuery(TypeGraph?.Root, queryObject), QueryType, GenerateParameters(queryObject)) };
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The query object.</param>
         /// <returns>The parameters.</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject)
+        private IParameter?[] GenerateParameters(TMappedClass queryObject)
         {
             var ORMObject = queryObject as IORMObject;
             var Parameters = IDProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
@@ -139,8 +139,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="node">The node.</param>
         /// <param name="queryObject">The query object.</param>
         /// <returns></returns>
-        private string GenerateUpdateQuery(Utils.TreeNode<Type> node, TMappedClass queryObject)
+        private string GenerateUpdateQuery(Utils.TreeNode<Type>? node, TMappedClass queryObject)
         {
+            if (node is null)
+                return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
             var WhereClause = new StringBuilder();

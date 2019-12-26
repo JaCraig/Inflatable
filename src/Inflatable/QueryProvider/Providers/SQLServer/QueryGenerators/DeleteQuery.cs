@@ -73,7 +73,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the query text.
         /// </summary>
         /// <value>The query text.</value>
-        private string QueryText { get; set; }
+        private string? QueryText { get; set; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -86,14 +86,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? "", QueryType, GenerateParameters(queryObject)) };
 
         /// <summary>
         /// Generates the parameters.
         /// </summary>
         /// <param name="queryObject">The query object.</param>
         /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject) => IDProperties.SelectMany(x => x.GetColumnInfo().Select(y => y.GetAsParameter(queryObject))).ToArray();
+        private IParameter?[] GenerateParameters(TMappedClass queryObject) => IDProperties.SelectMany(x => x.GetColumnInfo().Select(y => y.GetAsParameter(queryObject))).ToArray();
 
         /// <summary>
         /// Generates the query.

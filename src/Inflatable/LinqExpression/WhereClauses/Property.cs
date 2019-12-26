@@ -64,7 +64,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public IOperator Parent { get; set; }
+        public IOperator? Parent { get; set; }
 
         /// <summary>
         /// Gets the type code.
@@ -76,7 +76,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets or sets the column.
         /// </summary>
         /// <value>The column.</value>
-        private string Column { get; set; }
+        private string? Column { get; set; }
 
         /// <summary>
         /// Copies this instance.
@@ -108,7 +108,7 @@ namespace Inflatable.LinqExpression.WhereClauses
             var ParentMapping = ParentMappings.FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
             if (ParentMapping == null)
             {
-                return null;
+                return null!;
             }
             Column = ParentMapping.GetColumnName(InternalProperty.Name);
 

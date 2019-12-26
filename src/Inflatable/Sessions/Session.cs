@@ -56,19 +56,11 @@ namespace Inflatable.Sessions
             Aspectus.Aspectus aopManager,
             ILogger logger)
         {
-            AOPManager = aopManager ?? throw new ArgumentNullException(nameof(aopManager));
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
-            SchemaManager = schemaManager ?? throw new ArgumentNullException(nameof(schemaManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
-        /// <summary>
-        /// Gets the aop manager.
-        /// </summary>
-        /// <value>The aop manager.</value>
-        private readonly Aspectus.Aspectus AOPManager;
 
         /// <summary>
         /// The mapping manager
@@ -79,11 +71,6 @@ namespace Inflatable.Sessions
         /// The query provider manager
         /// </summary>
         private readonly QueryProviderManager QueryProviderManager;
-
-        /// <summary>
-        /// The schema manager
-        /// </summary>
-        private readonly SchemaManager SchemaManager;
 
         /// <summary>
         /// Gets or sets the commands.
@@ -334,9 +321,9 @@ namespace Inflatable.Sessions
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
                     var TempQuery = Queries[x];
-                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
                 }
-                List<List<dynamic>> ResultLists = null;
+                List<List<dynamic>>? ResultLists = null;
 
                 try
                 {
@@ -389,10 +376,10 @@ namespace Inflatable.Sessions
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
                     var TempQuery = Queries[x];
-                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
                 }
 
-                List<List<dynamic>> ResultLists = null;
+                List<List<dynamic>>? ResultLists = null;
 
                 try
                 {
@@ -470,16 +457,15 @@ namespace Inflatable.Sessions
             for (int x = 0, parametersLength = parameters.Length; x < parametersLength; x++)
             {
                 var CurrentParameter = parameters[x];
-                var TempParameter = CurrentParameter as string;
                 if (CurrentParameter is IParameter TempQueryParameter)
                 {
                     Parameters.Add(TempQueryParameter);
                 }
                 else if (CurrentParameter == null)
                 {
-                    Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), null));
+                    Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), null!));
                 }
-                else if (TempParameter != null)
+                else if (CurrentParameter is string TempParameter)
                 {
                     Parameters.Add(new StringParameter(Parameters.Count.ToString(CultureInfo.InvariantCulture), TempParameter));
                 }
@@ -532,10 +518,10 @@ namespace Inflatable.Sessions
             for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
             {
                 var ResultingQuery = ResultingQueries[x];
-                Batch.AddQuery(ResultingQuery.QueryString, ResultingQuery.DatabaseCommandType, ResultingQuery.Parameters);
+                Batch.AddQuery(ResultingQuery.QueryString, ResultingQuery.DatabaseCommandType, ResultingQuery.Parameters!);
             }
 
-            List<List<dynamic>> Result = null;
+            List<List<dynamic>>? Result = null;
             try
             {
                 Result = await Batch.ExecuteAsync().ConfigureAwait(false);
@@ -556,11 +542,11 @@ namespace Inflatable.Sessions
                 }
                 else if (firstRun)
                 {
-                    CopyResult.CopyOrAdd(TempResult, IDProperties);
+                    CopyResult?.CopyOrAdd(TempResult, IDProperties);
                 }
                 else
                 {
-                    CopyResult.Copy(TempResult, IDProperties);
+                    CopyResult?.Copy(TempResult, IDProperties);
                 }
             }
         }

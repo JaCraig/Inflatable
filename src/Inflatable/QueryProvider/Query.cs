@@ -36,7 +36,7 @@ namespace Inflatable.QueryProvider
         /// <param name="queryString">The query string.</param>
         /// <param name="queryType">Type of the query.</param>
         /// <param name="parameters">The parameters.</param>
-        public Query(Type returnType, CommandType databaseCommandType, string queryString, QueryType queryType, params IParameter[] parameters)
+        public Query(Type returnType, CommandType databaseCommandType, string queryString, QueryType queryType, params IParameter?[] parameters)
         {
             DatabaseCommandType = databaseCommandType;
             QueryType = queryType;
@@ -55,7 +55,7 @@ namespace Inflatable.QueryProvider
         /// Gets or sets the parameters.
         /// </summary>
         /// <value>The parameters.</value>
-        public IParameter[] Parameters { get; set; }
+        public IParameter?[] Parameters { get; set; }
 
         /// <summary>
         /// Gets the query string.

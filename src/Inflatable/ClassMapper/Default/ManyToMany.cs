@@ -57,10 +57,7 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToManyProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<ClassType, IList<DataType>>
-            {
-                Expression = Expression
-            }.Convert<TResult>();
+            var Result = new ExpressionTypeConverter<ClassType, IList<DataType>>(Expression).Convert<TResult>();
             var ReturnObject = new ManyToMany<TResult, DataType>(Result, mapping);
             if (Cascade)
             {
@@ -104,7 +101,7 @@ namespace Inflatable.ClassMapper.Default
                     y => y,
                     false,
                     ParentMapping.SchemaName,
-                    TableName
+                    TableName ?? ""
                 );
             }));
             TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>

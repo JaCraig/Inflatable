@@ -31,7 +31,7 @@ namespace Inflatable.Utils
         /// </summary>
         /// <param name="data">The data.</param>
         /// <param name="parent">The parent.</param>
-        public TreeNode(TData data, TreeNode<TData> parent)
+        public TreeNode(TData data, TreeNode<TData>? parent)
         {
             Data = data;
             Parent = parent;
@@ -54,7 +54,7 @@ namespace Inflatable.Utils
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>
-        public TreeNode<TData> Parent { get; set; }
+        public TreeNode<TData>? Parent { get; set; }
 
         /// <summary>
         /// Adds the node.
@@ -82,7 +82,7 @@ namespace Inflatable.Utils
         /// <returns>This</returns>
         public TreeNode<TData> Remove()
         {
-            Parent.Nodes.Remove(this);
+            Parent?.Nodes.Remove(this);
             Parent = null;
             return this;
         }
@@ -110,6 +110,6 @@ namespace Inflatable.Utils
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public override string ToString() => Data.ToString();
+        public override string ToString() => Data?.ToString() ?? "";
     }
 }

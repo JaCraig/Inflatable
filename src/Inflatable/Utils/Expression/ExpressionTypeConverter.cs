@@ -27,6 +27,15 @@ namespace Inflatable.Utils
     public class ExpressionTypeConverter<TData, TReturn>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ExpressionTypeConverter{TData, TReturn}"/> class.
+        /// </summary>
+        /// <param name="expression">The expression.</param>
+        public ExpressionTypeConverter(Expression<Func<TData, TReturn>> expression)
+        {
+            Expression = expression;
+        }
+
+        /// <summary>
         /// Gets or sets the expression.
         /// </summary>
         /// <value>The expression.</value>

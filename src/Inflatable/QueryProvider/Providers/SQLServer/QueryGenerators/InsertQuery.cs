@@ -52,7 +52,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
             QueryDeclarationText = GenerateInsertQueryDeclarations();
-            QueryText = GenerateInsertQuery(TypeGraph.Root);
+            QueryText = GenerateInsertQuery(TypeGraph?.Root);
             var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
 
             IDProperties = ParentMappings.SelectMany(x => x.IDProperties);
@@ -69,25 +69,25 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets or sets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; }
+        private IEnumerable<IIDProperty>? IDProperties { get; }
 
         /// <summary>
         /// Gets or sets the query declaration text.
         /// </summary>
         /// <value>The query declaration text.</value>
-        private string[] QueryDeclarationText { get; }
+        private string[]? QueryDeclarationText { get; }
 
         /// <summary>
         /// Gets or sets the query text.
         /// </summary>
         /// <value>The query text.</value>
-        private string QueryText { get; }
+        private string? QueryText { get; }
 
         /// <summary>
         /// Gets or sets the reference properties.
         /// </summary>
         /// <value>The reference properties.</value>
-        private IEnumerable<IProperty> ReferenceProperties { get; }
+        private IEnumerable<IProperty>? ReferenceProperties { get; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -95,6 +95,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting declarations.</returns>
         public override IQuery[] GenerateDeclarations()
         {
+            if (QueryDeclarationText == null)
+                return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
             for (var x = 0; x < QueryDeclarationText.Length; ++x)
             {
@@ -108,15 +110,17 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText, QueryType, GenerateParameters(queryObject)) };
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? "", QueryType, GenerateParameters(queryObject)) };
 
         /// <summary>
         /// Generates the insert query.
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns>The resulting query</returns>
-        private string GenerateInsertQuery(Utils.TreeNode<Type> node)
+        private string GenerateInsertQuery(Utils.TreeNode<Type>? node)
         {
+            if (node == null)
+                return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
             var ValueList = new StringBuilder();
@@ -244,11 +248,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The query object.</param>
         /// <returns>The parameters</returns>
-        private IParameter[] GenerateParameters(TMappedClass queryObject)
+        private IParameter?[] GenerateParameters(TMappedClass queryObject)
         {
-            var Parameters = IDProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
-            Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)));
-            return Parameters.ToArray();
+            var Parameters = IDProperties?.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
+            Parameters?.AddRange(ReferenceProperties?.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)));
+            return Parameters?.ToArray() ?? Array.Empty<IParameter>();
         }
     }
 }

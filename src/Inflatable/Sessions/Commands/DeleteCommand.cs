@@ -108,7 +108,8 @@ namespace Inflatable.Sessions.Commands
                 var ManyToManyValue = ManyToManyProperty.GetValue(@object);
                 if (ManyToManyValue != null)
                 {
-                    var ManyToManyValueList = ManyToManyValue as IList;
+                    if (!(ManyToManyValue is IList ManyToManyValueList))
+                        continue;
                     var FinalList = new List<object>();
                     for (int x = 0, ManyToManyValueListCount = ManyToManyValueList.Count; x < ManyToManyValueListCount; ++x)
                     {
@@ -201,7 +202,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void Delete(object @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen)
+        private void Delete(object? @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen)
         {
             if (@object == null
                 || WasObjectSeen(@object, objectsSeen, source)
@@ -217,7 +218,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
             {
                 var TempQuery = Queries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
             }
 
             RemoveItemsFromCache(@object);
@@ -259,7 +260,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; ++x)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters);
+                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
             }
         }
     }

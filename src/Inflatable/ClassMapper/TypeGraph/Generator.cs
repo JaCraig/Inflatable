@@ -56,7 +56,7 @@ namespace Inflatable.ClassMapper.TypeGraph
 
             var TempTypeGraph = new Tree<Type>(mappingType);
             mappingType = mappingType.GetTypeInfo().BaseType;
-            var CurrentNode = TempTypeGraph.Root;
+            TreeNode<Type>? CurrentNode = TempTypeGraph.Root;
             while (mappingType != null)
             {
                 if (Mappings.Keys.Contains(mappingType))

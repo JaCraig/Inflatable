@@ -18,6 +18,7 @@ using BigBook;
 using Data.Modeler;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -52,9 +53,10 @@ namespace Inflatable.Schema
 
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             Source = source ?? throw new ArgumentNullException(nameof(source));
+            GeneratedSchemaChanges = Array.Empty<string>();
 
             SourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
-            SourceSpec = DataModeler.CreateSource(SourceConnection.DatabaseName);
+            SourceSpec = DataModeler.CreateSource(SourceConnection.DatabaseName ?? "");
             GenerateSchema(source);
             AnalyzeSchema();
         }
@@ -153,12 +155,12 @@ namespace Inflatable.Schema
             var Generator = DataModeler.GetSchemaGenerator(source.Source.Provider);
 
             Logger.Information("Getting structure for {Info:l}", SourceConnection.DatabaseName);
-            var OriginalSource = !string.IsNullOrEmpty(SourceConnection.DatabaseName) ? Generator.GetSourceStructure(SourceConnection) : null;
+            var OriginalSource = !string.IsNullOrEmpty(SourceConnection.DatabaseName) ? Generator?.GetSourceStructure(SourceConnection) : null;
 
             SetupTableStructures();
 
             Logger.Information("Generating schema changes for {Info:l}", SourceConnection.DatabaseName);
-            GeneratedSchemaChanges = Generator.GenerateSchema(SourceSpec, OriginalSource);
+            GeneratedSchemaChanges = Generator?.GenerateSchema(SourceSpec, OriginalSource!) ?? Array.Empty<string>();
             if (Debug)
             {
                 Logger.Debug("Schema changes generated: {GeneratedSchemaChanges}", GeneratedSchemaChanges);
@@ -170,7 +172,7 @@ namespace Inflatable.Schema
             }
 
             Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);
-            Generator.Setup(SourceSpec, SourceConnection);
+            Generator?.Setup(SourceSpec, SourceConnection);
         }
 
         /// <summary>
@@ -197,7 +199,7 @@ namespace Inflatable.Schema
 
                 var Table = SourceSpec.AddTable(Mapping.TableName, Mapping.SchemaName);
                 var Tree = Source.TypeGraphs[Mapping.ObjectType];
-                var ParentMappings = Tree.Root.Nodes.ForEach(x => Source.Mappings[x.Data]);
+                var ParentMappings = Tree?.Root.Nodes.ForEach(x => Source.Mappings[x.Data]) ?? Array.Empty<IMapping>();
                 foreach (var ID in Mapping.IDProperties)
                 {
                     ID.Setup();

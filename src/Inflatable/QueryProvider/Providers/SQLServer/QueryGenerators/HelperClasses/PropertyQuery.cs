@@ -26,6 +26,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperCla
     public class QueryGeneratorData
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="QueryGeneratorData"/> class.
+        /// </summary>
+        /// <param name="associatedMapping">The associated mapping.</param>
+        /// <param name="iDProperties">The i d properties.</param>
+        /// <param name="queryText">The query text.</param>
+        public QueryGeneratorData(IMapping associatedMapping, IEnumerable<IIDProperty> iDProperties, string queryText)
+        {
+            AssociatedMapping = associatedMapping;
+            IDProperties = iDProperties;
+            QueryText = queryText;
+        }
+
+        /// <summary>
         /// Gets or sets the associated mapping.
         /// </summary>
         /// <value>The associated mapping.</value>
