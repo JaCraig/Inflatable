@@ -91,7 +91,8 @@ namespace Inflatable.Tests
                 {
                     BoolValue = true,
                     IntValue = 4,
-                    CharValue = 'q'
+                    CharValue = 'q',
+                    UriValue = new System.Uri("http://www.google.com")
                 }
             };
             await TempSession.Save(TestObject).ExecuteAsync().ConfigureAwait(false);
@@ -103,6 +104,7 @@ namespace Inflatable.Tests
             Assert.False(Result.MappedClass.BoolValue);
             Assert.Equal(0, Result.MappedClass.IntValue);
             Assert.Equal('q', Result.MappedClass.CharValue);
+            Assert.Equal(new System.Uri("http://www.google.com"), Result.MappedClass.UriValue);
         }
 
         [Fact]

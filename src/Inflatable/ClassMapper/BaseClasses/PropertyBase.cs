@@ -66,8 +66,9 @@ namespace Inflatable.ClassMapper.BaseClasses
             Expression = expression;
             SetAction = Expression.PropertySetter<ClassType, DataType>()?.Compile() ?? new Action<ClassType, DataType>((_, __) => { });
             InternalFieldName = "_" + Name + "Derived";
-            MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
+            MaxLength = typeof(DataType) == typeof(string) || typeof(DataType) == typeof(Uri) ? 100 : 0;
             Nullable = typeof(DataType) == typeof(string)
+                || typeof(DataType) == typeof(Uri)
                 || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
                 || typeof(DataType) == typeof(byte[]);
             ParentMapping = mapping;

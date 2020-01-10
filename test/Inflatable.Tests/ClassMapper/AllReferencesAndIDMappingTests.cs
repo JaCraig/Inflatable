@@ -22,7 +22,7 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(typeof(MockDatabaseMapping), TestObject.DatabaseConfigType);
             Assert.Equal(1, TestObject.IDProperties.Count);
             Assert.Equal("ID_", TestObject.IDProperties.First().ColumnName);
-            Assert.Equal(35, TestObject.ReferenceProperties.Count);
+            Assert.Equal(36, TestObject.ReferenceProperties.Count);
             Assert.Equal(typeof(AllReferencesAndID), TestObject.ObjectType);
             Assert.Equal(10, TestObject.Order);
             Assert.Equal("", TestObject.Prefix);

@@ -113,6 +113,9 @@ namespace Inflatable.Tests.TestDatabases.SimpleTest
         [ULongGenerator]
         public ulong ULongValue { get; set; }
 
+        [DomainName]
+        public Uri UriValue { get; set; }
+
         [UShortGenerator]
         public ushort UShortValue { get; set; }
     }

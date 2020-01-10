@@ -44,6 +44,7 @@ namespace Inflatable.Tests.TestDatabases.SimpleTestWithDatabase
             Reference(x => x.UIntValue);
             Reference(x => x.ULongValue);
             Reference(x => x.UShortValue);
+            Reference(x => x.UriValue);
         }
     }
 }
