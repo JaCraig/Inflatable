@@ -104,16 +104,19 @@ namespace Inflatable.ClassMapper.Default
                     TableName ?? ""
                 );
             }));
-            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
             {
-                return new ComplexListColumnInfo<ClassType, DataType>(
-                    x.GetColumnInfo()[0],
-                    x.ParentMapping.TableName + x.ColumnName,
-                    CompiledExpression,
-                    true,
-                    ParentMapping.SchemaName,
-                    TableName ?? ""
-                );
+                return TempMapping.IDProperties.ForEach(x =>
+                {
+                    return new ComplexListColumnInfo<ClassType, DataType>(
+                        x.GetColumnInfo()[0],
+                        x.ParentMapping.TableName + x.ColumnName,
+                        CompiledExpression,
+                        true,
+                        ParentMapping.SchemaName,
+                        TableName ?? ""
+                    );
+                });
             }));
             Columns = TempColumns.ToArray();
         }
@@ -128,7 +131,7 @@ namespace Inflatable.ClassMapper.Default
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
-                                     .FirstOrDefault(x => x.IDProperties.Count > 0);
+                                     .Where(x => x.IDProperties.Count > 0).ToList();
             if (ForeignMapping == null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
@@ -136,69 +139,72 @@ namespace Inflatable.ClassMapper.Default
 
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            if (string.IsNullOrEmpty(TableName))
+            foreach (var TempMapping in ForeignMapping)
             {
-                var Class1 = ParentWithID.ObjectType.Name;
-                var Class2 = ForeignMapping.ObjectType.Name;
-                if (string.CompareOrdinal(Class1, Class2) < 0)
+                if (string.IsNullOrEmpty(TableName))
                 {
-                    SetTableName(Class1 + "_" + Class2);
+                    var Class1 = ParentWithID.ObjectType.Name;
+                    var Class2 = TempMapping.ObjectType.Name;
+                    if (string.CompareOrdinal(Class1, Class2) < 0)
+                    {
+                        SetTableName(Class1 + "_" + Class2);
+                    }
+                    else
+                    {
+                        SetTableName(Class2 + "_" + Class1);
+                    }
                 }
-                else
+                if (dataModel.SourceSpec.Tables.Any(x => x.Name == TableName))
                 {
-                    SetTableName(Class2 + "_" + Class1);
+                    return;
                 }
-            }
-            if (dataModel.SourceSpec.Tables.Any(x => x.Name == TableName))
-            {
-                return;
-            }
 
-            var JoinTable = dataModel.SourceSpec.AddTable(TableName ?? "", ParentMapping.SchemaName);
-            JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
-            var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
-            DatabaseJoinsCascade = !ParentMappings.Contains(ForeignMapping);
-            var Prefix = "";
-            if (ParentWithID == ForeignMapping)
-            {
-                Prefix = "Parent_";
-            }
+                var JoinTable = dataModel.SourceSpec.AddTable(TableName ?? "", ParentMapping.SchemaName);
+                JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
+                var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
+                DatabaseJoinsCascade = !ParentMappings.Contains(TempMapping);
+                var Prefix = "";
+                if (ParentWithID == ForeignMapping)
+                {
+                    Prefix = "Parent_";
+                }
 
-            foreach (var ParentIDMapping in ParentIDMappings)
-            {
-                JoinTable.AddColumn<object>(Prefix + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName,
-                                ParentIDMapping.PropertyType.To(DbType.Int32),
-                                ParentIDMapping.MaxLength,
-                                false,
-                                false,
-                                false,
-                                false,
-                                false,
-                                ParentIDMapping.ParentMapping.TableName,
-                                ParentIDMapping.ColumnName,
-                                null!,
-                                "",
-                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
-                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
-                                !OnDeleteDoNothingValue && !DatabaseJoinsCascade);
-            }
-            foreach (var ForeignIDMapping in ForeignMapping.IDProperties)
-            {
-                JoinTable.AddColumn<object>(ForeignIDMapping.ParentMapping.TableName + ForeignIDMapping.ColumnName,
-                                ForeignIDMapping.PropertyType.To(DbType.Int32),
-                                ForeignIDMapping.MaxLength,
-                                false,
-                                false,
-                                false,
-                                false,
-                                false,
-                                ForeignIDMapping.ParentMapping.TableName,
-                                ForeignIDMapping.ColumnName,
-                                null!,
-                                "",
-                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
-                                !OnDeleteDoNothingValue && DatabaseJoinsCascade,
-                                !OnDeleteDoNothingValue && !DatabaseJoinsCascade);
+                foreach (var ParentIDMapping in ParentIDMappings)
+                {
+                    JoinTable.AddColumn<object>(Prefix + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName,
+                                    ParentIDMapping.PropertyType.To(DbType.Int32),
+                                    ParentIDMapping.MaxLength,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    ParentIDMapping.ParentMapping.TableName,
+                                    ParentIDMapping.ColumnName,
+                                    null!,
+                                    "",
+                                    !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                    !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                    !OnDeleteDoNothingValue && !DatabaseJoinsCascade);
+                }
+                foreach (var ForeignIDMapping in TempMapping.IDProperties)
+                {
+                    JoinTable.AddColumn<object>(ForeignIDMapping.ParentMapping.TableName + ForeignIDMapping.ColumnName,
+                                    ForeignIDMapping.PropertyType.To(DbType.Int32),
+                                    ForeignIDMapping.MaxLength,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    ForeignIDMapping.ParentMapping.TableName,
+                                    ForeignIDMapping.ColumnName,
+                                    null!,
+                                    "",
+                                    !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                    !OnDeleteDoNothingValue && DatabaseJoinsCascade,
+                                    !OnDeleteDoNothingValue && !DatabaseJoinsCascade);
+                }
             }
         }
     }

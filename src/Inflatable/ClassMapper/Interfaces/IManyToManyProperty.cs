@@ -19,6 +19,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.Schema;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -110,7 +111,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        IMapping? ForeignMapping { get; }
+        List<IMapping> ForeignMapping { get; }
 
         /// <summary>
         /// Gets the name of the internal field.

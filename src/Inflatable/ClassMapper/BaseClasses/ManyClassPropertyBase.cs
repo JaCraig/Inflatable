@@ -58,6 +58,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
+            ForeignMapping = new List<IMapping>();
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        public IMapping? ForeignMapping { get; protected set; }
+        public List<IMapping> ForeignMapping { get; protected set; }
 
         /// <summary>
         /// Gets the name of the internal field.

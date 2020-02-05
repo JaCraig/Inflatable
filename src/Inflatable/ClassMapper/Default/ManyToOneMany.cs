@@ -85,27 +85,33 @@ namespace Inflatable.ClassMapper.Default
         {
             var ActualParent = mappings.GetChildMappings<ClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ActualParent.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
             {
-                return new ComplexColumnInfo<ClassType, ClassType>(
-                    x.GetColumnInfo()[0],
-                    ColumnName + x.ParentMapping.TableName + x.ColumnName,
-                    y => y,
-                    true,
-                    ForeignMapping?.SchemaName ?? "",
-                    ForeignMapping?.TableName ?? ""
-                );
+                return ActualParent.IDProperties.ForEach(x =>
+                {
+                    return new ComplexColumnInfo<ClassType, ClassType>(
+                        x.GetColumnInfo()[0],
+                        ColumnName + x.ParentMapping.TableName + x.ColumnName,
+                        y => y,
+                        true,
+                        TempMapping?.SchemaName ?? "",
+                        TempMapping?.TableName ?? ""
+                    );
+                });
             }));
-            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
             {
-                return new ComplexListColumnInfo<ClassType, DataType>(
-                    x.GetColumnInfo()[0],
-                    x.ColumnName,
-                    CompiledExpression,
-                    false,
-                    x.ParentMapping.SchemaName,
-                    x.ParentMapping.TableName
-                );
+                return TempMapping?.IDProperties.ForEach(x =>
+                {
+                    return new ComplexListColumnInfo<ClassType, DataType>(
+                        x.GetColumnInfo()[0],
+                        x.ColumnName,
+                        CompiledExpression,
+                        false,
+                        x.ParentMapping.SchemaName,
+                        x.ParentMapping.TableName
+                    );
+                });
             }));
             Columns = TempColumns.ToArray();
         }
@@ -120,38 +126,42 @@ namespace Inflatable.ClassMapper.Default
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
-                                     .FirstOrDefault(x => x.IDProperties.Count > 0);
+                                     .Where(x => x.IDProperties.Count > 0)
+                                     .ToList();
             if (ForeignMapping == null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
             }
 
-            var ForeignTable = dataModel.SourceSpec.Tables.Find(x => x.Name == ForeignMapping.TableName);
-            var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
-            var ParentIDs = ParentMappings.SelectMany(x => x.IDProperties);
-            var SetNullOnDelete = !ParentMappings.Contains(ForeignMapping);
-            foreach (var IDMapping in ParentIDs)
+            foreach (var TempMapping in ForeignMapping)
             {
-                if (ForeignTable.Columns.Any(x => x.Name == ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName))
+                var ForeignTable = dataModel.SourceSpec.Tables.Find(x => x.Name == TempMapping.TableName);
+                var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
+                var ParentIDs = ParentMappings.SelectMany(x => x.IDProperties);
+                var SetNullOnDelete = !ParentMappings.Contains(TempMapping);
+                foreach (var IDMapping in ParentIDs)
                 {
-                    continue;
-                }
+                    if (ForeignTable.Columns.Any(x => x.Name == ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName))
+                    {
+                        continue;
+                    }
 
-                ForeignTable.AddColumn<object>(ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName,
-                                IDMapping.PropertyType.To(DbType.Int32),
-                                IDMapping.MaxLength,
-                                true,
-                                false,
-                                false,
-                                false,
-                                false,
-                                IDMapping.ParentMapping.TableName,
-                                IDMapping.ColumnName,
-                                null!,
-                                "",
-                                false,
-                                false,
-                                !OnDeleteDoNothingValue && SetNullOnDelete);
+                    ForeignTable.AddColumn<object>(ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName,
+                                    IDMapping.PropertyType.To(DbType.Int32),
+                                    IDMapping.MaxLength,
+                                    true,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    IDMapping.ParentMapping.TableName,
+                                    IDMapping.ColumnName,
+                                    null!,
+                                    "",
+                                    false,
+                                    false,
+                                    !OnDeleteDoNothingValue && SetNullOnDelete);
+                }
             }
         }
     }

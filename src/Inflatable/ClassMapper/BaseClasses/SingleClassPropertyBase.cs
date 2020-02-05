@@ -22,6 +22,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -65,6 +66,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping;
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
+            ForeignMapping = new List<IMapping>();
         }
 
         /// <summary>
@@ -101,7 +103,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        public IMapping? ForeignMapping { get; protected set; }
+        public List<IMapping> ForeignMapping { get; protected set; }
 
         /// <summary>
         /// Gets the name of the internal field.
@@ -207,24 +209,24 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="table">The table.</param>
         public void AddToTable(ITable table)
         {
-            ForeignMapping?.IDProperties.ForEach(x =>
-            {
-                table.AddColumn<object>(ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
-                                x.PropertyType.To(DbType.Int32),
-                                x.MaxLength,
-                                true,
-                                false,
-                                false,
-                                false,
-                                Unique,
-                                ForeignMapping.TableName,
-                                x.ColumnName,
-                                null!,
-                                "",
-                                false,
-                                false,
-                                SetNullOnDelete);
-            });
+            ForeignMapping.ForEach(TempMapping => TempMapping.IDProperties.ForEach(x =>
+             {
+                 table.AddColumn<object>(TempMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
+                                 x.PropertyType.To(DbType.Int32),
+                                 x.MaxLength,
+                                 true,
+                                 false,
+                                 false,
+                                 false,
+                                 Unique,
+                                 TempMapping.TableName,
+                                 x.ColumnName,
+                                 null!,
+                                 "",
+                                 false,
+                                 false,
+                                 SetNullOnDelete);
+             }));
         }
 
         /// <summary>

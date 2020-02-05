@@ -22,6 +22,7 @@ using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -60,6 +61,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
             ColumnName = "";
+            ForeignMapping = new List<IMapping>();
         }
 
         /// <summary>
@@ -96,7 +98,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        public IMapping? ForeignMapping { get; protected set; }
+        public List<IMapping> ForeignMapping { get; protected set; }
 
         /// <summary>
         /// Gets the name of the internal field.

@@ -21,7 +21,7 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>3.0.$(BuildNumber)</Version>
+    <Version>3.0.1</Version>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -40,6 +40,10 @@
     <PackageReference Include="Mirage" Version="3.0.0" />
     <PackageReference Include="Aspectus" Version="4.0.1" />
     <PackageReference Include="BigBook" Version="3.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SQLHelper\src\SQLHelper.DB\SQLHelper.DB.csproj" />
   </ItemGroup>
 
 </Project>

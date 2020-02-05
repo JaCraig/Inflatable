@@ -84,16 +84,19 @@ namespace Inflatable.ClassMapper.Default
         public override void SetColumnInfo(MappingSource mappings)
         {
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
             {
-                return new ComplexColumnInfo<ClassType, DataType>(
-                    x.GetColumnInfo()[0],
-                    ColumnName + ForeignMapping.TableName + x.ColumnName,
-                    CompiledExpression,
-                    true,
-                    ParentMapping.SchemaName,
-                    ParentMapping.TableName
-                );
+                return TempMapping?.IDProperties.ForEach(x =>
+                {
+                    return new ComplexColumnInfo<ClassType, DataType>(
+                        x.GetColumnInfo()[0],
+                        ColumnName + TempMapping.TableName + x.ColumnName,
+                        CompiledExpression,
+                        true,
+                        ParentMapping.SchemaName,
+                        ParentMapping.TableName
+                    );
+                });
             }));
             var ActualParent = mappings.GetChildMappings<ClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
             TempColumns.AddRange(ActualParent.IDProperties.SelectMany(x => x.GetColumnInfo()));
@@ -110,7 +113,8 @@ namespace Inflatable.ClassMapper.Default
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
-                                     .FirstOrDefault(x => x.IDProperties.Count > 0);
+                                     .Where(x => x.IDProperties.Count > 0)
+                                     .ToList();
             if (ForeignMapping == null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
@@ -119,29 +123,32 @@ namespace Inflatable.ClassMapper.Default
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ActualParent = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             var ParentTable = dataModel.SourceSpec.Tables.Find(x => x.Name == ActualParent.TableName);
-            var SetNullOnDelete = !ParentMappings.Contains(ForeignMapping);
-            foreach (var IDMapping in ForeignMapping.IDProperties)
+            foreach (var TempMapping in ForeignMapping)
             {
-                if (ParentTable.Columns.Any(x => x.Name == ColumnName + ForeignMapping.TableName + IDMapping.ColumnName))
+                var SetNullOnDelete = !ParentMappings.Contains(TempMapping);
+                foreach (var IDMapping in TempMapping.IDProperties)
                 {
-                    continue;
-                }
+                    if (ParentTable.Columns.Any(x => x.Name == ColumnName + TempMapping.TableName + IDMapping.ColumnName))
+                    {
+                        continue;
+                    }
 
-                ParentTable.AddColumn<object>(ColumnName + ForeignMapping.TableName + IDMapping.ColumnName,
-                                IDMapping.PropertyType.To(DbType.Int32),
-                                IDMapping.MaxLength,
-                                true,
-                                false,
-                                false,
-                                false,
-                                false,
-                                ForeignMapping.TableName,
-                                IDMapping.ColumnName,
-                                null!,
-                                "",
-                                false,
-                                false,
-                                !OnDeleteDoNothingValue && SetNullOnDelete);
+                    ParentTable.AddColumn<object>(ColumnName + TempMapping.TableName + IDMapping.ColumnName,
+                                    IDMapping.PropertyType.To(DbType.Int32),
+                                    IDMapping.MaxLength,
+                                    true,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    TempMapping.TableName,
+                                    IDMapping.ColumnName,
+                                    null!,
+                                    "",
+                                    false,
+                                    false,
+                                    !OnDeleteDoNothingValue && SetNullOnDelete);
+                }
             }
         }
     }

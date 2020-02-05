@@ -82,17 +82,20 @@ namespace Inflatable.ClassMapper.Default
         public override void SetColumnInfo(MappingSource mappings)
         {
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ForeignMapping?.IDProperties.ForEach(x =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
             {
-                var IDColumnInfo = x.GetColumnInfo()[0];
-                return new ComplexColumnInfo<ClassType, DataType>(
-                    IDColumnInfo,
-                    ForeignMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + IDColumnInfo.ColumnName,
-                    CompiledExpression,
-                    true,
-                    ParentMapping.SchemaName,
-                    ParentMapping.TableName
-                );
+                return TempMapping.IDProperties.ForEach(x =>
+                {
+                    var IDColumnInfo = x.GetColumnInfo()[0];
+                    return new ComplexColumnInfo<ClassType, DataType>(
+                        IDColumnInfo,
+                        TempMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + IDColumnInfo.ColumnName,
+                        CompiledExpression,
+                        true,
+                        ParentMapping.SchemaName,
+                        ParentMapping.TableName
+                    );
+                });
             }));
             TempColumns.AddRange(mappings.GetChildMappings(ParentMapping.ObjectType)
                                          .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
@@ -110,14 +113,15 @@ namespace Inflatable.ClassMapper.Default
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
-                                     .FirstOrDefault(x => x.IDProperties.Count > 0);
+                                     .Where(x => x.IDProperties.Count > 0)
+                                     .ToList();
             if (ForeignMapping == null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
             }
 
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
-            SetNullOnDelete = !OnDeleteDoNothingValue && !ParentMappings.Contains(ForeignMapping);
+            SetNullOnDelete = !OnDeleteDoNothingValue && ForeignMapping.Any(x => !ParentMappings.Contains(x));
         }
     }
 }
