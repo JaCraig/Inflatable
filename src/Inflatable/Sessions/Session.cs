@@ -336,6 +336,8 @@ namespace Inflatable.Sessions
                 }
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
+                    if (x >= Queries.Length)
+                        continue;
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
                     var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this);
                     var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));

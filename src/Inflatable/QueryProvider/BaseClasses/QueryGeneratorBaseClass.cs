@@ -102,12 +102,13 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the name of the column.
         /// </summary>
         /// <param name="mapProperty">The map property.</param>
+        /// <param name="foreignMapping">The foreign mapping.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string? GetColumnName(IMapProperty mapProperty, string suffix = "")
+        protected string? GetColumnName(IMapProperty mapProperty, IMapping foreignMapping, string suffix = "")
         {
-            return mapProperty.ForeignMapping?.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping, suffix)
-                                                                        + ".[" + mapProperty.ForeignMapping.TableName
+            return foreignMapping?.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping, suffix)
+                                                                        + ".[" + foreignMapping.TableName
                                                                         + mapProperty.ParentMapping.Prefix
                                                                         + mapProperty.Name
                                                                         + mapProperty.ParentMapping.Suffix
@@ -117,23 +118,22 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <summary>
         /// Gets the name of the parent column.
         /// </summary>
-        /// <param name="mapProperty">The map property.</param>
+        /// <param name="foreignMapping">The foreign mapping.</param>
         /// <returns>The parent column name</returns>
-        protected string GetForeignColumnName(IMapProperty mapProperty) => GetColumnName(mapProperty.ForeignMapping?.IDProperties.First());
-
-        /// <summary>
-        /// Gets the name of the parent column.
-        /// </summary>
-        /// <param name="mapProperty">The map property.</param>
-        /// <returns>The parent column name</returns>
-        protected string GetForeignColumnName(IManyToManyProperty mapProperty) => GetColumnName(mapProperty.ForeignMapping?.IDProperties.First());
+        protected string GetForeignColumnName(IMapping foreignMapping)
+        {
+            return GetColumnName(foreignMapping?.IDProperties.First());
+        }
 
         /// <summary>
         /// Gets the name of the parent parameter.
         /// </summary>
-        /// <param name="mapProperty">The map property.</param>
+        /// <param name="foreignMapping">The foreign mapping.</param>
         /// <returns>The parent parameter name</returns>
-        protected string GetForeignParameterName(IMapProperty mapProperty) => GetParameterName(mapProperty.ForeignMapping?.IDProperties.First());
+        protected string GetForeignParameterName(IMapping foreignMapping)
+        {
+            return GetParameterName(foreignMapping?.IDProperties.First());
+        }
 
         /// <summary>
         /// Gets the name of the parameter.
@@ -146,10 +146,11 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the name of the parameter.
         /// </summary>
         /// <param name="mapProperty">The map property.</param>
+        /// <param name="foreignMapping">The foreign mapping.</param>
         /// <returns>The parameter name</returns>
-        protected string? GetParameterName(IMapProperty mapProperty)
+        protected string? GetParameterName(IMapProperty mapProperty, IMapping foreignMapping)
         {
-            return mapProperty.ForeignMapping?.IDProperties.ToString(x => "@" + mapProperty.ForeignMapping.TableName
+            return foreignMapping?.IDProperties.ToString(x => "@" + foreignMapping.TableName
                                                                         + mapProperty.ParentMapping.Prefix
                                                                         + mapProperty.Name
                                                                         + mapProperty.ParentMapping.Suffix

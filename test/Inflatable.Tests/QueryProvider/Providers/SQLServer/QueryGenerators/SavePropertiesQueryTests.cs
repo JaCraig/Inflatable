@@ -104,8 +104,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 
             var TestObject = new SavePropertiesQuery<ManyToManyProperties>(Mappings);
             var TempManyToMany = new ManyToManyProperties { ID = 10, BoolValue = true };
-            TempManyToMany.ManyToManyClass.Add(new TestDatabases.SimpleTest.AllReferencesAndID { ID = 1 });
-            TempManyToMany.ManyToManyClass.Add(new TestDatabases.SimpleTest.AllReferencesAndID { ID = 2 });
+            TempManyToMany.ManyToManyClass.Add(new AllReferencesAndID { ID = 1 });
+            TempManyToMany.ManyToManyClass.Add(new AllReferencesAndID { ID = 2 });
 
             var Result = TestObject.GenerateQueries(TempManyToMany, ManyToManyProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);

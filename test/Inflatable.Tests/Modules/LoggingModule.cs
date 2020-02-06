@@ -7,7 +7,7 @@ namespace Inflatable.Tests.Modules
     /// <summary>
     /// Logging module
     /// </summary>
-    /// <seealso cref="Canister.Interfaces.IModule"/>
+    /// <seealso cref="IModule"/>
     public class LoggingModule : IModule
     {
         /// <summary>

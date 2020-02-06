@@ -127,6 +127,7 @@ namespace Inflatable.ClassMapper.Default
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
+                                     .Distinct()
                                      .ToList();
             if (ForeignMapping == null)
             {

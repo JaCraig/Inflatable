@@ -235,7 +235,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Splitter = ", ";
             }
             var Prefix = "";
-            if (IDProperties.Any(x => x.ParentMapping == property.ForeignMapping))
+            if (IDProperties.Any(x => property.ForeignMapping.Any(TempMapping => x.ParentMapping == TempMapping)))
             {
                 Prefix = "Parent_";
             }

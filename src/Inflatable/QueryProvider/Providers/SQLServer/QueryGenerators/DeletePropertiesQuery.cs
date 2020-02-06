@@ -100,7 +100,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             var Prefix = "";
-            if (ParentWithID == property.ForeignMapping)
+            if (property.ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
             {
                 Prefix = "Parent_";
             }
@@ -129,7 +129,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
             var Prefix = "";
-            if (ParentWithID == property.ForeignMapping)
+            if (property.ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
             {
                 Prefix = "Parent_";
             }

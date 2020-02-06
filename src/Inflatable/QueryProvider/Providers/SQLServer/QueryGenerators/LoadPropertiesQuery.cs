@@ -195,11 +195,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
             var Separator = "";
-            if (property.ForeignMapping != null)
+            foreach (var ForeignMapping in property.ForeignMapping)
             {
-                foreach (var IDProperty in property.ForeignMapping.IDProperties)
+                foreach (var IDProperty in ForeignMapping.IDProperties)
                 {
-                    TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, suffix), GetForeignColumnName(property));
+                    TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, ForeignMapping, suffix), GetForeignColumnName(ForeignMapping));
                     Separator = " AND ";
                 }
             }
@@ -219,13 +219,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
             var Separator = "";
-            if (property.ForeignMapping != null)
+            foreach (var ForeignMapping in property.ForeignMapping)
             {
-                foreach (var IDProperty in property.ForeignMapping.IDProperties)
+                foreach (var IDProperty in ForeignMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}",
                         Separator,
-                        "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + property.ForeignMapping.TableName + IDProperty.ColumnName + "]",
+                        "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "].[" + ForeignMapping.TableName + IDProperty.ColumnName + "]",
                         GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
@@ -246,13 +246,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
             var Separator = "";
-            if (manyToOne.ForeignMapping != null)
+            foreach (var ForeignMapping in manyToOne.ForeignMapping)
             {
-                foreach (var IDProperty in manyToOne.ForeignMapping.IDProperties)
+                foreach (var IDProperty in ForeignMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}",
                         Separator,
-                        GetTableName(manyToOne.ParentMapping, suffix) + ".[" + manyToOne.ColumnName + manyToOne.ForeignMapping.TableName + IDProperty.ColumnName + "]",
+                        GetTableName(manyToOne.ParentMapping, suffix) + ".[" + manyToOne.ColumnName + ForeignMapping.TableName + IDProperty.ColumnName + "]",
                         GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
@@ -413,13 +413,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                                      .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                                      .Distinct()
                                                      .SelectMany(x => x.IDProperties);
-            foreach (var ParentIDMapping in ParentIDMappings)
+            foreach (var ForeignMapping in manyToOne.ForeignMapping)
             {
-                Result.AppendFormat("{0}{1}={2}",
-                    Separator,
-                    "[" + manyToOne.ForeignMapping?.SchemaName + "].[" + manyToOne.ForeignMapping?.TableName + "].[" + manyToOne.ColumnName + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
-                    GetParameterName(ParentIDMapping));
-                Separator = "\r\nAND ";
+                foreach (var ParentIDMapping in ParentIDMappings)
+                {
+                    Result.AppendFormat("{0}{1}={2}",
+                        Separator,
+                        "[" + ForeignMapping?.SchemaName + "].[" + ForeignMapping?.TableName + "].[" + manyToOne.ColumnName + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName + "]",
+                        GetParameterName(ParentIDMapping));
+                    Separator = "\r\nAND ";
+                }
             }
             return Result.ToString();
         }
@@ -438,7 +441,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                                      .Distinct()
                                                      .SelectMany(x => x.IDProperties);
             var Prefix = "";
-            if (ParentIDMappings.Any(x => x.ParentMapping == property.ForeignMapping))
+            if (ParentIDMappings.Any(x => property.ForeignMapping.Any(TempMapping => x.ParentMapping == TempMapping)))
             {
                 Prefix = "Parent_";
             }

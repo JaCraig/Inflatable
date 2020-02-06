@@ -34,7 +34,7 @@ namespace Inflatable.Tests.Modules
                              .AddInMemoryCollection(dict)
                              .Build();
             bootstrapper.Register<IConfiguration>(Configuration, ServiceLifetime.Singleton);
-            bootstrapper.Register<IConfigurationRoot>(Configuration, ServiceLifetime.Singleton);
+            bootstrapper.Register(Configuration, ServiceLifetime.Singleton);
         }
     }
 }
