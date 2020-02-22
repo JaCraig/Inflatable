@@ -50,7 +50,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().ToArray();
             Assert.Equal(6, Results.Length);
@@ -245,15 +245,15 @@ namespace Inflatable.Tests.Sessions
         {
             new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
-                .AddQuery(@"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
+INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (1,4)
+INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (1,4)
 INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (2,5)
-INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (3,6)", CommandType.Text)
+INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (3,6)")
                 .ExecuteScalar<int>();
         }
     }

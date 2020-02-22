@@ -169,7 +169,7 @@ namespace Inflatable.Sessions
             var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
-            Batch.AddQuery(command, type, Parameters.ToArray());
+            Batch.AddQuery(type, command, Parameters.ToArray());
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
             {
@@ -250,7 +250,7 @@ namespace Inflatable.Sessions
             }
 
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
-            Batch.AddQuery(command, type, Parameters.ToArray());
+            Batch.AddQuery(type, command, Parameters.ToArray());
             try
             {
                 return (await Batch.ExecuteAsync().ConfigureAwait(false))[0];
@@ -285,7 +285,7 @@ namespace Inflatable.Sessions
             var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source);
 
-            Batch.AddQuery(command, type, Parameters.ToArray());
+            Batch.AddQuery(type, command, Parameters.ToArray());
             try
             {
                 return Batch.ExecuteScalarAsync<TObject>();
@@ -321,7 +321,7 @@ namespace Inflatable.Sessions
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
                     var TempQuery = Queries[x];
-                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                    Batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
                 }
                 List<List<dynamic>>? ResultLists = null;
 
@@ -378,7 +378,7 @@ namespace Inflatable.Sessions
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
                     var TempQuery = Queries[x];
-                    Batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                    Batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
                 }
 
                 List<List<dynamic>>? ResultLists = null;
@@ -520,7 +520,7 @@ namespace Inflatable.Sessions
             for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
             {
                 var ResultingQuery = ResultingQueries[x];
-                Batch.AddQuery(ResultingQuery.QueryString, ResultingQuery.DatabaseCommandType, ResultingQuery.Parameters!);
+                Batch.AddQuery(ResultingQuery.DatabaseCommandType, ResultingQuery.QueryString, ResultingQuery.Parameters!);
             }
 
             List<List<dynamic>>? Result = null;

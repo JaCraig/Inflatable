@@ -26,20 +26,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\..\.editorconfig" Link=".editorconfig" />
     <None Include="Enums\SchemaGeneration.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FileCurator" Version="3.0.0" />
-    <PackageReference Include="Holmes" Version="3.0.0" />
+    <PackageReference Include="Holmes" Version="3.0.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Serilog" Version="2.9.0" />
-    <PackageReference Include="SQLHelper.DB" Version="3.0.1" />
-    <PackageReference Include="Data.Modeler" Version="3.0.0" />
+    <PackageReference Include="SQLHelper.DB" Version="3.1.1" />
+    <PackageReference Include="Data.Modeler" Version="3.0.3" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.0" />
     <PackageReference Include="Mirage" Version="3.0.0" />
-    <PackageReference Include="Aspectus" Version="4.0.1" />
-    <PackageReference Include="BigBook" Version="3.0.4" />
+    <PackageReference Include="Aspectus" Version="4.0.2" />
+    <PackageReference Include="BigBook" Version="3.0.7" />
   </ItemGroup>
 
 </Project>

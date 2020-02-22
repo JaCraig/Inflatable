@@ -34,10 +34,10 @@ namespace Inflatable.Tests.BaseClasses
             {
                 new SQLHelper(Configuration, SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
                     .CreateBatch()
-                    .AddQuery("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase", CommandType.Text)
-                    .AddQuery("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2", CommandType.Text)
-                    .AddQuery("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase", CommandType.Text)
-                    .AddQuery("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping", CommandType.Text)
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
                     .ExecuteScalar<int>();
             }
             catch { }
@@ -81,7 +81,7 @@ namespace Inflatable.Tests.BaseClasses
         {
             if (Canister.Builder.Bootstrapper == null)
             {
-                var Container = Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
+                _ = Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
                                                 .AddAssembly(typeof(TestingFixture).GetTypeInfo().Assembly)
                                                 .RegisterInflatable()
                                                 .RegisterFileCurator()

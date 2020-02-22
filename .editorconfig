@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CA1710: Identifiers should have correct suffix
+dotnet_diagnostic.CA1710.severity = none
+
+# CA1200: Avoid using cref tags with a prefix
+dotnet_diagnostic.CA1200.severity = none

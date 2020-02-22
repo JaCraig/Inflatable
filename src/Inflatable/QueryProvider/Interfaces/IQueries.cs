@@ -22,7 +22,7 @@ namespace Inflatable.QueryProvider.Interfaces
     /// <summary>
     /// Holds the default commands for an individual mapping
     /// </summary>
-    public interface IQueries : IDictionary<QueryType, IQuery>
+    public interface IQueries : IDictionary<QueryType, IQuery?>
     {
     }
 }

@@ -125,7 +125,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, DeclarationQueryLength = DeclarationQuery.Length; x < DeclarationQueryLength; ++x)
             {
                 var CurrentDeclarationQuery = DeclarationQuery[x];
-                declarationBatch.AddQuery(CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.Parameters!);
+                declarationBatch.AddHeader(CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.Parameters!);
             }
         }
 
@@ -268,8 +268,8 @@ namespace Inflatable.Sessions.Commands
                                                     }
                                                 },
                                                 @object,
-                                                ObjectQuery.QueryString,
                                                 ObjectQuery.DatabaseCommandType,
+                                                ObjectQuery.QueryString,
                                                 ObjectQuery.Parameters!);
             }
         }
@@ -362,14 +362,14 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
 
             TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, property);
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
         }
 
@@ -386,7 +386,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
             {
                 var TempQuery = Queries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
         }
     }

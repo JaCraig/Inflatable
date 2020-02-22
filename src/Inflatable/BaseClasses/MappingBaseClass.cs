@@ -32,16 +32,17 @@ namespace Inflatable.BaseClasses
     /// <summary>
     /// Mapping base class
     /// </summary>
-    /// <typeparam name="ClassType">The type of the lass type.</typeparam>
-    /// <typeparam name="DatabaseType">The type of the atabase type.</typeparam>
+    /// <typeparam name="TClassType">The type of the lass type.</typeparam>
+    /// <typeparam name="TDatabaseType">The type of the atabase type.</typeparam>
     /// <seealso cref="IMapping"/>
-    /// <seealso cref="IMapping{ClassType}"/>
-    public abstract class MappingBaseClass<ClassType, DatabaseType> : IMapping, IMapping<ClassType>
-        where ClassType : class
-        where DatabaseType : IDatabase
+    /// <seealso cref="IMapping{TClassType}"/>
+    public abstract class MappingBaseClass<TClassType, TDatabaseType> : IMapping, IMapping<TClassType>
+        where TClassType : class
+        where TDatabaseType : IDatabase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MappingBaseClass{ClassType, DatabaseType}"/> class.
+        /// Initializes a new instance of the
+        /// <see cref="MappingBaseClass{TClassType, TDatabaseType}"/> class.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="schemaName">Name of the schema.</param>
@@ -77,7 +78,7 @@ namespace Inflatable.BaseClasses
         /// Gets the type of the database configuration.
         /// </summary>
         /// <value>The type of the database configuration.</value>
-        public Type DatabaseConfigType => typeof(DatabaseType);
+        public Type DatabaseConfigType => typeof(TDatabaseType);
 
         /// <summary>
         /// ID properties
@@ -114,7 +115,7 @@ namespace Inflatable.BaseClasses
         /// The object type associated with the mapping
         /// </summary>
         /// <value>The type of the object.</value>
-        public Type ObjectType => typeof(ClassType);
+        public Type ObjectType => typeof(TClassType);
 
         /// <summary>
         /// Order that the mappings are initialized
@@ -164,7 +165,7 @@ namespace Inflatable.BaseClasses
         /// <param name="Item1">Item 1</param>
         /// <param name="Item2">Item 2</param>
         /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(MappingBaseClass<ClassType, DatabaseType> Item1, MappingBaseClass<ClassType, DatabaseType> Item2)
+        public static bool operator !=(MappingBaseClass<TClassType, TDatabaseType>? Item1, MappingBaseClass<TClassType, TDatabaseType>? Item2)
         {
             return !(Item1 == Item2);
         }
@@ -175,9 +176,9 @@ namespace Inflatable.BaseClasses
         /// <param name="Item1">Item 1</param>
         /// <param name="Item2">Item 2</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator ==(MappingBaseClass<ClassType, DatabaseType> Item1, MappingBaseClass<ClassType, DatabaseType> Item2)
+        public static bool operator ==(MappingBaseClass<TClassType, TDatabaseType>? Item1, MappingBaseClass<TClassType, TDatabaseType>? Item2)
         {
-            return Item1.Equals(Item2);
+            return Item1?.Equals(Item2) ?? Item2 is null;
         }
 
         /// <summary>
@@ -205,6 +206,8 @@ namespace Inflatable.BaseClasses
         /// <param name="mapping">The mapping.</param>
         public void Copy(IMapping mapping)
         {
+            if (mapping is null)
+                return;
             foreach (var prop in mapping.IDProperties.Where(x => !IDProperties.Any(y => y.Name == x.Name)))
             {
                 CopyProperty(prop);
@@ -231,40 +234,60 @@ namespace Inflatable.BaseClasses
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IIDProperty prop) => IDProperties.Add(prop.Convert<ClassType>(this));
+        public void CopyProperty(IIDProperty prop)
+        {
+            if (prop is null) return;
+            IDProperties.Add(prop.Convert<TClassType>(this));
+        }
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IProperty prop) => ReferenceProperties.Add(prop.Convert<ClassType>(this));
+        public void CopyProperty(IProperty prop)
+        {
+            if (prop is null) return;
+            ReferenceProperties.Add(prop.Convert<TClassType>(this));
+        }
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IMapProperty prop) => MapProperties.Add(prop.Convert<ClassType>(this));
+        public void CopyProperty(IMapProperty prop)
+        {
+            if (prop is null) return;
+            MapProperties.Add(prop.Convert<TClassType>(this));
+        }
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IManyToOneProperty prop) => ManyToOneProperties.Add(prop.Convert<ClassType>(this));
+        public void CopyProperty(IManyToOneProperty prop)
+        {
+            if (prop is null) return;
+            ManyToOneProperties.Add(prop.Convert<TClassType>(this));
+        }
 
         /// <summary>
         /// Copies the property.
         /// </summary>
         /// <param name="prop">The property.</param>
-        public void CopyProperty(IManyToManyProperty prop) => ManyToManyProperties.Add(prop.Convert<ClassType>(this));
+        public void CopyProperty(IManyToManyProperty prop)
+        {
+            if (prop is null) return;
+            ManyToManyProperties.Add(prop.Convert<TClassType>(this));
+        }
 
         /// <summary>
         /// determines if the mappings are equal
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (!(obj is MappingBaseClass<ClassType, DatabaseType> Object2))
+            if (!(obj is MappingBaseClass<TClassType, TDatabaseType> Object2))
             {
                 return false;
             }
@@ -299,23 +322,23 @@ namespace Inflatable.BaseClasses
         /// Gets the mapping's hash code
         /// </summary>
         /// <returns>Hash code for the mapping</returns>
-        public override int GetHashCode() => (TableName.GetHashCode() * DatabaseConfigType.GetHashCode()) % int.MaxValue;
+        public override int GetHashCode() => (TableName.GetHashCode(StringComparison.InvariantCulture) * DatabaseConfigType.GetHashCode()) % int.MaxValue;
 
         /// <summary>
         /// Declares a property as an ID
         /// </summary>
-        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="TDataType">Data type</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the ID object</returns>
         /// <exception cref="ArgumentNullException">expression</exception>
-        public ID<ClassType, DataType> ID<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
+        public ID<TClassType, TDataType> ID<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var ReturnValue = new ID<ClassType, DataType>(expression, this);
+            var ReturnValue = new ID<TClassType, TDataType>(expression, this);
             IDProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -323,18 +346,18 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Sets a property as a many to many type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToMany<ClassType, DataType> ManyToMany<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
-            where DataType : class
+        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
+            where TDataType : class
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var ReturnValue = new ManyToMany<ClassType, DataType>(expression, this);
+            var ReturnValue = new ManyToMany<TClassType, TDataType>(expression, this);
             ManyToManyProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -342,18 +365,18 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Sets a property as a many to one type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToOneMany<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, IList<DataType>>> expression)
-            where DataType : class
+        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
+            where TDataType : class
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var ReturnValue = new ManyToOneMany<ClassType, DataType>(expression, this);
+            var ReturnValue = new ManyToOneMany<TClassType, TDataType>(expression, this);
             ManyToOneProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -361,18 +384,18 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Sets a property as a many to one type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToOneSingle<ClassType, DataType> ManyToOne<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
-            where DataType : class
+        public ManyToOneSingle<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
+            where TDataType : class
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var ReturnValue = new ManyToOneSingle<ClassType, DataType>(expression, this);
+            var ReturnValue = new ManyToOneSingle<TClassType, TDataType>(expression, this);
             ManyToOneProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -380,19 +403,19 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Sets a property as a map type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The map object</returns>
         /// <exception cref="ArgumentNullException">expression</exception>
-        public Map<ClassType, DataType> Map<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
-            where DataType : class
+        public Map<TClassType, TDataType> Map<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
+            where TDataType : class
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var ReturnValue = new Map<ClassType, DataType>(expression, this);
+            var ReturnValue = new Map<TClassType, TDataType>(expression, this);
             MapProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -411,7 +434,7 @@ namespace Inflatable.BaseClasses
                     var IDProperty2 = IDProperties.ElementAt(y);
                     if (IDProperty1 == IDProperty2)
                     {
-                        logger.Debug("Found duplicate ID and removing {Name:l} from mapping {Mapping:l}", IDProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate ID and removing {Name:l} from mapping {Mapping:l}", IDProperty2.Name, ObjectType.Name);
                         IDProperties.Remove(IDProperty2);
                         --y;
                     }
@@ -425,7 +448,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -439,7 +462,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = MapProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -453,7 +476,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -468,7 +491,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -483,6 +506,8 @@ namespace Inflatable.BaseClasses
         /// <param name="logger">The logger.</param>
         public void Reduce(IMapping parentMapping, ILogger logger)
         {
+            if (parentMapping is null)
+                return;
             for (var x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.ReferenceProperties.ElementAt(x);
@@ -491,7 +516,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -505,7 +530,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = MapProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -519,7 +544,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -534,7 +559,7 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -545,18 +570,18 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// Sets a property as a reference type
         /// </summary>
-        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="TDataType">Data type</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the reference object</returns>
         /// <exception cref="ArgumentNullException">expression</exception>
-        public Reference<ClassType, DataType> Reference<DataType>(System.Linq.Expressions.Expression<Func<ClassType, DataType>> expression)
+        public Reference<TClassType, TDataType> Reference<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
         {
             if (expression == null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            var ReturnValue = new Reference<ClassType, DataType>(expression, this);
+            var ReturnValue = new Reference<TClassType, TDataType>(expression, this);
             ReferenceProperties.Add(ReturnValue);
             return ReturnValue;
         }

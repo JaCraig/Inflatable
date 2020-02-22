@@ -52,7 +52,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = DbContext<ManyToOneManyCascadeProperties>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
@@ -103,6 +103,28 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Empty(Results);
+        }
+
+        [Fact]
+        public async Task InsertHundredsOfObjectsWithCascade()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            SetupData();
+            for (int x = 0; x < 2000; ++x)
+            {
+                var Result1 = new ManyToOneManyCascadeProperties
+                {
+                    BoolValue = false
+                };
+                Result1.ManyToOneClass.Add(new ManyToOneOneProperties
+                {
+                    BoolValue = true
+                });
+                TestObject.Save(Result1);
+            }
+            await TestObject.ExecuteAsync().ConfigureAwait(false);
+            var Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default").ConfigureAwait(false);
+            Assert.Equal(2003, Results.Count());
         }
 
         [Fact]
@@ -248,7 +270,7 @@ namespace Inflatable.Tests.Sessions
         {
             new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
-                .AddQuery(@"INSERT INTO [dbo].[ManyToOneManyProperties_]([BoolValue_]) VALUES (1);
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToOneManyProperties_]([BoolValue_]) VALUES (1);
 INSERT INTO [dbo].[ManyToOneManyCascadeProperties_]([BoolValue_]) VALUES (1);
 INSERT INTO [dbo].[ManyToOneManyProperties_]([BoolValue_]) VALUES (1);
 INSERT INTO [dbo].[ManyToOneManyCascadeProperties_]([BoolValue_]) VALUES (1);
@@ -256,7 +278,7 @@ INSERT INTO [dbo].[ManyToOneManyProperties_]([BoolValue_]) VALUES (1);
 INSERT INTO [dbo].[ManyToOneManyCascadeProperties_]([BoolValue_]) VALUES (1);
 INSERT INTO [dbo].[ManyToOneOneProperties_]([BoolValue_],[ManyToOneManyCascadeProperties_ID_],[ManyToOneManyProperties_ID_]) VALUES (1,1,1);
 INSERT INTO [dbo].[ManyToOneOneProperties_]([BoolValue_],[ManyToOneManyCascadeProperties_ID_],[ManyToOneManyProperties_ID_]) VALUES (1,2,2);
-INSERT INTO [dbo].[ManyToOneOneProperties_]([BoolValue_],[ManyToOneManyCascadeProperties_ID_],[ManyToOneManyProperties_ID_]) VALUES (1,3,3);", CommandType.Text)
+INSERT INTO [dbo].[ManyToOneOneProperties_]([BoolValue_],[ManyToOneManyCascadeProperties_ID_],[ManyToOneManyProperties_ID_]) VALUES (1,3,3);")
                 .ExecuteScalar<int>();
         }
     }

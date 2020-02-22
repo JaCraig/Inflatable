@@ -128,7 +128,7 @@ namespace Inflatable.Schema
                 Logger.Information("Suggested Fix: {Fix:l}", Result.Fix);
                 if (Source.ApplyAnalysis && string.IsNullOrEmpty(Result.Fix))
                 {
-                    Batch.AddQuery(Result.Fix, CommandType.Text);
+                    Batch.AddQuery(CommandType.Text, Result.Fix);
                 }
             }
             if (Source.ApplyAnalysis)

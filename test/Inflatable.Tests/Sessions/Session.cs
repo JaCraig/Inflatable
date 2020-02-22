@@ -125,6 +125,28 @@ namespace Inflatable.Tests.Sessions
         }
 
         [Fact]
+        public async Task InsertHundredsOfObjects()
+        {
+            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            SetupData();
+            for (int x = 0; x < 1000; ++x)
+            {
+                var Result1 = new AllReferencesAndID
+                {
+                    BoolValue = false,
+                    ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                    ByteValue = 34,
+                    CharValue = 'a',
+                    DateTimeValue = new DateTime(2000, 1, 1)
+                };
+                TestObject.Save(Result1);
+            }
+            await TestObject.ExecuteAsync().ConfigureAwait(false);
+            var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID], BoolValue_ as [BoolValue], ByteValue_ as [ByteValue], CharValue_ as [CharValue], DateTimeValue_ as [DateTimeValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
+            Assert.Equal(1003, Results.Count());
+        }
+
+        [Fact]
         public async Task InsertMultipleObjects()
         {
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
@@ -245,7 +267,8 @@ namespace Inflatable.Tests.Sessions
         {
             new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
+                .AddQuery(CommandType.Text,
+                @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
@@ -284,8 +307,9 @@ namespace Inflatable.Tests.Sessions
            ,'January 1, 1900 00:00:00.100'
            ,12
            ,5342
-           ,1234)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
+           ,1234)")
+                .AddQuery(CommandType.Text,
+                @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
@@ -324,8 +348,9 @@ namespace Inflatable.Tests.Sessions
            ,'January 1, 1900 00:00:00.100'
            ,12
            ,5342
-           ,1234)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
+           ,1234)")
+                .AddQuery(CommandType.Text,
+                @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
@@ -364,7 +389,7 @@ namespace Inflatable.Tests.Sessions
            ,'January 1, 1900 00:00:00.100'
            ,12
            ,5342
-           ,1234)", CommandType.Text)
+           ,1234)")
                 .ExecuteScalar<int>();
         }
     }

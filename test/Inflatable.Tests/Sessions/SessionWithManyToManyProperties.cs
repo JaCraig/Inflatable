@@ -54,7 +54,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
@@ -274,21 +274,21 @@ namespace Inflatable.Tests.Sessions
         {
             new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
-                .AddQuery(@"INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)
+INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)", CommandType.Text)
-                .AddQuery("INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)", CommandType.Text)
-                .AddQuery("INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)", CommandType.Text)
-                .AddQuery("INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
+INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)")
+                .AddQuery(CommandType.Text, "INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)")
+                .AddQuery(CommandType.Text, "INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)")
+                .AddQuery(CommandType.Text, "INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
 INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (2,2)
-INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
+INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
 INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (2,2)
-INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)", CommandType.Text)
+INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)")
                 .ExecuteScalar<int>();
         }
     }

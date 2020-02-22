@@ -56,7 +56,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
@@ -187,7 +187,7 @@ namespace Inflatable.Tests.Sessions
         {
             new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
-                .AddQuery(@"INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
 INSERT INTO [dbo].[MapPropertyBaseClass_]([BaseValue1_],[IMapPropertyInterface_ID_]) VALUES (1,1);
 INSERT INTO [dbo].[MapProperty1_]([ChildValue1_],[MapPropertyBaseClass_ID_]) VALUES (2,1);
 
@@ -201,7 +201,7 @@ INSERT INTO [dbo].[MapProperty1_]([ChildValue1_],[MapPropertyBaseClass_ID_]) VAL
 
 INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,1)
 INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (0,2)
-INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,3)", CommandType.Text)
+INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,3)")
                 .ExecuteScalar<int>();
         }
     }

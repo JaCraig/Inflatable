@@ -54,7 +54,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void AllNoParametersWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
+            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, AOPManager, Logger);
             SetupData();
             var Results = DbContext<MapProperties>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
@@ -271,7 +271,7 @@ namespace Inflatable.Tests.Sessions
         {
             new SQLHelper(Configuration, SqlClientFactory.Instance)
                 .CreateBatch()
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
@@ -310,8 +310,8 @@ namespace Inflatable.Tests.Sessions
            ,'January 1, 1900 00:00:00.100'
            ,12
            ,5342
-           ,1234)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
+           ,1234)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
@@ -350,8 +350,8 @@ namespace Inflatable.Tests.Sessions
            ,'January 1, 1900 00:00:00.100'
            ,12
            ,5342
-           ,1234)", CommandType.Text)
-                .AddQuery(@"INSERT INTO [dbo].[AllReferencesAndID_]
+           ,1234)")
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
@@ -390,44 +390,44 @@ namespace Inflatable.Tests.Sessions
            ,'January 1, 1900 00:00:00.100'
            ,12
            ,5342
-           ,1234)", CommandType.Text)
-           .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
+           ,1234)")
+           .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (1
-           ,1)", CommandType.Text)
-           .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
+           ,1)")
+           .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (0
-           ,2)", CommandType.Text)
-           .AddQuery(@"INSERT INTO [dbo].[MapProperties_]
+           ,2)")
+           .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[MapProperties_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (1
-           ,3)", CommandType.Text)
+           ,3)")
 
-           .AddQuery(@"INSERT INTO [dbo].[MapPropertiesWithCascade_]
+           .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[MapPropertiesWithCascade_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (1
-           ,1)", CommandType.Text)
-           .AddQuery(@"INSERT INTO [dbo].[MapPropertiesWithCascade_]
+           ,1)")
+           .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[MapPropertiesWithCascade_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (0
-           ,2)", CommandType.Text)
-           .AddQuery(@"INSERT INTO [dbo].[MapPropertiesWithCascade_]
+           ,2)")
+           .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[MapPropertiesWithCascade_]
            ([BoolValue_],
            [AllReferencesAndID_MappedClass_ID_])
      VALUES
            (1
-           ,3)", CommandType.Text)
+           ,3)")
                 .ExecuteScalar<int>();
         }
     }

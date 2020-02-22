@@ -218,7 +218,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
             {
                 var TempQuery = Queries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
 
             RemoveItemsFromCache(@object);
@@ -260,7 +260,7 @@ namespace Inflatable.Sessions.Commands
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; ++x)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.QueryString, TempQuery.DatabaseCommandType, TempQuery.Parameters!);
+                batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
         }
     }

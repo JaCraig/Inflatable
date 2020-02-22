@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Inflatable.QueryProvider
         /// </summary>
         public Queries()
         {
-            InternalDictionary = new ConcurrentDictionary<QueryType, IQuery>();
+            InternalDictionary = new ConcurrentDictionary<QueryType, IQuery?>();
         }
 
         /// <summary>
@@ -60,13 +61,13 @@ namespace Inflatable.QueryProvider
         /// Gets the values.
         /// </summary>
         /// <value>The values.</value>
-        public ICollection<IQuery> Values => InternalDictionary.Values;
+        public ICollection<IQuery?> Values => InternalDictionary?.Values ?? Array.Empty<IQuery?>();
 
         /// <summary>
         /// Gets or sets the internal dictionary.
         /// </summary>
         /// <value>The internal dictionary.</value>
-        private ConcurrentDictionary<QueryType, IQuery> InternalDictionary { get; }
+        private ConcurrentDictionary<QueryType, IQuery?> InternalDictionary { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="IQuery"/> with the specified key.
@@ -74,7 +75,7 @@ namespace Inflatable.QueryProvider
         /// <value>The <see cref="IQuery"/>.</value>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        public IQuery this[QueryType key]
+        public IQuery? this[QueryType key]
         {
             get => InternalDictionary.GetValue(key);
 
@@ -85,14 +86,14 @@ namespace Inflatable.QueryProvider
         /// Adds the specified item.
         /// </summary>
         /// <param name="item">The item.</param>
-        public void Add(KeyValuePair<QueryType, IQuery> item) => InternalDictionary.SetValue(item.Key, item.Value);
+        public void Add(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary.SetValue(item.Key, item.Value);
 
         /// <summary>
         /// Adds the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        public void Add(QueryType key, IQuery value) => InternalDictionary.SetValue(key, value);
+        public void Add(QueryType key, IQuery? value) => InternalDictionary.SetValue(key, value);
 
         /// <summary>
         /// Clears this instance.
@@ -104,7 +105,7 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.</returns>
-        public bool Contains(KeyValuePair<QueryType, IQuery> item) => InternalDictionary.Contains(item);
+        public bool Contains(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary?.Contains(item) ?? false;
 
         /// <summary>
         /// Determines whether the specified key contains key.
@@ -118,8 +119,10 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="array">The array.</param>
         /// <param name="arrayIndex">Index of the array.</param>
-        public void CopyTo(KeyValuePair<QueryType, IQuery>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<QueryType, IQuery?>[] array, int arrayIndex)
         {
+            if (array is null)
+                return;
             foreach (var item in InternalDictionary)
             {
                 if (array.Length <= arrayIndex)
@@ -135,7 +138,7 @@ namespace Inflatable.QueryProvider
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<QueryType, IQuery>> GetEnumerator() => InternalDictionary.GetEnumerator();
+        public IEnumerator<KeyValuePair<QueryType, IQuery?>>? GetEnumerator() => InternalDictionary?.GetEnumerator();
 
         /// <summary>
         /// Gets the enumerator.
@@ -148,7 +151,7 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>True if it is removed, false otherwise.</returns>
-        public bool Remove(KeyValuePair<QueryType, IQuery> item) => InternalDictionary.TryRemove(item.Key, out _);
+        public bool Remove(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary.TryRemove(item.Key, out _);
 
         /// <summary>
         /// Removes the specified key.
@@ -163,6 +166,6 @@ namespace Inflatable.QueryProvider
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
         /// <returns>True if it is found, false otherwise.</returns>
-        public bool TryGetValue(QueryType key, out IQuery value) => InternalDictionary.TryGetValue(key, out value);
+        public bool TryGetValue(QueryType key, out IQuery? value) => InternalDictionary.TryGetValue(key, out value);
     }
 }

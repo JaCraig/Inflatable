@@ -66,7 +66,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassInsert()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
+            _ = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
