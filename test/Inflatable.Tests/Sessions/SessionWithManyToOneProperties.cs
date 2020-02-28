@@ -42,7 +42,7 @@ namespace Inflatable.Tests.Sessions
             CacheManager.Cache().Clear();
         }
 
-        public Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
+        public static Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
         public BigBook.Caching.Manager CacheManager { get; set; }
         public MappingManager InternalMappingManager { get; set; }
 

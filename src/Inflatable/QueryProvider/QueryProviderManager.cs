@@ -47,7 +47,7 @@ namespace Inflatable.QueryProvider
             IsDebug = Logger.IsEnabled(LogEventLevel.Debug);
             providers = providers ?? throw new ArgumentNullException(nameof(providers));
             Providers = new ConcurrentDictionary<DbProviderFactory, Interfaces.IQueryProvider>();
-            foreach (var Provider in providers.Where(x => !(x.GetType().GetTypeInfo().Assembly.FullName.IndexOf("INFLATABLE", StringComparison.OrdinalIgnoreCase) >= 0)))
+            foreach (var Provider in providers.Where(x => x.GetType().GetTypeInfo().Assembly.FullName.IndexOf("INFLATABLE", StringComparison.OrdinalIgnoreCase) < 0))
             {
                 Providers.Add(Provider.Provider, Provider);
             }

@@ -506,7 +506,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 foreach (var ChildMapping in ChildMappings)
                 {
-                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                    //var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
                     Queries.Add(property.Name, new QueryGeneratorData(ChildMapping,
@@ -592,7 +592,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 foreach (var ChildMapping in ChildMappings)
                 {
-                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                    //var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
                     var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
                     Queries.Add(manyToOne.Name, new QueryGeneratorData(

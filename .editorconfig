@@ -5,3 +5,6 @@ dotnet_diagnostic.CA1710.severity = none
 
 # CA1200: Avoid using cref tags with a prefix
 dotnet_diagnostic.CA1200.severity = none
+
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = none
