@@ -38,7 +38,7 @@ namespace Inflatable.Aspect.StartMethod
         public void Setup(MethodInfo method, IMapping mapping, StringBuilder builder)
         {
             var Property = mapping.MapProperties.FirstOrDefault(x => x.Name == method.Name.Replace("set_", ""));
-            if (Property == null)
+            if (Property is null)
             {
                 return;
             }

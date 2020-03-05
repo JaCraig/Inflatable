@@ -161,7 +161,7 @@ namespace Inflatable.Sessions
                 return QueryResults.GetCached(KeyName).SelectMany(x => x.ConvertValues<TObject>());
             }
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
-            if (Source == null)
+            if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
             }
@@ -220,7 +220,7 @@ namespace Inflatable.Sessions
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator == null)
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
@@ -244,7 +244,7 @@ namespace Inflatable.Sessions
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
-            if (Source == null)
+            if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
             }
@@ -277,7 +277,7 @@ namespace Inflatable.Sessions
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
-            if (Source == null)
+            if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
             }
@@ -463,7 +463,7 @@ namespace Inflatable.Sessions
                 {
                     Parameters.Add(TempQueryParameter);
                 }
-                else if (CurrentParameter == null)
+                else if (CurrentParameter is null)
                 {
                     Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), null!));
                 }
@@ -538,7 +538,7 @@ namespace Inflatable.Sessions
                 var IDProperties = source.Key.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
                 var TempResult = new QueryResults(ResultingQueries[x], Result[x].Cast<Dynamo>(), this);
                 var CopyResult = results.Find(y => y.CanCopy(TempResult, IDProperties));
-                if (CopyResult == null && firstRun)
+                if (CopyResult is null && firstRun)
                 {
                     results.Add(TempResult);
                 }

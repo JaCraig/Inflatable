@@ -40,7 +40,7 @@ namespace Inflatable.Aspect.EndMethod
         public void Setup(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder)
         {
             var Property = mapping.ManyToOneProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
-            if (Property == null)
+            if (Property is null)
             {
                 return;
             }

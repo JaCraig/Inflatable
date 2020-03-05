@@ -129,7 +129,7 @@ namespace Inflatable.ClassMapper.Default
                                      .Where(x => x.IDProperties.Count > 0)
                                      .Distinct()
                                      .ToList();
-            if (ForeignMapping == null)
+            if (ForeignMapping is null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
             }

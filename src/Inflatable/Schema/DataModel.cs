@@ -46,7 +46,7 @@ namespace Inflatable.Schema
         /// <exception cref="ArgumentNullException">source or config or logger</exception>
         public DataModel(MappingSource source, IConfiguration config, ILogger logger)
         {
-            if (config == null)
+            if (config is null)
             {
                 throw new ArgumentNullException(nameof(config));
             }

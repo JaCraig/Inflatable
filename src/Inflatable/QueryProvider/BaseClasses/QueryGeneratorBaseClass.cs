@@ -218,7 +218,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <returns>The name of the table</returns>
         protected string GetTableName(IMapping? parentMapping, string suffix = "")
         {
-            if (parentMapping == null)
+            if (parentMapping is null)
                 return "";
             return string.IsNullOrEmpty(suffix)
                 ? "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]"

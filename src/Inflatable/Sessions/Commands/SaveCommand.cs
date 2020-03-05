@@ -187,7 +187,7 @@ namespace Inflatable.Sessions.Commands
                                                                       && (ORMObject?.PropertiesChanged0.Contains(x.Name) != false)))
             {
                 var ManyToOneValue = ManyToOneProperty.GetValue(@object);
-                if (ManyToOneValue == null)
+                if (ManyToOneValue is null)
                 {
                     continue;
                 }
@@ -284,7 +284,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="objectsSeen">The objects seen.</param>
         private void Save(object? @object, MappingSource source, SQLHelper batch, SQLHelper declarationBatch, IList<object> objectsSeen)
         {
-            if (@object == null
+            if (@object is null
                 || WasObjectSeen(@object, objectsSeen, source)
                 || !CanExecute(@object, source))
             {

@@ -124,7 +124,7 @@ namespace Inflatable.ClassMapper.Column
             var TempObject = objectValue as TClassType;
             object? ParamValue = objectValue is null || CompiledExpression is null ? null : CompiledExpression(TempObject!);
             var TempParameter = Child.GetAsParameter(ParamValue);
-            if (TempParameter == null)
+            if (TempParameter is null)
                 return TempParameter;
             TempParameter.ID = ColumnName ?? "";
             return TempParameter;

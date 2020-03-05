@@ -95,7 +95,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting declarations.</returns>
         public override IQuery[] GenerateDeclarations()
         {
-            if (QueryDeclarationText == null)
+            if (QueryDeclarationText is null)
                 return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
             for (var x = 0; x < QueryDeclarationText.Length; ++x)
@@ -119,7 +119,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         private string GenerateInsertQuery(Utils.TreeNode<Type>? node)
         {
-            if (node == null)
+            if (node is null)
                 return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();

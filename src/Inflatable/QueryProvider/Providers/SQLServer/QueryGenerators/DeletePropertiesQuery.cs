@@ -192,7 +192,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         public static int Count(this IEnumerable list)
         {
-            if (list == null)
+            if (list is null)
             {
                 return 0;
             }

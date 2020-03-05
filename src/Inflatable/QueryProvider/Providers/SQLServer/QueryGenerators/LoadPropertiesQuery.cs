@@ -116,7 +116,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The from clause</returns>
         private string GenerateFromClause(Utils.TreeNode<Type>? node, string suffix = "")
         {
-            if (node == null)
+            if (node is null)
                 return "";
             var Result = new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
@@ -307,7 +307,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateSelectQuery(Tree<Type>? foreignNode, IManyToManyProperty property)
         {
-            if (foreignNode == null)
+            if (foreignNode is null)
                 return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
@@ -340,7 +340,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateSelectQuery(Tree<Type>? foreignNode, IManyToOneListProperty manyToOne)
         {
-            if (foreignNode == null)
+            if (foreignNode is null)
                 return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();
@@ -373,7 +373,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateSelectQuery(Tree<Type>? foreignNode, Tree<Type>? node, IManyToOneProperty manyToOne)
         {
-            if (foreignNode == null || node == null)
+            if (foreignNode is null || node is null)
                 return "";
             var Builder = new StringBuilder();
             var ParameterList = new StringBuilder();

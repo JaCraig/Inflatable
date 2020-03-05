@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.Interfaces;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -38,8 +39,10 @@ namespace Inflatable.Aspect.EndMethod
         /// <param name="builder">The builder.</param>
         public void Setup(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder)
         {
-            var Property = mapping.ManyToManyProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
-            if (Property == null)
+            if (mapping is null)
+                return;
+            var Property = mapping.ManyToManyProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", "", StringComparison.OrdinalIgnoreCase));
+            if (Property is null)
             {
                 return;
             }

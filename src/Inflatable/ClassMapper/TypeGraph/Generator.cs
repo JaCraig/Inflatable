@@ -83,7 +83,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                     for (var x = 0; x < MaxLength; ++x)
                     {
                         var PotentialNode = PotentialNodes[x];
-                        if (PotentialNode == null)
+                        if (PotentialNode is null)
                         {
                             continue;
                         }
@@ -99,7 +99,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                     for (var x = 0; x < MaxLength; ++x)
                     {
                         var PotentialNode = PotentialNodes[x];
-                        if (PotentialNode == null)
+                        if (PotentialNode is null)
                             continue;
                         PotentialNode.Root.Parent = CurrentNode;
                         CurrentNode.Nodes.Add(PotentialNode.Root);

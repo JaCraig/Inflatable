@@ -43,7 +43,7 @@ namespace Inflatable.Modules
         /// <param name="bootstrapper">The bootstrapper.</param>
         public void Load(IBootstrapper bootstrapper)
         {
-            if (bootstrapper == null)
+            if (bootstrapper is null)
             {
                 return;
             }

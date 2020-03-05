@@ -117,7 +117,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         public IOperator Optimize(MappingSource mappingSource)
         {
             InternalOperator = InternalOperator.Optimize(mappingSource);
-            if (InternalOperator == null)
+            if (InternalOperator is null)
             {
                 return null!;
             }

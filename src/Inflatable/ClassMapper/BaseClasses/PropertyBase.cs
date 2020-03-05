@@ -46,12 +46,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="mapping">Mapping the StringID is added to</param>
         protected PropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
 
-            if (mapping == null)
+            if (mapping is null)
             {
                 throw new ArgumentNullException(nameof(mapping));
             }
@@ -271,7 +271,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>The column information.</returns>
         public IQueryColumnInfo[] GetColumnInfo()
         {
-            if (Columns == null)
+            if (Columns is null)
             {
                 SetColumnInfo(null);
             }

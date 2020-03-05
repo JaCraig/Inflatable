@@ -333,7 +333,7 @@ namespace Inflatable.BaseClasses
         /// <exception cref="ArgumentNullException">expression</exception>
         public ID<TClassType, TDataType> ID<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
@@ -352,7 +352,7 @@ namespace Inflatable.BaseClasses
         public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
             where TDataType : class
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
@@ -371,7 +371,7 @@ namespace Inflatable.BaseClasses
         public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
             where TDataType : class
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
@@ -390,7 +390,7 @@ namespace Inflatable.BaseClasses
         public ManyToOneSingle<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
             where TDataType : class
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
@@ -410,7 +410,7 @@ namespace Inflatable.BaseClasses
         public Map<TClassType, TDataType> Map<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
             where TDataType : class
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }
@@ -576,7 +576,7 @@ namespace Inflatable.BaseClasses
         /// <exception cref="ArgumentNullException">expression</exception>
         public Reference<TClassType, TDataType> Reference<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }

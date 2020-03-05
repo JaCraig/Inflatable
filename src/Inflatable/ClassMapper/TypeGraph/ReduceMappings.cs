@@ -56,7 +56,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <param name="typeGraph">The type graph.</param>
         public void Reduce(Tree<Type>? typeGraph)
         {
-            if (typeGraph == null)
+            if (typeGraph is null)
                 return;
             var Mapping = Mappings[typeGraph.Root.Data];
             Mapping.Reduce(Logger);

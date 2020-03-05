@@ -87,7 +87,7 @@ namespace Inflatable.QueryProvider
         /// <exception cref="ArgumentException">Provider not found</exception>
         public SQLHelper CreateBatch(IDatabase source)
         {
-            if (source == null)
+            if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
@@ -116,7 +116,7 @@ namespace Inflatable.QueryProvider
         public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInfo)
             where TMappedClass : class
         {
-            if (mappingInfo == null)
+            if (mappingInfo is null)
             {
                 throw new ArgumentNullException(nameof(mappingInfo));
             }

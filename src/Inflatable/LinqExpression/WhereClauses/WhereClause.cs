@@ -106,7 +106,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the parameters associated with the operator.
         /// </summary>
         /// <returns>A list of parameters associated with the operator.</returns>
-        public List<IParameter> GetParameters() => InternalOperator == null ? new List<IParameter>() : InternalOperator.GetParameters();
+        public List<IParameter> GetParameters() => InternalOperator is null ? new List<IParameter>() : InternalOperator.GetParameters();
 
         /// <summary>
         /// Does a logical negation of the operator.
@@ -124,7 +124,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <param name="mappingSource">The mapping source.</param>
         public IOperator Optimize(MappingSource mappingSource)
         {
-            if (InternalOperator == null)
+            if (InternalOperator is null)
             {
                 return this;
             }
@@ -152,6 +152,6 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public override string ToString() => InternalOperator == null ? "" : "WHERE " + InternalOperator;
+        public override string ToString() => InternalOperator is null ? "" : "WHERE " + InternalOperator;
     }
 }

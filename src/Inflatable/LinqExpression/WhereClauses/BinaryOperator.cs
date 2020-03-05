@@ -167,7 +167,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         {
             Left = Left.Optimize(mappingSource);
             Right = Right.Optimize(mappingSource);
-            if (Left == null || Right == null)
+            if (Left is null || Right is null)
             {
                 return (Left ?? Right)!;
             }

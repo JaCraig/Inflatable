@@ -133,7 +133,7 @@ namespace Inflatable.LinqExpression.WhereClauses
                 return "SELECT * FROM " + TempQuery.ElementType.Name;
             }
 
-            return Value == null ? "NULL" : "@" + Count;
+            return Value is null ? "NULL" : "@" + Count;
         }
     }
 }

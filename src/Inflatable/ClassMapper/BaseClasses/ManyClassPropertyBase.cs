@@ -46,7 +46,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="mapping">Mapping the StringID is added to</param>
         protected ManyClassPropertyBase(Expression<Func<ClassType, IList<DataType>>> expression, IMapping mapping)
         {
-            if (expression == null)
+            if (expression is null)
             {
                 throw new ArgumentNullException(nameof(expression));
             }

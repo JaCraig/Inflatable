@@ -168,7 +168,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 return Builder.ToString();
             }
 
-            if (ORMObject == null
+            if (ORMObject is null
                 && Mapping.ReferenceProperties.Count == 0)
             {
                 return Builder.ToString();

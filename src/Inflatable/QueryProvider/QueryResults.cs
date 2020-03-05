@@ -144,7 +144,7 @@ namespace Inflatable.QueryProvider
         /// <param name="idProperties">The identifier properties.</param>
         public void CopyOrAdd(QueryResults results, IEnumerable<IIDProperty> idProperties)
         {
-            if (results == null || results.Query.ReturnType != Query.ReturnType)
+            if (results is null || results.Query.ReturnType != Query.ReturnType)
             {
                 return;
             }
@@ -158,7 +158,7 @@ namespace Inflatable.QueryProvider
             {
                 var Value = results.Values[i];
                 var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x)?.Equals(y.GetColumnInfo()[0].GetValue(Value)) == true));
-                if (MyValue == null)
+                if (MyValue is null)
                 {
                     Values.Add(Value);
                 }
@@ -176,7 +176,7 @@ namespace Inflatable.QueryProvider
         /// <returns>The resulting value</returns>
         private object? ConvertValue(Dynamo value)
         {
-            if (value == null)
+            if (value is null)
             {
                 return null;
             }

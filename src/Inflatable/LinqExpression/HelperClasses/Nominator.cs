@@ -76,7 +76,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// </returns>
         public override Expression Visit(Expression node)
         {
-            if (node == null)
+            if (node is null)
                 return node!;
             var saveCannotBeEvaluated = CanNotBeEvaluated;
             CanNotBeEvaluated = false;

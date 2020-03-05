@@ -204,7 +204,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="objectsSeen">The objects seen.</param>
         private void Delete(object? @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen)
         {
-            if (@object == null
+            if (@object is null
                 || WasObjectSeen(@object, objectsSeen, source)
                 || !CanExecute(@object, source))
             {

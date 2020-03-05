@@ -106,7 +106,7 @@ namespace Inflatable.LinqExpression.WhereClauses
             var ParentMappings = mappingSource.GetChildMappings(typeof(TObject))
                                               .SelectMany(x => mappingSource.GetParentMapping(x.ObjectType));
             var ParentMapping = ParentMappings.FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
-            if (ParentMapping == null)
+            if (ParentMapping is null)
             {
                 return null!;
             }
@@ -115,7 +115,7 @@ namespace Inflatable.LinqExpression.WhereClauses
             var BinaryParent = Parent as BinaryOperator;
 
             if (InternalProperty.PropertyType == typeof(bool)
-                && (BinaryParent == null
+                && (BinaryParent is null
                     || BinaryParent.Operator == ExpressionType.And
                     || BinaryParent.Operator == ExpressionType.AndAlso
                     || BinaryParent.Operator == ExpressionType.Or
@@ -134,7 +134,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
         {
             var ParentMapping = mappingSource.GetParentMapping(mapping.ObjectType).FirstOrDefault(x => x.ContainsProperty(InternalProperty.Name));
-            if (ParentMapping == null)
+            if (ParentMapping is null)
             {
                 return;
             }
