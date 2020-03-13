@@ -107,8 +107,10 @@ namespace Inflatable.LinqExpression
         /// original expression.
         /// </returns>
         /// <exception cref="NotSupportedException"></exception>
-        protected override Expression VisitMethodCall(MethodCallExpression node)
+        protected override Expression? VisitMethodCall(MethodCallExpression node)
         {
+            if (node is null)
+                return node;
             if (node.Method.DeclaringType == typeof(Queryable))
             {
                 if (node.Method.Name == "Where")
@@ -163,7 +165,7 @@ namespace Inflatable.LinqExpression
                             {
                                 Builders[Source].OrderByValues.Add(new OrderByClause(Builders[Source].OrderByValues.Count,
                                     Column,
-                                    node.Method.Name.Contains("Descending") ? Direction.Descending : Direction.Ascending));
+                                    node.Method.Name.Contains("Descending", StringComparison.OrdinalIgnoreCase) ? Direction.Descending : Direction.Ascending));
                             }
                         }
                     }
@@ -196,6 +198,15 @@ namespace Inflatable.LinqExpression
                     foreach (var Source in Builders.Keys)
                     {
                         Builders[Source].Top = (int)((node.Arguments[1] as ConstantExpression)?.Value ?? 1);
+                    }
+                    return node;
+                }
+                if (node.Method.Name == "Skip")
+                {
+                    Visit(node.Arguments[0]);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        Builders[Source].Skip = (int)((node.Arguments[1] as ConstantExpression)?.Value ?? 1);
                     }
                     return node;
                 }

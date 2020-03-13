@@ -78,6 +78,12 @@ namespace Inflatable.LinqExpression
         public IList<PropertyInfo> SelectValues { get; }
 
         /// <summary>
+        /// Gets or sets the skip.
+        /// </summary>
+        /// <value>The skip.</value>
+        public int Skip { get; set; }
+
+        /// <summary>
         /// Gets the source.
         /// </summary>
         /// <value>The source.</value>
@@ -99,6 +105,11 @@ namespace Inflatable.LinqExpression
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public override string ToString() => $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
+        public override string ToString()
+        {
+            //if(Top>0&&Skip>0)
+            //    return
+            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
+        }
     }
 }
