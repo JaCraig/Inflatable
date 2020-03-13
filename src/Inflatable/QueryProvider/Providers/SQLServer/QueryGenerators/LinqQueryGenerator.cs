@@ -25,6 +25,7 @@ using Inflatable.QueryProvider.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -67,6 +68,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
+            if (data is null)
+                return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
             foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
@@ -74,31 +77,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, data), QueryType, data.Parameters.ToArray()));
             }
             return ReturnValue.ToArray();
-        }
-
-        /// <summary>
-        /// Generates the order by clause.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <returns></returns>
-        private static string GenerateOrderByClause(QueryData<TMappedClass> data)
-        {
-            var Builder = new StringBuilder();
-            var Splitter = "";
-            if (data.OrderByValues.Count == 0)
-            {
-                return "";
-            }
-
-            Builder.Append("ORDER BY ");
-            foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
-            {
-                Builder.Append(Splitter)
-                       .Append(Column.Property.Name)
-                       .Append(Column.Direction == Direction.Descending ? " DESC" : "");
-                Splitter = ",";
-            }
-            return Builder.ToString();
         }
 
         /// <summary>
@@ -118,20 +96,59 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
-                    IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
+                    IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
                 foreach (var IDProperty in ParentMapping.AutoIDProperties)
                 {
-                    IDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
+                    IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
                 Result.AppendLine();
-                Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
+                Result.AppendFormat(CultureInfo.InvariantCulture, "INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
 
             return Result.ToString();
+        }
+
+        /// <summary>
+        /// Generates the order by clause.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="data">The data.</param>
+        /// <returns>Order by clause</returns>
+        private string GenerateOrderByClause(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
+        {
+            var Builder = new StringBuilder();
+            var Splitter = "";
+            if (data.OrderByValues.Count == 0)
+            {
+                var Mapping = MappingInformation.Mappings[node.Data];
+                for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+                {
+                    var ParentNode = node.Nodes[x];
+                    var ParentResult = GenerateOrderByClause(ParentNode, data);
+                    if (!string.IsNullOrEmpty(ParentResult))
+                        return ParentResult;
+                }
+                foreach (var IDProperty in Mapping.IDProperties)
+                {
+                    Builder.Append(Splitter)
+                       .Append(GetColumnName(IDProperty));
+                    Splitter = ",";
+                }
+                return Builder.ToString();
+            }
+
+            foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
+            {
+                Builder.Append(Splitter)
+                       .Append(Column.Property.Name)
+                       .Append(Column.Direction == Direction.Descending ? " DESC" : "");
+                Splitter = ",";
+            }
+            return Builder.ToString();
         }
 
         /// <summary>
@@ -158,13 +175,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             foreach (var IDProperty in Mapping.IDProperties)
             {
-                Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
+                Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
                 Separator = ",";
             }
             foreach (var ReferenceProperty in Mapping.ReferenceProperties.Where(x => data.SelectValues.Count == 0
                                                                                   || data.SelectValues.Any(y => y.Name == x.Name)))
             {
-                Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
+                Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
                 Separator = ",";
             }
             return Result.ToString();
@@ -197,14 +214,32 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //Get Where Clause
             WhereClause.Append(GenerateWhereClause(data, Mapping));
 
-            OrderByClause.Append(GenerateOrderByClause(data));
+            //Get Order By clause
+            OrderByClause.Append(GenerateOrderByClause(node, data));
 
             //Generate final query
-            Builder.Append(($"SELECT{(data.Distinct ? " DISTINCT" : "")}{(data.Top > 0 ? $" TOP {data.Top}" : "")} {ParameterList}" +
-                $"\r\nFROM {FromClause}" +
-                $"\r\n{WhereClause}" +
-                $"\r\n{OrderByClause}").TrimEnd('\r', '\n', ' ', '\t')).Append(";");
-            return Builder.ToString();
+            Builder
+                .Append("SELECT")
+                .Append(data.Distinct ? " DISTINCT " : " ")
+                .Append(ParameterList)
+                .AppendLine()
+                .Append("FROM ")
+                .Append(FromClause)
+                .AppendLine();
+            if (WhereClause.Length > 0)
+            {
+                Builder.Append(WhereClause)
+                       .AppendLine();
+            }
+            Builder.Append("ORDER BY ")
+                .Append(OrderByClause)
+                .AppendLine();
+            if (data.Top > 0 || data.Skip > 0)
+            {
+                Builder.Append("OFFSET ").Append(data.Skip).AppendLine(" ROWS")
+                       .Append("FETCH NEXT ").Append(data.Top).Append(" ROWS ONLY");
+            }
+            return Builder.ToString().TrimEnd('\r', '\n', ' ', '\t') + ";";
         }
 
         /// <summary>

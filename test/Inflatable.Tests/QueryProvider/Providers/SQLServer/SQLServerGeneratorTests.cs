@@ -81,7 +81,8 @@ WHERE [dbo].[IInterface1_].[ID_]=@ID;
             Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass1_].[Value1_] AS [Value1]
 FROM [dbo].[ConcreteClass1_]
 INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass1())[0].QueryString);
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
+ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass1())[0].QueryString);
         }
 
         [Fact]
@@ -132,7 +133,8 @@ WHERE [dbo].[IInterface1_].[ID_]=@ID;
             Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass2_].[InterfaceValue_] AS [InterfaceValue]
 FROM [dbo].[ConcreteClass2_]
 INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass2())[0].QueryString);
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
+ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass2())[0].QueryString);
         }
 
         [Fact]
@@ -172,7 +174,8 @@ WHERE [dbo].[IInterface1_].[ID_]=@ID;
 
             Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[ConcreteClass3_].[MyUniqueProperty_] AS [MyUniqueProperty]
 FROM [dbo].[ConcreteClass3_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass3())[0].QueryString);
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
+ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass3())[0].QueryString);
         }
     }
 }

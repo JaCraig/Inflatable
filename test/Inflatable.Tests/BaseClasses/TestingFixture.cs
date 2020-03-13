@@ -18,20 +18,21 @@ namespace Inflatable.Tests.BaseClasses
     {
         protected TestingFixture()
         {
-            Canister.Builder.Bootstrapper?.Dispose();
-            _ = Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
-                                            .AddAssembly(typeof(TestingFixture).Assembly)
-                                            .RegisterInflatable()
-                                            .RegisterFileCurator()
-                                            .RegisterTestFountain()
-                                            .Build();
+            if (Canister.Builder.Bootstrapper == null)
+            {
+                _ = Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
+                                                .AddAssembly(typeof(TestingFixture).Assembly)
+                                                .RegisterInflatable()
+                                                .RegisterFileCurator()
+                                                .RegisterTestFountain()
+                                                .Build();
+            }
         }
 
+        public static IConfigurationRoot Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
+        public static ILogger Logger => Canister.Builder.Bootstrapper.Resolve<ILogger>();
         protected static string DatabaseName = "TestDatabase";
         protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
-        public static IConfigurationRoot Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
-
-        public static ILogger Logger => Canister.Builder.Bootstrapper.Resolve<ILogger>();
 
         public void Dispose()
         {
@@ -44,7 +45,6 @@ namespace Inflatable.Tests.BaseClasses
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
                     .ExecuteScalar<int>();
-                Canister.Builder.Bootstrapper?.Dispose();
             }
             catch { }
         }
