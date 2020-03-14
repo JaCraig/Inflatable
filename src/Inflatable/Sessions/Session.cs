@@ -231,6 +231,33 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
+        /// Executes the specified command and returns the count.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="queries">The queries to run.</param>
+        /// <returns>The resulting data</returns>
+        public async Task<int> ExecuteCountAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
+            where TObject : class
+        {
+            var Results = new List<QueryResults>();
+            var FirstRun = true;
+            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+                                              .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
+                FirstRun = false;
+            }
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
+                                              .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
+                FirstRun = false;
+            }
+            return (int)(Results?.FirstOrDefault(x => (int)(x.Values.FirstOrDefault()?["Count"] ?? 0) > 0).Values[0]["Count"] ?? 0);
+        }
+
+        /// <summary>
         /// Executes the specified command and returns items of a specific type.
         /// </summary>
         /// <param name="command">The command.</param>

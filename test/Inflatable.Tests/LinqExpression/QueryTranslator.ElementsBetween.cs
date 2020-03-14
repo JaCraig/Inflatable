@@ -2,7 +2,6 @@
 using Inflatable.LinqExpression;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -16,8 +15,6 @@ namespace Inflatable.Tests.LinqExpression
             int start = 2;
             int numberOfElements = 7;
 
-            start = Math.Abs(start);
-            numberOfElements = Math.Abs(numberOfElements);
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
             TestQuery = TestQuery.Skip(start).Take(numberOfElements);

@@ -210,6 +210,15 @@ namespace Inflatable.LinqExpression
                     }
                     return node;
                 }
+                if (node.Method.Name == "Count")
+                {
+                    Visit(node.Arguments[0]);
+                    foreach (var Source in Builders.Keys)
+                    {
+                        Builders[Source].Count = true;
+                    }
+                    return node;
+                }
             }
             throw new NotSupportedException($"The method '{node.Method.Name}' is not supported.");
         }

@@ -48,6 +48,12 @@ namespace Inflatable.LinqExpression
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="QueryData{TObject}"/> is count.
+        /// </summary>
+        /// <value><c>true</c> if count; otherwise, <c>false</c>.</value>
+        public bool Count { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="QueryData{TObject}"/> is distinct.
         /// </summary>
         /// <value><c>true</c> if distinct; otherwise, <c>false</c>.</value>
@@ -107,8 +113,6 @@ namespace Inflatable.LinqExpression
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            //if(Top>0&&Skip>0)
-            //    return
             return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
         }
     }

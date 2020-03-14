@@ -129,10 +129,15 @@ namespace Inflatable
         /// </summary>
         /// <param name="expression">An expression tree that represents a LINQ query.</param>
         /// <returns>The value that results from executing the specified query.</returns>
-        public override object Execute(Expression expression)
+        public override object? Execute(Expression expression)
         {
             var Results = Translate(expression);
-            var DatabaseValues = Canister.Builder.Bootstrapper?.Resolve<Session>().ExecuteAsync(Results).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
+            var TempSession = Canister.Builder.Bootstrapper?.Resolve<Session>();
+            if (TempSession is null)
+                return null;
+            if (Results.Values.FirstOrDefault()?.Count ?? false)
+                return TempSession.ExecuteCountAsync(Results).GetAwaiter().GetResult();
+            var DatabaseValues = TempSession.ExecuteAsync(Results).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
             return (Results.Values.FirstOrDefault()?.Top ?? 0) == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 

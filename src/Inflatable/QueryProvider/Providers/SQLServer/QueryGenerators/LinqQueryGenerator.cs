@@ -217,6 +217,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //Get Order By clause
             OrderByClause.Append(GenerateOrderByClause(node, data));
 
+            if (data.Count)
+            {
+                Builder.AppendLine("SELECT COUNT(*) AS Count FROM (");
+            }
             //Generate final query
             Builder
                 .Append("SELECT")
@@ -231,13 +235,20 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Builder.Append(WhereClause)
                        .AppendLine();
             }
-            Builder.Append("ORDER BY ")
-                .Append(OrderByClause)
-                .AppendLine();
-            if (data.Top > 0 || data.Skip > 0)
+            if (!data.Count)
             {
-                Builder.Append("OFFSET ").Append(data.Skip).AppendLine(" ROWS")
-                       .Append("FETCH NEXT ").Append(data.Top).Append(" ROWS ONLY");
+                Builder.Append("ORDER BY ")
+                    .Append(OrderByClause)
+                    .AppendLine();
+                if (data.Top > 0 || data.Skip > 0)
+                {
+                    Builder.Append("OFFSET ").Append(data.Skip).AppendLine(" ROWS")
+                           .Append("FETCH NEXT ").Append(data.Top).Append(" ROWS ONLY");
+                }
+            }
+            if (data.Count)
+            {
+                Builder.AppendLine().Append(") AS _InternalQuery");
             }
             return Builder.ToString().TrimEnd('\r', '\n', ' ', '\t') + ";";
         }
