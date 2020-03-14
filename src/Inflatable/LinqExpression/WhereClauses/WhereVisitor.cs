@@ -127,11 +127,23 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        protected override Expression VisitMethodCall(MethodCallExpression node)
+        protected override Expression? VisitMethodCall(MethodCallExpression node)
         {
-            if (node.Method == "A".StartsWith())
-                var Method = node.Method;
-            return base.VisitMethodCall(node);
+            if (node is null)
+                return node;
+            Visit(node.Object);
+            var TempProperty = CurrentClause;
+            Visit(node.Arguments);
+            var TempValue = CurrentClause;
+            if (node.Method.Name == "StartsWith")
+                CurrentClause = new LikeOperator(TempProperty, TempValue, node.Method.Name);
+            else if (node.Method.Name == "EndsWith")
+                CurrentClause = new LikeOperator(TempProperty, TempValue, node.Method.Name);
+            else if (node.Method.Name == "Contains")
+                CurrentClause = new LikeOperator(TempProperty, TempValue, node.Method.Name);
+            else
+                throw new NotSupportedException($"The method '{node.Method.Name}' is not supported.");
+            return node;
         }
 
         /// <summary>

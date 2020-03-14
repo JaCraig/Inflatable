@@ -122,15 +122,15 @@ namespace Inflatable.Tests.LinqExpression
             var TempData = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(2, TempData.Count);
             var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
-            Assert.Equal("WHERE ((([dbo].[AllReferencesAndID_].[StringValue1_] LIKE @0) AND (([dbo].[AllReferencesAndID_].[StringValue1_] LIKE @1)) AND ([dbo].[AllReferencesAndID_].[StringValue1_] LIKE @2))", Result.WhereClause.ToString());
+            Assert.Equal("WHERE ((([dbo].[AllReferencesAndID_].[StringValue1_] LIKE @1) AND ([dbo].[AllReferencesAndID_].[StringValue1_] LIKE @2)) AND ([dbo].[AllReferencesAndID_].[StringValue1_] LIKE @3))", Result.WhereClause.ToString());
             var Parameters = Result.WhereClause.GetParameters();
-            Assert.Equal("0", Parameters[0].ID);
+            Assert.Equal("1", Parameters[0].ID);
             Assert.Equal("ABC%", Parameters[0].InternalValue);
             Assert.Equal(DbType.String, Parameters[0].DatabaseType);
-            Assert.Equal("1", Parameters[1].ID);
+            Assert.Equal("2", Parameters[1].ID);
             Assert.Equal("%ABC", Parameters[1].InternalValue);
             Assert.Equal(DbType.String, Parameters[1].DatabaseType);
-            Assert.Equal("2", Parameters[2].ID);
+            Assert.Equal("3", Parameters[2].ID);
             Assert.Equal("%ABC%", Parameters[2].InternalValue);
             Assert.Equal(DbType.String, Parameters[2].DatabaseType);
         }

@@ -34,14 +34,23 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="value">The value.</param>
-        public LikeOperator(IOperator property, IOperator value)
+        /// <param name="methodType">Type of the method.</param>
+        /// <exception cref="ArgumentNullException">value or property</exception>
+        public LikeOperator(IOperator property, IOperator value, string methodType)
         {
             Value = value ?? throw new ArgumentNullException(nameof(value));
             Property = property ?? throw new ArgumentNullException(nameof(property));
-            TypeCode = Property.TypeCode;
+            TypeCode = typeof(bool);
             Property.Parent = this;
             Value.Parent = this;
+            MethodType = methodType;
         }
+
+        /// <summary>
+        /// Gets the type of the method.
+        /// </summary>
+        /// <value>The type of the method.</value>
+        public string MethodType { get; }
 
         /// <summary>
         /// Gets or sets the parent.
@@ -53,7 +62,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the property.
         /// </summary>
         /// <value>The property.</value>
-        public IOperator Property { get; private set; }
+        public IOperator? Property { get; private set; }
 
         /// <summary>
         /// Gets the type code.
@@ -65,13 +74,13 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the value.
         /// </summary>
         /// <value>The value.</value>
-        public IOperator Value { get; private set; }
+        public IOperator? Value { get; private set; }
 
         /// <summary>
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
-        public IOperator Copy() => new LikeOperator(Property.Copy(), Value.Copy());
+        public IOperator Copy() => new LikeOperator(Property?.Copy(), Value?.Copy(), MethodType);
 
         /// <summary>
         /// Gets the parameters associated with the operator.
@@ -80,8 +89,8 @@ namespace Inflatable.LinqExpression.WhereClauses
         public List<IParameter> GetParameters()
         {
             var ReturnValue = new List<IParameter>();
-            ReturnValue.AddRange(Property.GetParameters());
-            ReturnValue.AddRange(Value.GetParameters());
+            ReturnValue.AddRange(Property?.GetParameters());
+            ReturnValue.AddRange(Value?.GetParameters());
             return ReturnValue;
         }
 
@@ -99,10 +108,25 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <returns></returns>
-        public IOperator Optimize(MappingSource mappingSource)
+        public IOperator? Optimize(MappingSource mappingSource)
         {
-            Property = Property.Optimize(mappingSource);
-            Value = Value.Optimize(mappingSource);
+            Property = Property?.Optimize(mappingSource);
+            if (Property is null)
+                return null;
+            Value = Value?.Optimize(mappingSource);
+            if (Value is Constant TempConstant)
+            {
+                var Val = TempConstant.Value?.ToString();
+                if (!string.IsNullOrEmpty(Val))
+                {
+                    if (MethodType == "StartsWith")
+                        TempConstant.Value = Val + "%";
+                    else if (MethodType == "EndsWith")
+                        TempConstant.Value = "%" + Val;
+                    else if (MethodType == "Contains")
+                        TempConstant.Value = "%" + Val + "%";
+                }
+            }
             return this;
         }
 

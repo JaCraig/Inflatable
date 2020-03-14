@@ -72,7 +72,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// <returns>The result</returns>
         private static Expression Evaluate(Expression expression)
         {
-            if (expression.NodeType == ExpressionType.Constant)
+            if (expression.NodeType == ExpressionType.Constant || expression.NodeType == ExpressionType.New)
             {
                 return expression;
             }

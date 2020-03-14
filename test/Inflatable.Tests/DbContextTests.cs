@@ -333,5 +333,41 @@ namespace Inflatable.Tests
             Assert.Equal(5, Results[1].ID);
             Assert.Equal(1, Results[2].ID);
         }
+
+        [Fact]
+        public async Task WhereStartsWith()
+        {
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            var TempData = new SimpleClassNoID[] {
+                new SimpleClassNoID()
+                {
+                    Name="Ace"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Add"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="App"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Bat"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Ball"
+                }
+            };
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
+
+            var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
+            var Results = TestObject.Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).Where(x => x.Name.StartsWith("Ba")).ToList();
+            Assert.Equal(2, Results.Count);
+            Assert.Equal("Ball", Results[0].Name);
+            Assert.Equal("Bat", Results[1].Name);
+        }
     }
 }

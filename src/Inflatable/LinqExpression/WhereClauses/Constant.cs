@@ -68,7 +68,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the value.
         /// </summary>
         /// <value>The value.</value>
-        public object Value { get; }
+        public object Value { get; set; }
 
         /// <summary>
         /// Copies this instance.
