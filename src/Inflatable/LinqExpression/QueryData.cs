@@ -113,7 +113,7 @@ namespace Inflatable.LinqExpression
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            return $"SELECT {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")}";
+            return $"SELECT {(Count ? " COUNT " : "")} {(Distinct ? " DISTINCT " : " ")} {SelectValues.ToString(x => x.Name)} FROM {ObjectType.Name} {WhereClause} {(OrderByValues.Count > 0 ? "ORDER BY " + OrderByValues.ToString(x => x.ToString()) : "")} {(Skip > 0 ? "OFFSET " + Skip + " ROWS" : "")} {(Top > 0 ? "FETCH NEXT " + Top + " ROWS ONLY" : "")}";
         }
     }
 }
