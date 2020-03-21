@@ -48,7 +48,7 @@ namespace Inflatable.ClassMapper
             Logger.Information("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
             mappings.ForEachParallel(x => TempSourceMappings.Add(x.DatabaseConfigType, x));
-            var FinalList = new ConcurrentBag<MappingSource>();
+            var FinalList = new ConcurrentBag<IMappingSource>();
             TempSourceMappings.Keys.ForEachParallel(Key =>
             {
                 FinalList.Add(new MappingSource(TempSourceMappings[Key],
@@ -79,7 +79,7 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the sources.
         /// </summary>
         /// <value>The sources.</value>
-        public IEnumerable<MappingSource> Sources { get; set; }
+        public IEnumerable<IMappingSource> Sources { get; set; }
 
         /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.

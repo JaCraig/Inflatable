@@ -33,7 +33,8 @@ namespace Inflatable.ClassMapper
     /// <summary>
     /// Mapping source
     /// </summary>
-    public class MappingSource
+    /// <seealso cref="IMappingSource"/>
+    public class MappingSource : IMappingSource
     {
         /// <summary>
         /// Mapping source

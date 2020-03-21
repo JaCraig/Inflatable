@@ -43,7 +43,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// linqQueryGenerator or mappingInformation or queryGenerators
         /// </exception>
         /// <exception cref="ArgumentException">Mapping not found for type: AssociatedType</exception>
-        protected GeneratorBaseClass(MappingSource mappingInformation,
+        protected GeneratorBaseClass(IMappingSource mappingInformation,
             IEnumerable<IQueryGenerator<TMappedClass>> queryGenerators)
         {
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
@@ -72,7 +72,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the mapping information.
         /// </summary>
         /// <value>The mapping information.</value>
-        public MappingSource MappingInformation { get; }
+        public IMappingSource MappingInformation { get; }
 
         /// <summary>
         /// Gets the query generators.

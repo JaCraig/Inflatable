@@ -38,7 +38,7 @@ namespace Inflatable.QueryProvider
         /// <param name="values">The values.</param>
         /// <param name="session">The session.</param>
         /// <exception cref="ArgumentNullException">query</exception>
-        public QueryResults(IQuery query, IEnumerable<Dynamo> values, Session session)
+        public QueryResults(IQuery query, IEnumerable<Dynamo> values, ISession session)
         {
             Session = session ?? throw new ArgumentNullException(nameof(session));
             Values = values?.ToList() ?? new List<Dynamo>();
@@ -61,7 +61,7 @@ namespace Inflatable.QueryProvider
         /// Gets the session.
         /// </summary>
         /// <value>The session.</value>
-        public Session Session { get; }
+        public ISession Session { get; }
 
         /// <summary>
         /// Gets the values.

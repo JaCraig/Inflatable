@@ -33,7 +33,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Initializes a new instance of the <see cref="LinqQueryGeneratorBaseClass{TObject}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        protected LinqQueryGeneratorBaseClass(MappingSource mappingInformation) :
+        protected LinqQueryGeneratorBaseClass(IMappingSource mappingInformation) :
             base(mappingInformation)
         {
         }

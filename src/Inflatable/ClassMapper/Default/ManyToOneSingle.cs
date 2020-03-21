@@ -81,7 +81,7 @@ namespace Inflatable.ClassMapper.Default
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public override void SetColumnInfo(MappingSource mappings)
+        public override void SetColumnInfo(IMappingSource mappings)
         {
             var TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
@@ -109,7 +109,7 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         /// <param name="dataModel">The data model.</param>
         /// <exception cref="ArgumentException"></exception>
-        public override void Setup(MappingSource mappings, DataModel dataModel)
+        public override void Setup(IMappingSource mappings, DataModel dataModel)
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))

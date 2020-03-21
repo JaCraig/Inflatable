@@ -41,7 +41,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         public SQLServerQueryProvider(IConfiguration configuration)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            CachedResults = new ConcurrentDictionary<Tuple<Type, MappingSource>, IGenerator>();
+            CachedResults = new ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator>();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Gets or sets the dictionary.
         /// </summary>
         /// <value>The dictionary.</value>
-        private ConcurrentDictionary<Tuple<Type, MappingSource>, IGenerator> CachedResults { get; }
+        private ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; }
 
         /// <summary>
         /// Creates a batch for running commands
@@ -74,10 +74,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <typeparam name="TMappedClass">Class type to create the generator for</typeparam>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <returns>Generator object</returns>
-        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInformation)
+        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(IMappingSource mappingInformation)
             where TMappedClass : class
         {
-            var Key = new Tuple<Type, MappingSource>(typeof(TMappedClass), mappingInformation);
+            var Key = new Tuple<Type, IMappingSource>(typeof(TMappedClass), mappingInformation);
             if (CachedResults.ContainsKey(Key))
             {
                 return (IGenerator<TMappedClass>)CachedResults[Key];

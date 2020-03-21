@@ -41,7 +41,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="DeleteQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        public DeleteQuery(MappingSource mappingInformation)
+        public DeleteQuery(IMappingSource mappingInformation)
             : base(mappingInformation)
         {
             ParentMappings = MappingInformation.GetChildMappings<TMappedClass>()

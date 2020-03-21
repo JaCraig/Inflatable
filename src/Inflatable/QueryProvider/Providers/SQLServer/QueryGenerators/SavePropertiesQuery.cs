@@ -44,7 +44,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="SavePropertiesQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        public SavePropertiesQuery(MappingSource mappingInformation)
+        public SavePropertiesQuery(IMappingSource mappingInformation)
             : base(mappingInformation)
         {
             IDProperties = MappingInformation.GetChildMappings(typeof(TMappedClass))

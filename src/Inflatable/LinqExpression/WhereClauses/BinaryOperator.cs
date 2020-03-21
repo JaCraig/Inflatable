@@ -163,7 +163,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <returns></returns>
-        public IOperator Optimize(MappingSource mappingSource)
+        public IOperator Optimize(IMappingSource mappingSource)
         {
             Left = Left.Optimize(mappingSource);
             Right = Right.Optimize(mappingSource);
@@ -195,7 +195,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <param name="mapping">The mapping.</param>
-        public void SetColumnNames(MappingSource mappingSource, IMapping mapping)
+        public void SetColumnNames(IMappingSource mappingSource, IMapping mapping)
         {
             Left?.SetColumnNames(mappingSource, mapping);
             Right?.SetColumnNames(mappingSource, mapping);

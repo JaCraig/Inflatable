@@ -83,7 +83,7 @@ namespace Inflatable.ClassMapper.Default
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public override void SetColumnInfo(MappingSource? mappings) => Setup();
+        public override void SetColumnInfo(IMappingSource? mappings) => Setup();
 
         /// <summary>
         /// Sets up the property (used internally)

@@ -61,13 +61,13 @@ namespace Inflatable.LinqExpression.WhereClauses.Interfaces
         /// Optimizes the operator based on the mapping source.
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
-        IOperator? Optimize(MappingSource mappingSource);
+        IOperator? Optimize(IMappingSource mappingSource);
 
         /// <summary>
         /// Sets the column names.
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <param name="mapping">The mapping.</param>
-        void SetColumnNames(MappingSource mappingSource, IMapping mapping);
+        void SetColumnNames(IMappingSource mappingSource, IMapping mapping);
     }
 }

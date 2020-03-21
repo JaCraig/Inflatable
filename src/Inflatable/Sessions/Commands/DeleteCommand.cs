@@ -56,7 +56,7 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override int Execute(MappingSource source)
+        public override int Execute(IMappingSource source)
         {
             if (Objects.Length == 0)
             {
@@ -77,7 +77,7 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">Mapping source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> ExecuteAsync(MappingSource source)
+        public override async Task<int> ExecuteAsync(IMappingSource source)
         {
             if (Objects.Length == 0)
             {
@@ -101,7 +101,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
         /// <param name="ParentMappings">The parent mappings.</param>
-        private void CascadeManyToManyProperties(object @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        private void CascadeManyToManyProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
         {
             foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
             {
@@ -134,7 +134,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
         /// <param name="ParentMappings">The parent mappings.</param>
-        private void CascadeManyToOneProperties(object @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        private void CascadeManyToOneProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
         {
             foreach (var ManyToOneProperty in ParentMappings.SelectMany(x => x.ManyToOneProperties).Where(x => x.Cascade))
             {
@@ -171,7 +171,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
         /// <param name="ParentMappings">The parent mappings.</param>
-        private void CascadeMapProperties(object @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        private void CascadeMapProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
         {
             foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties).Where(x => x.Cascade))
             {
@@ -185,7 +185,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="Batch">The batch.</param>
         /// <param name="ObjectsSeen">The objects seen.</param>
-        private void CreateBatch(MappingSource source, out SQLHelper Batch, out List<object> ObjectsSeen)
+        private void CreateBatch(IMappingSource source, out SQLHelper Batch, out List<object> ObjectsSeen)
         {
             Batch = QueryProviderManager.CreateBatch(source.Source);
             ObjectsSeen = new List<object>();
@@ -202,7 +202,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void Delete(object? @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen)
+        private void Delete(object? @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen)
         {
             if (@object is null
                 || WasObjectSeen(@object, objectsSeen, source)
@@ -231,7 +231,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void DeleteCascade(object @object, MappingSource source, SQLHelper batch, IList<object> objectsSeen)
+        private void DeleteCascade(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen)
         {
             var ParentMappings = source.GetParentMapping(@object.GetType());
             CascadeMapProperties(@object, source, batch, objectsSeen, ParentMappings);
@@ -247,7 +247,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="ManyToManyProperty">The many to many property.</param>
         /// <param name="ManyToManyValueList">The many to many value list.</param>
-        private void DeleteJoins(object @object, MappingSource source, SQLHelper batch, IManyToManyProperty ManyToManyProperty, IList ManyToManyValueList)
+        private void DeleteJoins(object @object, IMappingSource source, SQLHelper batch, IManyToManyProperty ManyToManyProperty, IList ManyToManyValueList)
         {
             if (ManyToManyProperty.DatabaseJoinsCascade)
             {

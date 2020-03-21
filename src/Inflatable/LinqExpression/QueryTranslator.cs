@@ -48,7 +48,7 @@ namespace Inflatable.LinqExpression
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
-            Builders = new Dictionary<MappingSource, QueryData<TObject>>();
+            Builders = new Dictionary<IMappingSource, QueryData<TObject>>();
             foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()))
             {
                 Builders.Add(Source, new QueryData<TObject>(Source));
@@ -71,7 +71,7 @@ namespace Inflatable.LinqExpression
         /// Gets the builder.
         /// </summary>
         /// <value>The builder.</value>
-        private Dictionary<MappingSource, QueryData<TObject>> Builders { get; }
+        private Dictionary<IMappingSource, QueryData<TObject>> Builders { get; }
 
         /// <summary>
         /// Gets the count.
@@ -84,7 +84,7 @@ namespace Inflatable.LinqExpression
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The resulting query string.</returns>
-        public IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression)
+        public IDictionary<IMappingSource, QueryData<TObject>> Translate(Expression expression)
         {
             Visit(expression);
             foreach (var Key in Builders.Keys)

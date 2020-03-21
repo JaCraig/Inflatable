@@ -173,7 +173,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        void Setup(MappingSource mappings);
+        void Setup(IMappingSource mappings);
 
         /// <summary>
         /// Similars the specified reference property2.

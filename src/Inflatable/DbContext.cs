@@ -38,14 +38,14 @@ namespace Inflatable
         /// </summary>
         public DbContext()
         {
-            InternalSession = Canister.Builder.Bootstrapper?.Resolve<Session>();
+            InternalSession = Canister.Builder.Bootstrapper?.Resolve<ISession>();
         }
 
         /// <summary>
         /// Gets or sets the internal session.
         /// </summary>
         /// <value>The internal session.</value>
-        private Session? InternalSession { get; }
+        private ISession? InternalSession { get; }
 
         /// <summary>
         /// Executes the query asynchronously.
@@ -55,7 +55,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query</returns>
-        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<Session>().ExecuteDynamicAsync(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<dynamic>)Array.Empty<dynamic>());
+        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<ISession>().ExecuteDynamicAsync(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<dynamic>)Array.Empty<dynamic>());
 
         /// <summary>
         /// Adds a delete command.
@@ -112,7 +112,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query.</returns>
-        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<Session>().ExecuteAsync<TObject>(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<TObject>)Array.Empty<TObject>());
+        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<ISession>().ExecuteAsync<TObject>(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<TObject>)Array.Empty<TObject>());
 
         /// <summary>
         /// Executes the query getting a scalar asynchronously.
@@ -122,7 +122,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The first object returned by the query.</returns>
-        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<Session>().ExecuteScalarAsync<TObject>(command, type, connection, parameters)!;
+        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<ISession>().ExecuteScalarAsync<TObject>(command, type, connection, parameters)!;
 
         /// <summary>
         /// Executes the query represented by a specified expression tree.
@@ -132,7 +132,7 @@ namespace Inflatable
         public override object? Execute(Expression expression)
         {
             var Results = Translate(expression);
-            var TempSession = Canister.Builder.Bootstrapper?.Resolve<Session>();
+            var TempSession = Canister.Builder.Bootstrapper?.Resolve<ISession>();
             if (TempSession is null)
                 return null;
             if (Results.Values.FirstOrDefault()?.Count ?? false)
@@ -153,6 +153,6 @@ namespace Inflatable
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The translated expression</returns>
-        private static IDictionary<MappingSource, QueryData<TObject>> Translate(Expression expression) => Canister.Builder.Bootstrapper?.Resolve<QueryTranslator<TObject>>().Translate(expression) ?? new Dictionary<MappingSource, QueryData<TObject>>();
+        private static IDictionary<IMappingSource, QueryData<TObject>> Translate(Expression expression) => Canister.Builder.Bootstrapper?.Resolve<QueryTranslator<TObject>>().Translate(expression) ?? new Dictionary<IMappingSource, QueryData<TObject>>();
     }
 }

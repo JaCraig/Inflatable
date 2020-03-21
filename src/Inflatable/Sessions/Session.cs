@@ -37,7 +37,8 @@ namespace Inflatable.Sessions
     /// <summary>
     /// Class for an individual session
     /// </summary>
-    public class Session
+    /// <seealso cref="ISession"/>
+    public class Session : ISession
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Session"/> class.
@@ -90,7 +91,7 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="objectsToDelete">The objects to delete.</param>
         /// <returns>This.</returns>
-        public Session Delete<TObject>(params TObject[] objectsToDelete)
+        public ISession Delete<TObject>(params TObject[] objectsToDelete)
             where TObject : class
         {
             Commands.Add(new DeleteCommand(MappingManager, QueryProviderManager, objectsToDelete));
@@ -198,7 +199,7 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="queries">The queries to run.</param>
         /// <returns>The resulting data</returns>
-        public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
+        public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
             var KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
@@ -236,7 +237,7 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="queries">The queries to run.</param>
         /// <returns>The resulting data</returns>
-        public async Task<int> ExecuteCountAsync<TObject>(IDictionary<MappingSource, QueryData<TObject>> queries)
+        public async Task<int> ExecuteCountAsync<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
             var Results = new List<QueryResults>();
@@ -468,7 +469,7 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="objectsToSave">The objects to save.</param>
         /// <returns>This</returns>
-        public Session Save<TObject>(params TObject[] objectsToSave)
+        public ISession Save<TObject>(params TObject[] objectsToSave)
             where TObject : class
         {
             Commands.Add(new SaveCommand(MappingManager, QueryProviderManager, objectsToSave));
@@ -515,7 +516,7 @@ namespace Inflatable.Sessions
         /// <param name="source">The source.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns>The property</returns>
-        private static IClassProperty FindProperty<TObject, TData>(MappingSource source, string propertyName)
+        private static IClassProperty FindProperty<TObject, TData>(IMappingSource source, string propertyName)
             where TObject : class
             where TData : class
         {
@@ -538,7 +539,7 @@ namespace Inflatable.Sessions
         /// <param name="firstRun">if set to <c>true</c> [first run].</param>
         /// <param name="source">The source.</param>
         /// <returns>The results of the query on the source</returns>
-        private async Task GenerateQueryAsync<TObject>(List<QueryResults> results, bool firstRun, KeyValuePair<MappingSource, QueryData<TObject>> source)
+        private async Task GenerateQueryAsync<TObject>(List<QueryResults> results, bool firstRun, KeyValuePair<IMappingSource, QueryData<TObject>> source)
             where TObject : class
         {
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);

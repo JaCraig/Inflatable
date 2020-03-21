@@ -44,7 +44,7 @@ namespace Inflatable.Schema
         /// <param name="config">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">source or config or logger</exception>
-        public DataModel(MappingSource source, IConfiguration config, ILogger logger)
+        public DataModel(IMappingSource source, IConfiguration config, ILogger logger)
         {
             if (config is null)
             {
@@ -93,7 +93,7 @@ namespace Inflatable.Schema
         /// Gets the source.
         /// </summary>
         /// <value>The source.</value>
-        public MappingSource Source { get; }
+        public IMappingSource Source { get; }
 
         /// <summary>
         /// Gets the source spec.
@@ -142,7 +142,7 @@ namespace Inflatable.Schema
         /// Generates the schema.
         /// </summary>
         /// <param name="source">The source.</param>
-        private void GenerateSchema(MappingSource source)
+        private void GenerateSchema(IMappingSource source)
         {
             if (!Source.UpdateSchema
                 && !Source.GenerateSchema)

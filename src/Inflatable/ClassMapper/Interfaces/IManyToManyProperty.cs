@@ -170,7 +170,7 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <param name="mappings">The mappings.</param>
         /// <param name="dataModel">The data model.</param>
-        void Setup(MappingSource mappings, DataModel dataModel);
+        void Setup(IMappingSource mappings, DataModel dataModel);
 
         /// <summary>
         /// Similars the specified reference property2.

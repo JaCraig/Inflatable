@@ -310,13 +310,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public abstract void SetColumnInfo(MappingSource mappings);
+        public abstract void SetColumnInfo(IMappingSource mappings);
 
         /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        public abstract void Setup(MappingSource mappings);
+        public abstract void Setup(IMappingSource mappings);
 
         /// <summary>
         /// Checks if the properties are similar to one another

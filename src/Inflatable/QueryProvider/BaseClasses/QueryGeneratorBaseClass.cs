@@ -38,7 +38,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Constructor
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        protected QueryGeneratorBaseClass(MappingSource mappingInformation)
+        protected QueryGeneratorBaseClass(IMappingSource mappingInformation)
         {
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
         }
@@ -53,7 +53,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Gets the mapping information.
         /// </summary>
         /// <value>The mapping information.</value>
-        public MappingSource MappingInformation { get; }
+        public IMappingSource MappingInformation { get; }
 
         /// <summary>
         /// Gets the type of the query.

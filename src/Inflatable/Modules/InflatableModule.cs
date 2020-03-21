@@ -55,6 +55,7 @@ namespace Inflatable.Modules
             bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<QueryProviderManager>(ServiceLifetime.Singleton);
             bootstrapper.Register<Session>();
+            bootstrapper.Register<ISession, Session>();
             bootstrapper.RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton);
             bootstrapper.RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton);
             bootstrapper.RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton);

@@ -43,7 +43,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="LoadPropertiesQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        public LoadPropertiesQuery(MappingSource mappingInformation)
+        public LoadPropertiesQuery(IMappingSource mappingInformation)
             : base(mappingInformation)
         {
             var ChildMappings = MappingInformation.GetChildMappings(typeof(TMappedClass));

@@ -113,7 +113,7 @@ namespace Inflatable.QueryProvider
         /// <returns>The requested query generator</returns>
         /// <exception cref="ArgumentNullException">mappingInfo</exception>
         /// <exception cref="ArgumentException">Provider not found</exception>
-        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInfo)
+        public IGenerator<TMappedClass> CreateGenerator<TMappedClass>(IMappingSource mappingInfo)
             where TMappedClass : class
         {
             if (mappingInfo is null)
@@ -141,14 +141,14 @@ namespace Inflatable.QueryProvider
         /// <param name="type">The type of the mapped class..</param>
         /// <param name="mappingInfo">The mapping information.</param>
         /// <returns>The requested query generator.</returns>
-        public IGenerator CreateGenerator(Type type, MappingSource mappingInfo)
+        public IGenerator CreateGenerator(Type type, IMappingSource mappingInfo)
         {
             if (type.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
             {
                 type = type.GetTypeInfo().BaseType;
             }
 
-            return (IGenerator)typeof(QueryProviderManager).GetTypeInfo().GetMethod("CreateGenerator", new Type[] { typeof(MappingSource) })
+            return (IGenerator)typeof(QueryProviderManager).GetTypeInfo().GetMethod("CreateGenerator", new Type[] { typeof(IMappingSource) })
                                                            .MakeGenericMethod(type)
                                                            .Invoke(this, new object[] { mappingInfo });
         }

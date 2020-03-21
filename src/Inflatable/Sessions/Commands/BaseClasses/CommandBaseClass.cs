@@ -75,14 +75,14 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract int Execute(MappingSource source);
+        public abstract int Execute(IMappingSource source);
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract Task<int> ExecuteAsync(MappingSource source);
+        public abstract Task<int> ExecuteAsync(IMappingSource source);
 
         /// <summary>
         /// Merges the specified command.
@@ -121,7 +121,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <returns>
         /// <c>true</c> if this instance can execute the specified object; otherwise, <c>false</c>.
         /// </returns>
-        protected static bool CanExecute(object @object, MappingSource source)
+        protected static bool CanExecute(object @object, IMappingSource source)
         {
             var TempType = GetActualType(@object);
             return source.Mappings.ContainsKey(TempType);
@@ -134,7 +134,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="obj2">The obj2.</param>
         /// <param name="source">The source.</param>
         /// <returns>True if they're the same, false otherwise.</returns>
-        protected static bool CompareObjects(object obj1, object obj2, MappingSource source)
+        protected static bool CompareObjects(object obj1, object obj2, IMappingSource source)
         {
             if (ReferenceEquals(obj1, obj2))
             {
@@ -182,7 +182,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="objectsSeen">The objects seen already.</param>
         /// <param name="source">The source.</param>
         /// <returns>True if it was seen, otherwise false.</returns>
-        protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, MappingSource source) => objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
+        protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, IMappingSource source) => objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
 
         /// <summary>
         /// Gets the actual type.

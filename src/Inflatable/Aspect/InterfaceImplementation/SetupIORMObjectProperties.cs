@@ -37,7 +37,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
         public string Setup(Type type, ORMAspect aspect)
         {
             var Builder = new StringBuilder();
-            Builder.AppendLine("public Session Session0{ get; set; }");
+            Builder.AppendLine("public ISession Session0{ get; set; }");
             Builder.AppendLine("public IList<string> PropertiesChanged0{ get; set; }");
             if (!type.Is<INotifyPropertyChanged>())
             {

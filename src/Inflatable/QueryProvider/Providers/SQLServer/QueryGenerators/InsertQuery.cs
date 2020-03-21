@@ -42,7 +42,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="InsertQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        public InsertQuery(MappingSource mappingInformation)
+        public InsertQuery(IMappingSource mappingInformation)
             : base(mappingInformation)
         {
             if (!MappingInformation.TypeGraphs.ContainsKey(AssociatedType))

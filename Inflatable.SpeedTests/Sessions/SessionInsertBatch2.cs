@@ -9,10 +9,10 @@ namespace Inflatable.SpeedTests.Sessions
     {
         public SessionInsertBatchAsync()
         {
-            TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
         }
 
-        private readonly Session TempSession;
+        private readonly ISession TempSession;
         public bool Baseline => true;
 
         public string Name => "Session Insert Batch Async";

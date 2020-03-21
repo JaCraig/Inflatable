@@ -44,7 +44,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <typeparam name="TMappedClass">Class type to create the generator for</typeparam>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <returns>Generator object</returns>
-        IGenerator<TMappedClass> CreateGenerator<TMappedClass>(MappingSource mappingInformation)
+        IGenerator<TMappedClass> CreateGenerator<TMappedClass>(IMappingSource mappingInformation)
             where TMappedClass : class;
     }
 }

@@ -17,7 +17,7 @@ namespace Inflatable.SpeedTests.Sessions
 
         public void Run()
         {
-            _ = Canister.Builder.Bootstrapper.Resolve<Session>();
+            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
         }
     }
 }

@@ -35,6 +35,6 @@ namespace Inflatable.Aspect.Interfaces
         /// ORM session that this item came from (used for lazy loading)
         /// </summary>
         /// <value>The ORM session object.</value>
-        Session Session0 { get; set; }
+        ISession Session0 { get; set; }
     }
 }

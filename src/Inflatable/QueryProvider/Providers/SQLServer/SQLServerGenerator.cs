@@ -34,7 +34,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <exception cref="System.ArgumentNullException">mappingInformation</exception>
-        public SQLServerGenerator(MappingSource mappingInformation)
+        public SQLServerGenerator(IMappingSource mappingInformation)
             : base(mappingInformation, new IQueryGenerator<TMappedClass>[] {
                 new DeleteQuery<TMappedClass>(mappingInformation),
                 new InsertQuery<TMappedClass>(mappingInformation),

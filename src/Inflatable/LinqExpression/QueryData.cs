@@ -38,7 +38,7 @@ namespace Inflatable.LinqExpression
         /// </summary>
         /// <param name="source">The source.</param>
         /// <exception cref="ArgumentNullException">source</exception>
-        public QueryData(MappingSource source)
+        public QueryData(IMappingSource source)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
             SelectValues = new List<PropertyInfo>();
@@ -93,7 +93,7 @@ namespace Inflatable.LinqExpression
         /// Gets the source.
         /// </summary>
         /// <value>The source.</value>
-        public MappingSource Source { get; }
+        public IMappingSource Source { get; }
 
         /// <summary>
         /// Gets or sets the top.

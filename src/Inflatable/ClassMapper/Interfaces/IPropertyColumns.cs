@@ -33,6 +33,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Sets the column information.
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        void SetColumnInfo(MappingSource mappings);
+        void SetColumnInfo(IMappingSource mappings);
     }
 }

@@ -114,7 +114,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <returns></returns>
-        public IOperator Optimize(MappingSource mappingSource)
+        public IOperator Optimize(IMappingSource mappingSource)
         {
             InternalOperator = InternalOperator.Optimize(mappingSource);
             if (InternalOperator is null)
@@ -130,7 +130,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
         /// <param name="mapping">The mapping.</param>
-        public void SetColumnNames(MappingSource mappingSource, IMapping mapping) => InternalOperator?.SetColumnNames(mappingSource, mapping);
+        public void SetColumnNames(IMappingSource mappingSource, IMapping mapping) => InternalOperator?.SetColumnNames(mappingSource, mapping);
 
         /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.

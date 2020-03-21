@@ -17,7 +17,7 @@ namespace Inflatable.Tests.Sessions
         public async Task BaseClassDelete()
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -67,7 +67,7 @@ namespace Inflatable.Tests.Sessions
         public async Task BaseClassInsert()
         {
             _ = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -112,7 +112,7 @@ namespace Inflatable.Tests.Sessions
         public async Task BaseClassUpdate()
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null);
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<Session>();
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
