@@ -6,9 +6,9 @@ using Inflatable.Registration;
 using Inflatable.Sessions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mirage;
 using Mirage.Registration;
 using SQLHelperDB;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -52,13 +52,15 @@ namespace InflatableBenchmarks.Benchmarks.Tests
                 .RegisterInflatable()
                 .RegisterMirage()
                 .Build();
+            Console.WriteLine("Setting up session");
+            Canister.Builder.Bootstrapper.Resolve<Session>();
 
-            Canister.Builder.Bootstrapper.Resolve<ISession>();
+            Console.WriteLine("Setting up values");
+            var Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
 
-            Random random = Canister.Builder.Bootstrapper.Resolve<Random>();
-            var Values = 5000.Times(x => random.Next<SimpleClass>()).ToArray();
-
+            Console.WriteLine("Saving values");
             new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();
+            Console.WriteLine("Done");
         }
     }
 }

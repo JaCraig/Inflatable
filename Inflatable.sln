@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inflatable.SpeedTests", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Inflatable.Benchmarks", "Inflatable.Benchmarks\Inflatable.Benchmarks.csproj", "{CC83AC9E-6442-416D-89AD-168B0962F043}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{9B2E7023-5B66-496B-AA9A-43FF61C2FCC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{CC83AC9E-6442-416D-89AD-168B0962F043}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC83AC9E-6442-416D-89AD-168B0962F043}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC83AC9E-6442-416D-89AD-168B0962F043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B2E7023-5B66-496B-AA9A-43FF61C2FCC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B2E7023-5B66-496B-AA9A-43FF61C2FCC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B2E7023-5B66-496B-AA9A-43FF61C2FCC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B2E7023-5B66-496B-AA9A-43FF61C2FCC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
