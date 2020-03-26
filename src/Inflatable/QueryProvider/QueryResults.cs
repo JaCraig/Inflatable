@@ -46,12 +46,6 @@ namespace Inflatable.QueryProvider
         }
 
         /// <summary>
-        /// Gets the cache manager.
-        /// </summary>
-        /// <value>The cache manager.</value>
-        private static ICache? Cache => Canister.Builder.Bootstrapper?.Resolve<BigBook.Caching.Manager>().Cache();
-
-        /// <summary>
         /// Gets the query.
         /// </summary>
         /// <value>The query.</value>
@@ -74,27 +68,31 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="keyName">Name of the key.</param>
         /// <param name="results">The results.</param>
-        public static void CacheValues(string keyName, List<QueryResults> results) => Cache?.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
+        /// <param name="cache">The cache.</param>
+        public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache) => cache?.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
 
         /// <summary>
         /// Gets the cached value.
         /// </summary>
         /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
         /// <returns>The cached value</returns>
-        public static List<QueryResults> GetCached(string keyName) => (List<QueryResults>)(Cache?[keyName] ?? new List<QueryResults>());
+        public static List<QueryResults> GetCached(string keyName, ICache? cache) => (List<QueryResults>)(cache?[keyName] ?? new List<QueryResults>());
 
         /// <summary>
         /// Determines whether the specified key name is cached.
         /// </summary>
         /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
         /// <returns><c>true</c> if the specified key name is cached; otherwise, <c>false</c>.</returns>
-        public static bool IsCached(string keyName) => Cache?.ContainsKey(keyName) ?? false;
+        public static bool IsCached(string keyName, ICache? cache) => cache?.ContainsKey(keyName) ?? false;
 
         /// <summary>
         /// Removes the cache tag.
         /// </summary>
         /// <param name="name">The name.</param>
-        public static void RemoveCacheTag(string name) => Cache?.RemoveByTag(name);
+        /// <param name="cache">The cache.</param>
+        public static void RemoveCacheTag(string name, ICache? cache) => cache?.RemoveByTag(name);
 
         /// <summary>
         /// Determines whether this instance can copy the specified results.

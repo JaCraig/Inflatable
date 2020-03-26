@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using BigBook;
+using BigBook.Caching.Interfaces;
 using BigBook.Comparison;
 using Inflatable.ClassMapper;
 using Inflatable.QueryProvider;
@@ -38,13 +39,21 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
+        /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, object[] objects)
+        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
         {
             QueryProviderManager = queryProviderManager;
             Objects = (objects ?? Array.Empty<object>()).Where(x => x != null).ToArray();
             MappingManager = mappingManager;
+            Cache = cache;
         }
+
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
+        /// <value>The cache.</value>
+        public ICache Cache { get; }
 
         /// <summary>
         /// Gets the type of the command.
@@ -74,15 +83,17 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract int Execute(IMappingSource source);
+        public abstract int Execute(IMappingSource source, Aspectus.Aspectus aopManager);
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract Task<int> ExecuteAsync(IMappingSource source);
+        public abstract Task<int> ExecuteAsync(IMappingSource source, Aspectus.Aspectus aopManager);
 
         /// <summary>
         /// Merges the specified command.
@@ -166,16 +177,6 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         }
 
         /// <summary>
-        /// Removes the items from cache.
-        /// </summary>
-        /// <param name="object">The object.</param>
-        protected static void RemoveItemsFromCache(object @object)
-        {
-            var TempType = GetActualType(@object);
-            QueryResults.RemoveCacheTag(TempType.GetName());
-        }
-
-        /// <summary>
         /// Determines if the object was seen before.
         /// </summary>
         /// <param name="object">The object.</param>
@@ -183,6 +184,16 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="source">The source.</param>
         /// <returns>True if it was seen, otherwise false.</returns>
         protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, IMappingSource source) => objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
+
+        /// <summary>
+        /// Removes the items from cache.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        protected void RemoveItemsFromCache(object @object)
+        {
+            var TempType = GetActualType(@object);
+            QueryResults.RemoveCacheTag(TempType.GetName(), Cache);
+        }
 
         /// <summary>
         /// Gets the actual type.

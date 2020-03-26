@@ -14,15 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook.DataMapper;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB;
 using System;
 using System.Collections.Concurrent;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace Inflatable.QueryProvider.Providers.SQLServer
 {
@@ -36,12 +39,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Initializes a new instance of the <see cref="SQLServerQueryProvider"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
+        /// <param name="stringBuilderPool">The string builder pool.</param>
+        /// <param name="dataMapper">The data mapper.</param>
         /// <exception cref="ArgumentNullException">configuration</exception>
-        /// <exception cref="ArgumentNullException">configuration</exception>
-        public SQLServerQueryProvider(IConfiguration configuration)
+        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, Manager? dataMapper)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             CachedResults = new ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator>();
+            StringBuilderPool = stringBuilderPool;
+            DataMapper = dataMapper;
         }
 
         /// <summary>
@@ -62,11 +68,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         private ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; }
 
         /// <summary>
+        /// Gets the data mapper.
+        /// </summary>
+        /// <value>The data mapper.</value>
+        private Manager? DataMapper { get; }
+
+        /// <summary>
+        /// Gets the string builder pool.
+        /// </summary>
+        /// <value>The string builder pool.</value>
+        private ObjectPool<StringBuilder>? StringBuilderPool { get; }
+
+        /// <summary>
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source) => new SQLHelper(Configuration, Provider, source.Name);
+        public SQLHelper Batch(IDatabase source, Aspectus.Aspectus? aopManager) => new SQLHelper(Configuration, Provider, source.Name, StringBuilderPool, aopManager, DataMapper);
 
         /// <summary>
         /// Creates a generator object

@@ -35,8 +35,9 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>A batch object</returns>
-        SQLHelper Batch(IDatabase source);
+        SQLHelper Batch(IDatabase source, Aspectus.Aspectus aopManager);
 
         /// <summary>
         /// Creates a generator object

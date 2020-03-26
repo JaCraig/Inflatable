@@ -18,9 +18,9 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void CreateBatch()
         {
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper);
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
-            var Result = TestObject.CreateBatch(new MockDatabaseMapping());
+            var Result = TestObject.CreateBatch(new MockDatabaseMapping(), Aspectus);
             Assert.NotNull(Result);
         }
 
@@ -36,9 +36,9 @@ namespace Inflatable.Tests.QueryProvider
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper);
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.NotNull(Result);
@@ -48,7 +48,7 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Creation()
         {
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper);
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
             Assert.Equal(SqlClientFactory.Instance, TestObject.Providers.Keys.First());
             Assert.Equal(TempQueryProvider, TestObject.Providers.Values.First());

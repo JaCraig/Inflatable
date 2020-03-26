@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using BigBook;
+using BigBook.Caching.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression;
@@ -55,23 +56,28 @@ namespace Inflatable.Sessions
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,
             Aspectus.Aspectus aopManager,
-            ILogger logger)
+            ILogger logger,
+            BigBook.Caching.Manager cacheManager)
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Cache = cacheManager?.Cache();
+            AopManager = aopManager;
         }
 
         /// <summary>
-        /// The mapping manager
+        /// Gets the aop manager.
         /// </summary>
-        private readonly MappingManager MappingManager;
+        /// <value>The aop manager.</value>
+        public Aspectus.Aspectus AopManager { get; }
 
         /// <summary>
-        /// The query provider manager
+        /// Gets the cache manager.
         /// </summary>
-        private readonly QueryProviderManager QueryProviderManager;
+        /// <value>The cache manager.</value>
+        private ICache Cache { get; }
 
         /// <summary>
         /// Gets or sets the commands.
@@ -86,6 +92,16 @@ namespace Inflatable.Sessions
         private ILogger Logger { get; }
 
         /// <summary>
+        /// The mapping manager
+        /// </summary>
+        private readonly MappingManager MappingManager;
+
+        /// <summary>
+        /// The query provider manager
+        /// </summary>
+        private readonly QueryProviderManager QueryProviderManager;
+
+        /// <summary>
         /// Adds the objects for deletion.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -94,7 +110,7 @@ namespace Inflatable.Sessions
         public ISession Delete<TObject>(params TObject[] objectsToDelete)
             where TObject : class
         {
-            Commands.Add(new DeleteCommand(MappingManager, QueryProviderManager, objectsToDelete));
+            Commands.Add(new DeleteCommand(MappingManager, QueryProviderManager, Cache, objectsToDelete));
             return this;
         }
 
@@ -112,7 +128,7 @@ namespace Inflatable.Sessions
             {
                 for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += Commands[x].Execute(Source);
+                    Result += Commands[x].Execute(Source, AopManager);
                 }
             }
             Commands.Clear();
@@ -133,7 +149,7 @@ namespace Inflatable.Sessions
             {
                 for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += await Commands[x].ExecuteAsync(Source).ConfigureAwait(false);
+                    Result += await Commands[x].ExecuteAsync(Source, AopManager).ConfigureAwait(false);
                 }
             }
             Commands.Clear();
@@ -157,9 +173,9 @@ namespace Inflatable.Sessions
             var Parameters = ConvertParameters(parameters);
             var KeyName = command + "_" + connection;
             Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
-            if (QueryResults.IsCached(KeyName))
+            if (QueryResults.IsCached(KeyName, Cache))
             {
-                return QueryResults.GetCached(KeyName).SelectMany(x => x.ConvertValues<TObject>());
+                return QueryResults.GetCached(KeyName, Cache).SelectMany(x => x.ConvertValues<TObject>());
             }
             var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
             if (Source is null)
@@ -169,7 +185,7 @@ namespace Inflatable.Sessions
 
             var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var ReturnValue = new List<Dynamo>();
-            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
             Batch.AddQuery(type, command, Parameters.ToArray());
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
@@ -183,7 +199,7 @@ namespace Inflatable.Sessions
                                                                                         this))
                                                           .ToList();
 
-                QueryResults.CacheValues(KeyName, Results);
+                QueryResults.CacheValues(KeyName, Results, Cache);
                 return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
             }
             catch
@@ -208,9 +224,9 @@ namespace Inflatable.Sessions
                 ?.Distinct()
                 ?? Array.Empty<IParameter>())
                 ?.ForEach(x => KeyName = x.AddParameter(KeyName));
-            if (QueryResults.IsCached(KeyName))
+            if (QueryResults.IsCached(KeyName, Cache))
             {
-                return QueryResults.GetCached(KeyName)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
+                return QueryResults.GetCached(KeyName, Cache)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
             }
             var Results = new List<QueryResults>();
             var FirstRun = true;
@@ -227,7 +243,7 @@ namespace Inflatable.Sessions
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
-            QueryResults.CacheValues(KeyName, Results);
+            QueryResults.CacheValues(KeyName, Results, Cache);
             return Results?.SelectMany(x => x.ConvertValues<TObject>())?.ToArray() ?? Array.Empty<TObject>();
         }
 
@@ -277,7 +293,7 @@ namespace Inflatable.Sessions
                 throw new ArgumentException($"Source not found {connection}");
             }
 
-            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
             Batch.AddQuery(type, command, Parameters.ToArray());
             try
             {
@@ -311,7 +327,7 @@ namespace Inflatable.Sessions
             }
 
             var ReturnValue = new List<Dynamo>();
-            var Batch = QueryProviderManager.CreateBatch(Source.Source);
+            var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
 
             Batch.AddQuery(type, command, Parameters.ToArray());
             try
@@ -342,7 +358,7 @@ namespace Inflatable.Sessions
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
                                                          .OrderBy(x => x.Order))
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
@@ -355,7 +371,7 @@ namespace Inflatable.Sessions
 
                 try
                 {
-                    ResultLists = Batch.Execute();
+                    ResultLists = Task.Run(async () => await Batch.ExecuteAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 }
                 catch
                 {
@@ -399,7 +415,7 @@ namespace Inflatable.Sessions
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
                                                          .OrderBy(x => x.Order))
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source);
+                var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
@@ -472,7 +488,7 @@ namespace Inflatable.Sessions
         public ISession Save<TObject>(params TObject[] objectsToSave)
             where TObject : class
         {
-            Commands.Add(new SaveCommand(MappingManager, QueryProviderManager, objectsToSave));
+            Commands.Add(new SaveCommand(MappingManager, QueryProviderManager, Cache, objectsToSave));
             return this;
         }
 
@@ -544,7 +560,7 @@ namespace Inflatable.Sessions
         {
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
             var ResultingQueries = Generator.GenerateQueries(source.Value);
-            var Batch = QueryProviderManager.CreateBatch(source.Key.Source);
+            var Batch = QueryProviderManager.CreateBatch(source.Key.Source, AopManager);
             for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
             {
                 var ResultingQuery = ResultingQueries[x];

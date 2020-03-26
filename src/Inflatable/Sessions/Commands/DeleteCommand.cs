@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using BigBook;
+using BigBook.Caching.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider;
@@ -39,9 +40,10 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
+        /// <param name="cache">The cache.</param>
         /// <param name="objectsToDelete">The objects to delete.</param>
-        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, params object[] objectsToDelete)
-            : base(mappingManager, queryProviderManager, objectsToDelete)
+        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, params object[] objectsToDelete)
+            : base(mappingManager, queryProviderManager, cache, objectsToDelete)
         {
         }
 
@@ -56,35 +58,36 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override int Execute(IMappingSource source)
+        public override int Execute(IMappingSource source, Aspectus.Aspectus aopManager)
         {
             if (Objects.Length == 0)
             {
                 return 0;
             }
 
-            CreateBatch(source, out var Batch, out var ObjectsSeen);
+            CreateBatch(source, aopManager, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
             }
 
-            return Batch.RemoveDuplicateCommands().ExecuteScalar<int>();
+            return Task.Run(async () => await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false)).GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">Mapping source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> ExecuteAsync(IMappingSource source)
+        public override async Task<int> ExecuteAsync(IMappingSource source, Aspectus.Aspectus aopManager)
         {
             if (Objects.Length == 0)
             {
                 return 0;
             }
 
-            CreateBatch(source, out var Batch, out var ObjectsSeen);
+            CreateBatch(source, aopManager, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -183,11 +186,12 @@ namespace Inflatable.Sessions.Commands
         /// Creates the batch and gets the list of objects seen.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <param name="Batch">The batch.</param>
         /// <param name="ObjectsSeen">The objects seen.</param>
-        private void CreateBatch(IMappingSource source, out SQLHelper Batch, out List<object> ObjectsSeen)
+        private void CreateBatch(IMappingSource source, Aspectus.Aspectus aopManager, out SQLHelper Batch, out List<object> ObjectsSeen)
         {
-            Batch = QueryProviderManager.CreateBatch(source.Source);
+            Batch = QueryProviderManager.CreateBatch(source.Source, aopManager);
             ObjectsSeen = new List<object>();
             for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
             {

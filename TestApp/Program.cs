@@ -3,9 +3,7 @@ using Inflatable;
 using Inflatable.Benchmarks.Models;
 using Inflatable.Registration;
 using Inflatable.Sessions;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace TestApp
@@ -14,7 +12,7 @@ namespace TestApp
     {
         private static void Main(string[] args)
         {
-            Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
+            Canister.Builder.CreateContainer(null)
                 .AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
                 .Build();
@@ -26,6 +24,10 @@ namespace TestApp
 
             Console.WriteLine("Saving values");
             new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();
+
+            Console.WriteLine("Querying values");
+
+            var Results = DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList();
             Console.WriteLine("Done");
         }
     }

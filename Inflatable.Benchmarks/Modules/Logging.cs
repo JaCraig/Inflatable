@@ -27,7 +27,7 @@ namespace InflatableBenchmarks.Benchmarks.Modules
                                             .WriteTo
                                             .File("./Log.txt")
                                             .MinimumLevel
-                                            .Error()
+                                            .Debug()
                                             .CreateLogger();
             bootstrapper.Register<ILogger>(Log.Logger,
                                         ServiceLifetime.Singleton);

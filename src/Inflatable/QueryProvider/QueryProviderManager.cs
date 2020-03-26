@@ -82,10 +82,11 @@ namespace Inflatable.QueryProvider
         /// Creates a batch.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>Creates a batch</returns>
         /// <exception cref="ArgumentNullException">source</exception>
         /// <exception cref="ArgumentException">Provider not found</exception>
-        public SQLHelper CreateBatch(IDatabase source)
+        public SQLHelper CreateBatch(IDatabase source, Aspectus.Aspectus aopManager)
         {
             if (source is null)
             {
@@ -102,7 +103,7 @@ namespace Inflatable.QueryProvider
                 Logger.Debug("Creating batch for data source {SourceName:l}", source.Name);
             }
 
-            return QueryProvider.Batch(source);
+            return QueryProvider.Batch(source, aopManager);
         }
 
         /// <summary>

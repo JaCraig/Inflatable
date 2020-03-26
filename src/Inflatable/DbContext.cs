@@ -136,8 +136,8 @@ namespace Inflatable
             if (TempSession is null)
                 return null;
             if (Results.Values.FirstOrDefault()?.Count ?? false)
-                return TempSession.ExecuteCountAsync(Results).GetAwaiter().GetResult();
-            var DatabaseValues = TempSession.ExecuteAsync(Results).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
+                return Task.Run(async () => await TempSession.ExecuteCountAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult();
+            var DatabaseValues = Task.Run(async () => await TempSession.ExecuteAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
             return (Results.Values.FirstOrDefault()?.Top ?? 0) == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 

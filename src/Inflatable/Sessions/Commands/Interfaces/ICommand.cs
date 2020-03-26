@@ -34,15 +34,17 @@ namespace Inflatable.Sessions.Commands.Interfaces
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>The number of rows that are modified.</returns>
-        int Execute(IMappingSource source);
+        int Execute(IMappingSource source, Aspectus.Aspectus aopManager);
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="aopManager">The aop manager.</param>
         /// <returns>The number of rows that are modified.</returns>
-        Task<int> ExecuteAsync(IMappingSource source);
+        Task<int> ExecuteAsync(IMappingSource source, Aspectus.Aspectus aopManager);
 
         /// <summary>
         /// Merges the specified command.

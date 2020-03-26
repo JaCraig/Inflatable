@@ -15,11 +15,14 @@ limitations under the License.
 */
 
 using BigBook;
+using BigBook.DataMapper;
 using Data.Modeler;
 using Data.Modeler.Providers.Interfaces;
+using Holmes;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.ObjectPool;
 using Serilog;
 using Serilog.Events;
 using SQLHelperDB;
@@ -29,6 +32,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Inflatable.Schema
 {
@@ -43,8 +48,13 @@ namespace Inflatable.Schema
         /// <param name="source">The source.</param>
         /// <param name="config">The configuration.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="dataModeler">The data modeler.</param>
+        /// <param name="sherlock">The sherlock.</param>
+        /// <param name="stringBuilderPool">The string builder pool.</param>
+        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dataMapper">The data mapper.</param>
         /// <exception cref="ArgumentNullException">source or config or logger</exception>
-        public DataModel(IMappingSource source, IConfiguration config, ILogger logger)
+        public DataModel(IMappingSource source, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, ObjectPool<StringBuilder> stringBuilderPool, Aspectus.Aspectus aopManager, Manager dataMapper)
         {
             if (config is null)
             {
@@ -57,10 +67,78 @@ namespace Inflatable.Schema
 
             SourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
             SourceSpec = DataModeler.CreateSource(SourceConnection.DatabaseName ?? "");
-            GenerateSchema(source);
-            AnalyzeSchema();
+            DataModeler = dataModeler;
+            Sherlock = sherlock;
+            StringBuilderPool = stringBuilderPool;
+            AopManager = aopManager;
+            DataMapper = dataMapper;
+            Task.Run(async () => await GenerateSchemaAsync(source).ConfigureAwait(false)).GetAwaiter().GetResult();
+            Task.Run(async () => await AnalyzeSchemaAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
         }
 
+        /// <summary>
+        /// Gets the aop manager.
+        /// </summary>
+        /// <value>The aop manager.</value>
+        public Aspectus.Aspectus AopManager { get; }
+
+        /// <summary>
+        /// Gets the data mapper.
+        /// </summary>
+        /// <value>The data mapper.</value>
+        public Manager DataMapper { get; }
+
+        /// <summary>
+        /// Gets the data modeler.
+        /// </summary>
+        /// <value>The data modeler.</value>
+        public DataModeler DataModeler { get; }
+
+        /// <summary>
+        /// Gets the generated schema changes.
+        /// </summary>
+        /// <value>The generated schema changes.</value>
+        public IEnumerable<string> GeneratedSchemaChanges { get; private set; }
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>The logger.</value>
+        public ILogger Logger { get; }
+
+        /// <summary>
+        /// Gets the sherlock.
+        /// </summary>
+        /// <value>The sherlock.</value>
+        public Sherlock Sherlock { get; }
+
+        /// <summary>
+        /// Gets the source.
+        /// </summary>
+        /// <value>The source.</value>
+        public IMappingSource Source { get; }
+
+        /// <summary>
+        /// Gets the source spec.
+        /// </summary>
+        /// <value>The source spec.</value>
+        public ISource SourceSpec { get; }
+
+        /// <summary>
+        /// Gets the string builder pool.
+        /// </summary>
+        /// <value>The string builder pool.</value>
+        public ObjectPool<StringBuilder> StringBuilderPool { get; }
+
+        /// <summary>
+        /// Gets the source connection.
+        /// </summary>
+        /// <value>The source connection.</value>
+        private IConnection SourceConnection { get; }
+
+        /// <summary>
+        /// The default schemas
+        /// </summary>
         private static readonly string[] DefaultSchemas = {
             "dbo",
             "guest",
@@ -78,39 +156,9 @@ namespace Inflatable.Schema
         };
 
         /// <summary>
-        /// Gets the generated schema changes.
-        /// </summary>
-        /// <value>The generated schema changes.</value>
-        public IEnumerable<string> GeneratedSchemaChanges { get; private set; }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>The logger.</value>
-        public ILogger Logger { get; }
-
-        /// <summary>
-        /// Gets the source.
-        /// </summary>
-        /// <value>The source.</value>
-        public IMappingSource Source { get; }
-
-        /// <summary>
-        /// Gets the source spec.
-        /// </summary>
-        /// <value>The source spec.</value>
-        public ISource SourceSpec { get; }
-
-        /// <summary>
-        /// Gets the source connection.
-        /// </summary>
-        /// <value>The source connection.</value>
-        private IConnection SourceConnection { get; }
-
-        /// <summary>
         /// Analyze the schema.
         /// </summary>
-        private void AnalyzeSchema()
+        private async Task AnalyzeSchemaAsync()
         {
             if (!Source.ApplyAnalysis
                 && !Source.GenerateAnalysis)
@@ -119,8 +167,8 @@ namespace Inflatable.Schema
             }
 
             Logger.Information("Analyzing {Info:l} for suggestions.", SourceConnection.DatabaseName);
-            var Results = Holmes.Sherlock.Analyze(SourceConnection);
-            var Batch = new SQLHelper(SourceConnection);
+            var Results = await Sherlock.AnalyzeAsync(SourceConnection).ConfigureAwait(false);
+            var Batch = new SQLHelper(SourceConnection, StringBuilderPool, AopManager, DataMapper);
             foreach (var Result in Results)
             {
                 Logger.Information("Finding: {Info:l}", Result.Text);
@@ -134,7 +182,7 @@ namespace Inflatable.Schema
             if (Source.ApplyAnalysis)
             {
                 Logger.Information("Applying fixes for {Info:l}.", SourceConnection.DatabaseName);
-                Batch.ExecuteScalar<int>();
+                await Batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
         }
 
@@ -142,7 +190,7 @@ namespace Inflatable.Schema
         /// Generates the schema.
         /// </summary>
         /// <param name="source">The source.</param>
-        private void GenerateSchema(IMappingSource source)
+        private async Task GenerateSchemaAsync(IMappingSource source)
         {
             if (!Source.UpdateSchema
                 && !Source.GenerateSchema)
@@ -153,14 +201,16 @@ namespace Inflatable.Schema
             var Debug = Logger.IsEnabled(LogEventLevel.Debug);
 
             var Generator = DataModeler.GetSchemaGenerator(source.Source.Provider);
+            if (Generator is null)
+                return;
 
             Logger.Information("Getting structure for {Info:l}", SourceConnection.DatabaseName);
-            var OriginalSource = !string.IsNullOrEmpty(SourceConnection.DatabaseName) ? Generator?.GetSourceStructure(SourceConnection) : null;
+            var OriginalSource = !string.IsNullOrEmpty(SourceConnection.DatabaseName) ? (await Generator.GetSourceStructureAsync(SourceConnection).ConfigureAwait(false)) : null;
 
             SetupTableStructures();
 
             Logger.Information("Generating schema changes for {Info:l}", SourceConnection.DatabaseName);
-            GeneratedSchemaChanges = Generator?.GenerateSchema(SourceSpec, OriginalSource!) ?? Array.Empty<string>();
+            GeneratedSchemaChanges = Generator.GenerateSchema(SourceSpec, OriginalSource!) ?? Array.Empty<string>();
             if (Debug)
             {
                 Logger.Debug("Schema changes generated: {GeneratedSchemaChanges}", GeneratedSchemaChanges);
@@ -172,7 +222,7 @@ namespace Inflatable.Schema
             }
 
             Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);
-            Generator?.Setup(SourceSpec, SourceConnection);
+            await Generator.SetupAsync(SourceSpec, SourceConnection).ConfigureAwait(false);
         }
 
         /// <summary>
