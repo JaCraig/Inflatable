@@ -31,19 +31,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Holmes" Version="3.0.13" />
+    <PackageReference Include="Holmes" Version="3.0.14" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.9.0" />
-    <PackageReference Include="SQLHelper.DB" Version="3.1.13" />
-    <PackageReference Include="Data.Modeler" Version="3.0.19" />
+    <PackageReference Include="SQLHelper.DB" Version="3.1.14" />
+    <PackageReference Include="Data.Modeler" Version="3.0.20" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.1" />
     <PackageReference Include="Mirage" Version="3.0.5" />
     <PackageReference Include="Aspectus" Version="4.0.3" />
-    <PackageReference Include="BigBook" Version="3.0.21" />
+    <PackageReference Include="BigBook" Version="3.0.22" />
   </ItemGroup>
 
 </Project>

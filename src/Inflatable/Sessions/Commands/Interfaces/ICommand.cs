@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Inflatable.ClassMapper;
 using System.Threading.Tasks;
 
@@ -34,17 +35,17 @@ namespace Inflatable.Sessions.Commands.Interfaces
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        int Execute(IMappingSource source, Aspectus.Aspectus aopManager);
+        int Execute(IMappingSource source, DynamoFactory dynamoFactory);
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        Task<int> ExecuteAsync(IMappingSource source, Aspectus.Aspectus aopManager);
+        Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory);
 
         /// <summary>
         /// Merges the specified command.

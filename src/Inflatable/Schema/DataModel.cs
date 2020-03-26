@@ -15,14 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
-using BigBook.DataMapper;
 using Data.Modeler;
 using Data.Modeler.Providers.Interfaces;
 using Holmes;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.ObjectPool;
 using Serilog;
 using Serilog.Events;
 using SQLHelperDB;
@@ -32,7 +30,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Inflatable.Schema
@@ -50,11 +47,9 @@ namespace Inflatable.Schema
         /// <param name="logger">The logger.</param>
         /// <param name="dataModeler">The data modeler.</param>
         /// <param name="sherlock">The sherlock.</param>
-        /// <param name="stringBuilderPool">The string builder pool.</param>
-        /// <param name="aopManager">The aop manager.</param>
-        /// <param name="dataMapper">The data mapper.</param>
+        /// <param name="batch">The batch.</param>
         /// <exception cref="ArgumentNullException">source or config or logger</exception>
-        public DataModel(IMappingSource source, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, ObjectPool<StringBuilder> stringBuilderPool, Aspectus.Aspectus aopManager, Manager dataMapper)
+        public DataModel(IMappingSource source, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, SQLHelper batch)
         {
             if (config is null)
             {
@@ -69,24 +64,16 @@ namespace Inflatable.Schema
             SourceSpec = DataModeler.CreateSource(SourceConnection.DatabaseName ?? "");
             DataModeler = dataModeler;
             Sherlock = sherlock;
-            StringBuilderPool = stringBuilderPool;
-            AopManager = aopManager;
-            DataMapper = dataMapper;
+            Batch = batch;
             Task.Run(async () => await GenerateSchemaAsync(source).ConfigureAwait(false)).GetAwaiter().GetResult();
             Task.Run(async () => await AnalyzeSchemaAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
         }
 
         /// <summary>
-        /// Gets the aop manager.
+        /// Gets the batch.
         /// </summary>
-        /// <value>The aop manager.</value>
-        public Aspectus.Aspectus AopManager { get; }
-
-        /// <summary>
-        /// Gets the data mapper.
-        /// </summary>
-        /// <value>The data mapper.</value>
-        public Manager DataMapper { get; }
+        /// <value>The batch.</value>
+        public SQLHelper Batch { get; }
 
         /// <summary>
         /// Gets the data modeler.
@@ -123,12 +110,6 @@ namespace Inflatable.Schema
         /// </summary>
         /// <value>The source spec.</value>
         public ISource SourceSpec { get; }
-
-        /// <summary>
-        /// Gets the string builder pool.
-        /// </summary>
-        /// <value>The string builder pool.</value>
-        public ObjectPool<StringBuilder> StringBuilderPool { get; }
 
         /// <summary>
         /// Gets the source connection.
@@ -168,7 +149,7 @@ namespace Inflatable.Schema
 
             Logger.Information("Analyzing {Info:l} for suggestions.", SourceConnection.DatabaseName);
             var Results = await Sherlock.AnalyzeAsync(SourceConnection).ConfigureAwait(false);
-            var Batch = new SQLHelper(SourceConnection, StringBuilderPool, AopManager, DataMapper);
+            Batch.CreateBatch();
             foreach (var Result in Results)
             {
                 Logger.Information("Finding: {Info:l}", Result.Text);

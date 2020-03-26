@@ -24,7 +24,7 @@ namespace Inflatable.Tests.Schema
                 new TestDatabaseMapping(),
                 new TestDatabase2Mapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
         }
 
@@ -33,7 +33,7 @@ namespace Inflatable.Tests.Schema
         [Fact]
         public void Creation()
         {
-            var TestObject = new SchemaManager(Mappings, Configuration, Logger, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TestObject = new SchemaManager(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
             Assert.Equal(Mappings, TestObject.Mappings);
             Assert.Equal(2, TestObject.Models.Count());
             var TestModel = TestObject.Models.First(x => x.Source.Source.Name == "Default");

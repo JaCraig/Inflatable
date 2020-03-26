@@ -26,7 +26,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
@@ -45,7 +45,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass1())[0].QueryString);
@@ -97,7 +97,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass2())[0].QueryString);
@@ -149,7 +149,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings);
 

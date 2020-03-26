@@ -18,7 +18,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task BaseClassSelect()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -65,7 +65,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Count()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -120,7 +120,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task CustomPropertyLoading()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             var TestObject = new MapPropertiesCustomLoad
@@ -149,7 +149,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Distinct()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
@@ -185,7 +185,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task First()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -239,7 +239,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task OrderBy()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -289,7 +289,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Select()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -334,7 +334,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Take()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -376,7 +376,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task WhereStartsWith()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, ObjectPool, Aspectus, DataMapper);
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()

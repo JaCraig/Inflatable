@@ -15,16 +15,14 @@ limitations under the License.
 */
 
 using BigBook;
-using BigBook.DataMapper;
 using Data.Modeler;
 using Holmes;
 using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.ObjectPool;
 using Serilog;
+using SQLHelperDB;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Inflatable.Schema
 {
@@ -41,15 +39,13 @@ namespace Inflatable.Schema
         /// <param name="logger">The logger.</param>
         /// <param name="dataModeler">The data modeler.</param>
         /// <param name="sherlock">The sherlock analyzer.</param>
-        /// <param name="stringBuilderPool">The string builder pool.</param>
-        /// <param name="aopManager">The aop manager.</param>
-        /// <param name="dataMapper">The data mapper.</param>
+        /// <param name="sQLHelper">The s ql helper.</param>
         /// <exception cref="ArgumentNullException">logger</exception>
-        public SchemaManager(MappingManager mappings, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, ObjectPool<StringBuilder> stringBuilderPool, Aspectus.Aspectus aopManager, Manager dataMapper)
+        public SchemaManager(MappingManager mappings, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, SQLHelper sQLHelper)
         {
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             Mappings = mappings;
-            Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger!, dataModeler, sherlock, stringBuilderPool, aopManager, dataMapper));
+            Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger!, dataModeler, sherlock, sQLHelper));
         }
 
         /// <summary>

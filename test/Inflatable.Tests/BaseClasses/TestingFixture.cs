@@ -1,4 +1,5 @@
-﻿using BigBook.DataMapper;
+﻿using BigBook;
+using BigBook.DataMapper;
 using Data.Modeler;
 using FileCurator.Registration;
 using Holmes;
@@ -36,9 +37,11 @@ namespace Inflatable.Tests.BaseClasses
         }
 
         public static Aspectus.Aspectus Aspectus => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
-        public static IConfigurationRoot Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
+        public static IConfiguration Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
         public static Manager DataMapper => Canister.Builder.Bootstrapper.Resolve<Manager>();
         public static DataModeler DataModeler => Canister.Builder.Bootstrapper.Resolve<DataModeler>();
+        public static DynamoFactory DynamoFactory => Canister.Builder.Bootstrapper.Resolve<DynamoFactory>();
+        public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
         public static ILogger Logger => Canister.Builder.Bootstrapper.Resolve<ILogger>();
         public static ObjectPool<StringBuilder> ObjectPool => Canister.Builder.Bootstrapper.Resolve<ObjectPool<StringBuilder>>();
         public static Sherlock Sherlock => Canister.Builder.Bootstrapper.Resolve<Sherlock>();
@@ -49,8 +52,7 @@ namespace Inflatable.Tests.BaseClasses
         {
             try
             {
-                Task.Run(async () => await new SQLHelper(Configuration, SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .CreateBatch()
+                Task.Run(async () => await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
                     .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
                     .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")

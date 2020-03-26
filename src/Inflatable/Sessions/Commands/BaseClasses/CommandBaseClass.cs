@@ -83,17 +83,17 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract int Execute(IMappingSource source, Aspectus.Aspectus aopManager);
+        public abstract int Execute(IMappingSource source, DynamoFactory dynamoFactory);
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract Task<int> ExecuteAsync(IMappingSource source, Aspectus.Aspectus aopManager);
+        public abstract Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory);
 
         /// <summary>
         /// Merges the specified command.

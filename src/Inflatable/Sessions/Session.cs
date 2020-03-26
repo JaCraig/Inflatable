@@ -47,31 +47,32 @@ namespace Inflatable.Sessions
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="schemaManager">The schema manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
-        /// <param name="aopManager">The aop manager.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="cacheManager">The cache manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <exception cref="ArgumentNullException">
         /// cacheManager or aopManager or mappingManager or schemaManager or queryProviderManager
         /// </exception>
         public Session(MappingManager mappingManager,
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,
-            Aspectus.Aspectus aopManager,
             ILogger logger,
-            BigBook.Caching.Manager cacheManager)
+            BigBook.Caching.Manager cacheManager,
+            DynamoFactory dynamoFactory)
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Cache = cacheManager?.Cache();
-            AopManager = aopManager;
+            DynamoFactory = dynamoFactory;
         }
 
         /// <summary>
-        /// Gets the aop manager.
+        /// Gets the dynamo factory.
         /// </summary>
-        /// <value>The aop manager.</value>
-        public Aspectus.Aspectus AopManager { get; }
+        /// <value>The dynamo factory.</value>
+        public DynamoFactory DynamoFactory { get; }
 
         /// <summary>
         /// Gets the cache manager.
@@ -128,7 +129,7 @@ namespace Inflatable.Sessions
             {
                 for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += Commands[x].Execute(Source, AopManager);
+                    Result += Commands[x].Execute(Source, DynamoFactory);
                 }
             }
             Commands.Clear();
@@ -149,7 +150,7 @@ namespace Inflatable.Sessions
             {
                 for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += await Commands[x].ExecuteAsync(Source, AopManager).ConfigureAwait(false);
+                    Result += await Commands[x].ExecuteAsync(Source, DynamoFactory).ConfigureAwait(false);
                 }
             }
             Commands.Clear();
@@ -185,7 +186,7 @@ namespace Inflatable.Sessions
 
             var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var ReturnValue = new List<Dynamo>();
-            var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
+            var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
             Batch.AddQuery(type, command, Parameters.ToArray());
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
@@ -293,7 +294,7 @@ namespace Inflatable.Sessions
                 throw new ArgumentException($"Source not found {connection}");
             }
 
-            var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
+            var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
             Batch.AddQuery(type, command, Parameters.ToArray());
             try
             {
@@ -327,7 +328,7 @@ namespace Inflatable.Sessions
             }
 
             var ReturnValue = new List<Dynamo>();
-            var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
+            var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
 
             Batch.AddQuery(type, command, Parameters.ToArray());
             try
@@ -358,7 +359,7 @@ namespace Inflatable.Sessions
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
                                                          .OrderBy(x => x.Order))
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
+                var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
@@ -415,7 +416,7 @@ namespace Inflatable.Sessions
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
                                                          .OrderBy(x => x.Order))
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source, AopManager);
+                var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
@@ -560,7 +561,7 @@ namespace Inflatable.Sessions
         {
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
             var ResultingQueries = Generator.GenerateQueries(source.Value);
-            var Batch = QueryProviderManager.CreateBatch(source.Key.Source, AopManager);
+            var Batch = QueryProviderManager.CreateBatch(source.Key.Source, DynamoFactory);
             for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
             {
                 var ResultingQuery = ResultingQueries[x];

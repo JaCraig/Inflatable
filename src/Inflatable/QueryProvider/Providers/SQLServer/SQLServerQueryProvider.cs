@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook.DataMapper;
+using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
@@ -40,14 +40,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="stringBuilderPool">The string builder pool.</param>
-        /// <param name="dataMapper">The data mapper.</param>
         /// <exception cref="ArgumentNullException">configuration</exception>
-        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, Manager? dataMapper)
+        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             CachedResults = new ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator>();
             StringBuilderPool = stringBuilderPool;
-            DataMapper = dataMapper;
         }
 
         /// <summary>
@@ -68,24 +66,18 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         private ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; }
 
         /// <summary>
-        /// Gets the data mapper.
-        /// </summary>
-        /// <value>The data mapper.</value>
-        private Manager? DataMapper { get; }
-
-        /// <summary>
         /// Gets the string builder pool.
         /// </summary>
         /// <value>The string builder pool.</value>
-        private ObjectPool<StringBuilder>? StringBuilderPool { get; }
+        private ObjectPool<StringBuilder> StringBuilderPool { get; }
 
         /// <summary>
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source, Aspectus.Aspectus? aopManager) => new SQLHelper(Configuration, Provider, source.Name, StringBuilderPool, aopManager, DataMapper);
+        public SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory) => new SQLHelper(StringBuilderPool, dynamoFactory, Configuration).CreateBatch(Provider, source.Name);
 
         /// <summary>
         /// Creates a generator object

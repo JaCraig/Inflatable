@@ -30,7 +30,7 @@ namespace Inflatable.Tests.ClassMapper
             new IDatabase[]{
                 new MockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>())
             .Sources
             .First();
@@ -85,7 +85,7 @@ namespace Inflatable.Tests.ClassMapper
             new IDatabase[]{
                 new MockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>())
             .Sources
             .First();

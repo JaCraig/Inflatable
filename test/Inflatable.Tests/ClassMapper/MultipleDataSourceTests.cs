@@ -24,7 +24,7 @@ namespace Inflatable.Tests.ClassMapper
                 new MockDatabaseMapping(),
                 new SecondMockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
 
             Assert.Equal(2, TestObject.Sources.Count());

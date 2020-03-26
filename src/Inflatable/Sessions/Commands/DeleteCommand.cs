@@ -58,14 +58,14 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override int Execute(IMappingSource source, Aspectus.Aspectus aopManager)
+        public override int Execute(IMappingSource source, DynamoFactory dynamoFactory)
         {
             if (Objects.Length == 0)
             {
                 return 0;
             }
 
-            CreateBatch(source, aopManager, out var Batch, out var ObjectsSeen);
+            CreateBatch(source, dynamoFactory, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -78,16 +78,16 @@ namespace Inflatable.Sessions.Commands
         /// Executes this instance.
         /// </summary>
         /// <param name="source">Mapping source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> ExecuteAsync(IMappingSource source, Aspectus.Aspectus aopManager)
+        public override async Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory)
         {
             if (Objects.Length == 0)
             {
                 return 0;
             }
 
-            CreateBatch(source, aopManager, out var Batch, out var ObjectsSeen);
+            CreateBatch(source, dynamoFactory, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -186,12 +186,12 @@ namespace Inflatable.Sessions.Commands
         /// Creates the batch and gets the list of objects seen.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="aopManager">The aop manager.</param>
+        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <param name="Batch">The batch.</param>
         /// <param name="ObjectsSeen">The objects seen.</param>
-        private void CreateBatch(IMappingSource source, Aspectus.Aspectus aopManager, out SQLHelper Batch, out List<object> ObjectsSeen)
+        private void CreateBatch(IMappingSource source, DynamoFactory dynamoFactory, out SQLHelper Batch, out List<object> ObjectsSeen)
         {
-            Batch = QueryProviderManager.CreateBatch(source.Source, aopManager);
+            Batch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
             ObjectsSeen = new List<object>();
             for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
             {

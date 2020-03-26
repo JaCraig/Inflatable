@@ -17,15 +17,15 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void Batch()
         {
-            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper);
-            var Result = TestObject.Batch(new TestDatabases.Databases.TestDatabase2Mapping(), Aspectus);
+            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool);
+            var Result = TestObject.Batch(new TestDatabases.Databases.TestDatabase2Mapping(), DynamoFactory);
             Assert.NotNull(Result);
         }
 
         [Fact]
         public void CreateGenerator()
         {
-            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper);
+            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool);
             var Mappings = new MappingSource(new IMapping[] {
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
@@ -35,7 +35,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>());
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
@@ -44,7 +44,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void Creation()
         {
-            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, DataMapper);
+            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool);
             Assert.Equal(Configuration, TestObject.Configuration);
             Assert.Equal(SqlClientFactory.Instance, TestObject.Provider);
         }
