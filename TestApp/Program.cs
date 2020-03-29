@@ -20,7 +20,7 @@ namespace TestApp
             Canister.Builder.Bootstrapper.Resolve<Session>();
 
             Console.WriteLine("Setting up values");
-            var Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
+            var Values = 50.Times(x => new SimpleClass() { BoolValue = x % 2 == 0, StringValue1 = "A", StringValue2 = "ASDFGHKL" }).ToArray();
 
             Console.WriteLine("Saving values");
             new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();

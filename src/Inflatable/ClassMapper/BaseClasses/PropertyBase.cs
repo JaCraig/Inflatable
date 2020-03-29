@@ -21,7 +21,9 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -66,11 +68,28 @@ namespace Inflatable.ClassMapper.BaseClasses
             Expression = expression;
             SetAction = Expression.PropertySetter<ClassType, DataType>()?.Compile() ?? new Action<ClassType, DataType>((_, __) => { });
             InternalFieldName = "_" + Name + "Derived";
-            MaxLength = typeof(DataType) == typeof(string) || typeof(DataType) == typeof(Uri) ? 100 : 0;
-            Nullable = typeof(DataType) == typeof(string)
-                || typeof(DataType) == typeof(Uri)
-                || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
-                || typeof(DataType) == typeof(byte[]);
+            var PropertyInfo = typeof(ClassType).GetProperty<ClassType>(Name);
+
+            var Attributes = PropertyInfo.GetCustomAttributes();
+            var StringLengthAttribute = (Attributes.FirstOrDefault(x => x is StringLengthAttribute) as StringLengthAttribute);
+
+            if (Attributes.FirstOrDefault(x => x is MaxLengthAttribute) is MaxLengthAttribute maxLength)
+                MaxLength = maxLength.Length;
+            else if (!(StringLengthAttribute is null))
+                MaxLength = StringLengthAttribute.MaximumLength;
+            else
+                MaxLength = typeof(DataType) == typeof(string) || typeof(DataType) == typeof(Uri) ? 100 : 0;
+
+            var MinLength = (Attributes.FirstOrDefault(x => x is MinLengthAttribute) as MinLengthAttribute)?.Length > 0
+                || StringLengthAttribute?.MinimumLength > 0;
+
+            Nullable = ((typeof(DataType) == typeof(string)
+                    || typeof(DataType) == typeof(Uri)
+                    || typeof(DataType) == typeof(byte[]))
+                        && !Attributes.Any(x => x is RequiredAttribute)
+                        && !MinLength)
+                || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
+
             ParentMapping = mapping;
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();

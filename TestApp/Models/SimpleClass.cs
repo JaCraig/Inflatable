@@ -3,6 +3,7 @@ using Mirage.Generators.Default;
 using Mirage.Generators.Default.Nullable;
 using Mirage.Generators.Nullable;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Inflatable.Benchmarks.Models
 {
@@ -87,9 +88,12 @@ namespace Inflatable.Benchmarks.Models
         public short ShortValue { get; set; }
 
         [StringGenerator]
+        [StringLength(200)]
+        [Required]
         public string StringValue1 { get; set; }
 
         [StringGenerator]
+        [MaxLength]
         public string StringValue2 { get; set; }
 
         [TimeSpanGenerator]

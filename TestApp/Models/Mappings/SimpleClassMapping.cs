@@ -29,8 +29,8 @@ namespace Inflatable.Benchmarks.Models.Mappings
             Reference(x => x.NullableLongValue);
             Reference(x => x.NullableShortValue);
             Reference(x => x.ShortValue);
-            Reference(x => x.StringValue1).WithMaxLength(20);
-            Reference(x => x.StringValue2).WithMaxLength();
+            Reference(x => x.StringValue1);
+            Reference(x => x.StringValue2);
             Reference(x => x.UriValue);
         }
     }
