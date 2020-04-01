@@ -45,5 +45,4 @@
     <PackageReference Include="Aspectus" Version="4.0.3" />
     <PackageReference Include="BigBook" Version="3.0.22" />
   </ItemGroup>
-
 </Project>

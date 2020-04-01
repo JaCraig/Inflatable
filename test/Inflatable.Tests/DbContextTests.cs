@@ -67,6 +67,9 @@ namespace Inflatable.Tests
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
+            Assert.Equal(0, Results);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
@@ -96,8 +99,8 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
+            TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
             Assert.Equal(3, Results);
         }
 
