@@ -243,6 +243,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task ManyToOneWithNonMergeBaseClass()
         {
+            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new CompanyManyToOne[] {
                 new CompanyManyToOne()
