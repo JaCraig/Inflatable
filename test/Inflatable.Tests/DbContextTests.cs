@@ -5,6 +5,7 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
 using Inflatable.Tests.TestDatabases.LoadPropertyUsingQuery;
+using Inflatable.Tests.TestDatabases.ManyToOneBaseClass;
 using Inflatable.Tests.TestDatabases.SimpleClassNoAutoID;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using System.Linq;
@@ -237,6 +238,40 @@ namespace Inflatable.Tests
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.Where(x => x.ID == 6).SingleOrDefault();
             Assert.Null(Result);
+        }
+
+        [Fact]
+        public async Task ManyToOneWithNonMergeBaseClass()
+        {
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempData = new CompanyManyToOne[] {
+                new CompanyManyToOne()
+                {
+                    IndustryCode=new IndustryCodeManyToOne()
+                },
+                new CompanyManyToOne()
+                {
+                    IndustryCode=new IndustryCodeManyToOne()
+                },
+                new CompanyManyToOne()
+                {
+                    IndustryCode=new IndustryCodeManyToOne()
+                },
+                new CompanyManyToOne()
+                {
+                    IndustryCode=new IndustryCodeManyToOne()
+                }
+            };
+            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
+
+            var TestObject = DbContext<CompanyManyToOne>.CreateQuery();
+            var Results = TestObject.ToList();
+            Assert.Equal(4, Results.Count);
+            Assert.NotNull(Results[0].IndustryCode);
+            Assert.NotNull(Results[1].IndustryCode);
+            Assert.NotNull(Results[2].IndustryCode);
+            Assert.NotNull(Results[3].IndustryCode);
+            Assert.NotNull(Results[0].IndustryCode.Companies[0]);
         }
 
         [Fact]
