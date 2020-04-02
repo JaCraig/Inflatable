@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
+using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
@@ -239,9 +240,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the parent from clause.
         /// </summary>
         /// <param name="manyToOne">The many to one.</param>
+        /// <param name="parentMapping">The parent mapping.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns></returns>
-        private string GenerateParentFromClause(IManyToOneProperty manyToOne, string suffix)
+        private string GenerateParentFromClause(IManyToOneProperty manyToOne, IMapping parentMapping, string suffix)
         {
             var Result = new StringBuilder();
             var TempIDProperties = new StringBuilder();
@@ -252,14 +254,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}",
                         Separator,
-                        GetTableName(manyToOne.ParentMapping, suffix) + ".[" + manyToOne.ColumnName + ForeignMapping.TableName + IDProperty.ColumnName + "]",
+                        GetTableName(parentMapping, suffix) + ".[" + manyToOne.ColumnName + ForeignMapping.TableName + IDProperty.ColumnName + "]",
                         GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
             }
             Result.AppendLine();
-            var AsStatement = string.IsNullOrEmpty(suffix) ? "" : " as [" + manyToOne.ParentMapping.TableName + suffix + "]";
-            Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(manyToOne.ParentMapping) + AsStatement, TempIDProperties);
+            var AsStatement = string.IsNullOrEmpty(suffix) ? "" : " as [" + parentMapping.TableName + suffix + "]";
+            Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(parentMapping) + AsStatement, TempIDProperties);
             return Result.ToString();
         }
 
@@ -380,14 +382,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var FromClause = new StringBuilder();
             var WhereClause = new StringBuilder();
 
+            var ParentMapping = MappingInformation
+                .GetChildMappings(manyToOne.ParentMapping.ObjectType)
+                .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                .Distinct()
+                .FirstOrDefault(x => x.IDProperties.Count > 0);
+
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             const string SameObject = "2";
 
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
-            FromClause.Append(GenerateParentFromClause(manyToOne, SameObject));
-            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[manyToOne.ParentMapping.ObjectType]?.Root, SameObject));
+            FromClause.Append(GenerateParentFromClause(manyToOne, ParentMapping, SameObject));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));

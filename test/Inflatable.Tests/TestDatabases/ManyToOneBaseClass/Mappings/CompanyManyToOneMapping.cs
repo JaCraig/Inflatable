@@ -7,7 +7,7 @@ namespace Inflatable.Tests.TestDatabases.ManyToOneBaseClass.Mappings
     {
         public CompanyManyToOneMapping()
         {
-            ManyToOne(x => x.IndustryCode);
+            ManyToOne(x => x.IndustryCode).CascadeChanges();
         }
     }
 }

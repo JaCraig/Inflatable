@@ -18,6 +18,8 @@ using Inflatable.ClassMapper;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators;
+using Microsoft.Extensions.ObjectPool;
+using System.Text;
 
 namespace Inflatable.QueryProvider.Providers.SQLServer
 {
@@ -33,15 +35,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Initializes a new instance of the <see cref="SQLServerGenerator{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <exception cref="System.ArgumentNullException">mappingInformation</exception>
-        public SQLServerGenerator(IMappingSource mappingInformation)
+        public SQLServerGenerator(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation, new IQueryGenerator<TMappedClass>[] {
                 new DeleteQuery<TMappedClass>(mappingInformation),
                 new InsertQuery<TMappedClass>(mappingInformation),
                 new UpdateQuery<TMappedClass>(mappingInformation),
                 new LinqQueryGenerator<TMappedClass>(mappingInformation),
                 new LoadPropertiesQuery<TMappedClass>(mappingInformation),
-                new SavePropertiesQuery<TMappedClass>(mappingInformation),
+                new SavePropertiesQuery<TMappedClass>(mappingInformation,objectPool),
                 new DeletePropertiesQuery<TMappedClass>(mappingInformation)
             })
         {

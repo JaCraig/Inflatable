@@ -22,6 +22,7 @@ using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses;
+using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections;
@@ -44,7 +45,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="SavePropertiesQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        public SavePropertiesQuery(IMappingSource mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        public SavePropertiesQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation)
         {
             IDProperties = MappingInformation.GetChildMappings(typeof(TMappedClass))
@@ -53,7 +55,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                              .SelectMany(x => x.IDProperties);
             Queries = new ListMapping<string, QueryGeneratorData>();
             SetupQueries();
+            ObjectPool = objectPool;
         }
+
+        /// <summary>
+        /// Gets the object pool.
+        /// </summary>
+        /// <value>The object pool.</value>
+        public ObjectPool<StringBuilder> ObjectPool { get; }
 
         /// <summary>
         /// Gets the type of the query.
@@ -145,13 +154,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (node is null)
                 return "";
-            var Result = new StringBuilder();
+            var Result = ObjectPool?.Get() ?? new StringBuilder();
             var Mapping = MappingInformation.Mappings[node.Data];
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
-                var TempIDProperties = new StringBuilder();
+                var TempIDProperties = ObjectPool?.Get() ?? new StringBuilder();
                 var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
@@ -164,10 +173,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Separator = " AND ";
                 }
                 Result.AppendFormat(" INNER JOIN {0} ON {1}", GetTableName(ParentMapping), TempIDProperties);
+                ObjectPool?.Return(TempIDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
+            var ReturnValue = Result.ToString();
 
-            return Result.ToString();
+            ObjectPool?.Return(Result);
+
+            return ReturnValue;
         }
 
         /// <summary>
@@ -178,10 +191,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IMapProperty mapProperty)
         {
-            var Builder = new StringBuilder();
-            var WhereList = new StringBuilder();
-            var ParametersList = new StringBuilder();
-            var FromList = new StringBuilder();
+            var Builder = ObjectPool?.Get() ?? new StringBuilder();
+            var WhereList = ObjectPool?.Get() ?? new StringBuilder();
+            var ParametersList = ObjectPool?.Get() ?? new StringBuilder();
+            var FromList = ObjectPool?.Get() ?? new StringBuilder();
             var Splitter2 = "";
             foreach (var ForeignID in foreignIDProperties.Distinct())
             {
@@ -212,7 +225,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             FromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[mapProperty.ParentMapping.ObjectType]?.Root));
 
             Builder.AppendFormat("UPDATE {0} SET {1} FROM {2} WHERE {3};", GetTableName(mapProperty.ParentMapping), ParametersList, FromList, WhereList);
-            return Builder.ToString();
+            var ReturnValue = Builder.ToString();
+            ObjectPool?.Return(Builder);
+            ObjectPool?.Return(WhereList);
+            ObjectPool?.Return(ParametersList);
+            ObjectPool?.Return(FromList);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -223,10 +241,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToManyProperty property)
         {
-            var Builder = new StringBuilder();
-            var PropertyNames = new StringBuilder();
-            var PropertyValues = new StringBuilder();
-            var ParametersList = new StringBuilder();
+            var Builder = ObjectPool?.Get() ?? new StringBuilder();
+            var PropertyNames = ObjectPool?.Get() ?? new StringBuilder();
+            var PropertyValues = ObjectPool?.Get() ?? new StringBuilder();
+            var ParametersList = ObjectPool?.Get() ?? new StringBuilder();
             var Splitter = "";
             foreach (var ForeignID in foreignIDProperties.Distinct())
             {
@@ -247,7 +265,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Splitter = ", ";
             }
             Builder.AppendFormat("INSERT INTO {0}({1}) VALUES ({2});", GetTableName(property), PropertyNames, PropertyValues);
-            return Builder.ToString();
+            var ReturnValue = Builder.ToString();
+            ObjectPool?.Return(Builder);
+            ObjectPool?.Return(PropertyNames);
+            ObjectPool?.Return(PropertyValues);
+            ObjectPool?.Return(ParametersList);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -258,11 +281,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The queries</returns>
         private string GenerateJoinSaveQuery(IEnumerable<IIDProperty> foreignIDProperties, IManyToOneProperty manyToOne)
         {
-            var Builder = new StringBuilder();
-            var WhereList = new StringBuilder();
-            var ParametersList = new StringBuilder();
-            var FromList = new StringBuilder();
+            var Builder = ObjectPool?.Get() ?? new StringBuilder();
+            var WhereList = ObjectPool?.Get() ?? new StringBuilder();
+            var ParametersList = ObjectPool?.Get() ?? new StringBuilder();
+            var FromList = ObjectPool?.Get() ?? new StringBuilder();
             string TableName;
+            var ParentMapping = MappingInformation
+                .GetChildMappings(manyToOne.ParentMapping.ObjectType)
+                .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
+                .Distinct()
+                .FirstOrDefault(x => x.IDProperties.Count > 0);
             if (manyToOne is IManyToOneListProperty)
             {
                 foreach (var TempMapping in manyToOne.ForeignMapping)
@@ -274,11 +302,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
             else
             {
-                GenerateJoinSaveQuerySingle(foreignIDProperties, manyToOne, WhereList, ParametersList, FromList);
-                TableName = GetTableName(manyToOne.ParentMapping);
+                GenerateJoinSaveQuerySingle(foreignIDProperties, manyToOne, ParentMapping, WhereList, ParametersList, FromList);
+                TableName = GetTableName(ParentMapping);
                 Builder.AppendFormat("UPDATE {0} SET {1} FROM {2} WHERE {3};", TableName, ParametersList, FromList, WhereList);
             }
-            return Builder.ToString();
+            var ReturnValue = Builder.ToString();
+            ObjectPool?.Return(Builder);
+            ObjectPool?.Return(WhereList);
+            ObjectPool?.Return(ParametersList);
+            ObjectPool?.Return(FromList);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -317,11 +350,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="foreignIDProperties">The foreign identifier properties.</param>
         /// <param name="manyToOne">The many to one.</param>
+        /// <param name="parentMapping">The parent mapping.</param>
         /// <param name="whereList">The where list.</param>
         /// <param name="parametersList">The parameters list.</param>
         /// <param name="fromList">From list.</param>
         private void GenerateJoinSaveQuerySingle(IEnumerable<IIDProperty> foreignIDProperties,
                     IManyToOneProperty manyToOne,
+                    IMapping parentMapping,
                     StringBuilder whereList,
                     StringBuilder parametersList,
                     StringBuilder fromList)
@@ -329,7 +364,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Splitter = "";
             foreach (var ForeignID in foreignIDProperties.Distinct())
             {
-                parametersList.Append(Splitter).Append(GetTableName(manyToOne.ParentMapping)
+                parametersList.Append(Splitter).Append(GetTableName(parentMapping)
 ).Append(".["
 ).Append(manyToOne.ColumnName
 ).Append(ForeignID.ParentMapping.TableName
@@ -346,8 +381,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 whereList.Append(Splitter).Append(GetColumnName(IDProperty)).Append(" = ").Append(GetParameterName(IDProperty));
                 Splitter = " AND ";
             }
-            fromList.Append(GetTableName(manyToOne.ParentMapping));
-            fromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[manyToOne.ParentMapping.ObjectType]?.Root));
+            fromList.Append(GetTableName(parentMapping));
+            fromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[parentMapping.ObjectType]?.Root));
         }
 
         /// <summary>
