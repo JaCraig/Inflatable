@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.Aspect.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using System;
 using System.ComponentModel;
 using System.Text;
@@ -33,12 +34,15 @@ namespace Inflatable.Aspect.InterfaceImplementation
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="aspect">The aspect.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <returns>The resulting code in string format.</returns>
-        public string Setup(Type type, ORMAspect aspect)
+        public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
-            var Builder = new StringBuilder();
-            Builder.AppendLine("public ISession Session0{ get; set; }");
-            Builder.AppendLine("public IList<string> PropertiesChanged0{ get; set; }");
+            if (objectPool is null)
+                return string.Empty;
+            var Builder = objectPool.Get();
+            Builder.AppendLine("public ISession Session0{ get; set; }")
+                .AppendLine("public IList<string> PropertiesChanged0{ get; set; }");
             if (!type.Is<INotifyPropertyChanged>())
             {
                 Builder.AppendLine(@"private PropertyChangedEventHandler propertyChanged_;
@@ -54,15 +58,17 @@ public event PropertyChangedEventHandler PropertyChanged
     {
         propertyChanged_-=value;
     }
-}");
-                Builder.AppendLine(@"private void NotifyPropertyChanged0([CallerMemberName]string propertyName="""")
+}")
+                    .AppendLine(@"private void NotifyPropertyChanged0([CallerMemberName]string propertyName="""")
 {
     var Handler = propertyChanged_;
     if (Handler != null)
         Handler(this, new PropertyChangedEventArgs(propertyName));
 }");
             }
-            return Builder.ToString();
+            var Result = Builder.ToString();
+            objectPool.Return(Builder);
+            return Result;
         }
     }
 }

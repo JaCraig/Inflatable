@@ -20,6 +20,7 @@ using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,27 +44,40 @@ namespace Inflatable.Aspect
         /// <param name="startMethodHelpers">The start method helpers.</param>
         /// <param name="interfaceImplementationHelpers">The interface implementation helpers.</param>
         /// <param name="endMethodHelpers">The end method helpers.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <exception cref="ArgumentNullException">classManager</exception>
         /// <exception cref="ArgumentNullException">classManager</exception>
         public ORMAspect(MappingManager classManager,
             IEnumerable<IStartMethodHelper> startMethodHelpers,
             IEnumerable<IInterfaceImplementationHelper> interfaceImplementationHelpers,
-            IEnumerable<IEndMethodHelper> endMethodHelpers)
+            IEnumerable<IEndMethodHelper> endMethodHelpers,
+            ObjectPool<StringBuilder> objectPool)
         {
             AssembliesUsing = new List<MetadataReference>();
+            IDFields = new List<IIDProperty>();
+            ReferenceFields = new List<IProperty>();
+            ManyToManyFields = new List<IManyToManyProperty>();
+            ManyToOneFields = new List<IManyToOneProperty>();
+            MapFields = new List<IMapProperty>();
+
             EndMethodHelpers = endMethodHelpers ?? Array.Empty<IEndMethodHelper>();
             InterfaceImplementationHelpers = interfaceImplementationHelpers ?? Array.Empty<IInterfaceImplementationHelper>();
             StartMethodHelpers = startMethodHelpers ?? Array.Empty<IStartMethodHelper>();
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(ORMAspect).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Dynamo).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(MulticastDelegate).GetTypeInfo().Assembly.Location));
-            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Task<>).GetTypeInfo().Assembly.Location));
-            IDFields = new List<IIDProperty>();
-            ReferenceFields = new List<IProperty>();
+            ObjectPool = objectPool;
+
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(ORMAspect).Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(INotifyPropertyChanged).Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Dynamo).Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(MulticastDelegate).Assembly.Location));
+            AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Task<>).Assembly.Location));
         }
+
+        /// <summary>
+        /// The exception caught constant
+        /// </summary>
+        private const string ExceptionCaughtConst = "var Exception=CaughtException;";
 
         /// <summary>
         /// Set of assemblies that the aspect requires
@@ -86,7 +100,7 @@ namespace Inflatable.Aspect
         /// Gets or sets the identifier fields that have been completed already.
         /// </summary>
         /// <value>The identifier fields that have been completed already.</value>
-        public List<IIDProperty> IDFields { get; set; }
+        public List<IIDProperty> IDFields { get; }
 
         /// <summary>
         /// Gets the interface implementation helpers.
@@ -103,25 +117,31 @@ namespace Inflatable.Aspect
         /// Gets or sets the many to many fields.
         /// </summary>
         /// <value>The many to many fields.</value>
-        public List<IManyToManyProperty>? ManyToManyFields { get; set; }
+        public List<IManyToManyProperty> ManyToManyFields { get; }
 
         /// <summary>
         /// Gets or sets the many to one fields.
         /// </summary>
         /// <value>The many to one fields.</value>
-        public List<IManyToOneProperty>? ManyToOneFields { get; set; }
+        public List<IManyToOneProperty> ManyToOneFields { get; }
 
         /// <summary>
         /// Gets or sets the map fields.
         /// </summary>
         /// <value>The map fields.</value>
-        public List<IMapProperty>? MapFields { get; set; }
+        public List<IMapProperty> MapFields { get; }
+
+        /// <summary>
+        /// Gets the object pool.
+        /// </summary>
+        /// <value>The object pool.</value>
+        public ObjectPool<StringBuilder> ObjectPool { get; }
 
         /// <summary>
         /// The reference fields that have been completed already.
         /// </summary>
         /// <value>The reference fields that have been completed already.</value>
-        public List<IProperty> ReferenceFields { get; set; }
+        public List<IProperty> ReferenceFields { get; }
 
         /// <summary>
         /// Gets the start method helpers.
@@ -149,7 +169,8 @@ namespace Inflatable.Aspect
         /// <param name="value">Object created by the system</param>
         public void Setup(object value)
         {
-            var TempObject = (IORMObject)value;
+            if (!(value is IORMObject TempObject))
+                return;
             TempObject.PropertiesChanged0 = new List<string>();
             TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
             {
@@ -163,7 +184,7 @@ namespace Inflatable.Aspect
         /// </summary>
         /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        public string SetupDefaultConstructor(Type baseType) => "";
+        public string SetupDefaultConstructor(Type baseType) => string.Empty;
 
         /// <summary>
         /// Used to insert code at the end of the method
@@ -174,24 +195,23 @@ namespace Inflatable.Aspect
         /// <returns>The code to insert</returns>
         public string SetupEndMethod(MethodInfo method, Type baseType, string returnValueName)
         {
-            if (!method.Name.StartsWith("get_", StringComparison.Ordinal))
+            if (method?.Name.StartsWith("get_", StringComparison.Ordinal) != true)
+                return string.Empty;
+            var Builder = ObjectPool.Get();
+            foreach (var (Source, ParentType) in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType))
+                .SelectMany(Source => Source.ParentTypes[baseType]
+                .Select(ParentType => (Source, ParentType))))
             {
-                return "";
-            }
-
-            var Builder = new StringBuilder();
-            foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
-            {
-                foreach (var ParentType in Source.ParentTypes[baseType])
+                var Mapping = Source.Mappings[ParentType];
+                foreach (var Helper in EndMethodHelpers)
                 {
-                    var Mapping = Source.Mappings[ParentType];
-                    foreach (var Helper in EndMethodHelpers)
-                    {
-                        Helper.Setup(returnValueName, method, Mapping, Builder);
-                    }
+                    Helper.Setup(returnValueName, method, Mapping, Builder);
                 }
             }
-            return Builder.ToString();
+
+            var Result = Builder.ToString();
+            ObjectPool.Return(Builder);
+            return Result;
         }
 
         /// <summary>
@@ -200,7 +220,7 @@ namespace Inflatable.Aspect
         /// <param name="method">Overridding Method</param>
         /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        public string SetupExceptionMethod(MethodInfo method, Type baseType) => "var Exception=CaughtException;";
+        public string SetupExceptionMethod(MethodInfo method, Type baseType) => ExceptionCaughtConst;
 
         /// <summary>
         /// Sets up the interfaces.
@@ -209,12 +229,14 @@ namespace Inflatable.Aspect
         /// <returns>The code required to set them up.</returns>
         public string SetupInterfaces(Type type)
         {
-            var Builder = new StringBuilder();
+            var Builder = ObjectPool.Get();
             foreach (var InterfaceHelper in InterfaceImplementationHelpers)
             {
-                Builder.AppendLine(InterfaceHelper.Setup(type, this));
+                Builder.AppendLine(InterfaceHelper.Setup(type, this, ObjectPool));
             }
-            return Builder.ToString();
+            var Result = Builder.ToString();
+            ObjectPool.Return(Builder);
+            return Result;
         }
 
         /// <summary>
@@ -225,24 +247,24 @@ namespace Inflatable.Aspect
         /// <returns>The code to insert</returns>
         public string SetupStartMethod(MethodInfo method, Type baseType)
         {
-            if (!method.Name.StartsWith("set_", StringComparison.Ordinal))
+            if (method?.Name.StartsWith("set_", StringComparison.Ordinal) != true)
             {
-                return "";
+                return string.Empty;
             }
 
-            var Builder = new StringBuilder();
-            foreach (var Source in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)))
+            var Builder = ObjectPool.Get();
+            foreach (var (Source, ParentType) in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)).SelectMany(Source => Source.ParentTypes[baseType].Select(ParentType => (Source, ParentType))))
             {
-                foreach (var ParentType in Source.ParentTypes[baseType])
+                var Mapping = Source.Mappings[ParentType];
+                foreach (var Helper in StartMethodHelpers)
                 {
-                    var Mapping = Source.Mappings[ParentType];
-                    foreach (var Helper in StartMethodHelpers)
-                    {
-                        Helper.Setup(method, Mapping, Builder);
-                    }
+                    Helper.Setup(method, Mapping, Builder);
                 }
             }
-            return Builder.ToString();
+
+            var Result = Builder.ToString();
+            ObjectPool.Return(Builder);
+            return Result;
         }
     }
 }

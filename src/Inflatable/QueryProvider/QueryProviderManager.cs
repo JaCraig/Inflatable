@@ -26,7 +26,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Reflection;
 
 namespace Inflatable.QueryProvider
 {
@@ -146,10 +145,10 @@ namespace Inflatable.QueryProvider
         {
             if (type.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
             {
-                type = type.GetTypeInfo().BaseType;
+                type = type.BaseType;
             }
 
-            return (IGenerator)typeof(QueryProviderManager).GetTypeInfo().GetMethod("CreateGenerator", new Type[] { typeof(IMappingSource) })
+            return (IGenerator)typeof(QueryProviderManager).GetMethod("CreateGenerator", new Type[] { typeof(IMappingSource) })
                                                            .MakeGenericMethod(type)
                                                            .Invoke(this, new object[] { mappingInfo });
         }

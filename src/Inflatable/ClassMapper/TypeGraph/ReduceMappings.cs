@@ -25,49 +25,27 @@ namespace Inflatable.ClassMapper.TypeGraph
     /// <summary>
     /// Reduces mappings and removes redundant items
     /// </summary>
-    public class ReduceMappings
+    public static class ReduceMapping
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReduceMappings"/> class.
-        /// </summary>
-        /// <param name="mappings">The mappings.</param>
-        /// <param name="logger">The logger.</param>
-        public ReduceMappings(IDictionary<Type, IMapping> mappings, ILogger logger)
-        {
-            Logger = logger;
-            Mappings = mappings ?? throw new ArgumentNullException(nameof(mappings));
-        }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>The logger.</value>
-        public ILogger Logger { get; set; }
-
-        /// <summary>
-        /// Gets or sets the mappings.
-        /// </summary>
-        /// <value>The mappings.</value>
-        private IDictionary<Type, IMapping> Mappings { get; }
-
         /// <summary>
         /// Reduces the mapping
         /// </summary>
         /// <param name="typeGraph">The type graph.</param>
-        public void Reduce(Tree<Type>? typeGraph)
+        /// <param name="mappings">The mappings.</param>
+        /// <param name="logger">The logger.</param>
+        public static void Reduce(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger logger)
         {
-            if (typeGraph is null)
+            if (typeGraph is null || mappings is null)
                 return;
-            var Mapping = Mappings[typeGraph.Root.Data];
-            Mapping.Reduce(Logger);
+            var Mapping = mappings[typeGraph.Root.Data];
+            Mapping.Reduce(logger);
             var GraphList = typeGraph.ToList();
             for (int x = 0, maxCount = GraphList.Count; x < maxCount; x++)
             {
-                var ParentType = GraphList[x];
-                var ParentMapping = Mappings[ParentType];
+                var ParentMapping = mappings[GraphList[x]];
                 if (Mapping != ParentMapping)
                 {
-                    Mapping.Reduce(ParentMapping, Logger);
+                    Mapping.Reduce(ParentMapping, logger);
                 }
             }
         }

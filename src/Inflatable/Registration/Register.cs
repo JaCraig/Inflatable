@@ -19,7 +19,6 @@ using Canister.Interfaces;
 using Data.Modeler.Registration;
 using Holmes.Registration;
 using SQLHelperDB.Registration;
-using System.Reflection;
 
 namespace Inflatable.Registration
 {
@@ -35,7 +34,7 @@ namespace Inflatable.Registration
         /// <returns>The bootstrapper</returns>
         public static IBootstrapper? RegisterInflatable(this IBootstrapper? bootstrapper)
         {
-            return bootstrapper?.AddAssembly(typeof(Registration).GetTypeInfo().Assembly)
+            return bootstrapper?.AddAssembly(typeof(Registration).Assembly)
                                ?.RegisterSQLHelper()
                                ?.RegisterDataModeler()
                                ?.RegisterBigBookOfDataTypes()

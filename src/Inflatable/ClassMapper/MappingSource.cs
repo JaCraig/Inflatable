@@ -20,12 +20,12 @@ using Inflatable.Enums;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.Utils;
+using Microsoft.Extensions.ObjectPool;
 using Serilog;
+using Serilog.Events;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace Inflatable.ClassMapper
@@ -43,22 +43,47 @@ namespace Inflatable.ClassMapper
         /// <param name="source">Database source</param>
         /// <param name="queryProvider">The query provider.</param>
         /// <param name="logger">Logging object</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <exception cref="ArgumentNullException">queryProvider or source</exception>
-        public MappingSource(IEnumerable<IMapping> mappings, IDatabase source, QueryProviderManager queryProvider, ILogger logger)
+        public MappingSource(
+            IEnumerable<IMapping> mappings,
+            IDatabase source,
+            QueryProviderManager queryProvider,
+            ILogger logger,
+            ObjectPool<StringBuilder> objectPool)
         {
-            QueryProvider = queryProvider ?? throw new ArgumentNullException(nameof(queryProvider));
-            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
-            ConcreteTypes = Array.Empty<Type>();
-            mappings ??= new ConcurrentBag<IMapping>();
             Source = source ?? throw new ArgumentNullException(nameof(source));
+            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
             Logger.Information("Setting up {Name:l}", source.Name);
+
+            QueryProvider = queryProvider ?? throw new ArgumentNullException(nameof(queryProvider));
+            ConcreteTypes = Array.Empty<Type>();
+            mappings ??= Array.Empty<IMapping>();
+
+            IsDebug = Logger.IsEnabled(LogEventLevel.Debug);
+            var TempSourceOptions = Source.SourceOptions;
+            if (!(TempSourceOptions is null))
+            {
+                CanRead = (TempSourceOptions.Access & SourceAccess.Read) != 0;
+                CanWrite = (TempSourceOptions.Access & SourceAccess.Write) != 0;
+                ApplyAnalysis = TempSourceOptions.Analysis == SchemaAnalysis.ApplyAnalysis;
+                GenerateAnalysis = TempSourceOptions.Analysis == SchemaAnalysis.GenerateAnalysis;
+                GenerateSchema = TempSourceOptions.SchemaUpdate == SchemaGeneration.GenerateSchemaChanges;
+                UpdateSchema = TempSourceOptions.SchemaUpdate == SchemaGeneration.UpdateSchema;
+                Optimize = TempSourceOptions.Optimize;
+            }
+
             Order = Source.Order;
-            Mappings = new ConcurrentDictionary<Type, IMapping>();
-            TypeGraphs = new ConcurrentDictionary<Type, Tree<Type>?>();
+
             ChildTypes = new ListMapping<Type, Type>();
             ParentTypes = new ListMapping<Type, Type>();
-            AddMappings(mappings);
-            SetupTypeGraphs();
+            ObjectPool = objectPool;
+
+            Logger.Information("Adding mappings for {Name:l}", Source.Name);
+            Mappings = mappings.ToDictionary(x => x.ObjectType);
+            Logger.Information("Setting up type graphs for {Name:l}", Source.Name);
+            TypeGraphs = Mappings.ToDictionary(Item => Item.Key, Item => Generator.Generate(Item.Key, Mappings));
+
             SetupChildTypes();
             MergeMappings();
             SetupParentTypes();
@@ -68,22 +93,32 @@ namespace Inflatable.ClassMapper
         }
 
         /// <summary>
+        /// The is debug
+        /// </summary>
+        private readonly bool IsDebug;
+
+        /// <summary>
+        /// To string value
+        /// </summary>
+        private string? _ToString;
+
+        /// <summary>
         /// Gets a value indicating whether to [apply analysis].
         /// </summary>
         /// <value><c>true</c> if you should [apply analysis]; otherwise, <c>false</c>.</value>
-        public bool ApplyAnalysis => Source?.SourceOptions?.Analysis == SchemaAnalysis.ApplyAnalysis;
+        public bool ApplyAnalysis { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance can be read.
         /// </summary>
         /// <value><c>true</c> if this instance can be read; otherwise, <c>false</c>.</value>
-        public bool CanRead => (Source?.SourceOptions?.Access & SourceAccess.Read) != 0;
+        public bool CanRead { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance can be written to.
         /// </summary>
         /// <value><c>true</c> if this instance can be written to; otherwise, <c>false</c>.</value>
-        public bool CanWrite => (Source?.SourceOptions?.Access & SourceAccess.Write) != 0;
+        public bool CanWrite { get; }
 
         /// <summary>
         /// Gets the child types.
@@ -95,30 +130,42 @@ namespace Inflatable.ClassMapper
         /// Gets the concrete types.
         /// </summary>
         /// <value>The concrete types.</value>
-        public IEnumerable<Type> ConcreteTypes { get; private set; }
+        public Type[] ConcreteTypes { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether to [generate analysis].
         /// </summary>
         /// <value><c>true</c> if you should [generate analysis]; otherwise, <c>false</c>.</value>
-        public bool GenerateAnalysis => Source?.SourceOptions?.Analysis == SchemaAnalysis.GenerateAnalysis;
+        public bool GenerateAnalysis { get; }
 
         /// <summary>
         /// Gets a value indicating whether to [generate schema].
         /// </summary>
         /// <value><c>true</c> if you should [generate schema]; otherwise, <c>false</c>.</value>
-        public bool GenerateSchema => Source?.SourceOptions?.SchemaUpdate == SchemaGeneration.GenerateSchemaChanges;
+        public bool GenerateSchema { get; }
 
         /// <summary>
         /// Logger for the system
         /// </summary>
-        public ILogger Logger { get; set; }
+        public ILogger Logger { get; }
 
         /// <summary>
         /// Gets or sets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        public IDictionary<Type, IMapping> Mappings { get; }
+        public Dictionary<Type, IMapping> Mappings { get; }
+
+        /// <summary>
+        /// Gets or sets the ObjectPool.
+        /// </summary>
+        /// <value>The ObjectPool.</value>
+        public ObjectPool<StringBuilder> ObjectPool { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether to [optimize].
+        /// </summary>
+        /// <value><c>true</c> if you should [optimize]; otherwise, <c>false</c>.</value>
+        public bool Optimize { get; }
 
         /// <summary>
         /// Order that the source is used
@@ -146,13 +193,13 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the type graph.
         /// </summary>
         /// <value>The type graph.</value>
-        public IDictionary<Type, Tree<Type>?> TypeGraphs { get; }
+        public Dictionary<Type, Tree<Type>?> TypeGraphs { get; }
 
         /// <summary>
         /// Gets a value indicating whether to [update schema].
         /// </summary>
         /// <value><c>true</c> if you should [update schema]; otherwise, <c>false</c>.</value>
-        public bool UpdateSchema => Source?.SourceOptions?.SchemaUpdate == SchemaGeneration.UpdateSchema;
+        public bool UpdateSchema { get; }
 
         /// <summary>
         /// Determines whether the specified <see cref="object"/>, is equal to this instance.
@@ -180,12 +227,19 @@ namespace Inflatable.ClassMapper
         /// <returns>The IMapping list associated with the object type.</returns>
         public IEnumerable<IMapping> GetChildMappings(Type objectType)
         {
-            if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-            {
-                objectType = objectType.GetTypeInfo().BaseType;
-            }
+            if (objectType is null)
+                yield break;
 
-            return ChildTypes.ContainsKey(objectType) ? ChildTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
+            if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
+                objectType = objectType.BaseType;
+
+            if (!ChildTypes.ContainsKey(objectType))
+                yield break;
+
+            foreach (var Item in ChildTypes[objectType])
+            {
+                yield return Mappings[Item];
+            }
         }
 
         /// <summary>
@@ -214,12 +268,19 @@ namespace Inflatable.ClassMapper
         /// <returns>The IMapping list associated with the object type.</returns>
         public IEnumerable<IMapping> GetParentMapping(Type objectType)
         {
+            if (objectType is null)
+                yield break;
             if (objectType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
             {
-                objectType = objectType.GetTypeInfo().BaseType;
+                objectType = objectType.BaseType;
             }
+            if (!ParentTypes.ContainsKey(objectType))
+                yield break;
 
-            return ParentTypes.ContainsKey(objectType) ? ParentTypes[objectType].ForEach(x => Mappings[x]) : new List<IMapping>();
+            foreach (var Item in ParentTypes[objectType])
+            {
+                yield return Mappings[Item];
+            }
         }
 
         /// <summary>
@@ -228,57 +289,49 @@ namespace Inflatable.ClassMapper
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            var Builder = new StringBuilder();
-            Builder.AppendLineFormat("Source: {0}", Source.Name);
-            foreach (var Mapping in Mappings.Values)
+            if (string.IsNullOrEmpty(_ToString))
             {
-                Builder.AppendLineFormat("\tMapping: {0}", Mapping);
-                Builder.AppendLine("\t\tIDs:");
-                foreach (var Property in Mapping.IDProperties)
+                var Builder = ObjectPool.Get();
+                Builder.AppendLineFormat("Source: {0}", Source.Name);
+                foreach (var Mapping in Mappings.Values)
                 {
-                    Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    Builder.AppendLineFormat("\tMapping: {0}", Mapping);
+                    Builder.AppendLine("\t\tIDs:");
+                    foreach (var Property in Mapping.IDProperties)
+                    {
+                        Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    }
+                    Builder.AppendLine("\t\tAuto IDs:");
+                    foreach (var Property in Mapping.AutoIDProperties)
+                    {
+                        Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    }
+                    Builder.AppendLine("\t\tReferences:");
+                    foreach (var Property in Mapping.ReferenceProperties)
+                    {
+                        Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    }
+                    Builder.AppendLine("\t\tMap:");
+                    foreach (var Property in Mapping.MapProperties)
+                    {
+                        Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    }
+                    Builder.AppendLine("\t\tMany To Many:");
+                    foreach (var Property in Mapping.ManyToManyProperties)
+                    {
+                        Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    }
+                    Builder.AppendLine("\t\tMany To One:");
+                    foreach (var Property in Mapping.ManyToOneProperties)
+                    {
+                        Builder.AppendLineFormat("\t\t\t{0}", Property);
+                    }
+                    Builder.AppendLine();
                 }
-                Builder.AppendLine("\t\tAuto IDs:");
-                foreach (var Property in Mapping.AutoIDProperties)
-                {
-                    Builder.AppendLineFormat("\t\t\t{0}", Property);
-                }
-                Builder.AppendLine("\t\tReferences:");
-                foreach (var Property in Mapping.ReferenceProperties)
-                {
-                    Builder.AppendLineFormat("\t\t\t{0}", Property);
-                }
-                Builder.AppendLine("\t\tMap:");
-                foreach (var Property in Mapping.MapProperties)
-                {
-                    Builder.AppendLineFormat("\t\t\t{0}", Property);
-                }
-                Builder.AppendLine("\t\tMany To Many:");
-                foreach (var Property in Mapping.ManyToManyProperties)
-                {
-                    Builder.AppendLineFormat("\t\t\t{0}", Property);
-                }
-                Builder.AppendLine("\t\tMany To One:");
-                foreach (var Property in Mapping.ManyToOneProperties)
-                {
-                    Builder.AppendLineFormat("\t\t\t{0}", Property);
-                }
-                Builder.AppendLine();
+                _ToString = Builder.ToString();
+                ObjectPool.Return(Builder);
             }
-            return Builder.ToString();
-        }
-
-        /// <summary>
-        /// Adds the mappings.
-        /// </summary>
-        /// <param name="mappings">The mappings.</param>
-        private void AddMappings(IEnumerable<IMapping> mappings)
-        {
-            Logger.Information("Adding mappings for {Name:l}", Source.Name);
-            foreach (var Mapping in mappings)
-            {
-                Mappings.Add(Mapping.ObjectType, Mapping);
-            }
+            return _ToString;
         }
 
         /// <summary>
@@ -286,16 +339,13 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void MergeMappings()
         {
-            if (!Source.SourceOptions.Optimize)
-            {
+            if (!Optimize)
                 return;
-            }
 
             Logger.Information("Merging mappings for {Name:l}", Source.Name);
-            var MappingMerger = new MergeMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
-                MappingMerger.Merge(TempTypeGraph);
+                MergeMapping.Merge(TempTypeGraph, Mappings, Logger);
             }
         }
 
@@ -304,16 +354,13 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void ReduceMappings()
         {
-            if (!Source.SourceOptions.Optimize)
-            {
+            if (!Optimize)
                 return;
-            }
 
             Logger.Information("Reducing mappings for {Name:l}", Source.Name);
-            var ReduceMapping = new ReduceMappings(Mappings, Logger);
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
-                ReduceMapping.Reduce(TempTypeGraph);
+                ReduceMapping.Reduce(TempTypeGraph, Mappings, Logger);
             }
         }
 
@@ -322,12 +369,11 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void RemoveDeadMappings()
         {
-            if (!Source.SourceOptions.Optimize)
-            {
+            if (!Optimize)
                 return;
-            }
 
             var NeededTypes = new List<Type>();
+
             foreach (var Mapping in Mappings.Keys)
             {
                 NeededTypes.AddIfUnique(ChildTypes[Mapping]);
@@ -335,7 +381,8 @@ namespace Inflatable.ClassMapper
             }
             foreach (var Item in Mappings.Keys.Where(x => !NeededTypes.Contains(x)))
             {
-                Logger.Debug("Removing mapping {MappingName:l} from {SourceName:l} as mapping has been merged.", Item.Name, Source.Name);
+                if (IsDebug)
+                    Logger.Debug("Removing mapping {MappingName:l} from {SourceName:l} as mapping has been merged.", Item.Name, Source.Name);
                 Mappings.Remove(Item);
                 TypeGraphs.Remove(Item);
             }
@@ -346,10 +393,8 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void SetupAutoIDs()
         {
-            if (!Source.SourceOptions.Optimize)
-            {
+            if (!Optimize)
                 return;
-            }
 
             foreach (var CurrentTree in TypeGraphs.Values)
             {
@@ -357,11 +402,9 @@ namespace Inflatable.ClassMapper
                     continue;
                 var CurrentMapping = Mappings[CurrentTree.Root.Data];
                 if (CurrentMapping.IDProperties.Count > 0)
-                {
                     continue;
-                }
-
-                Logger.Debug("Adding identity key to {Name:l} in {Source:l} as one is not defined.", CurrentMapping, Source.Name);
+                if (IsDebug)
+                    Logger.Debug("Adding identity key to {Name:l} in {Source:l} as one is not defined.", CurrentMapping, Source.Name);
                 CurrentMapping.AddAutoKey();
             }
         }
@@ -373,18 +416,18 @@ namespace Inflatable.ClassMapper
         private void SetupChildTypes()
         {
             Logger.Information("Setting up child type discovery for {Name:l}", Source.Name);
-            var TempConcreteDiscoverer = new DiscoverConcreteTypes(TypeGraphs);
-            ConcreteTypes = TempConcreteDiscoverer.FindConcreteTypes();
-            foreach (var ConcreteType in ConcreteTypes)
+            ConcreteTypes = DiscoverConcreteTypes.FindConcreteTypes(TypeGraphs);
+            for (var i = 0; i < ConcreteTypes.Length; i++)
             {
+                var ConcreteType = ConcreteTypes[i];
                 if (ConcreteType is null)
                     continue;
-                var Types = TypeGraphs[ConcreteType];
+                var Types = TypeGraphs[ConcreteType]?.ToList();
                 if (Types is null)
                     continue;
-                foreach (var Parent in Types.ToList())
+                for (var x = 0; x < Types.Count; x++)
                 {
-                    ChildTypes.Add(Parent, ConcreteType);
+                    ChildTypes.Add(Types[x], ConcreteType);
                 }
             }
         }
@@ -395,28 +438,13 @@ namespace Inflatable.ClassMapper
         private void SetupParentTypes()
         {
             Logger.Information("Setting up parent type discovery for {Name:l}", Source.Name);
-            foreach (var ConcreteType in ConcreteTypes)
+            for (var i = 0; i < ConcreteTypes.Length; i++)
             {
-                var Types = TypeGraphs[ConcreteType];
+                var ConcreteType = ConcreteTypes[i];
+                var Types = TypeGraphs[ConcreteType]?.ToList();
                 if (Types is null)
                     continue;
-                foreach (var Parent in Types.ToList())
-                {
-                    ParentTypes.Add(ConcreteType, Parent);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets up the type graphs.
-        /// </summary>
-        private void SetupTypeGraphs()
-        {
-            Logger.Information("Setting up type graphs for {Name:l}", Source.Name);
-            var TempGenerator = new Generator(Mappings);
-            foreach (var Key in Mappings.Keys)
-            {
-                TypeGraphs.Add(Key, TempGenerator.Generate(Key));
+                ParentTypes.Add(ConcreteType, Types);
             }
         }
     }

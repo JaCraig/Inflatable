@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace InflatableBenchmarks.Benchmarks.Tests
 {
-    [MemoryDiagnoser]
+    [MemoryDiagnoser, HtmlExporter]
     public class QueryAndCachingSchemeReferencesOnly
     {
         private DbContext<SimpleClass> Original { get; set; }

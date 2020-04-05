@@ -16,7 +16,6 @@ limitations under the License.
 
 using Inflatable.Utils;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,53 +24,18 @@ namespace Inflatable.ClassMapper.TypeGraph
     /// <summary>
     /// Discovers concrete types
     /// </summary>
-    public class DiscoverConcreteTypes
+    public static class DiscoverConcreteTypes
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiscoverConcreteTypes"/> class.
-        /// </summary>
-        /// <param name="typeTrees">The type trees.</param>
-        /// <exception cref="ArgumentNullException">typeTrees</exception>
-        public DiscoverConcreteTypes(IDictionary<Type, Tree<Type>?> typeTrees)
-        {
-            TypeTrees = typeTrees ?? throw new ArgumentNullException(nameof(typeTrees));
-        }
-
-        /// <summary>
-        /// Gets or sets the type trees.
-        /// </summary>
-        /// <value>The type trees.</value>
-        public IDictionary<Type, Tree<Type>?> TypeTrees { get; set; }
-
         /// <summary>
         /// Find concrete types
         /// </summary>
         /// <returns>The concrete types of the mapping tree</returns>
-        public IEnumerable<Type> FindConcreteTypes()
+        public static Type[] FindConcreteTypes(IDictionary<Type, Tree<Type>?> typeTrees)
         {
-            var Result = new ConcurrentBag<Type>();
-            for (var x = 0; x < TypeTrees.Keys.Count; ++x)
-            {
-                var KeyToCheck = TypeTrees.Keys.ElementAt(x);
-                var Found = false;
-                for (var y = 0; y < TypeTrees.Keys.Count; ++y)
-                {
-                    var CurrentKey = TypeTrees.Keys.ElementAt(y);
-                    if (CurrentKey != KeyToCheck)
-                    {
-                        Found = TypeTrees[CurrentKey]?.ContainsNode(KeyToCheck, (i, j) => i == j) == true;
-                        if (Found)
-                        {
-                            break;
-                        }
-                    }
-                }
-                if (!Found)
-                {
-                    Result.Add(KeyToCheck);
-                }
-            }
-            return Result;
+            return typeTrees is null
+                ? Array.Empty<Type>()
+                : typeTrees.Keys.Where(KeyToCheck => !typeTrees.Keys.Any(x => x != KeyToCheck
+                                                   && typeTrees[x]?.ContainsNode(KeyToCheck, (i, j) => i == j) == true)).ToArray();
         }
     }
 }

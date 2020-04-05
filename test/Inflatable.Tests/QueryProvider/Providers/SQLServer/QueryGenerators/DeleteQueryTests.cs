@@ -29,7 +29,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), TestObject.AssociatedType);
             Assert.Same(Mappings, TestObject.MappingInformation);
@@ -49,7 +50,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
@@ -71,7 +73,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>());
+               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);

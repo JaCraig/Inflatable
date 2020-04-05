@@ -25,7 +25,8 @@ namespace Inflatable.Tests.Schema
                 new TestDatabase2Mapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            ObjectPool);
         }
 
         private MappingManager Mappings { get; }

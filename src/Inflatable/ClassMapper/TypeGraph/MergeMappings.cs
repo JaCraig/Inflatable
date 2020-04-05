@@ -25,36 +25,15 @@ namespace Inflatable.ClassMapper.TypeGraph
     /// <summary>
     /// Merge mappings as needed
     /// </summary>
-    public class MergeMappings
+    public static class MergeMapping
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MergeMappings"/> class.
-        /// </summary>
-        /// <param name="mappings">The mappings.</param>
-        /// <param name="logger">The logger.</param>
-        public MergeMappings(IDictionary<Type, IMapping> mappings, ILogger logger)
-        {
-            Logger = logger;
-            Mappings = mappings ?? throw new ArgumentNullException(nameof(mappings));
-        }
-
-        /// <summary>
-        /// Gets or sets the logger.
-        /// </summary>
-        /// <value>The logger.</value>
-        public ILogger Logger { get; set; }
-
-        /// <summary>
-        /// Gets or sets the mappings.
-        /// </summary>
-        /// <value>The mappings.</value>
-        private IDictionary<Type, IMapping> Mappings { get; }
-
         /// <summary>
         /// Merges this instance.
         /// </summary>
         /// <param name="typeGraph">The type graph.</param>
-        public void Merge(Tree<Type>? typeGraph)
+        /// <param name="mappings">The mappings.</param>
+        /// <param name="logger">The logger.</param>
+        public static void Merge(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger logger)
         {
             if (typeGraph is null)
                 return;
@@ -66,7 +45,7 @@ namespace Inflatable.ClassMapper.TypeGraph
 
             for (var x = 0; x < CurrentNode.Nodes.Count; ++x)
             {
-                if (MergeNode(CurrentNode.Nodes[x]))
+                if (MergeNode(CurrentNode.Nodes[x], mappings, logger))
                 {
                     CurrentNode.Nodes[x].Remove();
                     --x;
@@ -74,30 +53,37 @@ namespace Inflatable.ClassMapper.TypeGraph
             }
         }
 
-        private bool MergeNode(TreeNode<Type> node)
+        /// <summary>
+        /// Merges the node.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="mappings">The mappings.</param>
+        /// <param name="logger">The logger.</param>
+        /// <returns>True if it is merged, false otherwise.</returns>
+        private static bool MergeNode(TreeNode<Type> node, Dictionary<Type, IMapping> mappings, ILogger logger)
         {
             for (var x = 0; x < node.Nodes.Count; ++x)
             {
-                if (MergeNode(node.Nodes[x]))
+                if (MergeNode(node.Nodes[x], mappings, logger))
                 {
                     node.Nodes[x].Remove();
                     --x;
                 }
             }
-            var Mapping = Mappings[node.Data];
+            var Mapping = mappings[node.Data];
             if (node.Parent != null && node.Nodes.Count == 0 && Mapping.IDProperties.Count == 0)
             {
-                var MappingParent = Mappings[node.Parent.Data];
+                var MappingParent = mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
-                Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
             if (node.Parent != null && Mapping.Merge)
             {
-                var MappingParent = Mappings[node.Parent.Data];
+                var MappingParent = mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
                 node.Parent.Nodes.AddRange(node.Nodes);
-                Logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
             return false;

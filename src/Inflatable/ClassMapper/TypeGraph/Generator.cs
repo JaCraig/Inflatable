@@ -18,52 +18,38 @@ using Inflatable.Interfaces;
 using Inflatable.Utils;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 
 namespace Inflatable.ClassMapper.TypeGraph
 {
     /// <summary>
     /// Type graph generator
     /// </summary>
-    public class Generator
+    public static class Generator
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Generator"/> class.
-        /// </summary>
-        /// <param name="mappings">The mappings.</param>
-        public Generator(IDictionary<Type, IMapping> mappings)
-        {
-            Mappings = mappings ?? throw new ArgumentNullException(nameof(mappings));
-        }
-
-        /// <summary>
-        /// Gets or sets the mappings.
-        /// </summary>
-        /// <value>The mappings.</value>
-        private IDictionary<Type, IMapping> Mappings { get; }
-
         /// <summary>
         /// Generates the specified mapping type.
         /// </summary>
         /// <param name="mappingType">Type of the mapping.</param>
+        /// <param name="mappings">The mappings.</param>
         /// <returns>The type graph associated with the type.</returns>
-        public Tree<Type>? Generate(Type mappingType)
+        public static Tree<Type>? Generate(Type mappingType, Dictionary<Type, IMapping> mappings)
         {
-            if (!Mappings.Keys.Contains(mappingType))
+            if (!(mappings?.Keys.Contains(mappingType) ?? false))
             {
                 return null;
             }
 
             var TempTypeGraph = new Tree<Type>(mappingType);
-            mappingType = mappingType.GetTypeInfo().BaseType;
+            mappingType = mappingType.BaseType;
             TreeNode<Type>? CurrentNode = TempTypeGraph.Root;
             while (mappingType != null)
             {
-                if (Mappings.Keys.Contains(mappingType))
+                if (mappings.Keys.Contains(mappingType))
                 {
                     CurrentNode = CurrentNode.AddNode(mappingType);
                 }
-                mappingType = mappingType.GetTypeInfo().BaseType;
+                mappingType = mappingType.BaseType;
             }
             while (CurrentNode != null)
             {
@@ -77,7 +63,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                         var Interface = CurrentInterfaces[x];
                         if (!TempTypeGraph.ContainsNode(Interface, (z, y) => z == y))
                         {
-                            PotentialNodes[x] = Generate(Interface);
+                            PotentialNodes[x] = Generate(Interface, mappings);
                         }
                     }
                     for (var x = 0; x < MaxLength; ++x)

@@ -17,6 +17,7 @@ limitations under the License.
 using BigBook;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
+using Microsoft.Extensions.ObjectPool;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -39,35 +40,54 @@ namespace Inflatable.ClassMapper
         /// <param name="sources">The sources.</param>
         /// <param name="queryProvider">The query provider.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <exception cref="ArgumentNullException">logger</exception>
-        public MappingManager(IEnumerable<IMapping> mappings, IEnumerable<IDatabase> sources, QueryProviderManager queryProvider, ILogger logger)
+        public MappingManager(
+            IEnumerable<IMapping> mappings,
+            IEnumerable<IDatabase> sources,
+            QueryProviderManager queryProvider,
+            ILogger logger,
+            ObjectPool<StringBuilder> objectPool)
         {
             Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
-            mappings ??= new ConcurrentBag<IMapping>();
+            ObjectPool = objectPool ?? throw new ArgumentNullException(nameof(objectPool));
+            mappings ??= Array.Empty<IMapping>();
+
             var Debug = Logger.IsEnabled(LogEventLevel.Debug);
+
             Logger.Information("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
-            mappings.ForEachParallel(x => TempSourceMappings.Add(x.DatabaseConfigType, x));
+            foreach (var Item in mappings)
+            {
+                TempSourceMappings.Add(Item.DatabaseConfigType, Item);
+            }
             var FinalList = new ConcurrentBag<IMappingSource>();
             TempSourceMappings.Keys.ForEachParallel(Key =>
             {
                 FinalList.Add(new MappingSource(TempSourceMappings[Key],
                                                 sources.FirstOrDefault(x => x.GetType() == Key),
                                                 queryProvider,
-                                                Logger));
+                                                Logger,
+                                                ObjectPool));
             });
-            Sources = FinalList;
+            Sources = FinalList.ToArray();
             if (Debug)
             {
-                var Builder = new StringBuilder();
+                var Builder = ObjectPool.Get();
                 Builder.AppendLine("Final Mappings:");
-                foreach (var Source in Sources)
+                for (var i = 0; i < Sources.Length; i++)
                 {
-                    Builder.AppendLine(Source.ToString());
+                    Builder.AppendLine(Sources[i].ToString());
                 }
                 Logger.Debug("{Info:l}", Builder.ToString());
+                ObjectPool.Return(Builder);
             }
         }
+
+        /// <summary>
+        /// To string value
+        /// </summary>
+        private string? _ToString;
 
         /// <summary>
         /// Gets or sets the logger.
@@ -76,10 +96,16 @@ namespace Inflatable.ClassMapper
         public ILogger Logger { get; set; }
 
         /// <summary>
+        /// Gets or sets the ObjectPool.
+        /// </summary>
+        /// <value>The ObjectPool.</value>
+        public ObjectPool<StringBuilder> ObjectPool { get; }
+
+        /// <summary>
         /// Gets or sets the sources.
         /// </summary>
         /// <value>The sources.</value>
-        public IEnumerable<IMappingSource> Sources { get; set; }
+        public IMappingSource[] Sources { get; set; }
 
         /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.
@@ -87,12 +113,17 @@ namespace Inflatable.ClassMapper
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
         public override string ToString()
         {
-            var Builder = new StringBuilder();
-            foreach (var Source in Sources)
+            if (string.IsNullOrEmpty(_ToString))
             {
-                Builder.AppendLine(Source.ToString());
+                var Builder = ObjectPool.Get();
+                for (var i = 0; i < Sources.Length; i++)
+                {
+                    Builder.AppendLine(Sources[i].ToString());
+                }
+                _ToString = Builder.ToString();
+                ObjectPool.Return(Builder);
             }
-            return Builder.ToString();
+            return _ToString;
         }
     }
 }

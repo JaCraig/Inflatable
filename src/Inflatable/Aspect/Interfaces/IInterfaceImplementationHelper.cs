@@ -14,7 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using Microsoft.Extensions.ObjectPool;
 using System;
+using System.Text;
 
 namespace Inflatable.Aspect.Interfaces
 {
@@ -28,7 +30,8 @@ namespace Inflatable.Aspect.Interfaces
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="aspect">The aspect.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <returns>The resulting code in string format.</returns>
-        string Setup(Type type, ORMAspect aspect);
+        string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool);
     }
 }

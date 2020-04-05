@@ -23,7 +23,8 @@ namespace Inflatable.Tests.ClassMapper
                 new MockDatabaseMapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            ObjectPool);
             var TestSource = TestObject.Sources.First();
             Assert.Single(TestObject.Sources);
             Assert.Equal(1, TestSource.Mappings.Count);

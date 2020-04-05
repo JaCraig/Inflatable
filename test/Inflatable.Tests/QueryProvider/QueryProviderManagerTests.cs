@@ -37,7 +37,8 @@ namespace Inflatable.Tests.QueryProvider
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               ObjectPool);
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);

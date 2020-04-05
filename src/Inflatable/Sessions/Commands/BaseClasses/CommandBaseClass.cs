@@ -23,7 +23,6 @@ using Inflatable.Sessions.Commands.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Inflatable.Sessions.Commands.BaseClasses
@@ -205,7 +204,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
             var TempType = @object.GetType();
             if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
             {
-                TempType = TempType.GetTypeInfo().BaseType;
+                TempType = TempType.BaseType;
             }
 
             return TempType;

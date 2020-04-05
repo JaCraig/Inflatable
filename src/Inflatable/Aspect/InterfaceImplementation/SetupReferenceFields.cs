@@ -16,9 +16,8 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.Aspect.Interfaces;
-using Inflatable.ClassMapper.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -35,11 +34,14 @@ namespace Inflatable.Aspect.InterfaceImplementation
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="aspect">The aspect.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <returns>The resulting code in string format.</returns>
-        public string Setup(Type type, ORMAspect aspect)
+        public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
-            aspect.ReferenceFields = new List<IProperty>();
-            var Builder = new StringBuilder();
+            if (aspect is null || objectPool is null)
+                return string.Empty;
+            aspect.ReferenceFields.Clear();
+            var Builder = objectPool.Get();
             foreach (var Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
             {
                 var Mapping = Source.Mappings[type];
@@ -50,12 +52,14 @@ namespace Inflatable.Aspect.InterfaceImplementation
                                                           .Where(x => !aspect.ReferenceFields.Any(y => y.Name == x.Name)))
                     {
                         aspect.ReferenceFields.Add(Property);
-                        Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.InternalFieldName);
-                        Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
+                        Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";")
+                            .Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
                 }
             }
-            return Builder.ToString();
+            var Result = Builder.ToString();
+            objectPool.Return(Builder);
+            return Result;
         }
     }
 }

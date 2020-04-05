@@ -17,8 +17,8 @@ limitations under the License.
 using BigBook;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -35,12 +35,15 @@ namespace Inflatable.Aspect.InterfaceImplementation
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="aspect">The aspect.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <returns>The resulting code in string format.</returns>
-        public string Setup(Type type, ORMAspect aspect)
+        public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
-            aspect.ManyToManyFields = new List<IManyToManyProperty>();
-            aspect.ManyToOneFields = new List<IManyToOneProperty>();
-            var Builder = new StringBuilder();
+            if (aspect is null || objectPool is null)
+                return string.Empty;
+            aspect.ManyToManyFields.Clear();
+            aspect.ManyToOneFields.Clear();
+            var Builder = objectPool.Get();
             foreach (var Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
             {
                 var Mapping = Source.Mappings[type];
@@ -51,8 +54,8 @@ namespace Inflatable.Aspect.InterfaceImplementation
                                                           .Where(x => !aspect.ManyToManyFields.Any(y => y.Name == x.Name)))
                     {
                         aspect.ManyToManyFields.Add(Property);
-                        Builder.AppendLineFormat("private {0} {1};", "IList<" + Property.TypeName + ">", Property.InternalFieldName);
-                        Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
+                        Builder.Append("private IList<").Append(Property.TypeName).Append("> ").Append(Property.InternalFieldName).AppendLine(";")
+                            .Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
                     foreach (var Property in Mapping.ManyToOneProperties
                                                           .Where(x => !aspect.ManyToOneFields.Any(y => y.Name == x.Name)))
@@ -60,18 +63,20 @@ namespace Inflatable.Aspect.InterfaceImplementation
                         aspect.ManyToOneFields.Add(Property);
                         if (Property is IManyToOneListProperty)
                         {
-                            Builder.AppendLineFormat("private {0} {1};", "IList<" + Property.TypeName + ">", Property.InternalFieldName);
+                            Builder.Append("private IList<").Append(Property.TypeName).Append("> ").Append(Property.InternalFieldName).AppendLine(";");
                         }
                         else
                         {
-                            Builder.AppendLineFormat("private {0} {1};", Property.TypeName, Property.InternalFieldName);
+                            Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";");
                         }
 
-                        Builder.AppendLineFormat("private bool {0};", Property.InternalFieldName + "Loaded");
+                        Builder.Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
                 }
             }
-            return Builder.ToString();
+            var Result = Builder.ToString();
+            objectPool.Return(Builder);
+            return Result;
         }
     }
 }

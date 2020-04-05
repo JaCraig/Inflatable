@@ -36,7 +36,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               ObjectPool);
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
         }

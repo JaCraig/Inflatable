@@ -16,7 +16,7 @@ namespace Inflatable.Tests.LinqExpression
         [Fact]
         public void AddParameter()
         {
-            var TestObject = new QueryData<AllReferencesAndID>(new Inflatable.ClassMapper.MappingSource(new List<IMapping>(), new MockDatabaseMappingForMockMapping(), Canister.Builder.Bootstrapper.Resolve<QueryProviderManager>(), null));
+            var TestObject = new QueryData<AllReferencesAndID>(new Inflatable.ClassMapper.MappingSource(new List<IMapping>(), new MockDatabaseMappingForMockMapping(), Canister.Builder.Bootstrapper.Resolve<QueryProviderManager>(), null, ObjectPool));
             TestObject.Parameters.Add(new Parameter<int>("0", 1));
             Assert.Equal(1, TestObject.Parameters.Count);
             Assert.Equal(DbType.Int32, TestObject.Parameters[0].DatabaseType);

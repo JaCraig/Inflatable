@@ -58,7 +58,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 throw new ArgumentNullException(nameof(mapping));
             }
 
-            var DataTypeInfo = typeof(DataType).GetTypeInfo();
+            var DataTypeInfo = typeof(DataType);
 
             Name = expression.PropertyName();
             ColumnName = mapping.Prefix + Name + mapping.Suffix;

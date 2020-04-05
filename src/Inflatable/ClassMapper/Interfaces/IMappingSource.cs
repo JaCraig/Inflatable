@@ -57,7 +57,7 @@ namespace Inflatable.ClassMapper
         /// Gets the concrete types.
         /// </summary>
         /// <value>The concrete types.</value>
-        IEnumerable<Type> ConcreteTypes { get; }
+        Type[] ConcreteTypes { get; }
 
         /// <summary>
         /// Gets a value indicating whether [generate analysis].
@@ -75,13 +75,13 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the logger.
         /// </summary>
         /// <value>The logger.</value>
-        ILogger Logger { get; set; }
+        ILogger Logger { get; }
 
         /// <summary>
         /// Gets the mappings.
         /// </summary>
         /// <value>The mappings.</value>
-        IDictionary<Type, IMapping> Mappings { get; }
+        Dictionary<Type, IMapping> Mappings { get; }
 
         /// <summary>
         /// Gets the order.
@@ -111,7 +111,7 @@ namespace Inflatable.ClassMapper
         /// Gets the type graphs.
         /// </summary>
         /// <value>The type graphs.</value>
-        IDictionary<Type, Tree<Type>?> TypeGraphs { get; }
+        Dictionary<Type, Tree<Type>?> TypeGraphs { get; }
 
         /// <summary>
         /// Gets a value indicating whether [update schema].

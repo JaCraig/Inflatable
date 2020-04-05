@@ -25,7 +25,8 @@ namespace Inflatable.Tests.ClassMapper
                 new SecondMockDatabaseMapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>());
+            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            ObjectPool);
 
             Assert.Equal(2, TestObject.Sources.Count());
             var Source1 = TestObject.Sources.First(x => x.Source.GetType() == typeof(MockDatabaseMapping));

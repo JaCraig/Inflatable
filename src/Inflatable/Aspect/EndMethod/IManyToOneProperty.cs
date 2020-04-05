@@ -18,6 +18,7 @@ using BigBook;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -39,11 +40,11 @@ namespace Inflatable.Aspect.EndMethod
         /// <param name="builder">The builder.</param>
         public void Setup(string returnValueName, MethodInfo method, IMapping mapping, StringBuilder builder)
         {
-            var Property = mapping.ManyToOneProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", ""));
-            if (Property is null)
-            {
+            if (mapping is null)
                 return;
-            }
+            var Property = mapping.ManyToOneProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", string.Empty, StringComparison.Ordinal));
+            if (Property is null)
+                return;
 
             if (Property is IManyToOneListProperty)
             {
