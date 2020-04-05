@@ -66,7 +66,19 @@ namespace Inflatable.BaseClasses
             MapProperties = new List<IMapProperty>();
             ManyToManyProperties = new List<IManyToManyProperty>();
             ManyToOneProperties = new List<IManyToOneProperty>();
+            _HashCode = TableName.GetHashCode(StringComparison.InvariantCulture) * DatabaseConfigType.GetHashCode() % int.MaxValue;
+            _ToString = ObjectType.Name;
         }
+
+        /// <summary>
+        /// The hash code
+        /// </summary>
+        private readonly int _HashCode;
+
+        /// <summary>
+        /// To string
+        /// </summary>
+        private readonly string _ToString;
 
         /// <summary>
         /// Gets the automatic identifier properties.
@@ -287,12 +299,8 @@ namespace Inflatable.BaseClasses
         /// <returns></returns>
         public override bool Equals(object? obj)
         {
-            if (!(obj is MappingBaseClass<TClassType, TDatabaseType> Object2))
-            {
-                return false;
-            }
-
-            return string.Equals(TableName, Object2.TableName, StringComparison.Ordinal)
+            return obj is MappingBaseClass<TClassType, TDatabaseType> Object2
+                && string.Equals(TableName, Object2.TableName, StringComparison.Ordinal)
                 && DatabaseConfigType == Object2.DatabaseConfigType;
         }
 
@@ -304,25 +312,25 @@ namespace Inflatable.BaseClasses
         public string GetColumnName(string propertyName)
         {
             var IDProperty = IDProperties.FirstOrDefault(x => x.Name == propertyName);
-            if (IDProperty != null)
+            if (!(IDProperty is null))
             {
                 return "[" + SchemaName + "].[" + TableName + "].[" + IDProperty.ColumnName + "]";
             }
 
             var ReferenceProperty = ReferenceProperties.FirstOrDefault(x => x.Name == propertyName);
-            if (ReferenceProperty != null)
+            if (!(ReferenceProperty is null))
             {
                 return "[" + SchemaName + "].[" + TableName + "].[" + ReferenceProperty.ColumnName + "]";
             }
 
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
         /// Gets the mapping's hash code
         /// </summary>
         /// <returns>Hash code for the mapping</returns>
-        public override int GetHashCode() => (TableName.GetHashCode(StringComparison.InvariantCulture) * DatabaseConfigType.GetHashCode()) % int.MaxValue;
+        public override int GetHashCode() => _HashCode;
 
         /// <summary>
         /// Declares a property as an ID
@@ -334,9 +342,7 @@ namespace Inflatable.BaseClasses
         public ID<TClassType, TDataType> ID<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var ReturnValue = new ID<TClassType, TDataType>(expression, this);
             IDProperties.Add(ReturnValue);
@@ -353,9 +359,7 @@ namespace Inflatable.BaseClasses
             where TDataType : class
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var ReturnValue = new ManyToMany<TClassType, TDataType>(expression, this);
             ManyToManyProperties.Add(ReturnValue);
@@ -372,9 +376,7 @@ namespace Inflatable.BaseClasses
             where TDataType : class
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var ReturnValue = new ManyToOneMany<TClassType, TDataType>(expression, this);
             ManyToOneProperties.Add(ReturnValue);
@@ -391,9 +393,7 @@ namespace Inflatable.BaseClasses
             where TDataType : class
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var ReturnValue = new ManyToOneSingle<TClassType, TDataType>(expression, this);
             ManyToOneProperties.Add(ReturnValue);
@@ -411,9 +411,7 @@ namespace Inflatable.BaseClasses
             where TDataType : class
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var ReturnValue = new Map<TClassType, TDataType>(expression, this);
             MapProperties.Add(ReturnValue);
@@ -426,6 +424,7 @@ namespace Inflatable.BaseClasses
         /// <param name="logger">The logger.</param>
         public void Reduce(ILogger logger)
         {
+            var IsDebug = logger?.IsEnabled(Serilog.Events.LogEventLevel.Debug) ?? false;
             for (var x = 0; x < IDProperties.Count; ++x)
             {
                 var IDProperty1 = IDProperties.ElementAt(x);
@@ -434,7 +433,8 @@ namespace Inflatable.BaseClasses
                     var IDProperty2 = IDProperties.ElementAt(y);
                     if (IDProperty1 == IDProperty2)
                     {
-                        logger?.Debug("Found duplicate ID and removing {Name:l} from mapping {Mapping:l}", IDProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate ID and removing {Name:l} from mapping {Mapping:l}", IDProperty2.Name, ObjectType.Name);
                         IDProperties.Remove(IDProperty2);
                         --y;
                     }
@@ -448,7 +448,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -462,7 +463,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = MapProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -476,7 +478,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -491,7 +494,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -508,6 +512,7 @@ namespace Inflatable.BaseClasses
         {
             if (parentMapping is null)
                 return;
+            var IsDebug = logger?.IsEnabled(Serilog.Events.LogEventLevel.Debug) ?? false;
             for (var x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.ReferenceProperties.ElementAt(x);
@@ -516,7 +521,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -530,7 +536,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = MapProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -544,7 +551,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -559,7 +567,8 @@ namespace Inflatable.BaseClasses
                     var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
-                        logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                        if (IsDebug)
+                            logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -577,9 +586,7 @@ namespace Inflatable.BaseClasses
         public Reference<TClassType, TDataType> Reference<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             var ReturnValue = new Reference<TClassType, TDataType>(expression, this);
             ReferenceProperties.Add(ReturnValue);
@@ -598,9 +605,7 @@ namespace Inflatable.BaseClasses
         public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters)
         {
             if (string.IsNullOrEmpty(queryString))
-            {
                 throw new ArgumentNullException(nameof(queryString));
-            }
 
             Queries.Add(queryType, new Query(ObjectType, databaseCommandType, queryString, queryType, parameters));
             return this;
@@ -617,6 +622,6 @@ namespace Inflatable.BaseClasses
         /// Converts the mapping to a string
         /// </summary>
         /// <returns>The table name</returns>
-        public override string ToString() => ObjectType.Name;
+        public override string ToString() => _ToString;
     }
 }

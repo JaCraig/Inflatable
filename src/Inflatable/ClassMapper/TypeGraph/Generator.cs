@@ -35,15 +35,13 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <returns>The type graph associated with the type.</returns>
         public static Tree<Type>? Generate(Type mappingType, Dictionary<Type, IMapping> mappings)
         {
-            if (!(mappings?.Keys.Contains(mappingType) ?? false))
-            {
+            if (mappingType is null || !(mappings?.Keys.Contains(mappingType) ?? false))
                 return null;
-            }
 
             var TempTypeGraph = new Tree<Type>(mappingType);
             mappingType = mappingType.BaseType;
             TreeNode<Type>? CurrentNode = TempTypeGraph.Root;
-            while (mappingType != null)
+            while (!(mappingType is null))
             {
                 if (mappings.Keys.Contains(mappingType))
                 {
@@ -51,7 +49,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                 }
                 mappingType = mappingType.BaseType;
             }
-            while (CurrentNode != null)
+            while (!(CurrentNode is null))
             {
                 var CurrentInterfaces = CurrentNode.Data.GetInterfaces();
                 var MaxLength = CurrentInterfaces.Length;

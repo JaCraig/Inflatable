@@ -20,9 +20,12 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using System;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace Inflatable.QueryProvider.BaseClasses
 {
@@ -38,9 +41,12 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Constructor
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        protected QueryGeneratorBaseClass(IMappingSource mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        /// <exception cref="ArgumentNullException">mappingInformation</exception>
+        protected QueryGeneratorBaseClass(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
         {
             MappingInformation = mappingInformation ?? throw new ArgumentNullException(nameof(mappingInformation));
+            ObjectPool = objectPool ?? throw new ArgumentNullException(nameof(objectPool));
         }
 
         /// <summary>
@@ -54,6 +60,12 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <value>The mapping information.</value>
         public IMappingSource MappingInformation { get; }
+
+        /// <summary>
+        /// Gets the object pool.
+        /// </summary>
+        /// <value>The object pool.</value>
+        public ObjectPool<StringBuilder> ObjectPool { get; }
 
         /// <summary>
         /// Gets the type of the query.
@@ -88,7 +100,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="idProperty">The identifier property.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string GetColumnName(IAutoIDProperty idProperty, string suffix = "") => GetTableName(idProperty.ParentMapping, suffix) + ".[" + idProperty.ColumnName + "]";
+        protected string GetColumnName(IAutoIDProperty idProperty, string suffix = "") => GetTableName(idProperty?.ParentMapping, suffix) + ".[" + idProperty?.ColumnName + "]";
 
         /// <summary>
         /// Gets the name of the column.
@@ -96,7 +108,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="referenceProperty">The reference property.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string GetColumnName(IProperty referenceProperty, string suffix = "") => GetTableName(referenceProperty.ParentMapping, suffix) + ".[" + referenceProperty.ColumnName + "]";
+        protected string GetColumnName(IProperty referenceProperty, string suffix = "") => GetTableName(referenceProperty?.ParentMapping, suffix) + ".[" + referenceProperty?.ColumnName + "]";
 
         /// <summary>
         /// Gets the name of the column.
@@ -140,7 +152,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="idProperty">The identifier property.</param>
         /// <returns>The parameter name</returns>
-        protected string GetParameterName(IIDProperty? idProperty) => "@" + idProperty?.Name;
+        protected string GetParameterName(IIDProperty? idProperty) => $"@{idProperty?.Name}";
 
         /// <summary>
         /// Gets the name of the parameter.
@@ -162,7 +174,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="referenceProperty">The reference property.</param>
         /// <returns>The parameter name</returns>
-        protected string GetParameterName(IProperty referenceProperty) => "@" + referenceProperty.Name;
+        protected string GetParameterName(IProperty referenceProperty) => $"@{referenceProperty?.Name}";
 
         /// <summary>
         /// Gets the type of the parameter.
@@ -176,7 +188,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="iDProperty">The i d property.</param>
         /// <returns>The parameter type name</returns>
-        protected string GetParameterType(IIDProperty iDProperty) => iDProperty.PropertyType.To(SqlDbType.Int).ToString().ToUpper();
+        protected string GetParameterType(IIDProperty iDProperty) => iDProperty?.PropertyType.To(SqlDbType.Int).ToString().ToUpper(CultureInfo.InvariantCulture) ?? string.Empty;
 
         /// <summary>
         /// Gets the name of the parent column.
@@ -185,7 +197,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="autoIDProperty">The automatic identifier property.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The parent column name</returns>
-        protected string GetParentColumnName(IMapping childMapping, IAutoIDProperty autoIDProperty, string suffix = "") => GetTableName(childMapping, suffix) + ".[" + autoIDProperty.ParentMapping.TableName + autoIDProperty.ColumnName + "]";
+        protected string GetParentColumnName(IMapping childMapping, IAutoIDProperty autoIDProperty, string suffix = "") => $"{GetTableName(childMapping, suffix)}.[{autoIDProperty?.ParentMapping.TableName}{autoIDProperty?.ColumnName}]";
 
         /// <summary>
         /// Gets the name of the parent column.
@@ -194,21 +206,21 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="iDProperty">The i d property.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The parent column name</returns>
-        protected string GetParentColumnName(IMapping childMapping, IIDProperty iDProperty, string suffix = "") => GetTableName(childMapping, suffix) + ".[" + iDProperty.ParentMapping.TableName + iDProperty.ColumnName + "]";
+        protected string GetParentColumnName(IMapping childMapping, IIDProperty iDProperty, string suffix = "") => $"{GetTableName(childMapping, suffix)}.[{iDProperty?.ParentMapping.TableName}{iDProperty?.ColumnName}]";
 
         /// <summary>
         /// Gets the name of the parent parameter.
         /// </summary>
         /// <param name="autoIDProperty">The automatic identifier property.</param>
         /// <returns>The parent parameter name</returns>
-        protected string GetParentParameterName(IAutoIDProperty autoIDProperty) => "@" + autoIDProperty.ParentMapping.TableName + autoIDProperty.ColumnName + "Temp";
+        protected string GetParentParameterName(IAutoIDProperty autoIDProperty) => $"@{autoIDProperty?.ParentMapping.TableName}{autoIDProperty?.ColumnName}Temp";
 
         /// <summary>
         /// Gets the name of the parent parameter.
         /// </summary>
         /// <param name="iDProperty">The i d property.</param>
         /// <returns>The parent parameter name</returns>
-        protected string GetParentParameterName(IIDProperty iDProperty) => "@" + iDProperty.ParentMapping.TableName + iDProperty.Name + "_Temp";
+        protected string GetParentParameterName(IIDProperty iDProperty) => $"@{iDProperty?.ParentMapping.TableName}{iDProperty?.Name}_Temp";
 
         /// <summary>
         /// Gets the name of the table.
@@ -219,7 +231,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         protected string GetTableName(IMapping? parentMapping, string suffix = "")
         {
             if (parentMapping is null)
-                return "";
+                return string.Empty;
             return string.IsNullOrEmpty(suffix)
                 ? "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]"
                 : "[" + parentMapping.TableName + suffix + "]";
@@ -230,6 +242,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>The name of the table.</returns>
-        protected string GetTableName(IManyToManyProperty property) => "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "]";
+        protected string GetTableName(IManyToManyProperty property) => $"[{property?.ParentMapping.SchemaName}].[{property.TableName}]";
     }
 }

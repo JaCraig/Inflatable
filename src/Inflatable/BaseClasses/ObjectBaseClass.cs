@@ -25,11 +25,11 @@ namespace Inflatable.BaseClasses
     /// Object base class helper. This is not required but automatically sets up basic functions and
     /// properties to simplify things a bit.
     /// </summary>
-    /// <typeparam name="ObjectType">Object type (must be the child object type)</typeparam>
-    /// <typeparam name="IDType">ID type</typeparam>
-    public abstract class ObjectBaseClass<ObjectType, IDType> : IComparable, IComparable<ObjectType>, IObject<IDType>
-        where ObjectType : ObjectBaseClass<ObjectType, IDType>, new()
-        where IDType : IComparable
+    /// <typeparam name="TObjectType">Object type (must be the child object type)</typeparam>
+    /// <typeparam name="TIDType">ID type</typeparam>
+    public abstract class ObjectBaseClass<TObjectType, TIDType> : IComparable, IComparable<TObjectType>, IObject<TIDType>
+        where TObjectType : ObjectBaseClass<TObjectType, TIDType>, new()
+        where TIDType : IComparable
     {
         /// <summary>
         /// Constructor
@@ -65,7 +65,7 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// ID for the object
         /// </summary>
-        public IDType ID { get; set; }
+        public TIDType ID { get; set; }
 
         /// <summary>
         /// != operator
@@ -73,7 +73,7 @@ namespace Inflatable.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>returns true if they are not equal, false otherwise</returns>
-        public static bool operator !=(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
+        public static bool operator !=(ObjectBaseClass<TObjectType, TIDType> first, ObjectBaseClass<TObjectType, TIDType> second)
         {
             return !(first == second);
         }
@@ -81,22 +81,12 @@ namespace Inflatable.BaseClasses
         /// <summary>
         /// The &lt; operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>True if the first item is less than the second, false otherwise</returns>
-        public static bool operator <(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
+        public static bool operator <(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(left, right) && !(left is null) && !(right is null) && left.CompareTo(right) < 0;
         }
 
         /// <summary>
@@ -105,51 +95,31 @@ namespace Inflatable.BaseClasses
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator <=(ObjectBaseClass<ObjectType, IDType> left, ObjectBaseClass<ObjectType, IDType> right)
+        public static bool operator <=(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return left is null || left.CompareTo(right) <= 0;
+            return ReferenceEquals(left, right) || (!(left is null) && !(right is null) && left.CompareTo(right) <= 0);
         }
 
         /// <summary>
         /// The == operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>true if the first and second item are the same, false otherwise</returns>
-        public static bool operator ==(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
+        public static bool operator ==(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return true;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() == second.GetHashCode();
+            return ReferenceEquals(left, right) || (!(left is null) && !(right is null) && left.CompareTo(right) == 0);
         }
 
         /// <summary>
         /// The &gt; operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
-        public static bool operator >(ObjectBaseClass<ObjectType, IDType> first, ObjectBaseClass<ObjectType, IDType> second)
+        public static bool operator >(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            if (ReferenceEquals(first, second))
-            {
-                return false;
-            }
-
-            if (first is null || second is null)
-            {
-                return false;
-            }
-
-            return first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(left, right) && !(left is null) && !(right is null) && left.CompareTo(right) > 0;
         }
 
         /// <summary>
@@ -158,9 +128,9 @@ namespace Inflatable.BaseClasses
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator >=(ObjectBaseClass<ObjectType, IDType> left, ObjectBaseClass<ObjectType, IDType> right)
+        public static bool operator >=(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return left is null ? right is null : left.CompareTo(right) >= 0;
+            return ReferenceEquals(left, right) || (!(left is null) && !(right is null) && left.CompareTo(right) >= 0);
         }
 
         /// <summary>
@@ -168,14 +138,9 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public int CompareTo(object obj)
+        public int CompareTo(object? obj)
         {
-            if (obj is ObjectBaseClass<ObjectType, IDType> objectBaseClass)
-            {
-                return CompareTo(objectBaseClass);
-            }
-
-            return -1;
+            return obj is ObjectBaseClass<TObjectType, TIDType> objectBaseClass ? CompareTo(objectBaseClass) : -1;
         }
 
         /// <summary>
@@ -183,21 +148,23 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <param name="other">Object to compare to</param>
         /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public virtual int CompareTo(ObjectType other) => other.ID.CompareTo(ID);
+        public virtual int CompareTo(TObjectType? other)
+        {
+            if (other is null)
+                return -1;
+            if (other.ID.CompareTo(default(TIDType)!) == 0 && ID.CompareTo(default(TIDType)!) == 0)
+                return 0;
+            return other.ID.CompareTo(ID);
+        }
 
         /// <summary>
         /// Determines if two items are equal
         /// </summary>
         /// <param name="obj">The object to compare this to</param>
         /// <returns>true if they are the same, false otherwise</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (!(obj is ObjectBaseClass<ObjectType, IDType> TempObject))
-            {
-                return false;
-            }
-
-            return TempObject.GetHashCode() == GetHashCode();
+            return CompareTo(obj) == 0;
         }
 
         /// <summary>

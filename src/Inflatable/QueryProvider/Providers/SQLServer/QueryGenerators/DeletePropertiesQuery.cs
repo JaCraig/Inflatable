@@ -20,6 +20,7 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -43,8 +44,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="SavePropertiesQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        public DeletePropertiesQuery(IMappingSource mappingInformation)
-            : base(mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        public DeletePropertiesQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
+            : base(mappingInformation, objectPool)
         {
             IDProperties = MappingInformation.GetChildMappings(typeof(TMappedClass))
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
@@ -56,7 +58,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets the type of the query.
         /// </summary>
         /// <value>The type of the query.</value>
-        public override QueryType QueryType => QueryType.JoinsDelete;
+        public override QueryType QueryType { get; } = QueryType.JoinsDelete;
 
         /// <summary>
         /// Gets the identifier properties.
@@ -78,28 +80,23 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
-            if (property is IManyToManyProperty Property)
-            {
-                return ManyToManyProperty(Property, queryObject);
-            }
-
-            return Array.Empty<IQuery>();
+            return property is IManyToManyProperty Property ? ManyToManyProperty(Property, queryObject) : Array.Empty<IQuery>();
         }
 
         /// <summary>
         /// Generates the join delete query.
         /// </summary>
         /// <param name="property">The property.</param>
-        /// <returns></returns>
+        /// <returns>The join delete query</returns>
         private string GenerateJoinDeleteQuery(IManyToManyProperty property)
         {
-            var Builder = new StringBuilder();
-            var PropertyNames = new StringBuilder();
-            var PropertyValues = new StringBuilder();
-            var ParametersList = new StringBuilder();
+            var Builder = ObjectPool.Get();
+            var PropertyNames = ObjectPool.Get();
+            var PropertyValues = ObjectPool.Get();
+            var ParametersList = ObjectPool.Get();
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var Prefix = "";
+            var Prefix = string.Empty;
             if (property.ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
             {
                 Prefix = "Parent_";
@@ -111,8 +108,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 ParametersList.Append(Splitter2).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
                 Splitter2 = " AND ";
             }
-            Builder.AppendFormat("DELETE FROM {0} WHERE {1};", GetTableName(property), ParametersList);
-            return Builder.ToString();
+            Builder.Append("DELETE FROM ").Append(GetTableName(property)).Append(" WHERE ").Append(ParametersList).Append(";");
+            var Result = Builder.ToString();
+            ObjectPool.Return(Builder);
+            ObjectPool.Return(PropertyNames);
+            ObjectPool.Return(PropertyValues);
+            ObjectPool.Return(ParametersList);
+            return Result;
         }
 
         /// <summary>
@@ -121,14 +123,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="queryObject">The query object.</param>
         /// <param name="property">The property.</param>
         /// <param name="propertyItem">The property item.</param>
-        /// <returns></returns>
+        /// <returns>The parameters</returns>
         private IParameter[] GenerateParameters(TMappedClass queryObject, IManyToManyProperty property, object propertyItem)
         {
             var ItemList = propertyItem as IEnumerable;
             var ReturnValues = new List<IParameter>();
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var Prefix = "";
+            var Prefix = string.Empty;
             if (property.ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
             {
                 Prefix = "Parent_";
@@ -157,7 +159,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="queryObject">The query object.</param>
-        /// <returns></returns>
+        /// <returns>The queries</returns>
         private IQuery[] ManyToManyProperty(IManyToManyProperty property, TMappedClass queryObject)
         {
             var ItemList = property.GetValue(queryObject) as IEnumerable;
@@ -167,15 +169,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-            var ReturnValue = new List<IQuery>
+            return new IQuery[]
             {
                 new Query(property.PropertyType,
-                CommandType.Text,
-                GenerateJoinDeleteQuery(property),
-                QueryType,
-                GenerateParameters(queryObject, property, ItemList!))
+                    CommandType.Text,
+                    GenerateJoinDeleteQuery(property),
+                    QueryType,
+                    GenerateParameters(queryObject, property, ItemList!))
             };
-            return ReturnValue.ToArray();
         }
     }
 
@@ -193,9 +194,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public static int Count(this IEnumerable list)
         {
             if (list is null)
-            {
                 return 0;
-            }
 
             var FinalCount = 0;
             foreach (var Item in list)

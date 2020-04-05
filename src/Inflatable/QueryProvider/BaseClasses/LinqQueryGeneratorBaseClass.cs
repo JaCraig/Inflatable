@@ -17,6 +17,8 @@ limitations under the License.
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
+using System.Text;
 
 namespace Inflatable.QueryProvider.BaseClasses
 {
@@ -33,8 +35,9 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// Initializes a new instance of the <see cref="LinqQueryGeneratorBaseClass{TObject}"/> class.
         /// </summary>
         /// <param name="mappingInformation">Mapping information</param>
-        protected LinqQueryGeneratorBaseClass(IMappingSource mappingInformation) :
-            base(mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        protected LinqQueryGeneratorBaseClass(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool) :
+            base(mappingInformation, objectPool)
         {
         }
 

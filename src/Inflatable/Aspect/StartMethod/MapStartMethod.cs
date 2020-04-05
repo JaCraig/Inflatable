@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.Interfaces;
 using System;
@@ -38,17 +37,15 @@ namespace Inflatable.Aspect.StartMethod
         /// <param name="builder">The builder.</param>
         public void Setup(MethodInfo method, IMapping mapping, StringBuilder builder)
         {
-            if (mapping is null)
+            if (mapping is null || builder is null)
                 return;
             var Property = mapping.MapProperties.FirstOrDefault(x => x.Name == method.Name.Replace("set_", string.Empty, StringComparison.Ordinal));
             if (Property is null)
-            {
                 return;
-            }
 
-            builder.AppendLineFormat("{0} = value;", Property.InternalFieldName);
-            builder.AppendLineFormat("{0} = true;", Property.InternalFieldName + "Loaded");
-            builder.AppendLineFormat("NotifyPropertyChanged0(\"{0}\");", Property.Name);
+            builder.Append(Property.InternalFieldName).AppendLine(" = value;")
+                .Append(Property.InternalFieldName).AppendLine("Loaded = true;")
+                .Append("NotifyPropertyChanged0(\"").Append(Property.Name).AppendLine("\");");
         }
     }
 }

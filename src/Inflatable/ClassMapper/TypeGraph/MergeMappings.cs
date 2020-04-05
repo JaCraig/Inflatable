@@ -35,7 +35,7 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <param name="logger">The logger.</param>
         public static void Merge(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger logger)
         {
-            if (typeGraph is null)
+            if (typeGraph is null || mappings is null || logger is null)
                 return;
             var CurrentNode = typeGraph.Root;
             if (CurrentNode.Nodes.Count == 0)

@@ -39,13 +39,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <exception cref="System.ArgumentNullException">mappingInformation</exception>
         public SQLServerGenerator(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation, new IQueryGenerator<TMappedClass>[] {
-                new DeleteQuery<TMappedClass>(mappingInformation),
-                new InsertQuery<TMappedClass>(mappingInformation),
-                new UpdateQuery<TMappedClass>(mappingInformation),
-                new LinqQueryGenerator<TMappedClass>(mappingInformation),
-                new LoadPropertiesQuery<TMappedClass>(mappingInformation),
+                new DeleteQuery<TMappedClass>(mappingInformation,objectPool),
+                new InsertQuery<TMappedClass>(mappingInformation,objectPool),
+                new UpdateQuery<TMappedClass>(mappingInformation,objectPool),
+                new LinqQueryGenerator<TMappedClass>(mappingInformation,objectPool),
+                new LoadPropertiesQuery<TMappedClass>(mappingInformation,objectPool),
                 new SavePropertiesQuery<TMappedClass>(mappingInformation,objectPool),
-                new DeletePropertiesQuery<TMappedClass>(mappingInformation)
+                new DeletePropertiesQuery<TMappedClass>(mappingInformation,objectPool)
             })
         {
         }

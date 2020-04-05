@@ -21,6 +21,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System.Collections.Generic;
 using System.Data;
@@ -41,8 +42,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="DeleteQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        public DeleteQuery(IMappingSource mappingInformation)
-            : base(mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        public DeleteQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
+            : base(mappingInformation, objectPool)
         {
             ParentMappings = MappingInformation.GetChildMappings<TMappedClass>()
                                                 .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
@@ -100,7 +102,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         private void GenerateQuery()
         {
-            var Builder = new StringBuilder();
+            var Builder = ObjectPool.Get();
             foreach (var ParentMapping in ParentMappings.Where(x => x.IDProperties.Count > 0).OrderBy(x => x.Order))
             {
                 Builder.AppendLineFormat("DELETE FROM {0} WHERE {1};",
@@ -108,6 +110,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     ParentMapping.IDProperties.ToString(x => GetColumnName(x) + "=" + GetParameterName(x), " AND "));
             }
             QueryText = Builder.ToString();
+            ObjectPool.Return(Builder);
         }
     }
 }

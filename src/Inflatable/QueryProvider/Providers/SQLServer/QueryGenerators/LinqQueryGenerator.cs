@@ -22,6 +22,7 @@ using Inflatable.LinqExpression.OrderBy.Enums;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -44,8 +45,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
         /// <exception cref="ArgumentNullException">mappingInformation</exception>
-        public LinqQueryGenerator(IMappingSource mappingInformation)
-            : base(mappingInformation)
+        public LinqQueryGenerator(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
+            : base(mappingInformation, objectPool)
         {
         }
 
@@ -86,13 +87,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateFromClause(Utils.TreeNode<Type> node)
         {
-            var Result = new StringBuilder();
+            var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
-                var IDProperties = new StringBuilder();
+                var IDProperties = ObjectPool.Get();
                 var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
@@ -106,10 +107,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 }
                 Result.AppendLine();
                 Result.AppendFormat(CultureInfo.InvariantCulture, "INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
+                ObjectPool.Return(IDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
 
-            return Result.ToString();
+            var ReturnValue = Result.ToString();
+            ObjectPool.Return(Result);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -120,8 +124,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>Order by clause</returns>
         private string GenerateOrderByClause(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
-            var Builder = new StringBuilder();
-            var Splitter = "";
+            var Builder = ObjectPool.Get();
+            var Splitter = string.Empty;
+            string ReturnValue = string.Empty;
             if (data.OrderByValues.Count == 0)
             {
                 var Mapping = MappingInformation.Mappings[node.Data];
@@ -138,7 +143,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                        .Append(GetColumnName(IDProperty));
                     Splitter = ",";
                 }
-                return Builder.ToString();
+                ReturnValue = Builder.ToString();
+                ObjectPool.Return(Builder);
+                return ReturnValue;
             }
 
             foreach (var Column in data.OrderByValues.OrderBy(x => x.Order))
@@ -148,7 +155,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                        .Append(Column.Direction == Direction.Descending ? " DESC" : "");
                 Splitter = ",";
             }
-            return Builder.ToString();
+            ReturnValue = Builder.ToString();
+            ObjectPool.Return(Builder);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -159,9 +168,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns></returns>
         private string GenerateParameterList(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
-            var Result = new StringBuilder();
+            var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            var Separator = "";
+            var Separator = string.Empty;
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
@@ -184,7 +193,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
                 Separator = ",";
             }
-            return Result.ToString();
+            var ReturnValue = Result.ToString();
+            ObjectPool.Return(Result);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -196,12 +207,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateSelectQuery(Utils.TreeNode<Type>? node, QueryData<TMappedClass> data)
         {
             if (node is null)
-                return "";
-            var Builder = new StringBuilder();
-            var ParameterList = new StringBuilder();
-            var FromClause = new StringBuilder();
-            var WhereClause = new StringBuilder();
-            var OrderByClause = new StringBuilder();
+                return string.Empty;
+            var Builder = ObjectPool.Get();
+            var ParameterList = ObjectPool.Get();
+            var FromClause = ObjectPool.Get();
+            var WhereClause = ObjectPool.Get();
+            var OrderByClause = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Get From Clause
@@ -250,7 +261,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             {
                 Builder.AppendLine().Append(") AS _InternalQuery");
             }
-            return Builder.ToString().TrimEnd('\r', '\n', ' ', '\t') + ";";
+            var ReturnValue = Builder.ToString().TrimEnd('\r', '\n', ' ', '\t') + ";";
+            ObjectPool.Return(Builder);
+            ObjectPool.Return(ParameterList);
+            ObjectPool.Return(FromClause);
+            ObjectPool.Return(WhereClause);
+            ObjectPool.Return(OrderByClause);
+            return ReturnValue;
         }
 
         /// <summary>

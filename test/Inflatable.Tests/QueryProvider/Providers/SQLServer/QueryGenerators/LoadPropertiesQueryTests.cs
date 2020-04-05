@@ -39,7 +39,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>(),
             ObjectPool);
-            var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
             Assert.Equal(typeof(ConcreteClass1), TestObject.AssociatedType);
             Assert.Same(Mappings, TestObject.MappingInformation);
             Assert.Equal(QueryType.LoadProperty, TestObject.QueryType);
@@ -60,7 +60,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
-            var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
             Assert.Empty(Result[0].Parameters);
@@ -83,7 +83,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
-            var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Empty(Result.Parameters);
@@ -104,7 +104,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                ObjectPool);
             var ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
             ManyToManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
-            var TestObject = new LoadPropertiesQuery<ManyToManyProperties>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ManyToManyProperties>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new ManyToManyProperties { ID = 10, BoolValue = true }, ManyToManyProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
@@ -130,7 +130,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyFromComplexClass)].ManyToOneProperties.First();
             ManyToOneManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
 
-            var TestObject = new LoadPropertiesQuery<ManyToOneManyFromComplexClass>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ManyToOneManyFromComplexClass>(Mappings, ObjectPool);
             var TempManyToOneMany = new ManyToOneManyFromComplexClass { ID = 10, BoolValue = true };
             TempManyToOneMany.ManyToOneClass.Add(new AllReferencesAndID { ID = 1 });
             TempManyToOneMany.ManyToOneClass.Add(new AllReferencesAndID { ID = 2 });
@@ -159,7 +159,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
             ManyToOneManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
 
-            var TestObject = new LoadPropertiesQuery<ManyToOneManyProperties>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ManyToOneManyProperties>(Mappings, ObjectPool);
             var TempManyToOneMany = new ManyToOneManyProperties { ID = 10, BoolValue = true };
             TempManyToOneMany.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 1 });
             TempManyToOneMany.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 2 });
@@ -189,7 +189,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneOneFromComplexClass)].ManyToOneProperties.First();
             ManyToOneManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
 
-            var TestObject = new LoadPropertiesQuery<ManyToOneOneFromComplexClass>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ManyToOneOneFromComplexClass>(Mappings, ObjectPool);
             var TempManyToOneMany = new ManyToOneOneFromComplexClass { ID = 10, BoolValue = true };
             TempManyToOneMany.ManyToOneClass = new AllReferencesAndID { ID = 1 };
 
@@ -217,7 +217,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var ManyToOneOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();
             ManyToOneOneProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
 
-            var TestObject = new LoadPropertiesQuery<ManyToOneOneProperties>(Mappings);
+            var TestObject = new LoadPropertiesQuery<ManyToOneOneProperties>(Mappings, ObjectPool);
             var TempManyToOneOne = new ManyToOneOneProperties { ID = 10, BoolValue = true };
             TempManyToOneOne.ManyToOneClass = new ManyToOneManyProperties { ID = 1 };
 
@@ -243,7 +243,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
             MapProperty.Setup(Mappings);
-            var TestObject = new LoadPropertiesQuery<MapProperties>(Mappings);
+            var TestObject = new LoadPropertiesQuery<MapProperties>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
@@ -267,7 +267,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapPropertiesFromComplexClass)].MapProperties.First();
             MapProperty.Setup(Mappings);
-            var TestObject = new LoadPropertiesQuery<MapPropertiesFromComplexClass>(Mappings);
+            var TestObject = new LoadPropertiesQuery<MapPropertiesFromComplexClass>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new MapPropertiesFromComplexClass { ID = 10, BoolValue = true }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
@@ -290,7 +290,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapPropertyReferencesSelf)].MapProperties.First();
             MapProperty.Setup(Mappings);
-            var TestObject = new LoadPropertiesQuery<MapPropertyReferencesSelf>(Mappings);
+            var TestObject = new LoadPropertiesQuery<MapPropertyReferencesSelf>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new MapPropertyReferencesSelf { ID = 10, BoolValue = true }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
@@ -313,7 +313,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties.First();
             MapProperty.Setup(Mappings);
-            var TestObject = new LoadPropertiesQuery<MapPropertiesWithMapOnInterface>(Mappings);
+            var TestObject = new LoadPropertiesQuery<MapPropertiesWithMapOnInterface>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new MapPropertiesWithMapOnInterface { ID = 10, BoolValue = true }, MapProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);

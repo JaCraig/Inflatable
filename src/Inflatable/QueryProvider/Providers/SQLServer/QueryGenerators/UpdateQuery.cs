@@ -21,6 +21,7 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="UpdateQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        public UpdateQuery(IMappingSource mappingInformation)
-            : base(mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        public UpdateQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
+            : base(mappingInformation, objectPool)
         {
             var ParentMappings = MappingInformation.GetChildMappings(typeof(TMappedClass))
                                                    .SelectMany(x => mappingInformation.GetParentMapping(x.ObjectType))
@@ -95,13 +97,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The from clause</returns>
         private string GenerateFromClause(Utils.TreeNode<Type> node, TMappedClass queryObject)
         {
-            var Result = new StringBuilder();
+            var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
-                var TempIDProperties = new StringBuilder();
+                var TempIDProperties = ObjectPool.Get();
                 var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
@@ -115,9 +117,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 }
                 Result.AppendLineFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping), TempIDProperties);
                 Result.Append(GenerateFromClause(ParentNode, queryObject));
+                ObjectPool.Return(TempIDProperties);
             }
 
-            return Result.ToString();
+            var ReturnValue = Result.ToString();
+            ObjectPool.Return(Result);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -142,12 +147,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateUpdateQuery(Utils.TreeNode<Type>? node, TMappedClass queryObject)
         {
             if (node is null)
-                return "";
-            var Builder = new StringBuilder();
-            var ParameterList = new StringBuilder();
-            var WhereClause = new StringBuilder();
-            var FromClause = new StringBuilder();
-            var Splitter = "";
+                return string.Empty;
+            var Builder = ObjectPool.Get();
+            var Splitter = string.Empty;
 
             //Generate parent queries
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
@@ -160,19 +162,18 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 }
             }
 
-            var ORMObject = queryObject as IORMObject;
             var Mapping = MappingInformation.Mappings[node.Data];
-            if (ORMObject != null
-                && Mapping.ReferenceProperties.Count == 0)
+            string ReturnValue;
+            if (Mapping.ReferenceProperties.Count == 0)
             {
-                return Builder.ToString();
+                ReturnValue = Builder.ToString();
+                ObjectPool.Return(Builder);
+                return ReturnValue;
             }
 
-            if (ORMObject is null
-                && Mapping.ReferenceProperties.Count == 0)
-            {
-                return Builder.ToString();
-            }
+            var ParameterList = ObjectPool.Get();
+            var WhereClause = ObjectPool.Get();
+            var FromClause = ObjectPool.Get();
 
             //Adding reference properties
             foreach (var ReferenceProperty in Mapping.ReferenceProperties)
@@ -193,7 +194,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 SET {1}
 FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClause);
 
-            return Builder.ToString();
+            ReturnValue = Builder.ToString();
+            ObjectPool.Return(Builder);
+            ObjectPool.Return(ParameterList);
+            ObjectPool.Return(WhereClause);
+            ObjectPool.Return(FromClause);
+            return ReturnValue;
         }
 
         /// <summary>
@@ -204,9 +210,9 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
         /// <returns>The where clause</returns>
         private string GenerateWhereClause(Utils.TreeNode<Type> node, TMappedClass queryObject)
         {
-            var Result = new StringBuilder();
+            var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            var Separator = "";
+            var Separator = string.Empty;
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];
@@ -223,7 +229,9 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
                 Result.AppendFormat("{0}{1}={2}", Separator, GetColumnName(IDProperty), GetParameterName(IDProperty));
                 Separator = "\r\nAND ";
             }
-            return Result.ToString();
+            var ReturnValue = Result.ToString();
+            ObjectPool.Return(Result);
+            return ReturnValue;
         }
     }
 }

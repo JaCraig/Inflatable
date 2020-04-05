@@ -21,6 +21,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="InsertQuery{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
-        public InsertQuery(IMappingSource mappingInformation)
-            : base(mappingInformation)
+        /// <param name="objectPool">The object pool.</param>
+        public InsertQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
+            : base(mappingInformation, objectPool)
         {
             if (!MappingInformation.TypeGraphs.ContainsKey(AssociatedType))
             {
@@ -121,12 +123,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (node is null)
                 return "";
-            var Builder = new StringBuilder();
-            var ParameterList = new StringBuilder();
-            var ValueList = new StringBuilder();
-            var DeclareProperties = new StringBuilder();
-            var SetProperties = new StringBuilder();
-            var IDReturn = new StringBuilder();
+            var Builder = ObjectPool.Get();
+            var ParameterList = ObjectPool.Get();
+            var ValueList = ObjectPool.Get();
+            var DeclareProperties = ObjectPool.Get();
+            var SetProperties = ObjectPool.Get();
+            var IDReturn = ObjectPool.Get();
             var Splitter = "";
             var Mapping = MappingInformation.Mappings[node.Data];
 
@@ -208,7 +210,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Builder.Append(IDReturn);
                 }
             }
-            return Builder.ToString();
+            var Result = Builder.ToString();
+            ObjectPool.Return(Builder);
+            ObjectPool.Return(ParameterList);
+            ObjectPool.Return(ValueList);
+            ObjectPool.Return(DeclareProperties);
+            ObjectPool.Return(SetProperties);
+            ObjectPool.Return(IDReturn);
+            return Result;
         }
 
         /// <summary>
