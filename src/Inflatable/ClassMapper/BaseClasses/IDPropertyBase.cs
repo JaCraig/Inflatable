@@ -61,7 +61,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
             CompiledExpression = expression.Compile();
             Constraints = new List<string>();
-            ComputedColumnSpecification = "";
+            ComputedColumnSpecification = string.Empty;
             DefaultValue = () => default!;
             Expression = expression;
             SetAction = Expression.PropertySetter<ClassType, DataType>()?.Compile() ?? new Action<ClassType, DataType>((_, __) => { });

@@ -102,7 +102,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Prefix = "Parent_";
             }
 
-            var Splitter2 = "";
+            var Splitter2 = string.Empty;
             foreach (var IDProperty in IDProperties)
             {
                 ParametersList.Append(Splitter2).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);

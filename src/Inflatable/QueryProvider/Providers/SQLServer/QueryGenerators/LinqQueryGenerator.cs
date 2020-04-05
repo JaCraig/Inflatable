@@ -94,7 +94,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var IDProperties = ObjectPool.Get();
-                var Separator = "";
+                var Separator = string.Empty;
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));

@@ -93,7 +93,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping;
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
-            ComputedColumnSpecification = "";
+            ComputedColumnSpecification = string.Empty;
         }
 
         /// <summary>

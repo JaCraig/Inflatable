@@ -83,7 +83,7 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(IMappingSource mappings)
         {
-            var Prefix = "";
+            var Prefix = string.Empty;
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
@@ -164,7 +164,7 @@ namespace Inflatable.ClassMapper.Default
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             DatabaseJoinsCascade = ForeignMapping.Any(TempMapping => !ParentMappings.Contains(TempMapping));
-            var Prefix = "";
+            var Prefix = string.Empty;
             if (ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
             {
                 Prefix = "Parent_";

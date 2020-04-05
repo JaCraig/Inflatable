@@ -104,7 +104,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var TempIDProperties = ObjectPool.Get();
-                var Separator = "";
+                var Separator = string.Empty;
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));

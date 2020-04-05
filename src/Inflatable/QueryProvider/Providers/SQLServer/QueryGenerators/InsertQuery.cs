@@ -129,7 +129,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var DeclareProperties = ObjectPool.Get();
             var SetProperties = ObjectPool.Get();
             var IDReturn = ObjectPool.Get();
-            var Splitter = "";
+            var Splitter = string.Empty;
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Generate parent queries

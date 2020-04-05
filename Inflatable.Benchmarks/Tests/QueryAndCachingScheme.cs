@@ -30,13 +30,16 @@ namespace InflatableBenchmarks.Benchmarks.Tests
                 var Configuration = Canister.Builder.Bootstrapper.Resolve<IConfiguration>();
                 var Batch = Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
                 await Batch.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE SpeedTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE SpeedTestDatabase SET ONLINE\r\nDROP DATABASE SpeedTestDatabase")
                     .ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
             catch { }
+        }
+
+        [Benchmark]
+        public void NoQuery()
+        {
+            _ = 2500.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
         }
 
         [Benchmark(Baseline = true)]
@@ -61,6 +64,9 @@ namespace InflatableBenchmarks.Benchmarks.Tests
 
             Console.WriteLine("Saving values");
             new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();
+
+            Console.WriteLine(DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList().Count + " values returned each operation.");
+
             Console.WriteLine("Done");
         }
     }

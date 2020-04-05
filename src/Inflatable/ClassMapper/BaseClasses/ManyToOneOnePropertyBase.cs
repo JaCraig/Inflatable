@@ -60,7 +60,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
             PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
-            ColumnName = "";
+            ColumnName = string.Empty;
             ForeignMapping = new List<IMapping>();
         }
 
