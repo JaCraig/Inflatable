@@ -57,10 +57,10 @@ namespace Inflatable.BaseClasses
             AutoIDProperties = new List<IAutoIDProperty>();
             IDProperties = new List<IIDProperty>();
             Order = order;
-            Prefix = prefix ?? "";
+            Prefix = prefix ?? string.Empty;
             Queries = new Queries();
             ReferenceProperties = new List<IProperty>();
-            Suffix = suffix ?? "";
+            Suffix = suffix ?? string.Empty;
             TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
             Merge = merge;
             MapProperties = new List<IMapProperty>();

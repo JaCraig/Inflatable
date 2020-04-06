@@ -29,50 +29,56 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <summary>
     /// ID property base class
     /// </summary>
-    /// <typeparam name="ClassType">The type of the lass type.</typeparam>
-    /// <typeparam name="DataType">The type of the ata type.</typeparam>
-    /// <typeparam name="ReturnType">The type of the eturn type.</typeparam>
+    /// <typeparam name="TClassType">The type of the lass type.</typeparam>
+    /// <typeparam name="TDataType">The type of the ata type.</typeparam>
+    /// <typeparam name="TReturnType">The type of the eturn type.</typeparam>
     /// <seealso cref="IIDProperty{ClassType, DataType, ReturnType}"/>
     /// <seealso cref="IIDProperty{ClassType, DataType}"/>
-    public abstract class IDPropertyBase<ClassType, DataType, ReturnType> : IIDProperty<ClassType, DataType, ReturnType>, IIDProperty<ClassType, DataType>
-        where ClassType : class
-        where ReturnType : IIDProperty<ClassType, DataType, ReturnType>
+    public abstract class IDPropertyBase<TClassType, TDataType, TReturnType> : IIDProperty<TClassType, TDataType, TReturnType>, IIDProperty<TClassType, TDataType>
+        where TClassType : class
+        where TReturnType : IIDProperty<TClassType, TDataType, TReturnType>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected IDPropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
+        protected IDPropertyBase(Expression<Func<TClassType, TDataType>> expression, IMapping mapping)
         {
             if (expression is null)
-            {
                 throw new ArgumentNullException(nameof(expression));
-            }
 
             if (mapping is null)
-            {
                 throw new ArgumentNullException(nameof(mapping));
-            }
-
-            var DataTypeInfo = typeof(DataType);
 
             Name = expression.PropertyName();
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
             CompiledExpression = expression.Compile();
             Constraints = new List<string>();
             ComputedColumnSpecification = string.Empty;
-            DefaultValue = () => default!;
+            DefaultValue = DefaultDefaultValue;
             Expression = expression;
-            SetAction = Expression.PropertySetter<ClassType, DataType>()?.Compile() ?? new Action<ClassType, DataType>((_, __) => { });
-            InternalFieldName = "_" + Name + "Derived";
-            MaxLength = typeof(DataType) == typeof(string) ? 100 : 0;
+            SetAction = Expression.PropertySetter<TClassType, TDataType>()?.Compile() ?? DefaultSetAction;
+            InternalFieldName = $"_{Name}Derived";
+            PropertyType = typeof(TDataType);
+            MaxLength = PropertyType == typeof(string) ? 100 : 0;
             ParentMapping = mapping;
-            PropertyType = typeof(DataType);
             TypeName = PropertyType.GetName();
             Index = true;
             Unique = true;
+            _HashCode = Name.GetHashCode(StringComparison.Ordinal) * ParentMapping.GetHashCode() % int.MaxValue;
+            _ToString = $"{PropertyType.GetName()} {ParentMapping}.{Name}";
         }
+
+        /// <summary>
+        /// The hash code
+        /// </summary>
+        private readonly int _HashCode;
+
+        /// <summary>
+        /// To string
+        /// </summary>
+        private readonly string _ToString;
 
         /// <summary>
         /// Gets a value indicating whether to [automatic increment].
@@ -95,7 +101,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Compiled version of the expression
         /// </summary>
-        public Func<ClassType, DataType> CompiledExpression { get; }
+        public Func<TClassType, TDataType> CompiledExpression { get; }
 
         /// <summary>
         /// Gets the computed column specification.
@@ -112,12 +118,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Default value for this property
         /// </summary>
-        public Func<DataType> DefaultValue { get; private set; }
+        public Func<TDataType> DefaultValue { get; private set; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
-        public Expression<Func<ClassType, DataType>> Expression { get; }
+        public Expression<Func<TClassType, TDataType>> Expression { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IIDProperty"/> is indexed.
@@ -183,59 +189,87 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets or sets the expression used to set the value.
         /// </summary>
         /// <value>The set expression.</value>
-        protected Action<ClassType, DataType> SetAction { get; set; }
+        protected Action<TClassType, TDataType> SetAction { get; set; }
 
         /// <summary>
         /// != operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
+        /// <param name="left">left item</param>
+        /// <param name="right">right item</param>
         /// <returns>returns true if they are not equal, false otherwise</returns>
-        public static bool operator !=(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator !=(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
-            return !(first == second);
+            return !(left == right);
         }
 
         /// <summary>
         /// The &lt; operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
-        /// <returns>True if the first item is less than the second, false otherwise</returns>
-        public static bool operator <(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
+        /// <param name="left">left item</param>
+        /// <param name="right">right item</param>
+        /// <returns>True if the left item is less than the right, false otherwise</returns>
+        public static bool operator <(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
-            return !ReferenceEquals(first, second)
-                && !(first is null)
-                && !(second is null)
-                && first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(left, right)
+                && !(left is null)
+                && !(right is null)
+                && left.CompareTo(right) < 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &lt;=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator <=(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
+        {
+            return ReferenceEquals(left, right)
+                || (!(left is null)
+                && !(right is null)
+                && left.CompareTo(right) <= 0);
         }
 
         /// <summary>
         /// The == operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
-        /// <returns>true if the first and second item are the same, false otherwise</returns>
-        public static bool operator ==(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
+        /// <param name="left">left item</param>
+        /// <param name="right">right item</param>
+        /// <returns>true if the left and right item are the same, false otherwise</returns>
+        public static bool operator ==(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
-            return ReferenceEquals(first, second)
-                || (!(first is null)
-                    && !(second is null)
-                    && first.GetHashCode() == second.GetHashCode());
+            return ReferenceEquals(left, right)
+                || (!(left is null)
+                    && !(right is null)
+                    && left.CompareTo(right) == 0);
         }
 
         /// <summary>
         /// The &gt; operator
         /// </summary>
-        /// <param name="first">First item</param>
-        /// <param name="second">Second item</param>
-        /// <returns>True if the first item is greater than the second, false otherwise</returns>
-        public static bool operator >(IDPropertyBase<ClassType, DataType, ReturnType> first, IDPropertyBase<ClassType, DataType, ReturnType> second)
+        /// <param name="left">left item</param>
+        /// <param name="right">right item</param>
+        /// <returns>True if the left item is greater than the right, false otherwise</returns>
+        public static bool operator >(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
-            return !ReferenceEquals(first, second)
-                && !(first is null)
-                && !(second is null)
-                && first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(left, right)
+                && !(left is null)
+                && !(right is null)
+                && left.CompareTo(right) > 0;
+        }
+
+        /// <summary>
+        /// Implements the operator &gt;=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>The result of the operator.</returns>
+        public static bool operator >=(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
+        {
+            return ReferenceEquals(left, right)
+                || (!(left is null)
+                && !(right is null)
+                && left.CompareTo(right) >= 0);
         }
 
         /// <summary>
@@ -244,7 +278,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="table">The table.</param>
         public void AddToChildTable(ITable table)
         {
-            table.AddColumn(ParentMapping.TableName + ColumnName,
+            table?.AddColumn(ParentMapping.TableName + ColumnName,
                 PropertyType.To(DbType.Int32),
                 MaxLength,
                 Nullable,
@@ -266,7 +300,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="table">The table.</param>
         public void AddToTable(ITable table)
         {
-            table.AddColumn(ColumnName,
+            table?.AddColumn(ColumnName,
                 PropertyType.To(DbType.Int32),
                 MaxLength,
                 Nullable,
@@ -279,6 +313,20 @@ namespace Inflatable.ClassMapper.BaseClasses
                 DefaultValue(),
                 ComputedColumnSpecification);
         }
+
+        /// <summary>
+        /// Compares to.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns>1 if it's greater, 0 if they're equal, -1 if it's less than.</returns>
+        public virtual int CompareTo(IDPropertyBase<TClassType, TDataType, TReturnType>? other) => other is null ? 1 : GetHashCode().CompareTo(other.GetHashCode());
+
+        /// <summary>
+        /// Compares the object to another object
+        /// </summary>
+        /// <param name="other">Object to compare to</param>
+        /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
+        public int CompareTo(object? other) => other is IDPropertyBase<TClassType, TDataType, TReturnType> objectBaseClass ? CompareTo(objectBaseClass) : 1;
 
         /// <summary>
         /// Converts this instance to the class specified
@@ -294,10 +342,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            return (obj is IDPropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
-        }
+        public override bool Equals(object obj) => (obj is IDPropertyBase<TClassType, TDataType, TReturnType> rightObj) && CompareTo(rightObj) == 0;
 
         /// <summary>
         /// Gets the column information.
@@ -317,46 +362,46 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode() => Name.GetHashCode() * ParentMapping.GetHashCode() % int.MaxValue;
+        public override int GetHashCode() => _HashCode;
 
         /// <summary>
         /// Determines whether this [is auto incremented].
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsAutoIncremented()
+        public TReturnType IsAutoIncremented()
         {
             AutoIncrement = true;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Determines whether this instance is indexed.
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsIndexed()
+        public TReturnType IsIndexed()
         {
             Index = true;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Determines whether [is read only].
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsReadOnly()
+        public TReturnType IsReadOnly()
         {
             ReadOnly = true;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Determines whether this instance is unique.
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsUnique()
+        public TReturnType IsUnique()
         {
             Unique = true;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -374,17 +419,17 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the property as a string
         /// </summary>
         /// <returns>The string representation of the property</returns>
-        public override string ToString() => PropertyType.GetName() + " " + ParentMapping + "." + Name;
+        public override string ToString() => _ToString;
 
         /// <summary>
         /// Sets the name of the field in the database.
         /// </summary>
         /// <param name="columnName">Name of the field.</param>
         /// <returns>this</returns>
-        public ReturnType WithColumnName(string columnName)
+        public TReturnType WithColumnName(string columnName)
         {
             ColumnName = columnName;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -392,10 +437,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="computedColumnSpecification">The computed column specification.</param>
         /// <returns>this</returns>
-        public ReturnType WithComputedColumnSpecification(string computedColumnSpecification)
+        public TReturnType WithComputedColumnSpecification(string computedColumnSpecification)
         {
             ComputedColumnSpecification = computedColumnSpecification;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -403,10 +448,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="constraint">The constraint.</param>
         /// <returns>this</returns>
-        public ReturnType WithConstraint(string constraint)
+        public TReturnType WithConstraint(string constraint)
         {
             Constraints.Add(constraint);
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -414,10 +459,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>this</returns>
-        public ReturnType WithDefaultValue(Func<DataType> value)
+        public TReturnType WithDefaultValue(Func<TDataType> value)
         {
             DefaultValue = value;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -425,16 +470,29 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="maxLength">The maximum length.</param>
         /// <returns>This</returns>
-        public ReturnType WithMaxLength(int maxLength)
+        public TReturnType WithMaxLength(int maxLength)
         {
             MaxLength = maxLength;
-            return (ReturnType)(IIDProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IIDProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Sets the length for the property to MAX.
         /// </summary>
         /// <returns>this.</returns>
-        public ReturnType WithMaxLength() => WithMaxLength(-1);
+        public TReturnType WithMaxLength() => WithMaxLength(-1);
+
+        /// <summary>
+        /// The "Default" default value method.
+        /// </summary>
+        /// <returns>The default value.</returns>
+        private static TDataType DefaultDefaultValue() => default!;
+
+        /// <summary>
+        /// Default set action.
+        /// </summary>
+        /// <param name="_">The class</param>
+        /// <param name="__">The data</param>
+        private static void DefaultSetAction(TClassType _, TDataType __) { }
     }
 }

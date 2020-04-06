@@ -145,7 +145,7 @@ namespace Inflatable.ClassMapper.Default
             if (string.IsNullOrEmpty(TableName))
             {
                 var Class1 = ParentWithID.ObjectType.Name;
-                var Class2 = ForeignMapping.OrderBy(x => x.ObjectType.Name).FirstOrDefault()?.ObjectType.Name ?? "";
+                var Class2 = ForeignMapping.OrderBy(x => x.ObjectType.Name).FirstOrDefault()?.ObjectType.Name ?? string.Empty;
                 if (string.CompareOrdinal(Class1, Class2) < 0)
                 {
                     SetTableName(Class1 + "_" + Class2);
