@@ -27,7 +27,6 @@ using SQLHelperDB;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,6 +69,25 @@ namespace Inflatable.Schema
         }
 
         /// <summary>
+        /// The default schemas
+        /// </summary>
+        private static readonly string[] DefaultSchemas = {
+            "dbo",
+            "guest",
+            "INFORMATION_SCHEMA",
+            "sys",
+            "db_owner",
+            "db_accessadmin",
+            "db_securityadmin",
+            "db_ddladmin",
+            "db_backupoperator",
+            "db_datareader",
+            "db_datawriter",
+            "db_denydatareader",
+            "db_denydatawriter"
+        };
+
+        /// <summary>
         /// Gets the batch.
         /// </summary>
         /// <value>The batch.</value>
@@ -85,7 +103,7 @@ namespace Inflatable.Schema
         /// Gets the generated schema changes.
         /// </summary>
         /// <value>The generated schema changes.</value>
-        public IEnumerable<string> GeneratedSchemaChanges { get; private set; }
+        public string[] GeneratedSchemaChanges { get; private set; }
 
         /// <summary>
         /// Gets the logger.
@@ -116,25 +134,6 @@ namespace Inflatable.Schema
         /// </summary>
         /// <value>The source connection.</value>
         private IConnection SourceConnection { get; }
-
-        /// <summary>
-        /// The default schemas
-        /// </summary>
-        private static readonly string[] DefaultSchemas = {
-            "dbo",
-            "guest",
-            "INFORMATION_SCHEMA",
-            "sys",
-            "db_owner",
-            "db_accessadmin",
-            "db_securityadmin",
-            "db_ddladmin",
-            "db_backupoperator",
-            "db_datareader",
-            "db_datawriter",
-            "db_denydatareader",
-            "db_denydatawriter"
-        };
 
         /// <summary>
         /// Analyze the schema.
@@ -203,7 +202,7 @@ namespace Inflatable.Schema
             }
 
             Logger.Information("Applying schema changes for {Info:l}", SourceConnection.DatabaseName);
-            await Generator.SetupAsync(SourceSpec, SourceConnection).ConfigureAwait(false);
+            await Generator.SetupAsync(GeneratedSchemaChanges, SourceConnection).ConfigureAwait(false);
         }
 
         /// <summary>

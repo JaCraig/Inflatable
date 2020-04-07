@@ -10,6 +10,9 @@ namespace TestApp
 {
     internal class Program
     {
+        private const string StringVal1Const = "A";
+        private const string StringVal2Const = "ASDFGHKL";
+
         private static void Main(string[] args)
         {
             Canister.Builder.CreateContainer(null)
@@ -20,7 +23,7 @@ namespace TestApp
             Canister.Builder.Bootstrapper.Resolve<Session>();
 
             Console.WriteLine("Setting up values");
-            var Values = 50.Times(x => new SimpleClass() { BoolValue = x % 2 == 0, StringValue1 = "A", StringValue2 = "ASDFGHKL" }).ToArray();
+            var Values = 200.Times(x => new SimpleClass() { BoolValue = x % 2 == 0, StringValue1 = StringVal1Const, StringValue2 = StringVal2Const }).ToArray();
 
             Console.WriteLine("Saving values");
             new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();

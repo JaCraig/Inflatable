@@ -8,3 +8,6 @@ dotnet_diagnostic.CA1200.severity = none
 
 # CA1819: Properties should not return arrays
 dotnet_diagnostic.CA1819.severity = none
+
+# SecurityIntelliSenseCS: MS Security rules violation
+dotnet_diagnostic.SecurityIntelliSenseCS.severity = none

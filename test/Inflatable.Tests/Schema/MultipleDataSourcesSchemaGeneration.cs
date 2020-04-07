@@ -40,7 +40,7 @@ namespace Inflatable.Tests.Schema
             var TestModel = TestObject.Models.First(x => x.Source.Source.Name == "Default");
             Assert.Equal("Default", TestModel.Source.Source.Name);
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
-            Assert.Equal(1, TestModel.Source.Mappings.Count);
+            Assert.Single(TestModel.Source.Mappings);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);
             Assert.Empty(TestModel.SourceSpec.StoredProcedures);
@@ -54,7 +54,7 @@ namespace Inflatable.Tests.Schema
             TestModel = TestObject.Models.First(x => x.Source.Source.Name == "Default2");
             Assert.Equal("Default2", TestModel.Source.Source.Name);
             Assert.Equal("TestDatabase2", TestModel.SourceSpec.Name);
-            Assert.Equal(1, TestModel.Source.Mappings.Count);
+            Assert.Single(TestModel.Source.Mappings);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);
             Assert.Empty(TestModel.SourceSpec.StoredProcedures);

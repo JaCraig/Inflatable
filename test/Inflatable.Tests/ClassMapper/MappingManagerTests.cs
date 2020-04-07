@@ -27,7 +27,7 @@ namespace Inflatable.Tests.ClassMapper
             ObjectPool);
             var TestSource = TestObject.Sources.First();
             Assert.Single(TestObject.Sources);
-            Assert.Equal(1, TestSource.Mappings.Count);
+            Assert.Single(TestSource.Mappings);
             Assert.Equal(typeof(AllReferencesAndID), TestSource.Mappings.First().Key);
             Assert.IsType<AllReferencesAndIDMappingNoDatabase>(TestSource.Mappings.First().Value);
             Assert.Single(TestSource.TypeGraphs);

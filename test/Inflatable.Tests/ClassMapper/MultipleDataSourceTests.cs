@@ -31,8 +31,8 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(2, TestObject.Sources.Count());
             var Source1 = TestObject.Sources.First(x => x.Source.GetType() == typeof(MockDatabaseMapping));
             var Source2 = TestObject.Sources.First(x => x.Source.GetType() == typeof(SecondMockDatabaseMapping));
-            Assert.Equal(1, Source1.Mappings.Count);
-            Assert.Equal(1, Source2.Mappings.Count);
+            Assert.Single(Source1.Mappings);
+            Assert.Single(Source2.Mappings);
             var Source1Mapping = Source1.Mappings.First().Value;
             var Source2Mapping = Source2.Mappings.First().Value;
             Assert.Equal(1, Source1Mapping.IDProperties.Count);

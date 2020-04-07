@@ -38,7 +38,7 @@ namespace Inflatable.Tests.Schema
             var TestModel = TestObject.Models.First();
             Assert.Equal("Default", TestModel.Source.Source.Name);
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
-            Assert.Equal(1, TestModel.Source.Mappings.Count);
+            Assert.Single(TestModel.Source.Mappings);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);
             Assert.Empty(TestModel.SourceSpec.StoredProcedures);

@@ -25,6 +25,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
     <None Include="Enums\SchemaGeneration.cs" />
@@ -38,7 +43,7 @@
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="SQLHelper.DB" Version="3.1.14" />
-    <PackageReference Include="Data.Modeler" Version="3.0.20" />
+    <PackageReference Include="Data.Modeler" Version="3.0.21" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.1" />
     <PackageReference Include="Mirage" Version="3.0.5" />

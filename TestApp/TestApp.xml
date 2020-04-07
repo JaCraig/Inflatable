@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestApp</name>
+    </assembly>
+    <members>
+        <member name="T:InflatableBenchmarks.Benchmarks.Modules.LoggingModule">
+            <summary>
+            Logging module
+            </summary>
+            <seealso cref="T:Canister.Interfaces.IModule"/>
+        </member>
+        <member name="P:InflatableBenchmarks.Benchmarks.Modules.LoggingModule.Order">
+            <summary>
+            Order to run this in
+            </summary>
+        </member>
+        <member name="M:InflatableBenchmarks.Benchmarks.Modules.LoggingModule.Load(Canister.Interfaces.IBootstrapper)">
+            <summary>
+            Loads the module using the bootstrapper
+            </summary>
+            <param name="bootstrapper">The bootstrapper.</param>
+        </member>
+    </members>
+</doc>
