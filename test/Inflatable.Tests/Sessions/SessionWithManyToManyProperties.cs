@@ -1,5 +1,4 @@
 ﻿using BigBook;
-using Data.Modeler;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
@@ -36,7 +35,6 @@ namespace Inflatable.Tests.Sessions
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
             Canister.Builder.Bootstrapper.Resolve<ILogger>(),
             ObjectPool);
-            DataModeler = Canister.Builder.Bootstrapper.Resolve<DataModeler>();
             InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
 
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
@@ -48,7 +46,7 @@ namespace Inflatable.Tests.Sessions
 
         public static Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
         public BigBook.Caching.Manager CacheManager { get; set; }
-        public DataModeler DataModeler { get; set; }
+
         public MappingManager InternalMappingManager { get; set; }
         public QueryProviderManager InternalQueryProviderManager { get; set; }
         public SchemaManager InternalSchemaManager { get; set; }
