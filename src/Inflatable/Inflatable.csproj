@@ -42,12 +42,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.9.0" />
-    <PackageReference Include="SQLHelper.DB" Version="3.1.19" />
-    <PackageReference Include="Data.Modeler" Version="3.0.25" />
+    <PackageReference Include="SQLHelper.DB" Version="3.1.20" />
+    <PackageReference Include="Data.Modeler" Version="3.0.26" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.1" />
     <PackageReference Include="Mirage" Version="3.0.5" />
-    <PackageReference Include="Aspectus" Version="4.0.5" />
-    <PackageReference Include="BigBook" Version="3.0.32" />
+    <PackageReference Include="Aspectus" Version="4.0.6" />
+    <PackageReference Include="BigBook" Version="3.0.33" />
   </ItemGroup>
 </Project>
