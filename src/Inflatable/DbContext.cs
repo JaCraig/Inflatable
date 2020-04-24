@@ -135,10 +135,10 @@ namespace Inflatable
             var TempSession = Canister.Builder.Bootstrapper?.Resolve<ISession>();
             if (TempSession is null)
                 return null;
-            if (Results.Values.FirstOrDefault()?.Count ?? false)
+            if (Results.Values.Any(x => x?.Count ?? false))
                 return Task.Run(async () => await TempSession.ExecuteCountAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult();
             var DatabaseValues = Task.Run(async () => await TempSession.ExecuteAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
-            return (Results.Values.FirstOrDefault()?.Top ?? 0) == 1 ? DatabaseValues.FirstOrDefault() : DatabaseValues;
+            return Results.Values.Any(x => (x?.Top ?? 0) == 1) ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 
         /// <summary>
