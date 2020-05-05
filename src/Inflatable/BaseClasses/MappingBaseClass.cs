@@ -84,7 +84,7 @@ namespace Inflatable.BaseClasses
         /// Gets the automatic identifier properties.
         /// </summary>
         /// <value>The automatic identifier properties.</value>
-        public ICollection<IAutoIDProperty> AutoIDProperties { get; }
+        public List<IAutoIDProperty> AutoIDProperties { get; }
 
         /// <summary>
         /// Gets the type of the database configuration.
@@ -96,25 +96,25 @@ namespace Inflatable.BaseClasses
         /// ID properties
         /// </summary>
         /// <value>The identifier properties.</value>
-        public ICollection<IIDProperty> IDProperties { get; }
+        public List<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets the many to many properties.
         /// </summary>
         /// <value>The many to many properties.</value>
-        public ICollection<IManyToManyProperty> ManyToManyProperties { get; }
+        public List<IManyToManyProperty> ManyToManyProperties { get; }
 
         /// <summary>
         /// Gets the many to one properties.
         /// </summary>
         /// <value>The many to one properties.</value>
-        public ICollection<IManyToOneProperty> ManyToOneProperties { get; }
+        public List<IManyToOneProperty> ManyToOneProperties { get; }
 
         /// <summary>
         /// Gets the map properties.
         /// </summary>
         /// <value>The map properties.</value>
-        public ICollection<IMapProperty> MapProperties { get; }
+        public List<IMapProperty> MapProperties { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="T:Inflatable.Interfaces.IMapping"/>
@@ -151,7 +151,7 @@ namespace Inflatable.BaseClasses
         /// Reference Properties list
         /// </summary>
         /// <value>The reference properties.</value>
-        public ICollection<IProperty> ReferenceProperties { get; }
+        public List<IProperty> ReferenceProperties { get; }
 
         /// <summary>
         /// Gets the name of the schema.
@@ -311,13 +311,13 @@ namespace Inflatable.BaseClasses
         /// <returns>The column name.</returns>
         public string GetColumnName(string propertyName)
         {
-            var IDProperty = IDProperties.FirstOrDefault(x => x.Name == propertyName);
+            var IDProperty = IDProperties.Find(x => x.Name == propertyName);
             if (!(IDProperty is null))
             {
                 return "[" + SchemaName + "].[" + TableName + "].[" + IDProperty.ColumnName + "]";
             }
 
-            var ReferenceProperty = ReferenceProperties.FirstOrDefault(x => x.Name == propertyName);
+            var ReferenceProperty = ReferenceProperties.Find(x => x.Name == propertyName);
             if (!(ReferenceProperty is null))
             {
                 return "[" + SchemaName + "].[" + TableName + "].[" + ReferenceProperty.ColumnName + "]";
@@ -427,10 +427,10 @@ namespace Inflatable.BaseClasses
             var IsDebug = logger?.IsEnabled(Serilog.Events.LogEventLevel.Debug) ?? false;
             for (var x = 0; x < IDProperties.Count; ++x)
             {
-                var IDProperty1 = IDProperties.ElementAt(x);
+                var IDProperty1 = IDProperties[x];
                 for (var y = x + 1; y < IDProperties.Count; ++y)
                 {
-                    var IDProperty2 = IDProperties.ElementAt(y);
+                    var IDProperty2 = IDProperties[y];
                     if (IDProperty1 == IDProperty2)
                     {
                         if (IsDebug)
@@ -442,10 +442,10 @@ namespace Inflatable.BaseClasses
             }
             for (var x = 0; x < ReferenceProperties.Count; ++x)
             {
-                var ReferenceProperty1 = ReferenceProperties.ElementAt(x);
+                var ReferenceProperty1 = ReferenceProperties[x];
                 for (var y = x + 1; y < ReferenceProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
+                    var ReferenceProperty2 = ReferenceProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -457,10 +457,10 @@ namespace Inflatable.BaseClasses
             }
             for (var x = 0; x < MapProperties.Count; ++x)
             {
-                var ReferenceProperty1 = MapProperties.ElementAt(x);
+                var ReferenceProperty1 = MapProperties[x];
                 for (var y = x + 1; y < MapProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = MapProperties.ElementAt(y);
+                    var ReferenceProperty2 = MapProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -472,10 +472,10 @@ namespace Inflatable.BaseClasses
             }
             for (var x = 0; x < ManyToManyProperties.Count; ++x)
             {
-                var ReferenceProperty1 = ManyToManyProperties.ElementAt(x);
+                var ReferenceProperty1 = ManyToManyProperties[x];
                 for (var y = x + 1; y < ManyToManyProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
+                    var ReferenceProperty2 = ManyToManyProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -488,10 +488,10 @@ namespace Inflatable.BaseClasses
 
             for (var x = 0; x < ManyToOneProperties.Count; ++x)
             {
-                var ReferenceProperty1 = ManyToOneProperties.ElementAt(x);
+                var ReferenceProperty1 = ManyToOneProperties[x];
                 for (var y = x + 1; y < ManyToOneProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
+                    var ReferenceProperty2 = ManyToOneProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -515,10 +515,10 @@ namespace Inflatable.BaseClasses
             var IsDebug = logger?.IsEnabled(Serilog.Events.LogEventLevel.Debug) ?? false;
             for (var x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
             {
-                var ReferenceProperty1 = parentMapping.ReferenceProperties.ElementAt(x);
+                var ReferenceProperty1 = parentMapping.ReferenceProperties[x];
                 for (var y = 0; y < ReferenceProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ReferenceProperties.ElementAt(y);
+                    var ReferenceProperty2 = ReferenceProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -530,10 +530,10 @@ namespace Inflatable.BaseClasses
             }
             for (var x = 0; x < parentMapping.MapProperties.Count; ++x)
             {
-                var ReferenceProperty1 = parentMapping.MapProperties.ElementAt(x);
+                var ReferenceProperty1 = parentMapping.MapProperties[x];
                 for (var y = x + 1; y < MapProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = MapProperties.ElementAt(y);
+                    var ReferenceProperty2 = MapProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -545,10 +545,10 @@ namespace Inflatable.BaseClasses
             }
             for (var x = 0; x < parentMapping.ManyToManyProperties.Count; ++x)
             {
-                var ReferenceProperty1 = parentMapping.ManyToManyProperties.ElementAt(x);
+                var ReferenceProperty1 = parentMapping.ManyToManyProperties[x];
                 for (var y = x + 1; y < ManyToManyProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ManyToManyProperties.ElementAt(y);
+                    var ReferenceProperty2 = ManyToManyProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
@@ -561,10 +561,10 @@ namespace Inflatable.BaseClasses
 
             for (var x = 0; x < parentMapping.ManyToOneProperties.Count; ++x)
             {
-                var ReferenceProperty1 = parentMapping.ManyToOneProperties.ElementAt(x);
+                var ReferenceProperty1 = parentMapping.ManyToOneProperties[x];
                 for (var y = x + 1; y < ManyToOneProperties.Count; ++y)
                 {
-                    var ReferenceProperty2 = ManyToOneProperties.ElementAt(y);
+                    var ReferenceProperty2 = ManyToOneProperties[y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)

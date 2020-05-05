@@ -76,7 +76,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -115,8 +115,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
-                Result.AppendLineFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping), TempIDProperties);
-                Result.Append(GenerateFromClause(ParentNode, queryObject));
+                Result.AppendLineFormat("INNER JOIN {0} ON {1}", GetTableName(ParentMapping), TempIDProperties)
+                    .Append(GenerateFromClause(ParentNode, queryObject));
                 ObjectPool.Return(TempIDProperties);
             }
 
@@ -183,8 +183,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
 
             //From clause generation
-            FromClause.AppendLine(GetTableName(Mapping));
-            FromClause.Append(GenerateFromClause(node, queryObject));
+            FromClause.AppendLine(GetTableName(Mapping))
+                .Append(GenerateFromClause(node, queryObject));
 
             //Where clause generation
             WhereClause.Append(GenerateWhereClause(node, queryObject));

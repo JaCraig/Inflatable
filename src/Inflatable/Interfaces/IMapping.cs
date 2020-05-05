@@ -79,7 +79,7 @@ namespace Inflatable.Interfaces
         /// Gets the automatic identifier properties.
         /// </summary>
         /// <value>The automatic identifier properties.</value>
-        ICollection<IAutoIDProperty> AutoIDProperties { get; }
+        List<IAutoIDProperty> AutoIDProperties { get; }
 
         /// <summary>
         /// Gets the type of the database configuration.
@@ -91,25 +91,25 @@ namespace Inflatable.Interfaces
         /// ID properties
         /// </summary>
         /// <value>The identifier properties.</value>
-        ICollection<IIDProperty> IDProperties { get; }
+        List<IIDProperty> IDProperties { get; }
 
         /// <summary>
         /// Gets the many to many properties.
         /// </summary>
         /// <value>The many to many properties.</value>
-        ICollection<IManyToManyProperty> ManyToManyProperties { get; }
+        List<IManyToManyProperty> ManyToManyProperties { get; }
 
         /// <summary>
         /// Gets the many to many properties.
         /// </summary>
         /// <value>The many to many properties.</value>
-        ICollection<IManyToOneProperty> ManyToOneProperties { get; }
+        List<IManyToOneProperty> ManyToOneProperties { get; }
 
         /// <summary>
         /// Gets the map properties.
         /// </summary>
         /// <value>The map properties.</value>
-        ICollection<IMapProperty> MapProperties { get; }
+        List<IMapProperty> MapProperties { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IMapping"/> should be merged.
@@ -145,7 +145,7 @@ namespace Inflatable.Interfaces
         /// Reference Properties list
         /// </summary>
         /// <value>The reference properties.</value>
-        ICollection<IProperty> ReferenceProperties { get; }
+        List<IProperty> ReferenceProperties { get; }
 
         /// <summary>
         /// Gets the name of the schema.

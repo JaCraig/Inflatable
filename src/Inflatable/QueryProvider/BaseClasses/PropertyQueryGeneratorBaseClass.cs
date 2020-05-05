@@ -54,6 +54,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TObject queryObject) => new IQuery[] { new Query(AssociatedType, System.Data.CommandType.Text, "", QueryType) };
+        public override IQuery[] GenerateQueries(TObject queryObject) => new IQuery[] { new Query(AssociatedType, System.Data.CommandType.Text, string.Empty, QueryType) };
     }
 }

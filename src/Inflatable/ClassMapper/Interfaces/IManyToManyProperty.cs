@@ -15,9 +15,9 @@ limitations under the License.
 */
 
 using BigBook.Patterns;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
-using Inflatable.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -169,8 +169,8 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataModel">The data model.</param>
-        void Setup(IMappingSource mappings, DataModel dataModel);
+        /// <param name="sourceSpec">The source spec.</param>
+        void Setup(IMappingSource mappings, ISource sourceSpec);
 
         /// <summary>
         /// Similars the specified reference property2.

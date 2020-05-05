@@ -43,23 +43,18 @@ namespace Inflatable.Modules
         /// <param name="bootstrapper">The bootstrapper.</param>
         public void Load(IBootstrapper bootstrapper)
         {
-            if (bootstrapper is null)
-            {
-                return;
-            }
-
-            bootstrapper.RegisterAll<IMapping>();
-            bootstrapper.RegisterAll<IDatabase>();
-            bootstrapper.RegisterAll<QueryProvider.Interfaces.IQueryProvider>();
-            bootstrapper.Register<MappingManager>(ServiceLifetime.Singleton);
-            bootstrapper.Register<SchemaManager>(ServiceLifetime.Singleton);
-            bootstrapper.Register<QueryProviderManager>(ServiceLifetime.Singleton);
-            bootstrapper.Register<Session>();
-            bootstrapper.Register<ISession, Session>();
-            bootstrapper.RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton);
-            bootstrapper.RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton);
-            bootstrapper.RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton);
-            bootstrapper.Register(typeof(QueryTranslator<>));
+            bootstrapper?.RegisterAll<IMapping>()
+                .RegisterAll<IDatabase>()
+                .RegisterAll<QueryProvider.Interfaces.IQueryProvider>()
+                .Register<MappingManager>(ServiceLifetime.Singleton)
+                .Register<SchemaManager>(ServiceLifetime.Singleton)
+                .Register<QueryProviderManager>(ServiceLifetime.Singleton)
+                .Register<Session>()
+                .Register<ISession, Session>()
+                .RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton)
+                .RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton)
+                .RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton)
+                .Register(typeof(QueryTranslator<>));
         }
     }
 }

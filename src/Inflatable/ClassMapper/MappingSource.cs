@@ -295,8 +295,8 @@ namespace Inflatable.ClassMapper
                 Builder.AppendLineFormat("Source: {0}", Source.Name);
                 foreach (var Mapping in Mappings.Values)
                 {
-                    Builder.AppendLineFormat("\tMapping: {0}", Mapping);
-                    Builder.AppendLine("\t\tIDs:");
+                    Builder.AppendLineFormat("\tMapping: {0}", Mapping)
+                        .AppendLine("\t\tIDs:");
                     foreach (var Property in Mapping.IDProperties)
                     {
                         Builder.AppendLineFormat("\t\t\t{0}", Property);

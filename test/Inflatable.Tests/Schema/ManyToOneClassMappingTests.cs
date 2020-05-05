@@ -34,12 +34,9 @@ namespace Inflatable.Tests.Schema
         public void Creation()
         {
             var TestObject = new SchemaManager(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
-            Assert.Equal(Mappings, TestObject.Mappings);
             Assert.Single(TestObject.Models);
             var TestModel = TestObject.Models.First();
-            Assert.Equal("Default", TestModel.Source.Source.Name);
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
-            Assert.Equal(2, TestModel.Source.Mappings.Count);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);
             Assert.Empty(TestModel.SourceSpec.StoredProcedures);

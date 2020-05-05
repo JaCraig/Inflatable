@@ -60,7 +60,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -105,8 +105,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
-                Result.AppendLine();
-                Result.AppendFormat(CultureInfo.InvariantCulture, "INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
+                Result.AppendLine()
+                    .AppendFormat(CultureInfo.InvariantCulture, "INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
                 ObjectPool.Return(IDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
@@ -216,8 +216,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Get From Clause
-            FromClause.Append(GetTableName(Mapping));
-            FromClause.Append(GenerateFromClause(node));
+            FromClause.Append(GetTableName(Mapping))
+                .Append(GenerateFromClause(node));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(node, data));

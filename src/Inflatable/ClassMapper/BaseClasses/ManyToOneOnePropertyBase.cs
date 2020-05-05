@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
-using Inflatable.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -274,8 +274,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataModel">The data model.</param>
-        public abstract void Setup(IMappingSource mappings, DataModel dataModel);
+        /// <param name="sourceSpec">The source spec.</param>
+        public abstract void Setup(IMappingSource mappings, ISource sourceSpec);
 
         /// <summary>
         /// Checks if the properties are similar to one another

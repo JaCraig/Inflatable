@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
-using Inflatable.Schema;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -31,22 +31,22 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <summary>
     /// Many to one single property base
     /// </summary>
-    /// <typeparam name="ClassType">The type of the class type.</typeparam>
-    /// <typeparam name="DataType">The type of the data type.</typeparam>
-    /// <typeparam name="ReturnType">The type of the return type.</typeparam>
+    /// <typeparam name="TClassType">The type of the class type.</typeparam>
+    /// <typeparam name="TDataType">The type of the data type.</typeparam>
+    /// <typeparam name="TReturnType">The type of the return type.</typeparam>
     /// <seealso cref="IManyToOneProperty{ClassType, DataType, ReturnType}"/>
     /// <seealso cref="IManyToOneProperty{ClassType, DataType}"/>
-    public abstract class ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> : IManyToOneProperty<ClassType, IList<DataType>, ReturnType>, IManyToOneProperty<ClassType, IList<DataType>>, IManyToOneListProperty
-        where ClassType : class
-        where DataType : class
-        where ReturnType : IManyToOneProperty<ClassType, IList<DataType>, ReturnType>
+    public abstract class ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> : IManyToOneProperty<TClassType, IList<TDataType>, TReturnType>, IManyToOneProperty<TClassType, IList<TDataType>>, IManyToOneListProperty
+        where TClassType : class
+        where TDataType : class
+        where TReturnType : IManyToOneProperty<TClassType, IList<TDataType>, TReturnType>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected ManyToOneManyPropertyBase(Expression<Func<ClassType, IList<DataType>>> expression, IMapping mapping)
+        protected ManyToOneManyPropertyBase(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
         {
             if (expression is null)
             {
@@ -58,7 +58,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             Expression = expression;
             InternalFieldName = "_" + Name + "Derived";
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
-            PropertyType = typeof(DataType);
+            PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
             ColumnName = string.Empty;
             ForeignMapping = new List<IMapping>();
@@ -86,13 +86,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<ClassType, IList<DataType>> CompiledExpression { get; }
+        public Func<TClassType, IList<TDataType>> CompiledExpression { get; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        public Expression<Func<ClassType, IList<DataType>>> Expression { get; }
+        public Expression<Func<TClassType, IList<TDataType>>> Expression { get; }
 
         /// <summary>
         /// Gets the foreign mapping.
@@ -148,7 +148,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>returns true if they are not equal, false otherwise</returns>
-        public static bool operator !=(ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> first, ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator !=(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !(first == second);
         }
@@ -159,7 +159,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>True if the first item is less than the second, false otherwise</returns>
-        public static bool operator <(ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> first, ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator <(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
         }
@@ -170,7 +170,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>true if the first and second item are the same, false otherwise</returns>
-        public static bool operator ==(ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> first, ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator ==(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
         }
@@ -181,7 +181,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
-        public static bool operator >(ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> first, ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator >(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !ReferenceEquals(first, second)
                 && !(first is null)
@@ -193,10 +193,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Cascades changes to the mapped instance.
         /// </summary>
         /// <returns>This</returns>
-        public ReturnType CascadeChanges()
+        public TReturnType CascadeChanges()
         {
             Cascade = true;
-            return (ReturnType)(IManyToOneProperty<ClassType, IList<DataType>, ReturnType>)this;
+            return (TReturnType)(IManyToOneProperty<TClassType, IList<TDataType>, TReturnType>)this;
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj) => (obj is ManyToOneManyPropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
+        public override bool Equals(object obj) => (obj is ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
@@ -232,7 +232,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        public object? GetValue(object Object) => !(Object is ClassType TempObject) ? null : CompiledExpression(TempObject);
+        public object? GetValue(object Object) => !(Object is TClassType TempObject) ? null : CompiledExpression(TempObject);
 
         /// <summary>
         /// Loads the property using the query specified.
@@ -240,20 +240,20 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="queryText">The query text.</param>
         /// <param name="type">The type.</param>
         /// <returns>This</returns>
-        public ReturnType LoadUsing(string queryText, CommandType type)
+        public TReturnType LoadUsing(string queryText, CommandType type)
         {
             LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
-            return (ReturnType)(IManyToOneProperty<ClassType, IList<DataType>, ReturnType>)this;
+            return (TReturnType)(IManyToOneProperty<TClassType, IList<TDataType>, TReturnType>)this;
         }
 
         /// <summary>
         /// Called when you want to override the default referential integrity and do nothing on delete.
         /// </summary>
         /// <returns>This</returns>
-        public ReturnType OnDeleteDoNothing()
+        public TReturnType OnDeleteDoNothing()
         {
             OnDeleteDoNothingValue = true;
-            return (ReturnType)(IManyToOneProperty<ClassType, IList<DataType>, ReturnType>)this;
+            return (TReturnType)(IManyToOneProperty<TClassType, IList<TDataType>, TReturnType>)this;
         }
 
         /// <summary>
@@ -267,18 +267,18 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns>This</returns>
-        public ReturnType SetColumnName(string columnName)
+        public TReturnType SetColumnName(string columnName)
         {
             ColumnName = columnName;
-            return (ReturnType)(IManyToOneProperty<ClassType, IList<DataType>, ReturnType>)this;
+            return (TReturnType)(IManyToOneProperty<TClassType, IList<TDataType>, TReturnType>)this;
         }
 
         /// <summary>
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataModel">The data model.</param>
-        public abstract void Setup(IMappingSource mappings, DataModel dataModel);
+        /// <param name="sourceSpec">The source spec.</param>
+        public abstract void Setup(IMappingSource mappings, ISource sourceSpec);
 
         /// <summary>
         /// Checks if the properties are similar to one another

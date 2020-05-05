@@ -40,7 +40,7 @@ namespace Inflatable.Aspect.StartMethod
         {
             if (mapping is null)
                 return;
-            var Property = mapping.IDProperties.FirstOrDefault(x => x.Name == method.Name.Replace("set_", string.Empty, StringComparison.Ordinal));
+            var Property = mapping.IDProperties.Find(x => x.Name == method.Name.Replace("set_", string.Empty, StringComparison.Ordinal));
             if (Property is null)
             {
                 return;

@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Column;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
-using Inflatable.Schema;
 using Inflatable.Utils;
 using System;
 using System.Collections.Generic;
@@ -94,8 +94,8 @@ namespace Inflatable.ClassMapper.Default
                         ColumnName + x.ParentMapping.TableName + x.ColumnName,
                         y => y,
                         true,
-                        TempMapping?.SchemaName ?? "",
-                        TempMapping?.TableName ?? ""
+                        TempMapping?.SchemaName ?? string.Empty,
+                        TempMapping?.TableName ?? string.Empty
                     );
                 });
             }));
@@ -120,9 +120,9 @@ namespace Inflatable.ClassMapper.Default
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataModel">The data model.</param>
-        /// <exception cref="ArgumentException"></exception>
-        public override void Setup(IMappingSource mappings, DataModel dataModel)
+        /// <param name="sourceSpec">The source spec.</param>
+        /// <exception cref="ArgumentException">Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}</exception>
+        public override void Setup(IMappingSource mappings, ISource sourceSpec)
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
@@ -136,7 +136,7 @@ namespace Inflatable.ClassMapper.Default
 
             foreach (var TempMapping in ForeignMapping)
             {
-                var ForeignTable = dataModel.SourceSpec.Tables.Find(x => x.Name == TempMapping.TableName);
+                var ForeignTable = sourceSpec.Tables.Find(x => x.Name == TempMapping.TableName);
                 var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
                 var ParentIDs = ParentMappings.SelectMany(x => x.IDProperties);
                 var SetNullOnDelete = !ParentMappings.Contains(TempMapping);

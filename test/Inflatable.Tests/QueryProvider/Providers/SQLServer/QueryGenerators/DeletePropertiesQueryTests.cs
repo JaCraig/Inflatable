@@ -100,7 +100,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
-            ManyToManyProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
+            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
+            ManyToManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DeletePropertiesQuery<ManyToManyProperties>(Mappings, ObjectPool);
             var TempManyToMany = new ManyToManyProperties { ID = 10, BoolValue = true };
             TempManyToMany.ManyToManyClass.Add(new TestDatabases.SimpleTest.AllReferencesAndID { ID = 1 });
@@ -126,7 +127,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
-            ManyToOneProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
+            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
+            ManyToOneProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DeletePropertiesQuery<ManyToOneManyProperties>(Mappings, ObjectPool);
             var TempManyToOne = new ManyToOneManyProperties { ID = 10, BoolValue = true };
             TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 1 });
@@ -147,7 +149,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();
-            ManyToOneProperty.Setup(Mappings, new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper));
+            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
+            ManyToOneProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DeletePropertiesQuery<ManyToOneOneProperties>(Mappings, ObjectPool);
             var TempManyToOne = new ManyToOneOneProperties { ID = 10, BoolValue = true };
             TempManyToOne.ManyToOneClass = new ManyToOneManyProperties { ID = 1 };

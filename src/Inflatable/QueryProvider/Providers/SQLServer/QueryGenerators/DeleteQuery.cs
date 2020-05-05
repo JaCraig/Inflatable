@@ -81,14 +81,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(typeof(object), CommandType.Text, "", QueryType) };
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(typeof(object), CommandType.Text, string.Empty, QueryType) };
 
         /// <summary>
         /// Generates a delete query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? "", QueryType, GenerateParameters(queryObject)) };
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? string.Empty, QueryType, GenerateParameters(queryObject)) };
 
         /// <summary>
         /// Generates the parameters.

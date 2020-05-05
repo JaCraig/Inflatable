@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Column;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
-using Inflatable.Schema;
 using Inflatable.Utils;
 using System;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         /// <param name="dataModel">The data model.</param>
         /// <exception cref="ArgumentException"></exception>
-        public override void Setup(IMappingSource mappings, DataModel dataModel)
+        public override void Setup(IMappingSource mappings, ISource sourceSpec)
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
@@ -123,7 +123,7 @@ namespace Inflatable.ClassMapper.Default
 
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ActualParent = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var ParentTable = dataModel.SourceSpec.Tables.Find(x => x.Name == ActualParent.TableName);
+            var ParentTable = sourceSpec.Tables.Find(x => x.Name == ActualParent.TableName);
             foreach (var TempMapping in ForeignMapping)
             {
                 var SetNullOnDelete = !ParentMappings.Contains(TempMapping);

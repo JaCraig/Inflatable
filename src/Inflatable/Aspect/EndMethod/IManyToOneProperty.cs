@@ -42,7 +42,7 @@ namespace Inflatable.Aspect.EndMethod
         {
             if (mapping is null)
                 return;
-            var Property = mapping.ManyToOneProperties.FirstOrDefault(x => x.Name == method.Name.Replace("get_", string.Empty, StringComparison.Ordinal));
+            var Property = mapping.ManyToOneProperties.Find(x => x.Name == method.Name.Replace("get_", string.Empty, StringComparison.Ordinal));
             if (Property is null)
                 return;
 

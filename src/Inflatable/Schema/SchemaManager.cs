@@ -43,22 +43,8 @@ namespace Inflatable.Schema
         /// <exception cref="ArgumentNullException">logger</exception>
         public SchemaManager(MappingManager mappings, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, SQLHelper sQLHelper)
         {
-            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
-            Mappings = mappings;
-            Models = Mappings.Sources.ToList(x => new DataModel(x, config, logger!, dataModeler, sherlock, sQLHelper));
+            Models = mappings.Sources.ToList(x => new DataModel(x, config, logger!, dataModeler, sherlock, sQLHelper));
         }
-
-        /// <summary>
-        /// Gets the logger.
-        /// </summary>
-        /// <value>The logger.</value>
-        public ILogger Logger { get; }
-
-        /// <summary>
-        /// Gets the mappings.
-        /// </summary>
-        /// <value>The mappings.</value>
-        public MappingManager Mappings { get; }
 
         /// <summary>
         /// Gets the models.

@@ -112,7 +112,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? "", QueryType, GenerateParameters(queryObject)) };
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? string.Empty, QueryType, GenerateParameters(queryObject)) };
 
         /// <summary>
         /// Generates the insert query.

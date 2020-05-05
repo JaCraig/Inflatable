@@ -15,12 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
+using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.BaseClasses;
 using Inflatable.ClassMapper.Column;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
-using Inflatable.Schema;
 using Inflatable.Utils;
 using System;
 using System.Collections.Generic;
@@ -101,7 +101,7 @@ namespace Inflatable.ClassMapper.Default
                     y => y,
                     false,
                     ParentMapping.SchemaName,
-                    TableName ?? ""
+                    TableName ?? string.Empty
                 );
             }));
             TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
@@ -114,7 +114,7 @@ namespace Inflatable.ClassMapper.Default
                         CompiledExpression,
                         true,
                         ParentMapping.SchemaName,
-                        TableName ?? ""
+                        TableName ?? string.Empty
                     );
                 });
             }));
@@ -125,9 +125,9 @@ namespace Inflatable.ClassMapper.Default
         /// Sets up the property (used internally)
         /// </summary>
         /// <param name="mappings">The mappings.</param>
-        /// <param name="dataModel">The data model.</param>
-        /// <exception cref="ArgumentException"></exception>
-        public override void Setup(IMappingSource mappings, DataModel dataModel)
+        /// <param name="sourceSpec">The source spec.</param>
+        /// <exception cref="ArgumentException">Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}</exception>
+        public override void Setup(IMappingSource mappings, ISource sourceSpec)
         {
             ForeignMapping = mappings.GetChildMappings<DataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
@@ -155,12 +155,12 @@ namespace Inflatable.ClassMapper.Default
                     SetTableName(Class2 + "_" + Class1);
                 }
             }
-            if (dataModel.SourceSpec.Tables.Any(x => x.Name == TableName))
+            if (sourceSpec.Tables.Any(x => x.Name == TableName))
             {
                 return;
             }
 
-            var JoinTable = dataModel.SourceSpec.AddTable(TableName ?? "", ParentMapping.SchemaName);
+            var JoinTable = sourceSpec.AddTable(TableName ?? string.Empty, ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             DatabaseJoinsCascade = ForeignMapping.Any(TempMapping => !ParentMappings.Contains(TempMapping));

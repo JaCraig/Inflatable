@@ -178,7 +178,7 @@ namespace Inflatable.Sessions
             {
                 return QueryResults.GetCached(KeyName, Cache).SelectMany(x => x.ConvertValues<TObject>());
             }
-            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -288,7 +288,7 @@ namespace Inflatable.Sessions
         {
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -321,7 +321,7 @@ namespace Inflatable.Sessions
         {
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            var Source = MappingManager.Sources.FirstOrDefault(x => x.Source.Name == connection);
+            var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");

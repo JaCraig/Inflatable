@@ -79,7 +79,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -214,8 +214,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 WhereList.Append(Splitter2).Append(GetColumnName(IDProperty)).Append(" = ").Append(GetParameterName(IDProperty));
                 Splitter2 = " AND ";
             }
-            FromList.Append(GetTableName(mapProperty.ParentMapping));
-            FromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[mapProperty.ParentMapping.ObjectType]?.Root));
+            FromList.Append(GetTableName(mapProperty.ParentMapping))
+                .Append(GenerateFromClause(MappingInformation.TypeGraphs[mapProperty.ParentMapping.ObjectType]?.Root));
 
             Builder.AppendFormat("UPDATE {0} SET {1} FROM {2} WHERE {3};", GetTableName(mapProperty.ParentMapping), ParametersList, FromList, WhereList);
             var ReturnValue = Builder.ToString();
@@ -374,8 +374,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 whereList.Append(Splitter).Append(GetColumnName(IDProperty)).Append(" = ").Append(GetParameterName(IDProperty));
                 Splitter = " AND ";
             }
-            fromList.Append(GetTableName(parentMapping));
-            fromList.Append(GenerateFromClause(MappingInformation.TypeGraphs[parentMapping.ObjectType]?.Root));
+            fromList.Append(GetTableName(parentMapping))
+                .Append(GenerateFromClause(MappingInformation.TypeGraphs[parentMapping.ObjectType]?.Root));
         }
 
         /// <summary>
