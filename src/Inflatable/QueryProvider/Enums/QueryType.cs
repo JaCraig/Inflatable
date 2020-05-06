@@ -54,6 +54,11 @@ namespace Inflatable.QueryProvider.Enums
         /// <summary>
         /// The joins save
         /// </summary>
-        JoinsSave
+        JoinsSave,
+
+        /// <summary>
+        /// The load data
+        /// </summary>
+        LoadData
     }
 }

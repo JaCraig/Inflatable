@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression.Interfaces;
 using Inflatable.QueryProvider.Enums;
@@ -56,6 +57,14 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
         IQuery[] GenerateQueries(QueryType type, object queryObject, IClassProperty property);
+
+        /// <summary>
+        /// Generates the queries.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="ids">The ids.</param>
+        /// <returns>The resulting query</returns>
+        IQuery[] GenerateQueries(QueryType type, List<Dynamo> ids);
     }
 
     /// <summary>

@@ -45,7 +45,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
                 new LinqQueryGenerator<TMappedClass>(mappingInformation,objectPool),
                 new LoadPropertiesQuery<TMappedClass>(mappingInformation,objectPool),
                 new SavePropertiesQuery<TMappedClass>(mappingInformation,objectPool),
-                new DeletePropertiesQuery<TMappedClass>(mappingInformation,objectPool)
+                new DeletePropertiesQuery<TMappedClass>(mappingInformation,objectPool),
+                new DataLoadQuery<TMappedClass>(mappingInformation,objectPool)
             })
         {
         }

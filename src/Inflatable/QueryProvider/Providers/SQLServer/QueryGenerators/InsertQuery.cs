@@ -122,7 +122,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateInsertQuery(Utils.TreeNode<Type>? node)
         {
             if (node is null)
-                return "";
+                return string.Empty;
             var Builder = ObjectPool.Get();
             var ParameterList = ObjectPool.Get();
             var ValueList = ObjectPool.Get();

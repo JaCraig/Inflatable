@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression;
@@ -54,6 +55,7 @@ namespace Inflatable.QueryProvider.BaseClasses
 
             QueryGenerators = queryGenerators?.ToDictionary(x => x.QueryType) ?? throw new ArgumentNullException(nameof(queryGenerators));
             LinqQueryGenerator = (ILinqQueryGenerator<TMappedClass>)queryGenerators.FirstOrDefault(x => x.QueryType == QueryType.LinqQuery);
+            DataQueryGenerator = (IDataQueryGenerator<TMappedClass>)queryGenerators.FirstOrDefault(x => x.QueryType == QueryType.LoadData);
         }
 
         /// <summary>
@@ -61,12 +63,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <value>The type of the associated.</value>
         public Type AssociatedType => typeof(TMappedClass);
-
-        /// <summary>
-        /// Gets the linq query generator.
-        /// </summary>
-        /// <value>The linq query generator.</value>
-        public ILinqQueryGenerator<TMappedClass> LinqQueryGenerator { get; }
 
         /// <summary>
         /// Gets the mapping information.
@@ -79,6 +75,18 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <value>The query generators.</value>
         public IDictionary<QueryType, IQueryGenerator<TMappedClass>> QueryGenerators { get; }
+
+        /// <summary>
+        /// Gets the data query generator.
+        /// </summary>
+        /// <value>The data query generator.</value>
+        private IDataQueryGenerator<TMappedClass> DataQueryGenerator { get; }
+
+        /// <summary>
+        /// Gets the linq query generator.
+        /// </summary>
+        /// <value>The linq query generator.</value>
+        private ILinqQueryGenerator<TMappedClass> LinqQueryGenerator { get; }
 
         /// <summary>
         /// Generates the declarations needed for the query.
@@ -110,5 +118,13 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
         public IQuery[] GenerateQueries(QueryType type, object queryObject, IClassProperty property) => ((IPropertyQueryGenerator<TMappedClass>)QueryGenerators[type]).GenerateQueries((TMappedClass)queryObject, property);
+
+        /// <summary>
+        /// Generates the queries.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="ids">The ids.</param>
+        /// <returns>The resulting query</returns>
+        public IQuery[] GenerateQueries(QueryType type, List<Dynamo> ids) => DataQueryGenerator.GenerateQueries(ids);
     }
 }

@@ -263,7 +263,7 @@ namespace Inflatable.Tests
                     IndustryCode=new IndustryCodeManyToOne()
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
+            Assert.Equal(5, await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false));
 
             var TestObject = DbContext<CompanyManyToOne>.CreateQuery();
             var Results = TestObject.ToList();
