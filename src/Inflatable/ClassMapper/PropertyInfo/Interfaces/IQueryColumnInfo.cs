@@ -78,6 +78,13 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// Gets as parameter.
         /// </summary>
         /// <param name="objectValue">The object value.</param>
+        /// <returns>The object value as a parameter.</returns>
+        IParameter? GetAsParameter(Dynamo? objectValue);
+
+        /// <summary>
+        /// Gets as parameter.
+        /// </summary>
+        /// <param name="objectValue">The object value.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The object value as a parameter.</returns>
         IParameter? GetAsParameter(object? objectValue, object? paramValue);

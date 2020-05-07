@@ -131,6 +131,21 @@ namespace Inflatable.ClassMapper.Column
         }
 
         /// <summary>
+        /// Gets the property as an IParameter (for classes, this will return the ID of the property)
+        /// </summary>
+        /// <param name="objectValue"></param>
+        /// <returns>The parameter version of the property</returns>
+        public IParameter? GetAsParameter(Dynamo? objectValue)
+        {
+            object? ParamValue = objectValue is null ? null : GetValue(objectValue);
+            var TempParameter = Child.GetAsParameter(ParamValue);
+            if (TempParameter is null)
+                return TempParameter;
+            TempParameter.ID = ColumnName ?? string.Empty;
+            return TempParameter;
+        }
+
+        /// <summary>
         /// Gets as parameter.
         /// </summary>
         /// <param name="objectValue">The object value.</param>

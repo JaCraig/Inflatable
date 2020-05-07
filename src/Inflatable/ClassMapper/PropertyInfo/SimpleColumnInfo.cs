@@ -171,6 +171,27 @@ namespace Inflatable.ClassMapper.Column
         /// Gets as parameter.
         /// </summary>
         /// <param name="objectValue">The object value.</param>
+        /// <returns>The value as a parameter</returns>
+        public IParameter? GetAsParameter(Dynamo? objectValue)
+        {
+            var ParamValue = GetValue(objectValue);
+            if (Equals(ParamValue, DefaultValue()))
+            {
+                ParamValue = IsNullable ? null : DefaultValue() as object;
+            }
+
+            if (PropertyType == typeof(string))
+            {
+                var TempParameter = ParamValue as string;
+                return new StringParameter(PropertyName, TempParameter!);
+            }
+            return new Parameter<object>(PropertyName, PropertyType.To<Type, DbType>(), ParamValue);
+        }
+
+        /// <summary>
+        /// Gets as parameter.
+        /// </summary>
+        /// <param name="objectValue">The object value.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns>The object value as a parameter.</returns>
         public IParameter? GetAsParameter(object? objectValue, object? paramValue) => GetAsParameter(objectValue);

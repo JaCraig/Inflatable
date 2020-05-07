@@ -85,10 +85,15 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var TestObject = new DataLoadQuery<ConcreteClass1>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new List<Dynamo>() { DynamoFactory.Create(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Empty(Result.Parameters);
-            Assert.Equal("", Result.QueryString);
+            Assert.Single(Result.Parameters);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
+            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass1_].[Value1_] AS [Value1]
+FROM [dbo].[ConcreteClass1_]
+INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
+INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
+WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             Assert.Equal(QueryType.LoadProperty, Result.QueryType);
         }
 
