@@ -69,6 +69,16 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
+        /// The mapping manager
+        /// </summary>
+        private readonly MappingManager MappingManager;
+
+        /// <summary>
+        /// The query provider manager
+        /// </summary>
+        private readonly QueryProviderManager QueryProviderManager;
+
+        /// <summary>
         /// Gets the dynamo factory.
         /// </summary>
         /// <value>The dynamo factory.</value>
@@ -91,16 +101,6 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <value>The logger.</value>
         private ILogger Logger { get; }
-
-        /// <summary>
-        /// The mapping manager
-        /// </summary>
-        private readonly MappingManager MappingManager;
-
-        /// <summary>
-        /// The query provider manager
-        /// </summary>
-        private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
         /// Adds the objects for deletion.
@@ -170,6 +170,7 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
             where TObject : class
         {
+            //TODO: CHANGE CACHING SYSTEM HERE TO CACHE INDIVIDUAL ITEMS (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
             var KeyName = command + "_" + connection;
@@ -219,6 +220,7 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
+            //TODO: CHANGE CACHING SYSTEM HERE TO CACHE INDIVIDUAL ITEMS AND SWITCH CACHE KEY (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             var KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
             (queries?.Values
                 ?.SelectMany(x => x.Parameters)
@@ -232,6 +234,7 @@ namespace Inflatable.Sessions
             var Results = new List<QueryResults>();
             var FirstRun = true;
             var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
+            //TODO: CHANGE QUERY/CACHING GENERATION TO DO TWO QUERIES BUT CACHE EACH ITEM INDIVIDUALLY (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
                                               .OrderBy(x => x.Key.Order))
             {
@@ -354,6 +357,7 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
+            //TODO: CHANGE QUERY/CACHING GENERATION TO DO TWO QUERIES BUT CACHE EACH ITEM INDIVIDUALLY AND THEN PULL FROM CACHE (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             var Results = new List<QueryResults>();
             foreach (var Source in MappingManager.Sources.Where(x => x.CanRead
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
@@ -411,6 +415,7 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
+            //TODO: CHANGE QUERY/CACHING GENERATION TO DO TWO QUERIES BUT CACHE EACH ITEM INDIVIDUALLY AND THEN PULL FROM CACHE (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             var Results = new List<QueryResults>();
             foreach (var Source in MappingManager.Sources.Where(x => x.CanRead
                                                                   && x.Mappings.ContainsKey(typeof(TObject)))
@@ -559,6 +564,7 @@ namespace Inflatable.Sessions
         private async Task GenerateQueryAsync<TObject>(List<QueryResults> results, bool firstRun, KeyValuePair<IMappingSource, QueryData<TObject>> source)
             where TObject : class
         {
+            //TODO: CHANGE QUERY GENERATION TO DO TWO QUERIES BUT CACHE EACH ITEM INDIVIDUALLY AND THEN PULL FROM CACHE (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
             var ResultingQueries = Generator.GenerateQueries(source.Value);
             var Batch = QueryProviderManager.CreateBatch(source.Key.Source, DynamoFactory);

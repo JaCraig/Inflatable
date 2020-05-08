@@ -190,6 +190,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="object">The object.</param>
         protected void RemoveItemsFromCache(object @object)
         {
+            //TODO: CHANGE CACHE REMOVAL TO REMOVE INDIVIDUAL ITEM
             var TempType = GetActualType(@object);
             QueryResults.RemoveCacheTag(TempType.GetName(), Cache);
         }

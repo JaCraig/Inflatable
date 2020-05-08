@@ -69,6 +69,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
+            //TODO: ONLY DO IDs UNLESS SELECT IS CALLED ON THE OBJECT. THEN GENERATE FULL QUERY.
             if (data is null)
                 return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
