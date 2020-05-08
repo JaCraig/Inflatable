@@ -36,7 +36,7 @@ namespace Inflatable.Tests.Schema
         {
             var TestObject = new SchemaManager(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
             Assert.Equal(2, TestObject.Models.Count());
-            var TestModel = TestObject.Models.Last();
+            var TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase");
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);
@@ -48,7 +48,7 @@ namespace Inflatable.Tests.Schema
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource1Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
 
-            TestModel = TestObject.Models.First();
+            TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase2");
             Assert.Equal("TestDatabase2", TestModel.SourceSpec.Name);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);

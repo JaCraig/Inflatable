@@ -93,8 +93,8 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 FROM [dbo].[ConcreteClass1_]
 INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
 INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+WHERE [dbo].[IInterface1_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -115,10 +115,12 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[AllReferencesAndID_].[ID_] AS [ID],[dbo].[AllReferencesAndID_].[BoolValue_] AS [BoolValue],[dbo].[AllReferencesAndID_].[ByteArrayValue_] AS [ByteArrayValue],[dbo].[AllReferencesAndID_].[ByteValue_] AS [ByteValue],[dbo].[AllReferencesAndID_].[CharValue_] AS [CharValue],[dbo].[AllReferencesAndID_].[DateTimeValue_] AS [DateTimeValue],[dbo].[AllReferencesAndID_].[DecimalValue_] AS [DecimalValue],[dbo].[AllReferencesAndID_].[DoubleValue_] AS [DoubleValue],[dbo].[AllReferencesAndID_].[FloatValue_] AS [FloatValue],[dbo].[AllReferencesAndID_].[GuidValue_] AS [GuidValue],[dbo].[AllReferencesAndID_].[IntValue_] AS [IntValue],[dbo].[AllReferencesAndID_].[LongValue_] AS [LongValue],[dbo].[AllReferencesAndID_].[NullableBoolValue_] AS [NullableBoolValue],[dbo].[AllReferencesAndID_].[NullableByteValue_] AS [NullableByteValue],[dbo].[AllReferencesAndID_].[NullableCharValue_] AS [NullableCharValue],[dbo].[AllReferencesAndID_].[NullableDateTimeValue_] AS [NullableDateTimeValue],[dbo].[AllReferencesAndID_].[NullableDecimalValue_] AS [NullableDecimalValue],[dbo].[AllReferencesAndID_].[NullableDoubleValue_] AS [NullableDoubleValue],[dbo].[AllReferencesAndID_].[NullableFloatValue_] AS [NullableFloatValue],[dbo].[AllReferencesAndID_].[NullableGuidValue_] AS [NullableGuidValue],[dbo].[AllReferencesAndID_].[NullableIntValue_] AS [NullableIntValue],[dbo].[AllReferencesAndID_].[NullableLongValue_] AS [NullableLongValue],[dbo].[AllReferencesAndID_].[NullableSByteValue_] AS [NullableSByteValue],[dbo].[AllReferencesAndID_].[NullableShortValue_] AS [NullableShortValue],[dbo].[AllReferencesAndID_].[NullableTimeSpanValue_] AS [NullableTimeSpanValue],[dbo].[AllReferencesAndID_].[NullableUIntValue_] AS [NullableUIntValue],[dbo].[AllReferencesAndID_].[NullableULongValue_] AS [NullableULongValue],[dbo].[AllReferencesAndID_].[NullableUShortValue_] AS [NullableUShortValue],[dbo].[AllReferencesAndID_].[SByteValue_] AS [SByteValue],[dbo].[AllReferencesAndID_].[ShortValue_] AS [ShortValue],[dbo].[AllReferencesAndID_].[StringValue1_] AS [StringValue1],[dbo].[AllReferencesAndID_].[StringValue2_] AS [StringValue2],[dbo].[AllReferencesAndID_].[TimeSpanValue_] AS [TimeSpanValue],[dbo].[AllReferencesAndID_].[UIntValue_] AS [UIntValue],[dbo].[AllReferencesAndID_].[ULongValue_] AS [ULongValue],[dbo].[AllReferencesAndID_].[UShortValue_] AS [UShortValue],[dbo].[AllReferencesAndID_].[UriValue_] AS [UriValue]\r\nFROM [dbo].[AllReferencesAndID_]\r\nINNER JOIN [dbo].[AllReferencesAndID_ManyToManyProperties] ON [dbo].[AllReferencesAndID_ManyToManyProperties].[AllReferencesAndID_ID_]=[dbo].[AllReferencesAndID_].[ID_]\r\nWHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[ManyToManyProperties_].[ID_] AS [ID],[dbo].[ManyToManyProperties_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[ManyToManyProperties_]
+WHERE [dbo].[ManyToManyProperties_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -148,8 +150,11 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[AllReferencesAndID_].[ID_] AS [ID],[dbo].[AllReferencesAndID_].[BoolValue_] AS [BoolValue],[dbo].[AllReferencesAndID_].[ByteArrayValue_] AS [ByteArrayValue],[dbo].[AllReferencesAndID_].[ByteValue_] AS [ByteValue],[dbo].[AllReferencesAndID_].[CharValue_] AS [CharValue],[dbo].[AllReferencesAndID_].[DateTimeValue_] AS [DateTimeValue],[dbo].[AllReferencesAndID_].[DecimalValue_] AS [DecimalValue],[dbo].[AllReferencesAndID_].[DoubleValue_] AS [DoubleValue],[dbo].[AllReferencesAndID_].[FloatValue_] AS [FloatValue],[dbo].[AllReferencesAndID_].[GuidValue_] AS [GuidValue],[dbo].[AllReferencesAndID_].[IntValue_] AS [IntValue],[dbo].[AllReferencesAndID_].[LongValue_] AS [LongValue],[dbo].[AllReferencesAndID_].[NullableBoolValue_] AS [NullableBoolValue],[dbo].[AllReferencesAndID_].[NullableByteValue_] AS [NullableByteValue],[dbo].[AllReferencesAndID_].[NullableCharValue_] AS [NullableCharValue],[dbo].[AllReferencesAndID_].[NullableDateTimeValue_] AS [NullableDateTimeValue],[dbo].[AllReferencesAndID_].[NullableDecimalValue_] AS [NullableDecimalValue],[dbo].[AllReferencesAndID_].[NullableDoubleValue_] AS [NullableDoubleValue],[dbo].[AllReferencesAndID_].[NullableFloatValue_] AS [NullableFloatValue],[dbo].[AllReferencesAndID_].[NullableGuidValue_] AS [NullableGuidValue],[dbo].[AllReferencesAndID_].[NullableIntValue_] AS [NullableIntValue],[dbo].[AllReferencesAndID_].[NullableLongValue_] AS [NullableLongValue],[dbo].[AllReferencesAndID_].[NullableSByteValue_] AS [NullableSByteValue],[dbo].[AllReferencesAndID_].[NullableShortValue_] AS [NullableShortValue],[dbo].[AllReferencesAndID_].[NullableTimeSpanValue_] AS [NullableTimeSpanValue],[dbo].[AllReferencesAndID_].[NullableUIntValue_] AS [NullableUIntValue],[dbo].[AllReferencesAndID_].[NullableULongValue_] AS [NullableULongValue],[dbo].[AllReferencesAndID_].[NullableUShortValue_] AS [NullableUShortValue],[dbo].[AllReferencesAndID_].[SByteValue_] AS [SByteValue],[dbo].[AllReferencesAndID_].[ShortValue_] AS [ShortValue],[dbo].[AllReferencesAndID_].[StringValue1_] AS [StringValue1],[dbo].[AllReferencesAndID_].[StringValue2_] AS [StringValue2],[dbo].[AllReferencesAndID_].[TimeSpanValue_] AS [TimeSpanValue],[dbo].[AllReferencesAndID_].[UIntValue_] AS [UIntValue],[dbo].[AllReferencesAndID_].[ULongValue_] AS [ULongValue],[dbo].[AllReferencesAndID_].[UShortValue_] AS [UShortValue],[dbo].[AllReferencesAndID_].[UriValue_] AS [UriValue]\r\nFROM [dbo].[AllReferencesAndID_]\r\nWHERE [dbo].[AllReferencesAndID_].[IManyToOneMany_ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[IManyToOneMany_].[ID_] AS [ID],[dbo].[IManyToOneMany_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[ManyToOneManyFromComplexClass_]
+INNER JOIN [dbo].[IManyToOneMany_] ON [dbo].[ManyToOneManyFromComplexClass_].[IManyToOneMany_ID_]=[dbo].[IManyToOneMany_].[ID_]
+WHERE [dbo].[IManyToOneMany_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -176,10 +181,12 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[ManyToOneOneProperties_].[ID_] AS [ID],[dbo].[ManyToOneOneProperties_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[ManyToOneOneProperties_]\r\nWHERE [dbo].[ManyToOneOneProperties_].[ManyToOneManyProperties_ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[ManyToOneManyProperties_].[ID_] AS [ID],[dbo].[ManyToOneManyProperties_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[ManyToOneManyProperties_]
+WHERE [dbo].[ManyToOneManyProperties_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -206,10 +213,13 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[AllReferencesAndID_].[ID_] AS [ID],[dbo].[AllReferencesAndID_].[BoolValue_] AS [BoolValue],[dbo].[AllReferencesAndID_].[ByteArrayValue_] AS [ByteArrayValue],[dbo].[AllReferencesAndID_].[ByteValue_] AS [ByteValue],[dbo].[AllReferencesAndID_].[CharValue_] AS [CharValue],[dbo].[AllReferencesAndID_].[DateTimeValue_] AS [DateTimeValue],[dbo].[AllReferencesAndID_].[DecimalValue_] AS [DecimalValue],[dbo].[AllReferencesAndID_].[DoubleValue_] AS [DoubleValue],[dbo].[AllReferencesAndID_].[FloatValue_] AS [FloatValue],[dbo].[AllReferencesAndID_].[GuidValue_] AS [GuidValue],[dbo].[AllReferencesAndID_].[IntValue_] AS [IntValue],[dbo].[AllReferencesAndID_].[LongValue_] AS [LongValue],[dbo].[AllReferencesAndID_].[NullableBoolValue_] AS [NullableBoolValue],[dbo].[AllReferencesAndID_].[NullableByteValue_] AS [NullableByteValue],[dbo].[AllReferencesAndID_].[NullableCharValue_] AS [NullableCharValue],[dbo].[AllReferencesAndID_].[NullableDateTimeValue_] AS [NullableDateTimeValue],[dbo].[AllReferencesAndID_].[NullableDecimalValue_] AS [NullableDecimalValue],[dbo].[AllReferencesAndID_].[NullableDoubleValue_] AS [NullableDoubleValue],[dbo].[AllReferencesAndID_].[NullableFloatValue_] AS [NullableFloatValue],[dbo].[AllReferencesAndID_].[NullableGuidValue_] AS [NullableGuidValue],[dbo].[AllReferencesAndID_].[NullableIntValue_] AS [NullableIntValue],[dbo].[AllReferencesAndID_].[NullableLongValue_] AS [NullableLongValue],[dbo].[AllReferencesAndID_].[NullableSByteValue_] AS [NullableSByteValue],[dbo].[AllReferencesAndID_].[NullableShortValue_] AS [NullableShortValue],[dbo].[AllReferencesAndID_].[NullableTimeSpanValue_] AS [NullableTimeSpanValue],[dbo].[AllReferencesAndID_].[NullableUIntValue_] AS [NullableUIntValue],[dbo].[AllReferencesAndID_].[NullableULongValue_] AS [NullableULongValue],[dbo].[AllReferencesAndID_].[NullableUShortValue_] AS [NullableUShortValue],[dbo].[AllReferencesAndID_].[SByteValue_] AS [SByteValue],[dbo].[AllReferencesAndID_].[ShortValue_] AS [ShortValue],[dbo].[AllReferencesAndID_].[StringValue1_] AS [StringValue1],[dbo].[AllReferencesAndID_].[StringValue2_] AS [StringValue2],[dbo].[AllReferencesAndID_].[TimeSpanValue_] AS [TimeSpanValue],[dbo].[AllReferencesAndID_].[UIntValue_] AS [UIntValue],[dbo].[AllReferencesAndID_].[ULongValue_] AS [ULongValue],[dbo].[AllReferencesAndID_].[UShortValue_] AS [UShortValue],[dbo].[AllReferencesAndID_].[UriValue_] AS [UriValue]\r\nFROM [dbo].[AllReferencesAndID_]\r\nINNER JOIN [dbo].[IManyToOneOne_] as [IManyToOneOne_2] ON [IManyToOneOne_2].[AllReferencesAndID_ID_]=[dbo].[AllReferencesAndID_].[ID_]\r\nWHERE [IManyToOneOne_2].[ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[IManyToOneOne_].[ID_] AS [ID],[dbo].[IManyToOneOne_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[ManyToOneOneFromComplexClass_]
+INNER JOIN [dbo].[IManyToOneOne_] ON [dbo].[ManyToOneOneFromComplexClass_].[IManyToOneOne_ID_]=[dbo].[IManyToOneOne_].[ID_]
+WHERE [dbo].[IManyToOneOne_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -235,10 +245,12 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[ManyToOneManyProperties_].[ID_] AS [ID],[dbo].[ManyToOneManyProperties_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[ManyToOneManyProperties_]\r\nINNER JOIN [dbo].[ManyToOneOneProperties_] as [ManyToOneOneProperties_2] ON [ManyToOneOneProperties_2].[ManyToOneManyProperties_ID_]=[dbo].[ManyToOneManyProperties_].[ID_]\r\nWHERE [ManyToOneOneProperties_2].[ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[ManyToOneOneProperties_].[ID_] AS [ID],[dbo].[ManyToOneOneProperties_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[ManyToOneOneProperties_]
+WHERE [dbo].[ManyToOneOneProperties_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -258,10 +270,12 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[AllReferencesAndID_].[ID_] AS [ID],[dbo].[AllReferencesAndID_].[BoolValue_] AS [BoolValue],[dbo].[AllReferencesAndID_].[ByteArrayValue_] AS [ByteArrayValue],[dbo].[AllReferencesAndID_].[ByteValue_] AS [ByteValue],[dbo].[AllReferencesAndID_].[CharValue_] AS [CharValue],[dbo].[AllReferencesAndID_].[DateTimeValue_] AS [DateTimeValue],[dbo].[AllReferencesAndID_].[DecimalValue_] AS [DecimalValue],[dbo].[AllReferencesAndID_].[DoubleValue_] AS [DoubleValue],[dbo].[AllReferencesAndID_].[FloatValue_] AS [FloatValue],[dbo].[AllReferencesAndID_].[GuidValue_] AS [GuidValue],[dbo].[AllReferencesAndID_].[IntValue_] AS [IntValue],[dbo].[AllReferencesAndID_].[LongValue_] AS [LongValue],[dbo].[AllReferencesAndID_].[NullableBoolValue_] AS [NullableBoolValue],[dbo].[AllReferencesAndID_].[NullableByteValue_] AS [NullableByteValue],[dbo].[AllReferencesAndID_].[NullableCharValue_] AS [NullableCharValue],[dbo].[AllReferencesAndID_].[NullableDateTimeValue_] AS [NullableDateTimeValue],[dbo].[AllReferencesAndID_].[NullableDecimalValue_] AS [NullableDecimalValue],[dbo].[AllReferencesAndID_].[NullableDoubleValue_] AS [NullableDoubleValue],[dbo].[AllReferencesAndID_].[NullableFloatValue_] AS [NullableFloatValue],[dbo].[AllReferencesAndID_].[NullableGuidValue_] AS [NullableGuidValue],[dbo].[AllReferencesAndID_].[NullableIntValue_] AS [NullableIntValue],[dbo].[AllReferencesAndID_].[NullableLongValue_] AS [NullableLongValue],[dbo].[AllReferencesAndID_].[NullableSByteValue_] AS [NullableSByteValue],[dbo].[AllReferencesAndID_].[NullableShortValue_] AS [NullableShortValue],[dbo].[AllReferencesAndID_].[NullableTimeSpanValue_] AS [NullableTimeSpanValue],[dbo].[AllReferencesAndID_].[NullableUIntValue_] AS [NullableUIntValue],[dbo].[AllReferencesAndID_].[NullableULongValue_] AS [NullableULongValue],[dbo].[AllReferencesAndID_].[NullableUShortValue_] AS [NullableUShortValue],[dbo].[AllReferencesAndID_].[SByteValue_] AS [SByteValue],[dbo].[AllReferencesAndID_].[ShortValue_] AS [ShortValue],[dbo].[AllReferencesAndID_].[StringValue1_] AS [StringValue1],[dbo].[AllReferencesAndID_].[StringValue2_] AS [StringValue2],[dbo].[AllReferencesAndID_].[TimeSpanValue_] AS [TimeSpanValue],[dbo].[AllReferencesAndID_].[UIntValue_] AS [UIntValue],[dbo].[AllReferencesAndID_].[ULongValue_] AS [ULongValue],[dbo].[AllReferencesAndID_].[UShortValue_] AS [UShortValue],[dbo].[AllReferencesAndID_].[UriValue_] AS [UriValue]\r\nFROM [dbo].[AllReferencesAndID_]\r\nINNER JOIN [dbo].[MapProperties_] as [MapProperties_2] ON [MapProperties_2].[AllReferencesAndID_MappedClass_ID_]=[dbo].[AllReferencesAndID_].[ID_]\r\nWHERE [MapProperties_2].[ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[MapProperties_].[ID_] AS [ID],[dbo].[MapProperties_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[MapProperties_]
+WHERE [dbo].[MapProperties_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -282,10 +296,13 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[AllReferencesAndID_].[ID_] AS [ID],[dbo].[AllReferencesAndID_].[BoolValue_] AS [BoolValue],[dbo].[AllReferencesAndID_].[ByteArrayValue_] AS [ByteArrayValue],[dbo].[AllReferencesAndID_].[ByteValue_] AS [ByteValue],[dbo].[AllReferencesAndID_].[CharValue_] AS [CharValue],[dbo].[AllReferencesAndID_].[DateTimeValue_] AS [DateTimeValue],[dbo].[AllReferencesAndID_].[DecimalValue_] AS [DecimalValue],[dbo].[AllReferencesAndID_].[DoubleValue_] AS [DoubleValue],[dbo].[AllReferencesAndID_].[FloatValue_] AS [FloatValue],[dbo].[AllReferencesAndID_].[GuidValue_] AS [GuidValue],[dbo].[AllReferencesAndID_].[IntValue_] AS [IntValue],[dbo].[AllReferencesAndID_].[LongValue_] AS [LongValue],[dbo].[AllReferencesAndID_].[NullableBoolValue_] AS [NullableBoolValue],[dbo].[AllReferencesAndID_].[NullableByteValue_] AS [NullableByteValue],[dbo].[AllReferencesAndID_].[NullableCharValue_] AS [NullableCharValue],[dbo].[AllReferencesAndID_].[NullableDateTimeValue_] AS [NullableDateTimeValue],[dbo].[AllReferencesAndID_].[NullableDecimalValue_] AS [NullableDecimalValue],[dbo].[AllReferencesAndID_].[NullableDoubleValue_] AS [NullableDoubleValue],[dbo].[AllReferencesAndID_].[NullableFloatValue_] AS [NullableFloatValue],[dbo].[AllReferencesAndID_].[NullableGuidValue_] AS [NullableGuidValue],[dbo].[AllReferencesAndID_].[NullableIntValue_] AS [NullableIntValue],[dbo].[AllReferencesAndID_].[NullableLongValue_] AS [NullableLongValue],[dbo].[AllReferencesAndID_].[NullableSByteValue_] AS [NullableSByteValue],[dbo].[AllReferencesAndID_].[NullableShortValue_] AS [NullableShortValue],[dbo].[AllReferencesAndID_].[NullableTimeSpanValue_] AS [NullableTimeSpanValue],[dbo].[AllReferencesAndID_].[NullableUIntValue_] AS [NullableUIntValue],[dbo].[AllReferencesAndID_].[NullableULongValue_] AS [NullableULongValue],[dbo].[AllReferencesAndID_].[NullableUShortValue_] AS [NullableUShortValue],[dbo].[AllReferencesAndID_].[SByteValue_] AS [SByteValue],[dbo].[AllReferencesAndID_].[ShortValue_] AS [ShortValue],[dbo].[AllReferencesAndID_].[StringValue1_] AS [StringValue1],[dbo].[AllReferencesAndID_].[StringValue2_] AS [StringValue2],[dbo].[AllReferencesAndID_].[TimeSpanValue_] AS [TimeSpanValue],[dbo].[AllReferencesAndID_].[UIntValue_] AS [UIntValue],[dbo].[AllReferencesAndID_].[ULongValue_] AS [ULongValue],[dbo].[AllReferencesAndID_].[UShortValue_] AS [UShortValue],[dbo].[AllReferencesAndID_].[UriValue_] AS [UriValue]\r\nFROM [dbo].[AllReferencesAndID_]\r\nINNER JOIN [dbo].[MapPropertiesFromComplexClass_] as [MapPropertiesFromComplexClass_2] ON [MapPropertiesFromComplexClass_2].[AllReferencesAndID_MappedClass_ID_]=[dbo].[AllReferencesAndID_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] AS [IMapPropertiesInterface_2] ON [MapPropertiesFromComplexClass_2].[IMapPropertiesInterface_ID_]=[IMapPropertiesInterface_2].[ID_]\r\nWHERE [IMapPropertiesInterface_2].[ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[MapPropertiesFromComplexClass_]
+INNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertiesFromComplexClass_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]
+WHERE [dbo].[IMapPropertiesInterface_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -305,10 +322,13 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[MapPropertyReferencesSelf_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertyReferencesSelf_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]\r\nINNER JOIN [dbo].[MapPropertyReferencesSelf_] as [MapPropertyReferencesSelf_2] ON [MapPropertyReferencesSelf_2].[IMapPropertiesInterface_MappedClass_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] AS [IMapPropertiesInterface_2] ON [MapPropertyReferencesSelf_2].[IMapPropertiesInterface_ID_]=[IMapPropertiesInterface_2].[ID_]\r\nWHERE [IMapPropertiesInterface_2].[ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[MapPropertyReferencesSelf_]
+INNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertyReferencesSelf_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]
+WHERE [dbo].[IMapPropertiesInterface_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
         [Fact]
@@ -328,10 +348,13 @@ WHERE [dbo].[IInterface1_].[ID_]=@0;", Result.QueryString);
             var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
-            Assert.Equal(10, Result.Parameters[0].InternalValue);
+            Assert.Equal(1, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("SELECT [dbo].[IMapPropertiesInterfaceWithMap_].[ID_] AS [ID],[dbo].[MapPropertiesWithMapOnInterface_].[BoolValue_] AS [BoolValue]\r\nFROM [dbo].[MapPropertiesWithMapOnInterface_]\r\nINNER JOIN [dbo].[IMapPropertiesInterfaceWithMap_] ON [dbo].[MapPropertiesWithMapOnInterface_].[IMapPropertiesInterfaceWithMap_ID_]=[dbo].[IMapPropertiesInterfaceWithMap_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterfaceWithMap_] as [IMapPropertiesInterfaceWithMap_2] ON [IMapPropertiesInterfaceWithMap_2].[IMapPropertiesInterfaceWithMap_MappedClass_ID_]=[dbo].[IMapPropertiesInterfaceWithMap_].[ID_]\r\nWHERE [IMapPropertiesInterfaceWithMap_2].[ID_]=@ID;", Result.QueryString);
-            Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+            Assert.Equal(@"SELECT [dbo].[IMapPropertiesInterfaceWithMap_].[ID_] AS [ID],[dbo].[MapPropertiesWithMapOnInterface_].[BoolValue_] AS [BoolValue]
+FROM [dbo].[MapPropertiesWithMapOnInterface_]
+INNER JOIN [dbo].[IMapPropertiesInterfaceWithMap_] ON [dbo].[MapPropertiesWithMapOnInterface_].[IMapPropertiesInterfaceWithMap_ID_]=[dbo].[IMapPropertiesInterfaceWithMap_].[ID_]
+WHERE [dbo].[IMapPropertiesInterfaceWithMap_].[ID_]=@ID;", Result.QueryString);
+            Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
     }
 }
