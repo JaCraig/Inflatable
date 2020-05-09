@@ -222,7 +222,6 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             var Results = new List<QueryResults>();
-            var FirstRun = true;
             if (queries.Any(x => x.Value.SelectValues.Count > 0))
             {
                 return await GetSubView(queries).ConfigureAwait(false);
@@ -747,10 +746,10 @@ namespace Inflatable.Sessions
         /// <param name="cache">The cache.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns></returns>
-        private IEnumerable<dynamic> GetCachedItems<TObject>(IEnumerable<Dynamo> idList, ICache cache, MappingManager mappingManager)
+        private IEnumerable<TObject> GetCachedItems<TObject>(IEnumerable<Dynamo> idList, ICache cache, MappingManager mappingManager)
                     where TObject : class
         {
-            List<dynamic> ReturnValue = new List<dynamic>();
+            List<TObject> ReturnValue = new List<TObject>();
             var ParentMapping = mappingManager
                 .Sources
                 .Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any())
@@ -769,7 +768,7 @@ namespace Inflatable.Sessions
                 {
                     var TempVal = cachedResult.Value.To(cachedResult.ObjectType);
                     ((IORMObject)TempVal).Session0 = this;
-                    ReturnValue.Add(TempVal);
+                    ReturnValue.Add((TempVal as TObject)!);
                 }
             }
             return ReturnValue;

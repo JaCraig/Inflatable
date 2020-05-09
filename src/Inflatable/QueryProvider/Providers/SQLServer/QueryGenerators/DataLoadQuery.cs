@@ -180,7 +180,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             ParameterList.Append(GenerateParameterList(node));
 
             //Get Where Clause
-            WhereClause.Append(GenerateWhereClause());
+            WhereClause.Append(GenerateWhereClause(ids));
 
             //Generate final query
             Builder
@@ -208,17 +208,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the where clause.
         /// </summary>
         /// <returns>The WHERE clause</returns>
-        private string GenerateWhereClause()
+        private string GenerateWhereClause(List<Dynamo> ids)
         {
             var Result = ObjectPool.Get();
-            var Separator = string.Empty;
-            foreach (var IDMapping in IDProperties)
+            var Separator2 = string.Empty;
+            for (int x = 0; x < ids.Count; ++x)
             {
-                Result.AppendFormat("{0}{1}={2}",
-                    Separator,
-                    "[" + IDMapping.ParentMapping?.SchemaName + "].[" + IDMapping.ParentMapping?.TableName + "].[" + IDMapping.ColumnName + "]",
-                    GetParameterName(IDMapping));
-                Separator = "\r\nAND ";
+                var Separator = string.Empty;
+                Result.AppendFormat("{0}(", Separator2);
+                foreach (var IDMapping in IDProperties)
+                {
+                    Result.AppendFormat("{0}{1}={2}",
+                        Separator,
+                        "[" + IDMapping.ParentMapping?.SchemaName + "].[" + IDMapping.ParentMapping?.TableName + "].[" + IDMapping.ColumnName + "]",
+                        GetParameterName(IDMapping) + x);
+                    Separator = "\r\nAND ";
+                }
+                Result.Append(")");
+                Separator2 = "\r\nOR ";
             }
             var ReturnValue = Result.ToString();
             ObjectPool.Return(Result);
@@ -234,9 +241,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter?[] GetParameters(List<Dynamo> ids, IEnumerable<IIDProperty> idProperties)
         {
             List<IParameter?> ReturnValues = new List<IParameter?>();
-            foreach (var Value in ids)
+            for (int x = 0; x < ids.Count; ++x)
             {
-                ReturnValues.AddRange(idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(Value)) ?? Array.Empty<IParameter?>());
+                var Value = ids[x];
+                var TempParams = idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(Value)).ForEach(y => { y.ID += x; });
+                ReturnValues.AddRange(TempParams ?? Array.Empty<IParameter?>());
             }
             return ReturnValues.ToArray();
         }
