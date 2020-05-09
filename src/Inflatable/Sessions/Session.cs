@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using BigBook.Caching.Interfaces;
+using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression;
@@ -220,35 +221,19 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
-            //TODO: CHANGE CACHING SYSTEM HERE TO CACHE INDIVIDUAL ITEMS AND SWITCH CACHE KEY (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
-            var KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
-            (queries?.Values
-                ?.SelectMany(x => x.Parameters)
-                ?.Distinct()
-                ?? Array.Empty<IParameter>())
-                ?.ForEach(x => KeyName = x.AddParameter(KeyName));
-            if (QueryResults.IsCached(KeyName, Cache))
-            {
-                return QueryResults.GetCached(KeyName, Cache)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
-            }
             var Results = new List<QueryResults>();
             var FirstRun = true;
-            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
-            //TODO: CHANGE QUERY/CACHING GENERATION TO DO TWO QUERIES BUT CACHE EACH ITEM INDIVIDUALLY (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
-                                              .OrderBy(x => x.Key.Order))
+            if (queries.Any(x => x.Value.SelectValues.Count > 0))
             {
-                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
-                FirstRun = false;
+                return await GetSubView(queries).ConfigureAwait(false);
             }
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
-                                              .OrderBy(x => x.Key.Order))
-            {
-                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
-                FirstRun = false;
-            }
-            QueryResults.CacheValues(KeyName, Results, Cache);
-            return Results?.SelectMany(x => x.ConvertValues<TObject>())?.ToArray() ?? Array.Empty<TObject>();
+            //TODO: CHANGE CACHING SYSTEM HERE TO CACHE INDIVIDUAL ITEMS AND SWITCH CACHE KEY (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
+            var KeyName = GetIDListCacheKey(queries);
+            var IDList = GetCachedIDList(KeyName, Cache);
+            IDList = await GetIDList(IDList, KeyName, queries).ConfigureAwait(false);
+            var MissingCachedItems = GetMissedCachedItems<TObject>(IDList, Cache, MappingManager);
+            await FillCache<TObject>(MissingCachedItems).ConfigureAwait(false);
+            return GetCachedItems<TObject>(IDList, Cache, MappingManager) ?? Array.Empty<TObject>();
         }
 
         /// <summary>
@@ -554,6 +539,156 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
+        /// Gets the cached identifier list.
+        /// </summary>
+        /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
+        /// <returns>The cached ID list.</returns>
+        private static IEnumerable<Dynamo> GetCachedIDList(string keyName, ICache cache)
+        {
+            if (cache.TryGetValue(keyName, out var Value) && Value is List<Dynamo> ReturnValue)
+                return ReturnValue;
+            return Array.Empty<Dynamo>();
+        }
+
+        /// <summary>
+        /// Gets the cached values.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
+        /// <returns></returns>
+        private static IEnumerable<TObject> GetCachedValues<TObject>(string keyName, ICache cache)
+                    where TObject : class
+        {
+            return QueryResults.GetCached(keyName, cache)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
+        }
+
+        /// <summary>
+        /// Gets the identifier list cache key.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="queries">The queries.</param>
+        /// <returns>The ID list cache key</returns>
+        private static string GetIDListCacheKey<TObject>(IDictionary<IMappingSource, QueryData<TObject>>? queries)
+                    where TObject : class
+        {
+            var ReturnValue = queries?.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n") ?? string.Empty;
+            var Parameters = (queries?.Values
+                ?.SelectMany(x => x.Parameters)
+                ?.Distinct()
+                ?? Array.Empty<IParameter>());
+            foreach (var Parameter in Parameters)
+            {
+                ReturnValue = Parameter.AddParameter(ReturnValue);
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Gets the missed cached items.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="idList">The identifier list.</param>
+        /// <param name="cache">The cache.</param>
+        /// <param name="mappingManager">The mapping manager.</param>
+        /// <returns></returns>
+        private static List<Dynamo> GetMissedCachedItems<TObject>(IEnumerable<Dynamo> idList, ICache cache, MappingManager mappingManager)
+        {
+            foreach (var Source in mappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()))
+            {
+                var ParentMapping = Source.GetChildMappings(typeof(TObject))
+                                                 .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                                                 .Distinct()
+                                                 .FirstOrDefault(x => x.IDProperties.Count > 0);
+                idList = idList.Where(x => !cache.GetByTag($"{ParentMapping.ObjectType.Name}_{x}").Any()).ToList();
+            }
+            return idList.ToList();
+        }
+
+        /// <summary>
+        /// Fills the cache.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="missingCachedItems">The missing cached items.</param>
+        /// <returns></returns>
+        private async Task FillCache<TObject>(List<Dynamo> missingCachedItems)
+                                            where TObject : class
+        {
+            if ((missingCachedItems?.Count ?? 0) == 0)
+                return;
+            var results = new List<QueryResults>();
+            var firstRun = true;
+            //Run queries
+            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()).OrderBy(x => x.Order))
+            {
+                var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
+                var ResultingQueries = Generator.GenerateQueries(QueryType.LoadData, missingCachedItems);
+                var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
+                for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
+                {
+                    var ResultingQuery = ResultingQueries[x];
+                    Batch.AddQuery(ResultingQuery.DatabaseCommandType, ResultingQuery.QueryString, ResultingQuery.Parameters!);
+                }
+
+                List<List<dynamic>>? Result = null;
+                try
+                {
+                    Result = await Batch.ExecuteAsync().ConfigureAwait(false);
+                }
+                catch
+                {
+                    Logger.Debug("Failed on query: " + Batch);
+                    throw;
+                }
+                for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)
+                {
+                    var IDProperties = Source.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
+                    var TempResult = new QueryResults(ResultingQueries[x], Result[x].Cast<Dynamo>(), this);
+                    var CopyResult = results.Find(y => y.CanCopy(TempResult, IDProperties));
+                    if (CopyResult is null && firstRun)
+                    {
+                        results.Add(TempResult);
+                    }
+                    else if (firstRun)
+                    {
+                        CopyResult?.CopyOrAdd(TempResult, IDProperties);
+                    }
+                    else
+                    {
+                        CopyResult?.Copy(TempResult, IDProperties);
+                    }
+                }
+                firstRun = false;
+            }
+            //Fill cache
+            var ReadOnlySources = MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()).ToList();
+            foreach (var QueryResult in results)
+            {
+                foreach (var Result in QueryResult.Values)
+                {
+                    List<string> TagList = new List<string>();
+                    string Key = string.Empty;
+                    foreach (var Source in ReadOnlySources)
+                    {
+                        var ParentMapping = Source.GetChildMappings(typeof(TObject))
+                                                         .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                                                         .Distinct()
+                                                         .FirstOrDefault(x => x.IDProperties.Count > 0);
+                        if (ParentMapping is null)
+                            continue;
+                        var IDValue = ParentMapping.IDProperties.ToString(x => x.GetColumnInfo()[0].GetValue(Result)?.ToString() ?? string.Empty, "_");
+                        Key = $"{ParentMapping.ObjectType.Name}_{IDValue}";
+                        TagList.AddIfUnique(ParentMapping.ObjectType.Name);
+                        TagList.AddIfUnique(Key);
+                        TagList.AddIfUnique($"{QueryResult.Query.ReturnType.Name}_{IDValue}");
+                    }
+                    Cache.Add(Key, new CachedResult(Result, QueryResult.Query.ReturnType), TagList);
+                }
+            }
+        }
+
+        /// <summary>
         /// Generates the query asynchronous.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -602,6 +737,108 @@ namespace Inflatable.Sessions
                     CopyResult?.Copy(TempResult, IDProperties);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the cached items.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="idList">The identifier list.</param>
+        /// <param name="cache">The cache.</param>
+        /// <param name="mappingManager">The mapping manager.</param>
+        /// <returns></returns>
+        private IEnumerable<dynamic> GetCachedItems<TObject>(IEnumerable<Dynamo> idList, ICache cache, MappingManager mappingManager)
+                    where TObject : class
+        {
+            List<dynamic> ReturnValue = new List<dynamic>();
+            var ParentMapping = mappingManager
+                .Sources
+                .Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any())
+                .Select(Source => Source
+                    .GetChildMappings(typeof(TObject))
+                    .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                    .Distinct()
+                    .FirstOrDefault(x => x.IDProperties.Count > 0))
+                .FirstOrDefault(x => !(x is null));
+            foreach (var ID in idList)
+            {
+                var IDValue = ParentMapping.IDProperties.ToString(x => x.GetColumnInfo()[0].GetValue(ID)?.ToString() ?? string.Empty, "_");
+                var Key = $"{ParentMapping.ObjectType.Name}_{IDValue}";
+                var Value = cache.GetByTag(Key).FirstOrDefault();
+                if (Value is CachedResult cachedResult)
+                {
+                    var TempVal = cachedResult.Value.To(cachedResult.ObjectType);
+                    ((IORMObject)TempVal).Session0 = this;
+                    ReturnValue.Add(TempVal);
+                }
+            }
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Gets the identifier list.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="idList">The identifier list.</param>
+        /// <param name="keyName">Name of the key.</param>
+        /// <param name="queries">The queries.</param>
+        /// <returns></returns>
+        private async Task<IEnumerable<Dynamo>> GetIDList<TObject>(IEnumerable<Dynamo> idList, string keyName, IDictionary<IMappingSource, QueryData<TObject>> queries)
+                    where TObject : class
+        {
+            if (idList.Any())
+                return idList;
+            var Results = new List<QueryResults>();
+            var FirstRun = true;
+            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+                                              .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
+                FirstRun = false;
+            }
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
+                                              .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
+                FirstRun = false;
+            }
+            var ReturnValue = Results.SelectMany(x => x.Values).ToList();
+            Cache.Add(keyName, ReturnValue, new string[] { typeof(TObject).Name });
+            return ReturnValue;
+        }
+
+        /// <summary>
+        /// Gets the sub view.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="queries">The queries.</param>
+        /// <returns></returns>
+        private async Task<IEnumerable<dynamic>> GetSubView<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
+                    where TObject : class
+        {
+            var KeyName = GetIDListCacheKey(queries);
+            var ObjectList = GetCachedValues<TObject>(KeyName, Cache);
+            if (ObjectList.Any())
+                return ObjectList;
+            var Results = new List<QueryResults>();
+            var FirstRun = true;
+
+            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+                                              .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
+                FirstRun = false;
+            }
+            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
+                                              .OrderBy(x => x.Key.Order))
+            {
+                await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
+                FirstRun = false;
+            }
+            QueryResults.CacheValues(KeyName, Results, Cache);
+            return Results?.SelectMany(x => x.ConvertValues<TObject>())?.ToArray() ?? Array.Empty<TObject>();
         }
 
         /// <summary>

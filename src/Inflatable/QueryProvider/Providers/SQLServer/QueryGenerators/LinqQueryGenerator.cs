@@ -69,7 +69,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
-            //TODO: ONLY DO IDs UNLESS SELECT IS CALLED ON THE OBJECT. THEN GENERATE FULL QUERY.
             if (data is null)
                 return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
@@ -188,8 +187,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
                 Separator = ",";
             }
-            foreach (var ReferenceProperty in Mapping.ReferenceProperties.Where(x => data.SelectValues.Count == 0
-                                                                                  || data.SelectValues.Any(y => y.Name == x.Name)))
+            foreach (var ReferenceProperty in Mapping.ReferenceProperties.Where(x => (data.SelectValues.Count > 0
+                                                                                  && data.SelectValues.Any(y => y.Name == x.Name))
+                                                                                  || data.OrderByValues.Any(y => y.Property.Name == x.Name)))
             {
                 Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
                 Separator = ",";
