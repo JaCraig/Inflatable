@@ -192,7 +192,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         {
             //TODO: CHANGE CACHE REMOVAL TO REMOVE INDIVIDUAL ITEM
             var TempType = GetActualType(@object);
-            QueryResults.RemoveCacheTag(TempType.GetName(), Cache);
+            QueryResults.RemoveCacheTag(TempType.Name, Cache);
         }
 
         /// <summary>

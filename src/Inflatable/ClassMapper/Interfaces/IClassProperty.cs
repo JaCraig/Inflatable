@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using Inflatable.Interfaces;
+using Inflatable.QueryProvider;
 
 namespace Inflatable.ClassMapper.Interfaces
 {
@@ -23,6 +24,12 @@ namespace Inflatable.ClassMapper.Interfaces
     /// </summary>
     public interface IClassProperty : IPropertyColumns
     {
+        /// <summary>
+        /// Gets the load property query.
+        /// </summary>
+        /// <value>The load property query.</value>
+        Query? LoadPropertyQuery { get; }
+
         /// <summary>
         /// Gets the parent mapping.
         /// </summary>

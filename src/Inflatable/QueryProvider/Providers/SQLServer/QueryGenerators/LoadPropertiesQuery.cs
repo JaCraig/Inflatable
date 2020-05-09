@@ -184,11 +184,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
                 Separator = ",";
             }
-            foreach (var ReferenceProperty in Mapping.ReferenceProperties)
-            {
-                Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
-                Separator = ",";
-            }
+            //foreach (var ReferenceProperty in Mapping.ReferenceProperties)
+            //{
+            //    Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
+            //    Separator = ",";
+            //}
             var ReturnValue = Result.ToString();
             ObjectPool.Return(Result);
             return ReturnValue;

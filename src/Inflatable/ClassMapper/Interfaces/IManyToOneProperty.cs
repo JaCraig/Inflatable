@@ -17,7 +17,6 @@ limitations under the License.
 using BigBook.Patterns;
 using Data.Modeler.Providers.Interfaces;
 using Inflatable.Interfaces;
-using Inflatable.QueryProvider;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -126,12 +125,6 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <value>The name of the internal field.</value>
         string InternalFieldName { get; }
-
-        /// <summary>
-        /// Gets the load property query.
-        /// </summary>
-        /// <value>The load property query.</value>
-        Query? LoadPropertyQuery { get; }
 
         /// <summary>
         /// Gets the name.

@@ -10,7 +10,7 @@ namespace Inflatable.Tests.TestDatabases.LoadPropertyUsingQuery.Mappings
         {
             ID(x => x.ID).IsAutoIncremented();
             Reference(x => x.BoolValue);
-            Map(x => x.MappedClass).CascadeChanges().LoadUsing("SELECT TOP 1 AllReferencesAndID_.ID_,CharValue_ ,UriValue_ FROM AllReferencesAndID_ INNER JOIN [TestDatabase].[dbo].[MapPropertiesCustomLoad_] ON AllReferencesAndID_MappedClass_ID_=AllReferencesAndID_.ID_ WHERE MapPropertiesCustomLoad_.ID_=@ID", CommandType.Text);
+            Map(x => x.MappedClass).CascadeChanges().LoadUsing("SELECT TOP 1 AllReferencesAndID_.ID_ ,CharValue_ ,UriValue_  FROM AllReferencesAndID_ INNER JOIN [TestDatabase].[dbo].[MapPropertiesCustomLoad_] ON AllReferencesAndID_MappedClass_ID_=AllReferencesAndID_.ID_ WHERE MapPropertiesCustomLoad_.ID_=@ID", CommandType.Text);
         }
     }
 }

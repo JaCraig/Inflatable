@@ -93,7 +93,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 FROM [dbo].[ConcreteClass1_]
 INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
 INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[IInterface1_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -116,10 +116,10 @@ WHERE [dbo].[IInterface1_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[ManyToManyProperties_].[ID_] AS [ID],[dbo].[ManyToManyProperties_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[ManyToManyProperties_]
-WHERE [dbo].[ManyToManyProperties_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[ManyToManyProperties_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -149,11 +149,11 @@ WHERE [dbo].[ManyToManyProperties_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[IManyToOneMany_].[ID_] AS [ID],[dbo].[IManyToOneMany_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[ManyToOneManyFromComplexClass_]
 INNER JOIN [dbo].[IManyToOneMany_] ON [dbo].[ManyToOneManyFromComplexClass_].[IManyToOneMany_ID_]=[dbo].[IManyToOneMany_].[ID_]
-WHERE [dbo].[IManyToOneMany_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[IManyToOneMany_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -182,10 +182,10 @@ WHERE [dbo].[IManyToOneMany_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[ManyToOneManyProperties_].[ID_] AS [ID],[dbo].[ManyToOneManyProperties_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[ManyToOneManyProperties_]
-WHERE [dbo].[ManyToOneManyProperties_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[ManyToOneManyProperties_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -214,11 +214,11 @@ WHERE [dbo].[ManyToOneManyProperties_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[IManyToOneOne_].[ID_] AS [ID],[dbo].[IManyToOneOne_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[ManyToOneOneFromComplexClass_]
 INNER JOIN [dbo].[IManyToOneOne_] ON [dbo].[ManyToOneOneFromComplexClass_].[IManyToOneOne_ID_]=[dbo].[IManyToOneOne_].[ID_]
-WHERE [dbo].[IManyToOneOne_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[IManyToOneOne_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -246,10 +246,10 @@ WHERE [dbo].[IManyToOneOne_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[ManyToOneOneProperties_].[ID_] AS [ID],[dbo].[ManyToOneOneProperties_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[ManyToOneOneProperties_]
-WHERE [dbo].[ManyToOneOneProperties_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[ManyToOneOneProperties_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -271,10 +271,10 @@ WHERE [dbo].[ManyToOneOneProperties_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[MapProperties_].[ID_] AS [ID],[dbo].[MapProperties_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[MapProperties_]
-WHERE [dbo].[MapProperties_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[MapProperties_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -297,11 +297,11 @@ WHERE [dbo].[MapProperties_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[MapPropertiesFromComplexClass_]
 INNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertiesFromComplexClass_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]
-WHERE [dbo].[IMapPropertiesInterface_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[IMapPropertiesInterface_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -323,11 +323,11 @@ WHERE [dbo].[IMapPropertiesInterface_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[IMapPropertiesInterface_].[ID_] AS [ID],[dbo].[IMapPropertiesInterface_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[MapPropertyReferencesSelf_]
 INNER JOIN [dbo].[IMapPropertiesInterface_] ON [dbo].[MapPropertyReferencesSelf_].[IMapPropertiesInterface_ID_]=[dbo].[IMapPropertiesInterface_].[ID_]
-WHERE [dbo].[IMapPropertiesInterface_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[IMapPropertiesInterface_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
 
@@ -349,11 +349,11 @@ WHERE [dbo].[IMapPropertiesInterface_].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
-            Assert.Equal("ID", Result.Parameters[0].ID);
+            Assert.Equal("ID0", Result.Parameters[0].ID);
             Assert.Equal(@"SELECT [dbo].[IMapPropertiesInterfaceWithMap_].[ID_] AS [ID],[dbo].[MapPropertiesWithMapOnInterface_].[BoolValue_] AS [BoolValue]
 FROM [dbo].[MapPropertiesWithMapOnInterface_]
 INNER JOIN [dbo].[IMapPropertiesInterfaceWithMap_] ON [dbo].[MapPropertiesWithMapOnInterface_].[IMapPropertiesInterfaceWithMap_ID_]=[dbo].[IMapPropertiesInterfaceWithMap_].[ID_]
-WHERE [dbo].[IMapPropertiesInterfaceWithMap_].[ID_]=@ID;", Result.QueryString);
+WHERE ([dbo].[IMapPropertiesInterfaceWithMap_].[ID_]=@ID0);", Result.QueryString);
             Assert.Equal(QueryType.LoadData, Result.QueryType);
         }
     }

@@ -69,7 +69,7 @@ namespace Inflatable.QueryProvider
         /// <param name="keyName">Name of the key.</param>
         /// <param name="results">The results.</param>
         /// <param name="cache">The cache.</param>
-        public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache) => cache?.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
+        public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache) => cache?.Add(keyName, results, results.Select(x => x.Query.ReturnType.Name).ToArray());
 
         /// <summary>
         /// Gets the cached value.
