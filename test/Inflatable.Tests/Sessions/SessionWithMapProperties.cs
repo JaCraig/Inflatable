@@ -304,7 +304,7 @@ namespace Inflatable.Tests.Sessions
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
             await Helper
                 .CreateBatch()
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_]
+                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_]cx
            ([BoolValue_]
            ,[ByteArrayValue_]
            ,[ByteValue_]
