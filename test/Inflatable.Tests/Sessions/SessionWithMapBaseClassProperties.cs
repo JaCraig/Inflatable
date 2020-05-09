@@ -12,6 +12,7 @@ using Inflatable.Tests.TestDatabases.MapProperties.Mappings;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -77,6 +78,17 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
+            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -182,9 +194,20 @@ namespace Inflatable.Tests.Sessions
             Assert.True(Results.All(x => x.MappedClass == null));
         }
 
-        private Task SetupDataAsync()
+        private async Task SetupDataAsync()
         {
-            return Helper
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
+            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
 INSERT INTO [dbo].[MapPropertyBaseClass_]([BaseValue1_],[IMapPropertyInterface_ID_]) VALUES (1,1);
@@ -201,7 +224,7 @@ INSERT INTO [dbo].[MapProperty1_]([ChildValue1_],[MapPropertyBaseClass_ID_]) VAL
 INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,1)
 INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (0,2)
 INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,3)")
-                .ExecuteScalarAsync<int>();
+                .ExecuteScalarAsync<int>().ConfigureAwait(false);
         }
     }
 }

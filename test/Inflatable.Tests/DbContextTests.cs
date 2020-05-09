@@ -66,8 +66,8 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Count()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
             Assert.Equal(0, Results);
@@ -103,6 +103,7 @@ namespace Inflatable.Tests
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
             Assert.Equal(3, Results);
+            await TempSession.Delete(TempData).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
@@ -153,8 +154,9 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Distinct()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<SimpleClassNoID>.CreateQuery().Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
                 {
@@ -175,21 +177,46 @@ namespace Inflatable.Tests
                 new SimpleClassNoID()
                 {
                     Name="B"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Ace"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Add"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="App"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Bat"
+                },
+                new SimpleClassNoID()
+                {
+                    Name="Ball"
                 }
             };
             await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
-            var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var Results = TestObject.Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).Distinct().ToList();
-            Assert.Equal(2, Results.Count);
+            Assert.Equal(7, Results.Count);
             Assert.Equal("A", Results[0].Name);
-            Assert.Equal("B", Results[1].Name);
+            Assert.Equal("Ace", Results[1].Name);
+            Assert.Equal("Add", Results[2].Name);
+            Assert.Equal("App", Results[3].Name);
+            Assert.Equal("B", Results[4].Name);
+            Assert.Equal("Ball", Results[5].Name);
+            Assert.Equal("Bat", Results[6].Name);
+
+            await TempSession.Delete(TempData).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task First()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -243,7 +270,6 @@ namespace Inflatable.Tests
         [Fact]
         public async Task ManyToOneWithNonMergeBaseClass()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new CompanyManyToOne[] {
                 new CompanyManyToOne()
@@ -278,8 +304,8 @@ namespace Inflatable.Tests
         [Fact]
         public async Task OrderBy()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
@@ -311,25 +337,29 @@ namespace Inflatable.Tests
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).ToList();
-            Assert.Equal(4, Results[0].ID);
-            Assert.Equal(5, Results[1].ID);
-            Assert.Equal(1, Results[2].ID);
-            Assert.Equal(2, Results[3].ID);
-            Assert.Equal(3, Results[4].ID);
+            var OrderedIDs = Results.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Select(x => x.ID).ToArray();
+            Assert.Equal(OrderedIDs[0], Results[0].ID);
+            Assert.Equal(OrderedIDs[1], Results[1].ID);
+            Assert.Equal(OrderedIDs[2], Results[2].ID);
+            Assert.Equal(OrderedIDs[3], Results[3].ID);
+            Assert.Equal(OrderedIDs[4], Results[4].ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Results = TestObject.OrderByDescending(x => x.IntValue).ThenByDescending(x => x.ID).ToList();
-            Assert.Equal(3, Results[0].ID);
-            Assert.Equal(2, Results[1].ID);
-            Assert.Equal(1, Results[2].ID);
-            Assert.Equal(5, Results[3].ID);
-            Assert.Equal(4, Results[4].ID);
+            OrderedIDs = Results.OrderByDescending(x => x.IntValue).ThenByDescending(x => x.ID).Select(x => x.ID).ToArray();
+            Assert.Equal(OrderedIDs[0], Results[0].ID);
+            Assert.Equal(OrderedIDs[1], Results[1].ID);
+            Assert.Equal(OrderedIDs[2], Results[2].ID);
+            Assert.Equal(OrderedIDs[3], Results[3].ID);
+            Assert.Equal(OrderedIDs[4], Results[4].ID);
+
+            await TempSession.Delete(TempData).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task Select()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
@@ -368,13 +398,15 @@ namespace Inflatable.Tests
             Assert.Equal(5, Results.Count);
             Assert.True(Results.All(x => x.IntValue == 10));
             Assert.Equal(3, Results.Count(x => x.BoolValue));
+
+            await TempSession.Delete(TempData).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task Take()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
@@ -406,17 +438,20 @@ namespace Inflatable.Tests
 
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Take(3).ToList();
+            var OrderedIDs = Results.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Select(x => x.ID).ToArray();
             Assert.Equal(3, Results.Count);
-            Assert.Equal(4, Results[0].ID);
-            Assert.Equal(5, Results[1].ID);
-            Assert.Equal(1, Results[2].ID);
+            Assert.Equal(OrderedIDs[0], Results[0].ID);
+            Assert.Equal(OrderedIDs[1], Results[1].ID);
+            Assert.Equal(OrderedIDs[2], Results[2].ID);
+
+            await TempSession.Delete(TempData).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task WhereStartsWith()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<SimpleClassNoID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
                 {
@@ -446,6 +481,8 @@ namespace Inflatable.Tests
             Assert.Equal(2, Results.Count);
             Assert.Equal("Ball", Results[0].Name);
             Assert.Equal("Bat", Results[1].Name);
+
+            await TempSession.Delete(TempData).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

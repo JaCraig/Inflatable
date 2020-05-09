@@ -75,7 +75,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
-                ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, data), QueryType, data.Parameters.ToArray()));
+                var QueryText = GenerateSelectQuery(TypeGraph?.Root, data);
+                if (!string.IsNullOrEmpty(QueryText))
+                {
+                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, QueryText, QueryType, data.Parameters.ToArray()));
+                }
             }
             return ReturnValue.ToArray();
         }
@@ -222,6 +226,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(node, data));
+
+            if (ParameterList.Length == 0)
+            {
+                ObjectPool.Return(Builder);
+                ObjectPool.Return(ParameterList);
+                ObjectPool.Return(FromClause);
+                ObjectPool.Return(WhereClause);
+                ObjectPool.Return(OrderByClause);
+                return string.Empty;
+            }
 
             //Get Where Clause
             WhereClause.Append(GenerateWhereClause(data, Mapping));

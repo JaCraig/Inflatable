@@ -54,16 +54,20 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task AllNoParametersWithDataInDatabase()
         {
-            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Results = DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
+            await TempSession.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -71,12 +75,16 @@ namespace Inflatable.Tests.Sessions
             Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Equal(3, Results2.Count());
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabaseAndCascade()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -84,33 +92,45 @@ namespace Inflatable.Tests.Sessions
             Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Single(Results2);
+            await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Equal(2, Results.Count());
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Empty(Results);
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Result1 = new ManyToManyPropertiesWithCascade
             {
@@ -166,22 +186,30 @@ namespace Inflatable.Tests.Sessions
             && x.ManyToManyClass.Any(y => y.ByteValue == 34
             && y.CharValue == 'c'
             && y.DateTimeValue == new DateTime(2000, 1, 1)));
+            await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task LoadMapPropertyWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Result = DbContext<ManyToManyProperties>.CreateQuery().Where(x => x.ID == 1).First();
             Assert.NotNull(Result.ManyToManyClass);
             Assert.Equal(1, Result.ManyToManyClass[0].ID);
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task UpdateMultipleCascadeWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
@@ -199,12 +227,16 @@ namespace Inflatable.Tests.Sessions
             Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.Equal(6, Results.Max(x => x.ManyToManyClass.Max(y => y.ID)));
+            await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
@@ -228,7 +260,9 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
@@ -240,20 +274,28 @@ namespace Inflatable.Tests.Sessions
             Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.True(Results.All(x => x.ManyToManyClass.Count == 0));
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
             Assert.Equal(0, await TestObject.Save<ManyToManyProperties>(null).ExecuteAsync().ConfigureAwait(false));
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task UpdateWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Result = new ManyToManyProperties
             {
                 BoolValue = false
@@ -270,9 +312,20 @@ namespace Inflatable.Tests.Sessions
             Assert.Single(Results);
         }
 
-        private Task SetupDataAsync()
+        private async Task SetupDataAsync()
         {
-            return Helper
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
+            var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
 INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
@@ -289,7 +342,7 @@ INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyPropertie
                 .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
 INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (2,2)
 INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)")
-                .ExecuteScalarAsync<int>();
+                .ExecuteScalarAsync<int>().ConfigureAwait(false);
         }
     }
 }

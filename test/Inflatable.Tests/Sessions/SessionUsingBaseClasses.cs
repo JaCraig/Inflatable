@@ -66,8 +66,8 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassInsert()
         {
-            _ = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -106,13 +106,14 @@ namespace Inflatable.Tests.Sessions
             Assert.Equal(6, TestObject.Length);
             Assert.Equal(3, TestObject.OfType<ConcreteClass1>().Count());
             Assert.Equal(3, TestObject.OfType<ConcreteClass2>().Count());
+            await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
 
         [Fact]
         public async Task BaseClassUpdate()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -156,6 +157,7 @@ namespace Inflatable.Tests.Sessions
             Assert.Equal(3, TestObject.OfType<ConcreteClass1>().Count());
             Assert.Equal(3, TestObject.OfType<ConcreteClass2>().Count());
             Assert.True(TestObject.All(x => x.BaseClassValue1 == 10));
+            await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

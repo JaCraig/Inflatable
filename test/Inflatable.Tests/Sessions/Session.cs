@@ -12,6 +12,7 @@ using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -57,7 +58,8 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 2 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -68,7 +70,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -79,7 +81,19 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
+            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -89,33 +103,38 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task Execute()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
+            var TempResults = DbContext<AllReferencesAndID>.CreateQuery().ToList();
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_ WHERE ID_=@0",
                 CommandType.Text,
                 "Default",
-                2).ConfigureAwait(false);
+                TempResults[0].ID).ConfigureAwait(false);
             Assert.Single(Result);
-            Assert.Equal(2, Result.First().ID);
+            Assert.Equal(TempResults[0].ID, Result.First().ID);
         }
 
         [Fact]
         public async Task ExecuteDynamic()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
+            var TempResults = DbContext<AllReferencesAndID>.CreateQuery().ToList();
             var Result = await TestObject.ExecuteDynamicAsync("SELECT * FROM AllReferencesAndID_ WHERE ID_=@0",
                 CommandType.Text,
                 "Default",
-                2).ConfigureAwait(false);
+                TempResults[0].ID).ConfigureAwait(false);
             Assert.Single(Result);
-            Assert.Equal(2, (long)Result.First().ID_);
+            Assert.Equal(TempResults[0].ID, (long)Result.First().ID_);
         }
 
         [Fact]
         public async Task ExecuteScalar()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AllReferencesAndID_",
                 CommandType.Text,
@@ -123,10 +142,11 @@ namespace Inflatable.Tests.Sessions
             Assert.Equal(3, Result);
         }
 
-        [Fact]
+        [Fact(Skip = "Takes a bit")]
         public async Task InsertHundredsOfObjects()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             for (int x = 0; x < 1000; ++x)
             {
@@ -148,7 +168,8 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjects()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             var Result1 = new AllReferencesAndID
             {
@@ -197,7 +218,8 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertSingleObject()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             var Result = new AllReferencesAndID
             {
@@ -220,19 +242,22 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach<AllReferencesAndID>(x => x.CharValue = 'p').ToArray();
-            Assert.Equal(3, await TestObject.Save(UpdatedResults).ExecuteAsync().ConfigureAwait(false));
+            await TestObject.Save(UpdatedResults).ExecuteAsync().ConfigureAwait(false);
             Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
+            Assert.Equal(3, Results.Count());
             Assert.True(Results.All(x => x.CharValue == 'p'));
         }
 
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             Assert.Equal(0, await TestObject.Save<AllReferencesAndID>(null).ExecuteAsync().ConfigureAwait(false));
         }
@@ -240,11 +265,12 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             await SetupDataAsync().ConfigureAwait(false);
             var Result = (await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false)).First();
             Result.CharValue = 'p';
-            Assert.Equal(1, await TestObject.Save(Result).ExecuteAsync().ConfigureAwait(false));
+            await TestObject.Save(Result).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Contains(Results, x => x.CharValue == 'p');
         }
@@ -252,7 +278,19 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithNoDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
+            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+
             var Result = new AllReferencesAndID()
             {
                 CharValue = 'p'
@@ -262,9 +300,20 @@ namespace Inflatable.Tests.Sessions
             Assert.Single(Results);
         }
 
-        private Task SetupDataAsync()
+        private async Task SetupDataAsync()
         {
-            return Helper
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
+            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text,
                 @"INSERT INTO [dbo].[AllReferencesAndID_]
@@ -389,7 +438,7 @@ namespace Inflatable.Tests.Sessions
            ,12
            ,5342
            ,1234)")
-                .ExecuteScalarAsync<int>();
+                .ExecuteScalarAsync<int>().ConfigureAwait(false);
         }
     }
 }

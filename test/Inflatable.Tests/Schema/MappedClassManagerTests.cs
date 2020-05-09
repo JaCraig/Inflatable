@@ -8,7 +8,10 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Inflatable.Tests.Schema
@@ -32,8 +35,18 @@ namespace Inflatable.Tests.Schema
         private MappingManager Mappings { get; }
 
         [Fact]
-        public void Creation()
+        public async Task Creation()
         {
+            try
+            {
+                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
+                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
+                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            }
+            catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
             Assert.Single(TestObject.Models);
             var TestModel = TestObject.Models.First();
