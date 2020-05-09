@@ -187,12 +187,24 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Removes the items from cache.
         /// </summary>
-        /// <param name="object">The object.</param>
-        protected void RemoveItemsFromCache(object @object)
+        /// <param name="itemToRemove">The object.</param>
+        /// <param name="source">The source.</param>
+        protected void RemoveItemsFromCache(object itemToRemove, IMappingSource source)
         {
-            //TODO: CHANGE CACHE REMOVAL TO REMOVE INDIVIDUAL ITEM
-            var TempType = GetActualType(@object);
-            QueryResults.RemoveCacheTag(TempType.Name, Cache);
+            if (itemToRemove is null || source is null)
+                return;
+            var TempType = GetActualType(itemToRemove);
+            var ParentMappings = source.GetParentMapping(TempType);
+            var parentMapping = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
+            if (parentMapping is null)
+                return;
+            var IDNames = parentMapping.IDProperties.OrderBy(x => x.Name).ToString(x => x.Name + "_" + x.GetColumnInfo()[0].GetValue(itemToRemove)?.ToString() ?? string.Empty, "_");
+            Cache.RemoveByTag($"{TempType.Name}_{IDNames}");
+            foreach (var Mapping in ParentMappings)
+            {
+                Cache.RemoveByTag(Mapping.ObjectType.Name);
+            }
+            Cache.RemoveByTag(TempType.Name);
         }
 
         /// <summary>

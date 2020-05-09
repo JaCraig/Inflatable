@@ -88,7 +88,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
-            //TODO: ONLY DO IDs UNLESS SELECT IS CALLED ON THE OBJECT. THEN GENERATE FULL QUERY.
             //TODO: BREAK UP THE VARIOUS QUERIES TO SIMPLIFY THINGS.
             var ParentMappings = MappingInformation.GetChildMappings(AssociatedType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct().ToList();
             return property switch

@@ -225,7 +225,7 @@ namespace Inflatable.Sessions.Commands
                 batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
 
-            RemoveItemsFromCache(@object);
+            RemoveItemsFromCache(@object, source);
         }
 
         /// <summary>

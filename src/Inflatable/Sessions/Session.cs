@@ -714,7 +714,6 @@ namespace Inflatable.Sessions
         private async Task GenerateQueryAsync<TObject>(List<QueryResults> results, bool firstRun, KeyValuePair<IMappingSource, QueryData<TObject>> source)
             where TObject : class
         {
-            //TODO: CHANGE QUERY GENERATION TO DO TWO QUERIES BUT CACHE EACH ITEM INDIVIDUALLY AND THEN PULL FROM CACHE (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
             var ResultingQueries = Generator.GenerateQueries(source.Value);
             var Batch = QueryProviderManager.CreateBatch(source.Key.Source, DynamoFactory);
@@ -816,6 +815,10 @@ namespace Inflatable.Sessions
 
                 CopyResults(Results, Source, Queries, ResultLists, true);
                 foreach (var ParentMapping in Source.GetChildMappings<TData>().SelectMany(x => Source.GetParentMapping(x.ObjectType)))
+                {
+                    Tags.AddIfUnique(ParentMapping.ObjectType.Name);
+                }
+                foreach (var ParentMapping in Source.GetChildMappings<TObject>().SelectMany(x => Source.GetParentMapping(x.ObjectType)))
                 {
                     Tags.AddIfUnique(ParentMapping.ObjectType.Name);
                 }

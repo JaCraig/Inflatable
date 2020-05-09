@@ -330,7 +330,7 @@ namespace Inflatable.Sessions.Commands
                 }
             }
 
-            RemoveItemsFromCache(@object);
+            RemoveItemsFromCache(@object, source);
         }
 
         /// <summary>
