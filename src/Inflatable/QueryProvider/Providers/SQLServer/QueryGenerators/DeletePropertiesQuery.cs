@@ -105,7 +105,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Splitter2 = string.Empty;
             foreach (var IDProperty in IDProperties)
             {
-                ParametersList.Append(Splitter2).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
+                ParametersList.Append(Splitter2).Append("([").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
+                if (!string.IsNullOrEmpty(Prefix))
+                {
+                    ParametersList.Append(Splitter2).Append(" OR [").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
+                }
+                ParametersList.Append(")");
                 Splitter2 = " AND ";
             }
             Builder.Append("DELETE FROM ").Append(GetTableName(property)).Append(" WHERE ").Append(ParametersList).Append(";");

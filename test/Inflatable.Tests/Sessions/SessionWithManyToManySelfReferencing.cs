@@ -10,6 +10,7 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties.Mappings;
 using Serilog;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -66,7 +67,7 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
-            Assert.Equal(2, Results.Count());
+            Assert.Equal(4, Results.Count());
         }
 
         [Fact]
@@ -78,7 +79,7 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
-            Assert.Equal(2, Results.Count());
+            Assert.Equal(4, Results.Count());
         }
 
         [Fact]
@@ -90,7 +91,7 @@ namespace Inflatable.Tests.Sessions
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
-            Assert.Equal(4, Results.Count());
+            Assert.Equal(5, Results.Count());
         }
 
         [Fact]
@@ -168,9 +169,9 @@ namespace Inflatable.Tests.Sessions
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
-            var Result = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().Where(x => x.ID == 1).First();
+            var Result = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().Skip(1).Take(1).First();
             Assert.NotNull(Result.Children);
-            Assert.Equal(4, Result.Children[0].ID);
+            Assert.Single(Result.Children);
         }
 
         [Fact]
@@ -193,7 +194,7 @@ namespace Inflatable.Tests.Sessions
             Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.True(Results.All(x => !x.BoolValue));
             Results = Results.Where(x => x.Children.Count > 0);
-            Assert.Equal(9, Results.Max(x => x.Children.Max(y => y.ID)));
+            Assert.Equal(6, Results.Count());
         }
 
         [Fact]
@@ -216,7 +217,7 @@ namespace Inflatable.Tests.Sessions
             Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.False(Results.All(x => !x.BoolValue));
             Results = Results.Where(x => x.Children.Count > 0);
-            Assert.Equal(9, Results.Max(x => x.Children.Max(y => y.ID)));
+            Assert.Equal(6, Results.Count());
         }
 
         [Fact]
@@ -275,29 +276,51 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
             var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)")
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertySelfReferencing_]([BoolValue_]) VALUES (1)")
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (1,4)
-INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (2,5)
-INSERT INTO [dbo].[Parent_Child]([Parent_ManyToManyPropertySelfReferencing_ID_],[ManyToManyPropertySelfReferencing_ID_]) VALUES (3,6)")
-                .ExecuteScalarAsync<int>().ConfigureAwait(false);
+                .AddQuery(CommandType.Text, "DELETE FROM Parent_Child")
+                .AddQuery(CommandType.Text, "DELETE FROM ManyToManyPropertySelfReferencing_")
+                .ExecuteAsync()
+                .ConfigureAwait(false);
+            var InitialData = new ManyToManyPropertySelfReferencing[]
+            {
+                new ManyToManyPropertySelfReferencing
+                {
+                    BoolValue=true,
+                    Children=new List<ManyToManyPropertySelfReferencing>
+                    {
+                        new ManyToManyPropertySelfReferencing
+                        {
+                            BoolValue=true
+                        }
+                    }
+                },
+                new ManyToManyPropertySelfReferencing
+                {
+                    BoolValue=true,
+                    Children=new List<ManyToManyPropertySelfReferencing>
+                    {
+                        new ManyToManyPropertySelfReferencing
+                        {
+                            BoolValue=true
+                        }
+                    }
+                },
+                new ManyToManyPropertySelfReferencing
+                {
+                    BoolValue=true,
+                    Children=new List<ManyToManyPropertySelfReferencing>
+                    {
+                        new ManyToManyPropertySelfReferencing
+                        {
+                            BoolValue=true
+                        }
+                    }
+                }
+            };
+            await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

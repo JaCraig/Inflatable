@@ -66,26 +66,7 @@ namespace Inflatable.Sessions.Commands
         /// <returns>The number of rows that are modified.</returns>
         public override int Execute(IMappingSource source, DynamoFactory dynamoFactory)
         {
-            if (Objects.Length == 0)
-            {
-                return 0;
-            }
-
-            var ReturnValue = 0;
-            CreateBatch(source, dynamoFactory, out var Batch, out var DeclarationBatch, out var ObjectsSeen);
-            if (ObjectsSeen.Count == 0)
-            {
-                return 0;
-            }
-
-            ValidateObjects(ObjectsSeen);
-            Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
-            ReturnValue += Task.Run(async () => await Batch.ExecuteScalarAsync<int>().ConfigureAwait(false)).GetAwaiter().GetResult();
-            Batch = Batch.CreateBatch();
-            SaveJoins(source, Batch, ObjectsSeen);
-            ReturnValue += Task.Run(async () => await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false)).GetAwaiter().GetResult();
-
-            return ReturnValue;
+            return Task.Run(async () => await ExecuteAsync(source, dynamoFactory).ConfigureAwait(false)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -96,7 +77,7 @@ namespace Inflatable.Sessions.Commands
         /// <returns>The number of rows that are modified.</returns>
         public override async Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory)
         {
-            if (Objects.Length == 0)
+            if (Objects.Length == 0 || source is null)
             {
                 return 0;
             }
@@ -111,8 +92,10 @@ namespace Inflatable.Sessions.Commands
             ValidateObjects(ObjectsSeen);
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
-            Batch = Batch.CreateBatch();
-            SaveJoins(source, Batch, ObjectsSeen);
+            Batch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
+            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
+            SaveJoins(source, Batch, DeclarationBatch, ObjectsSeen);
+            Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false);
 
             return ReturnValue;
@@ -338,8 +321,9 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
+        /// <param name="deleteBatch">The delete batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void SaveJoins(IMappingSource source, SQLHelper batch, IList<object> objectsSeen)
+        private void SaveJoins(IMappingSource source, SQLHelper batch, SQLHelper deleteBatch, IList<object> objectsSeen)
         {
             for (int i = 0, objectsSeenCount = objectsSeen.Count; i < objectsSeenCount; i++)
             {
@@ -347,15 +331,15 @@ namespace Inflatable.Sessions.Commands
                 var ParentMappings = source.GetParentMapping(TempObject.GetType());
                 foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties))
                 {
-                    SavePropertyJoins(TempObject, source, batch, MapProperty);
+                    SavePropertyJoins(TempObject, source, batch, deleteBatch, MapProperty);
                 }
                 foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties))
                 {
-                    SavePropertyJoins(TempObject, source, batch, ManyToManyProperty);
+                    SavePropertyJoins(TempObject, source, batch, deleteBatch, ManyToManyProperty);
                 }
                 foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToOneProperties))
                 {
-                    SavePropertyJoins(TempObject, source, batch, ManyToManyProperty);
+                    SavePropertyJoins(TempObject, source, batch, deleteBatch, ManyToManyProperty);
                 }
             }
         }
@@ -366,15 +350,16 @@ namespace Inflatable.Sessions.Commands
         /// <param name="object">The object.</param>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
+        /// <param name="deleteBatch">The delete batch.</param>
         /// <param name="property">The property.</param>
-        private void SavePropertyJoins(object @object, IMappingSource source, SQLHelper batch, IClassProperty property)
+        private void SavePropertyJoins(object @object, IMappingSource source, SQLHelper batch, SQLHelper deleteBatch, IClassProperty property)
         {
             var LinksGenerator = QueryProviderManager.CreateGenerator(property.ParentMapping.ObjectType, source);
             var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, property);
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
             {
                 var TempQuery = TempQueries[x];
-                batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
+                deleteBatch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
 
             TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, property);

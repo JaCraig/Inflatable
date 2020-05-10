@@ -12,7 +12,6 @@ using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -81,16 +80,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
+            await DeleteDatabaseData().ConfigureAwait(false);
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
@@ -278,16 +268,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithNoDataInDatabase()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
+            await DeleteDatabaseData().ConfigureAwait(false);
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
@@ -300,21 +281,24 @@ namespace Inflatable.Tests.Sessions
             Assert.Single(Results);
         }
 
+        /// <summary>
+        /// Deletes the database data.
+        /// </summary>
+        private static async Task DeleteDatabaseData()
+        {
+            await Helper
+                         .CreateBatch()
+                         .AddQuery(CommandType.Text, "DELETE FROM AllReferencesAndID_")
+                         .ExecuteAsync().ConfigureAwait(false);
+        }
+
         private async Task SetupDataAsync()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()
+                .AddQuery(CommandType.Text, "DELETE FROM AllReferencesAndID_")
                 .AddQuery(CommandType.Text,
                 @"INSERT INTO [dbo].[AllReferencesAndID_]
            ([BoolValue_]

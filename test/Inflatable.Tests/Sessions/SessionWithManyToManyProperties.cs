@@ -12,6 +12,7 @@ using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -74,7 +75,7 @@ namespace Inflatable.Tests.Sessions
             var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
-            Assert.Equal(3, Results2.Count());
+            Assert.Equal(6, Results2.Count());
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
@@ -91,7 +92,7 @@ namespace Inflatable.Tests.Sessions
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
-            Assert.Single(Results2);
+            Assert.Equal(4, Results2.Count());
             await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
@@ -197,9 +198,9 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await SetupDataAsync().ConfigureAwait(false);
-            var Result = DbContext<ManyToManyProperties>.CreateQuery().Where(x => x.ID == 1).First();
+            var Result = DbContext<ManyToManyProperties>.CreateQuery().First();
             Assert.NotNull(Result.ManyToManyClass);
-            Assert.Equal(1, Result.ManyToManyClass[0].ID);
+            Assert.Single(Result.ManyToManyClass);
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
@@ -226,7 +227,7 @@ namespace Inflatable.Tests.Sessions
             await TestObject.Save(UpdatedResults).ExecuteAsync().ConfigureAwait(false);
             Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.True(Results.All(x => !x.BoolValue));
-            Assert.Equal(6, Results.Max(x => x.ManyToManyClass.Max(y => y.ID)));
+            Assert.Equal(2, Results.Max(x => x.ManyToManyClass.Count));
             await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
         }
@@ -254,7 +255,7 @@ namespace Inflatable.Tests.Sessions
             await Assert.ThrowsAsync<SqlException>(async () => await TestObject.Save(UpdatedResults).ExecuteAsync().ConfigureAwait(false)).ConfigureAwait(false);
             Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.True(Results.All(x => !x.BoolValue));
-            Assert.Equal(3, Results.Max(x => x.ManyToManyClass.Max(y => y.ID)));
+            Assert.Equal(1, Results.Max(x => x.ManyToManyClass.Count));
         }
 
         [Fact]
@@ -314,35 +315,197 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
             var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyProperties_]([BoolValue_]) VALUES (1)")
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)
-INSERT INTO [dbo].[ManyToManyPropertiesWithCascade_]([BoolValue_]) VALUES (1)")
-                .AddQuery(CommandType.Text, "INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)")
-                .AddQuery(CommandType.Text, "INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)")
-                .AddQuery(CommandType.Text, "INSERT INTO [dbo].[AllReferencesAndID_]([BoolValue_],[ByteArrayValue_],[ByteValue_],[CharValue_],[DateTimeValue_],[DecimalValue_],[DoubleValue_],[FloatValue_],[GuidValue_],[IntValue_],[LongValue_],[SByteValue_],[ShortValue_],[StringValue1_],[StringValue2_],[TimeSpanValue_],[UIntValue_],[ULongValue_],[UShortValue_]) VALUES (1,1,1,'a','1/1/2008',13.2,423.12341234,1243.1,'ad0d39ad-6889-4ab3-965d-3d4042344ee6',12,2,1,2,'asdfvzxcv','qwerertyizjgposgj','January 1, 1900 00:00:00.100',12,5342,1234)")
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
-INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (2,2)
-INSERT INTO [dbo].[AllReferencesAndID_ManyToManyProperties]([ManyToManyProperties_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)")
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (1,1)
-INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (2,2)
-INSERT INTO [dbo].[AllReferencesAndID_ManyToManyPropertiesWithCascade]([ManyToManyPropertiesWithCascade_ID_],[AllReferencesAndID_ID_]) VALUES (3,3)")
+                .AddQuery(CommandType.Text, "DELETE FROM ManyToManyProperties_")
+                .AddQuery(CommandType.Text, "DELETE FROM ManyToManyPropertiesWithCascade_")
+                .AddQuery(CommandType.Text, "DELETE FROM AllReferencesAndID_")
                 .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            var InitialData = new ManyToManyProperties[]
+            {
+                new ManyToManyProperties
+                {
+                    BoolValue=true,
+                    ManyToManyClass=new List<AllReferencesAndID>()
+                    {
+                        new AllReferencesAndID
+                        {
+                            BoolValue=true,
+                            ByteValue=1,
+                            NullableBoolValue=true,
+                            CharValue='a',
+                            DateTimeValue=new DateTime(2008,1,1),
+                            DecimalValue=13.2m,
+                            DoubleValue=423.12341234,
+                            FloatValue=1243.1f,
+                            GuidValue=Guid.Parse("ad0d39ad-6889-4ab3-965d-3d4042344ee6"),
+                            IntValue=12,
+                            LongValue=2,
+                            NullableByteValue=1,
+                            SByteValue=2,
+                            ShortValue=1,
+                            StringValue1="asdfvzxcv",
+                            StringValue2="qwerertyizjgposgj",
+                            ULongValue=12,
+                            UIntValue=5342,
+                            UShortValue=1234
+                        }
+                    }
+                },
+                new ManyToManyProperties
+                {
+                    BoolValue=true,
+                    ManyToManyClass=new List<AllReferencesAndID>()
+                    {
+                        new AllReferencesAndID
+                        {
+                            BoolValue=true,
+                            ByteValue=1,
+                            NullableBoolValue=true,
+                            CharValue='a',
+                            DateTimeValue=new DateTime(2008,1,1),
+                            DecimalValue=13.2m,
+                            DoubleValue=423.12341234,
+                            FloatValue=1243.1f,
+                            GuidValue=Guid.Parse("ad0d39ad-6889-4ab3-965d-3d4042344ee6"),
+                            IntValue=12,
+                            LongValue=2,
+                            NullableByteValue=1,
+                            SByteValue=2,
+                            ShortValue=1,
+                            StringValue1="asdfvzxcv",
+                            StringValue2="qwerertyizjgposgj",
+                            ULongValue=12,
+                            UIntValue=5342,
+                            UShortValue=1234
+                        }
+                    }
+                },
+                new ManyToManyProperties
+                {
+                    BoolValue=true,
+                    ManyToManyClass=new List<AllReferencesAndID>()
+                    {
+                        new AllReferencesAndID
+                        {
+                            BoolValue=true,
+                            ByteValue=1,
+                            NullableBoolValue=true,
+                            CharValue='a',
+                            DateTimeValue=new DateTime(2008,1,1),
+                            DecimalValue=13.2m,
+                            DoubleValue=423.12341234,
+                            FloatValue=1243.1f,
+                            GuidValue=Guid.Parse("ad0d39ad-6889-4ab3-965d-3d4042344ee6"),
+                            IntValue=12,
+                            LongValue=2,
+                            NullableByteValue=1,
+                            SByteValue=2,
+                            ShortValue=1,
+                            StringValue1="asdfvzxcv",
+                            StringValue2="qwerertyizjgposgj",
+                            ULongValue=12,
+                            UIntValue=5342,
+                            UShortValue=1234
+                        }
+                    }
+                },
+            };
+            var InitialData2 = new ManyToManyPropertiesWithCascade[]
+            {
+                new ManyToManyPropertiesWithCascade
+                {
+                    BoolValue=true,
+                    ManyToManyClass=new List<AllReferencesAndID>()
+                    {
+                        new AllReferencesAndID
+                        {
+                            BoolValue=true,
+                            ByteValue=1,
+                            NullableBoolValue=true,
+                            CharValue='a',
+                            DateTimeValue=new DateTime(2008,1,1),
+                            DecimalValue=13.2m,
+                            DoubleValue=423.12341234,
+                            FloatValue=1243.1f,
+                            GuidValue=Guid.Parse("ad0d39ad-6889-4ab3-965d-3d4042344ee6"),
+                            IntValue=12,
+                            LongValue=2,
+                            NullableByteValue=1,
+                            SByteValue=2,
+                            ShortValue=1,
+                            StringValue1="asdfvzxcv",
+                            StringValue2="qwerertyizjgposgj",
+                            ULongValue=12,
+                            UIntValue=5342,
+                            UShortValue=1234
+                        }
+                    }
+                },
+                new ManyToManyPropertiesWithCascade
+                {
+                    BoolValue=true,
+                    ManyToManyClass=new List<AllReferencesAndID>()
+                    {
+                        new AllReferencesAndID
+                        {
+                            BoolValue=true,
+                            ByteValue=1,
+                            NullableBoolValue=true,
+                            CharValue='a',
+                            DateTimeValue=new DateTime(2008,1,1),
+                            DecimalValue=13.2m,
+                            DoubleValue=423.12341234,
+                            FloatValue=1243.1f,
+                            GuidValue=Guid.Parse("ad0d39ad-6889-4ab3-965d-3d4042344ee6"),
+                            IntValue=12,
+                            LongValue=2,
+                            NullableByteValue=1,
+                            SByteValue=2,
+                            ShortValue=1,
+                            StringValue1="asdfvzxcv",
+                            StringValue2="qwerertyizjgposgj",
+                            ULongValue=12,
+                            UIntValue=5342,
+                            UShortValue=1234
+                        }
+                    }
+                },
+                new ManyToManyPropertiesWithCascade
+                {
+                    BoolValue=true,
+                    ManyToManyClass=new List<AllReferencesAndID>()
+                    {
+                        new AllReferencesAndID
+                        {
+                            BoolValue=true,
+                            ByteValue=1,
+                            NullableBoolValue=true,
+                            CharValue='a',
+                            DateTimeValue=new DateTime(2008,1,1),
+                            DecimalValue=13.2m,
+                            DoubleValue=423.12341234,
+                            FloatValue=1243.1f,
+                            GuidValue=Guid.Parse("ad0d39ad-6889-4ab3-965d-3d4042344ee6"),
+                            IntValue=12,
+                            LongValue=2,
+                            NullableByteValue=1,
+                            SByteValue=2,
+                            ShortValue=1,
+                            StringValue1="asdfvzxcv",
+                            StringValue2="qwerertyizjgposgj",
+                            ULongValue=12,
+                            UIntValue=5342,
+                            UShortValue=1234
+                        }
+                    }
+                },
+            };
+            await Session.Save(InitialData.SelectMany(x => x.ManyToManyClass).ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
+            await Session.Save(InitialData2).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }
