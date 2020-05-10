@@ -64,7 +64,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <param name="type">The type.</param>
         /// <param name="ids">The ids.</param>
         /// <returns>The resulting query</returns>
-        IQuery[] GenerateQueries(QueryType type, List<Dynamo> ids);
+        IQuery[] GenerateQueries(QueryType type, Dynamo[] ids);
     }
 
     /// <summary>

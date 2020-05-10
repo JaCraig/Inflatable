@@ -1,5 +1,4 @@
 ﻿using BigBook;
-using System.Collections.Generic;
 
 namespace Inflatable.QueryProvider.Interfaces
 {
@@ -16,6 +15,6 @@ namespace Inflatable.QueryProvider.Interfaces
         /// </summary>
         /// <param name="data">The data.</param>
         /// <returns>The resulting query</returns>
-        IQuery[] GenerateQueries(List<Dynamo> ids);
+        IQuery[] GenerateQueries(Dynamo[] ids);
     }
 }

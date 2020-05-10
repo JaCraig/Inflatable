@@ -189,9 +189,8 @@ namespace Inflatable.Sessions
             }
 
             var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
-            var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
-            Batch.AddQuery(type, command, Parameters.ToArray());
+            Batch.AddQuery(type, command, Parameters);
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
             {
@@ -199,7 +198,7 @@ namespace Inflatable.Sessions
                                                                                                     CommandType.Text,
                                                                                                     command,
                                                                                                     QueryType.LinqQuery,
-                                                                                                    Parameters.ToArray()),
+                                                                                                    Parameters),
                                                                                         x.Cast<Dynamo>(),
                                                                                         this))
                                                           .ToList();
@@ -227,12 +226,17 @@ namespace Inflatable.Sessions
             {
                 return await GetSubView(queries).ConfigureAwait(false);
             }
+            var ObjectType = typeof(TObject);
+            var ReadOnlySources = MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(ObjectType).Any()).OrderBy(x => x.Order).ToArray();
+            var ParentMapping = GetParentMapping(ObjectType, MappingManager);
+            if (ParentMapping is null)
+                return Array.Empty<TObject>();
             var KeyName = GetIDListCacheKey(queries);
             var IDList = GetCachedIDList(KeyName, Cache);
             IDList = await GetIDList(IDList, KeyName, queries).ConfigureAwait(false);
-            var MissingCachedItems = GetMissedCachedItems<TObject>(IDList, Cache, MappingManager);
-            await FillCache<TObject>(MissingCachedItems).ConfigureAwait(false);
-            return GetCachedItems<TObject>(IDList, Cache, MappingManager) ?? Array.Empty<TObject>();
+            var MissingCachedItems = GetMissedCachedItems<TObject>(IDList, Cache, ReadOnlySources);
+            await FillCache<TObject>(MissingCachedItems, ReadOnlySources).ConfigureAwait(false);
+            return GetCachedItems<TObject>(IDList, Cache, ParentMapping) ?? Array.Empty<TObject>();
         }
 
         /// <summary>
@@ -282,7 +286,7 @@ namespace Inflatable.Sessions
             }
 
             var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
-            Batch.AddQuery(type, command, Parameters.ToArray());
+            Batch.AddQuery(type, command, Parameters);
             try
             {
                 return (await Batch.ExecuteAsync().ConfigureAwait(false))[0];
@@ -314,10 +318,9 @@ namespace Inflatable.Sessions
                 throw new ArgumentException($"Source not found {connection}");
             }
 
-            var ReturnValue = new List<Dynamo>();
             var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
 
-            Batch.AddQuery(type, command, Parameters.ToArray());
+            Batch.AddQuery(type, command, Parameters);
             try
             {
                 return Batch.ExecuteScalarAsync<TObject>();
@@ -356,26 +359,26 @@ namespace Inflatable.Sessions
             where TObject : class
             where TData : class
         {
-            var ParentMapping = MappingManager
-                .Sources
-                .SelectMany(x => x.GetChildMappings<TObject>().SelectMany(y => x.GetParentMapping(y.ObjectType)))
-                .Distinct()
-                .FirstOrDefault(x => x.IDProperties.Count > 0);
-            foreach (var Source in MappingManager.Sources)
+            Type ObjectType = typeof(TObject);
+            var ParentMapping = GetParentMapping(ObjectType, MappingManager);
+            if (ParentMapping is null)
+                return Array.Empty<TData>().ToObservableList(x => x);
+            var ReadOnlySources = MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TData)).Any()).OrderBy(x => x.Order).ToArray();
+            foreach (var Source in ReadOnlySources)
             {
                 var TempProperty = FindProperty<TObject, TData>(Source, propertyName);
                 if (!(TempProperty?.LoadPropertyQuery is null))
                 {
                     var Parameters = ParentMapping.IDProperties.Select(x => x.GetColumnInfo()[0].GetAsParameter(objectToLoadProperty)).ToArray();
-                    return (await ExecuteAsync<TData>(TempProperty.LoadPropertyQuery.QueryString, TempProperty.LoadPropertyQuery.DatabaseCommandType, Source.Source.Name, Parameters).ConfigureAwait(false)).ToObservableList(x => x);
+                    return (await ExecuteAsync<TData>(TempProperty.LoadPropertyQuery.QueryString, TempProperty.LoadPropertyQuery.DatabaseCommandType, Source.Source.Name, Parameters!).ConfigureAwait(false)).ToObservableList(x => x);
                 }
             }
-            var KeyName = GetIDListCacheKey(objectToLoadProperty, propertyName, MappingManager);
+            var KeyName = GetIDListCacheKey(objectToLoadProperty, propertyName, ParentMapping);
             var IDList = GetCachedIDList(KeyName, Cache);
             IDList = await GetIDList<TObject, TData>(IDList, KeyName, objectToLoadProperty, propertyName).ConfigureAwait(false);
-            var MissingCachedItems = GetMissedCachedItems<TData>(IDList, Cache, MappingManager);
-            await FillCache<TData>(MissingCachedItems).ConfigureAwait(false);
-            return (GetCachedItems<TData>(IDList, Cache, MappingManager) ?? Array.Empty<TData>()).ToObservableList(x => x);
+            var MissingCachedItems = GetMissedCachedItems<TData>(IDList, Cache, ReadOnlySources);
+            await FillCache<TData>(MissingCachedItems, ReadOnlySources).ConfigureAwait(false);
+            return (GetCachedItems<TData>(IDList, Cache, ParentMapping) ?? Array.Empty<TData>()).ToObservableList(x => x);
         }
 
         /// <summary>
@@ -420,27 +423,29 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        private static List<IParameter> ConvertParameters(object[] parameters)
+        private static IParameter[] ConvertParameters(object[] parameters)
         {
-            var Parameters = new List<IParameter>();
+            if (parameters is null || parameters.Length == 0)
+                return Array.Empty<IParameter>();
+            var Parameters = new IParameter[parameters.Length];
             for (int x = 0, parametersLength = parameters.Length; x < parametersLength; x++)
             {
                 var CurrentParameter = parameters[x];
                 if (CurrentParameter is IParameter TempQueryParameter)
                 {
-                    Parameters.Add(TempQueryParameter);
+                    Parameters[x] = TempQueryParameter;
                 }
                 else if (CurrentParameter is null)
                 {
-                    Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), null!));
+                    Parameters[x] = new Parameter<object>(x.ToString(CultureInfo.InvariantCulture), null!);
                 }
                 else if (CurrentParameter is string TempParameter)
                 {
-                    Parameters.Add(new StringParameter(Parameters.Count.ToString(CultureInfo.InvariantCulture), TempParameter));
+                    Parameters[x] = new StringParameter(x.ToString(CultureInfo.InvariantCulture), TempParameter);
                 }
                 else
                 {
-                    Parameters.Add(new Parameter<object>(Parameters.Count.ToString(CultureInfo.InvariantCulture), CurrentParameter));
+                    Parameters[x] = new Parameter<object>(x.ToString(CultureInfo.InvariantCulture), CurrentParameter);
                 }
             }
 
@@ -461,7 +466,7 @@ namespace Inflatable.Sessions
         {
             var ParentMappings = source.GetChildMappings(typeof(TObject)).SelectMany(x => source.GetParentMapping(x.ObjectType)).Distinct();
             IClassProperty Property = ParentMappings.SelectMany(x => x.ManyToManyProperties).FirstOrDefault(x => x.Name == propertyName);
-            if (Property != null)
+            if (!(Property is null))
             {
                 return Property;
             }
@@ -476,9 +481,9 @@ namespace Inflatable.Sessions
         /// <param name="keyName">Name of the key.</param>
         /// <param name="cache">The cache.</param>
         /// <returns>The cached ID list.</returns>
-        private static IEnumerable<Dynamo> GetCachedIDList(string keyName, ICache cache)
+        private static Dynamo[] GetCachedIDList(string keyName, ICache cache)
         {
-            if (cache.TryGetValue(keyName, out var Value) && Value is List<Dynamo> ReturnValue)
+            if (cache.TryGetValue(keyName, out var Value) && Value is Dynamo[] ReturnValue)
                 return ReturnValue;
             return Array.Empty<Dynamo>();
         }
@@ -544,18 +549,12 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
-        /// <param name="mappingManager">The mapping manager.</param>
+        /// <param name="parentMapping">The parent mapping.</param>
         /// <returns></returns>
-        private static string GetIDListCacheKey<TObject>(TObject objectToLoadProperty, string propertyName, MappingManager mappingManager)
+        private static string GetIDListCacheKey<TObject>(TObject objectToLoadProperty, string propertyName, IMapping parentMapping)
                         where TObject : class
         {
-            var ParentMapping = mappingManager
-                .Sources
-                .SelectMany(x => x.GetChildMappings<TObject>().SelectMany(y => x.GetParentMapping(y.ObjectType)))
-                .Distinct()
-                .FirstOrDefault(x => x.IDProperties.Count > 0);
-
-            return $"{GetCacheIDName(ParentMapping, objectToLoadProperty)}_{propertyName}";
+            return $"{GetCacheIDName(parentMapping, objectToLoadProperty)}_{propertyName}";
         }
 
         /// <summary>
@@ -585,19 +584,49 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="idList">The identifier list.</param>
         /// <param name="cache">The cache.</param>
-        /// <param name="mappingManager">The mapping manager.</param>
+        /// <param name="sources">The sources.</param>
         /// <returns></returns>
-        private static List<Dynamo> GetMissedCachedItems<TObject>(IEnumerable<Dynamo> idList, ICache cache, MappingManager mappingManager)
+        private static Dynamo[] GetMissedCachedItems<TObject>(Dynamo[] idList, ICache cache, IMappingSource[] sources)
         {
-            foreach (var Source in mappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()))
+            var ObjectType = typeof(TObject);
+            foreach (var Source in sources)
             {
-                var ParentMapping = Source.GetChildMappings(typeof(TObject))
-                                                 .SelectMany(x => Source.GetParentMapping(x.ObjectType))
-                                                 .Distinct()
-                                                 .FirstOrDefault(x => x.IDProperties.Count > 0);
-                idList = idList.Where(x => !cache.GetByTag(GetCacheIDName<TObject>(ParentMapping, x)).Any()).ToList();
+                var ParentMapping = GetParentMapping(ObjectType, Source);
+                if (ParentMapping is null)
+                    continue;
+                idList = idList.Where(x => !cache.GetByTag(GetCacheIDName(ObjectType, ParentMapping, x)).Any()).ToArray();
             }
-            return idList.ToList();
+            return idList;
+        }
+
+        /// <summary>
+        /// Gets the parent mapping.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>The parent mapping</returns>
+        private static IMapping? GetParentMapping(Type objectType, IMappingSource source)
+        {
+            return source.GetChildMappings(objectType)
+                        .SelectMany(x => source.GetParentMapping(x.ObjectType))
+                        .Distinct()
+                        .FirstOrDefault(x => x.IDProperties.Count > 0);
+        }
+
+        /// <summary>
+        /// Gets the parent mapping.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="mappingManager">The mapping manager.</param>
+        /// <returns>The parent mapping</returns>
+        private static IMapping? GetParentMapping(Type objectType, MappingManager mappingManager)
+        {
+            return mappingManager
+                .Sources
+                .Where(x => x.CanRead)
+                .SelectMany(x => x.GetChildMappings(objectType).SelectMany(y => x.GetParentMapping(y.ObjectType)))
+                .Distinct()
+                .FirstOrDefault(x => x.IDProperties.Count > 0);
         }
 
         /// <summary>
@@ -639,16 +668,17 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="missingCachedItems">The missing cached items.</param>
+        /// <param name="mappingSources">The mapping sources.</param>
         /// <returns></returns>
-        private async Task FillCache<TObject>(List<Dynamo> missingCachedItems)
+        private async Task FillCache<TObject>(Dynamo[] missingCachedItems, IMappingSource[] mappingSources)
                                             where TObject : class
         {
-            if (missingCachedItems is null || missingCachedItems.Count == 0)
+            if (missingCachedItems is null || missingCachedItems.Length == 0)
                 return;
             var results = new List<QueryResults>();
             var firstRun = true;
             //Run queries
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()).OrderBy(x => x.Order))
+            foreach (var Source in mappingSources)
             {
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 var ResultingQueries = Generator.GenerateQueries(QueryType.LoadData, missingCachedItems);
@@ -673,20 +703,15 @@ namespace Inflatable.Sessions
                 firstRun = false;
             }
             //Fill cache
-            var ReadOnlySources = MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()).ToList();
             foreach (var QueryResult in results)
             {
                 foreach (var Result in QueryResult.Values)
                 {
                     List<string> TagList = new List<string>();
                     string Key = string.Empty;
-                    foreach (var Source in ReadOnlySources)
+                    foreach (var Source in mappingSources)
                     {
-                        var IDValue = Source
-                            .GetChildMappings(QueryResult.Query.ReturnType)
-                            .SelectMany(x => Source.GetParentMapping(x.ObjectType))
-                            .Distinct()
-                            .FirstOrDefault(x => x.IDProperties.Count > 0)?
+                        var IDValue = GetParentMapping(QueryResult.Query.ReturnType, Source)?
                             .IDProperties
                             .OrderBy(x => x.Name)
                             .ToString(x => x.Name + "_" + x.GetColumnInfo()[0].GetValue(Result)?.ToString() ?? string.Empty, "_");
@@ -744,30 +769,22 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="idList">The identifier list.</param>
         /// <param name="cache">The cache.</param>
-        /// <param name="mappingManager">The mapping manager.</param>
+        /// <param name="parentMapping">The parent mapping.</param>
         /// <returns></returns>
-        private IEnumerable<TObject> GetCachedItems<TObject>(IEnumerable<Dynamo> idList, ICache cache, MappingManager mappingManager)
+        private TObject[] GetCachedItems<TObject>(Dynamo[] idList, ICache cache, IMapping parentMapping)
                     where TObject : class
         {
-            List<TObject> ReturnValue = new List<TObject>();
-            var ParentMapping = mappingManager
-                .Sources
-                .Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any())
-                .Select(Source => Source
-                    .GetChildMappings(typeof(TObject))
-                    .SelectMany(x => Source.GetParentMapping(x.ObjectType))
-                    .Distinct()
-                    .FirstOrDefault(x => x.IDProperties.Count > 0))
-                .FirstOrDefault(x => !(x is null));
-            foreach (var ID in idList)
+            TObject[] ReturnValue = new TObject[idList.Length];
+            for (int x = 0; x < idList.Length; ++x)
             {
-                var Key = GetCacheIDName<TObject>(ParentMapping, ID);
+                var ID = idList[x];
+                var Key = GetCacheIDName<TObject>(parentMapping, ID);
                 var Value = cache.GetByTag(Key).FirstOrDefault();
                 if (Value is CachedResult cachedResult)
                 {
                     var TempVal = cachedResult.Value.To(cachedResult.ObjectType);
                     ((IORMObject)TempVal).Session0 = this;
-                    ReturnValue.Add((TempVal as TObject)!);
+                    ReturnValue[x] = (TempVal as TObject)!;
                 }
             }
             return ReturnValue;
@@ -783,11 +800,11 @@ namespace Inflatable.Sessions
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns></returns>
-        private async Task<IEnumerable<Dynamo>> GetIDList<TObject, TData>(IEnumerable<Dynamo> idList, string keyName, TObject objectToLoadProperty, string propertyName)
-                                                                    where TObject : class
+        private async Task<Dynamo[]> GetIDList<TObject, TData>(Dynamo[] idList, string keyName, TObject objectToLoadProperty, string propertyName)
+                    where TObject : class
                     where TData : class
         {
-            if (idList.Any())
+            if (idList.Length > 0)
                 return idList;
             var Results = new List<QueryResults>();
             var Tags = new List<string>();
@@ -825,7 +842,7 @@ namespace Inflatable.Sessions
                     Tags.AddIfUnique(ParentMapping.ObjectType.Name);
                 }
             }
-            var ReturnValue = Results.SelectMany(x => x.Values).ToList();
+            var ReturnValue = Results.SelectMany(x => x.Values).ToArray();
             Cache.Add(keyName, ReturnValue, Tags);
             return ReturnValue;
         }
@@ -838,10 +855,10 @@ namespace Inflatable.Sessions
         /// <param name="keyName">Name of the key.</param>
         /// <param name="queries">The queries.</param>
         /// <returns></returns>
-        private async Task<IEnumerable<Dynamo>> GetIDList<TObject>(IEnumerable<Dynamo> idList, string keyName, IDictionary<IMappingSource, QueryData<TObject>> queries)
+        private async Task<Dynamo[]> GetIDList<TObject>(Dynamo[] idList, string keyName, IDictionary<IMappingSource, QueryData<TObject>> queries)
                     where TObject : class
         {
-            if (idList.Any())
+            if (idList.Length > 0)
                 return idList;
             var Results = new List<QueryResults>();
             var FirstRun = true;
@@ -866,7 +883,7 @@ namespace Inflatable.Sessions
                     Tags.AddIfUnique(ParentMapping.ObjectType.Name);
                 }
             }
-            var ReturnValue = Results.SelectMany(x => x.Values).ToList();
+            var ReturnValue = Results.SelectMany(x => x.Values).ToArray();
             Cache.Add(keyName, ReturnValue, Tags);
             return ReturnValue;
         }

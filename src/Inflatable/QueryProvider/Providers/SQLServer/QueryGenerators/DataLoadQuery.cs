@@ -62,7 +62,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject)
         {
-            return GenerateQueries(new List<Dynamo>());
+            return GenerateQueries(Array.Empty<Dynamo>());
         }
 
         /// <summary>
@@ -70,35 +70,37 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="ids"></param>
         /// <returns>The resulting query</returns>
-        public IQuery[] GenerateQueries(List<Dynamo> ids)
+        public IQuery[] GenerateQueries(Dynamo[] ids)
         {
-            if (ids is null || ids.Count == 0)
+            if (ids is null || ids.Length == 0)
                 return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
-            List<List<Dynamo>> IDSplit = new List<List<Dynamo>>
-            {
-                new List<Dynamo>()
-            };
-            var CurrentCount = 0;
-            foreach (var ID in ids)
-            {
-                CurrentCount += ID.Count;
-                if (CurrentCount > 1000)
-                {
-                    IDSplit.Add(new List<Dynamo>());
-                    CurrentCount = 0;
-                }
-                IDSplit[^1].Add(ID);
-            }
+            var ItemSize = ids.FirstOrDefault()?.Count ?? 1;
             foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
-                foreach (var Split in IDSplit)
+                foreach (var Split in SplitList(ids, 1000 / ItemSize))
                 {
                     ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, Split), QueryType, GetParameters(Split, IDProperties)));
                 }
             }
             return ReturnValue.ToArray();
+        }
+
+        /// <summary>
+        /// Splits the list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="values">The values.</param>
+        /// <param name="nSize">Size of the n.</param>
+        /// <returns></returns>
+        private static IEnumerable<Memory<T>> SplitList<T>(T[] values, int nSize = 1000)
+        {
+            var ValueSpan = new Memory<T>(values);
+            for (int i = 0; i < values.Length; i += nSize)
+            {
+                yield return ValueSpan.Slice(i, Math.Min(nSize, values.Length - i));
+            }
         }
 
         /// <summary>
@@ -180,7 +182,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="node">The node.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        private string GenerateSelectQuery(Utils.TreeNode<Type>? node, List<Dynamo> ids)
+        private string GenerateSelectQuery(Utils.TreeNode<Type>? node, Memory<Dynamo> ids)
         {
             if (node is null)
                 return string.Empty;
@@ -226,11 +228,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the where clause.
         /// </summary>
         /// <returns>The WHERE clause</returns>
-        private string GenerateWhereClause(List<Dynamo> ids)
+        private string GenerateWhereClause(Memory<Dynamo> ids)
         {
             var Result = ObjectPool.Get();
             var Separator2 = string.Empty;
-            for (int x = 0; x < ids.Count; ++x)
+            for (int x = 0; x < ids.Length; ++x)
             {
                 var Separator = string.Empty;
                 Result.AppendFormat("{0}(", Separator2);
@@ -256,12 +258,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="ids">The ids.</param>
         /// <param name="idProperties">The identifier properties.</param>
         /// <returns>The parameters</returns>
-        private IParameter?[] GetParameters(List<Dynamo> ids, IEnumerable<IIDProperty> idProperties)
+        private IParameter?[] GetParameters(Memory<Dynamo> ids, IEnumerable<IIDProperty> idProperties)
         {
             List<IParameter?> ReturnValues = new List<IParameter?>();
-            for (int x = 0; x < ids.Count; ++x)
+            var IDSpan = ids.Span;
+            for (int x = 0; x < IDSpan.Length; ++x)
             {
-                var Value = ids[x];
+                var Value = IDSpan[x];
                 var TempParams = idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(Value)).ForEach(y => { y.ID += x; });
                 ReturnValues.AddRange(TempParams ?? Array.Empty<IParameter?>());
             }

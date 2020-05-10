@@ -17,7 +17,6 @@ using Inflatable.Tests.TestDatabases.MapProperties.Mappings;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
-using System.Collections.Generic;
 using System.Data;
 using Xunit;
 
@@ -85,7 +84,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var TestObject = new DataLoadQuery<ConcreteClass1>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { DynamoFactory.Create(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { DynamoFactory.Create(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -108,7 +107,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
             ManyToManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DataLoadQuery<ManyToManyProperties>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -139,7 +138,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             TempManyToOneMany.ManyToOneClass.Add(new AllReferencesAndID { ID = 1 });
             TempManyToOneMany.ManyToOneClass.Add(new AllReferencesAndID { ID = 2 });
 
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 10 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 10 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
@@ -169,7 +168,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             TempManyToOneMany.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 1 });
             TempManyToOneMany.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 2 });
 
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -199,7 +198,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TempManyToOneMany = new ManyToOneOneFromComplexClass { ID = 10, BoolValue = true };
             TempManyToOneMany.ManyToOneClass = new AllReferencesAndID { ID = 1 };
 
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -228,7 +227,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var TempManyToOneOne = new ManyToOneOneProperties { ID = 10, BoolValue = true };
             TempManyToOneOne.ManyToOneClass = new ManyToOneManyProperties { ID = 1 };
 
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -251,7 +250,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties[0];
             MapProperty.Setup(Mappings);
             var TestObject = new DataLoadQuery<MapProperties>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -275,7 +274,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var MapProperty = Mappings.Mappings[typeof(MapPropertiesFromComplexClass)].MapProperties[0];
             MapProperty.Setup(Mappings);
             var TestObject = new DataLoadQuery<MapPropertiesFromComplexClass>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -298,7 +297,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var MapProperty = Mappings.Mappings[typeof(MapPropertyReferencesSelf)].MapProperties[0];
             MapProperty.Setup(Mappings);
             var TestObject = new DataLoadQuery<MapPropertyReferencesSelf>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);
@@ -321,7 +320,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties[0];
             MapProperty.Setup(Mappings);
             var TestObject = new DataLoadQuery<MapPropertiesWithMapOnInterface>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new List<Dynamo>() { new Dynamo(new { ID = 1 }) })[0];
+            var Result = TestObject.GenerateQueries(new Dynamo[] { new Dynamo(new { ID = 1 }) })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Single(Result.Parameters);
             Assert.Equal(1, Result.Parameters[0].InternalValue);

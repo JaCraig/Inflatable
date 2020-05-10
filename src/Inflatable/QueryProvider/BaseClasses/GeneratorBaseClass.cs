@@ -125,6 +125,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="type">The type.</param>
         /// <param name="ids">The ids.</param>
         /// <returns>The resulting query</returns>
-        public IQuery[] GenerateQueries(QueryType type, List<Dynamo> ids) => DataQueryGenerator.GenerateQueries(ids);
+        public IQuery[] GenerateQueries(QueryType type, Dynamo[] ids) => DataQueryGenerator.GenerateQueries(ids);
     }
 }
