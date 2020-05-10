@@ -5,6 +5,7 @@ using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -18,6 +19,7 @@ namespace Inflatable.Tests.Sessions
         {
             var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
