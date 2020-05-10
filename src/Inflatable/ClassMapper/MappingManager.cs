@@ -70,7 +70,9 @@ namespace Inflatable.ClassMapper
                                                 Logger,
                                                 ObjectPool));
             });
-            Sources = FinalList.ToArray();
+            Sources = FinalList.OrderBy(x => x.Order).ToArray();
+            WriteSources = Sources.Where(x => x.CanWrite).ToArray();
+            ReadSources = Sources.Where(x => x.CanRead).ToArray();
             if (Debug)
             {
                 var Builder = ObjectPool.Get();
@@ -102,10 +104,22 @@ namespace Inflatable.ClassMapper
         public ObjectPool<StringBuilder> ObjectPool { get; }
 
         /// <summary>
+        /// Gets or sets the read sources.
+        /// </summary>
+        /// <value>The read sources.</value>
+        public IMappingSource[] ReadSources { get; set; }
+
+        /// <summary>
         /// Gets or sets the sources.
         /// </summary>
         /// <value>The sources.</value>
         public IMappingSource[] Sources { get; set; }
+
+        /// <summary>
+        /// Gets or sets the write sources.
+        /// </summary>
+        /// <value>The write sources.</value>
+        public IMappingSource[] WriteSources { get; set; }
 
         /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.

@@ -36,15 +36,13 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandBaseClass"/> class.
         /// </summary>
-        /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
+        protected CommandBaseClass(QueryProviderManager queryProviderManager, ICache cache, object[] objects)
         {
             QueryProviderManager = queryProviderManager;
             Objects = (objects ?? Array.Empty<object>()).Where(x => x != null).ToArray();
-            MappingManager = mappingManager;
             Cache = cache;
         }
 
@@ -65,12 +63,6 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// </summary>
         /// <value>The objects.</value>
         public object[] Objects { get; private set; }
-
-        /// <summary>
-        /// Gets the mapping manager.
-        /// </summary>
-        /// <value>The mapping manager.</value>
-        protected MappingManager MappingManager { get; }
 
         /// <summary>
         /// Gets the query provider manager.

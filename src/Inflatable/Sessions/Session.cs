@@ -63,23 +63,16 @@ namespace Inflatable.Sessions
             BigBook.Caching.Manager cacheManager,
             DynamoFactory dynamoFactory)
         {
-            MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
+            if (mappingManager is null)
+                throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Cache = cacheManager?.Cache();
             DynamoFactory = dynamoFactory;
+            ReadSources = mappingManager.ReadSources;
+            WriteSources = mappingManager.WriteSources;
         }
-
-        /// <summary>
-        /// The mapping manager
-        /// </summary>
-        private readonly MappingManager MappingManager;
-
-        /// <summary>
-        /// The query provider manager
-        /// </summary>
-        private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
         /// Gets the dynamo factory.
@@ -106,6 +99,23 @@ namespace Inflatable.Sessions
         private ILogger Logger { get; }
 
         /// <summary>
+        /// The query provider manager
+        /// </summary>
+        private QueryProviderManager QueryProviderManager { get; }
+
+        /// <summary>
+        /// Gets the read only sources.
+        /// </summary>
+        /// <value>The read only sources.</value>
+        private IMappingSource[] ReadSources { get; }
+
+        /// <summary>
+        /// Gets the write sources.
+        /// </summary>
+        /// <value>The write sources.</value>
+        private IMappingSource[] WriteSources { get; }
+
+        /// <summary>
         /// Adds the objects for deletion.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
@@ -114,7 +124,7 @@ namespace Inflatable.Sessions
         public ISession Delete<TObject>(params TObject[] objectsToDelete)
             where TObject : class
         {
-            Commands.Add(new DeleteCommand(MappingManager, QueryProviderManager, Cache, objectsToDelete));
+            Commands.Add(new DeleteCommand(QueryProviderManager, Cache, objectsToDelete));
             return this;
         }
 
@@ -135,13 +145,11 @@ namespace Inflatable.Sessions
         {
             var Result = 0;
             RemoveDuplicateCommands();
-            foreach (var Source in MappingManager.Sources
-                                                 .Where(x => x.CanWrite)
-                                                 .OrderBy(x => x.Order))
+            for (var i = 0; i < WriteSources.Length; i++)
             {
                 for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
                 {
-                    Result += await Commands[x].ExecuteAsync(Source, DynamoFactory).ConfigureAwait(false);
+                    Result += await Commands[x].ExecuteAsync(WriteSources[i], DynamoFactory).ConfigureAwait(false);
                 }
             }
             Commands.Clear();
@@ -162,7 +170,7 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             parameters ??= Array.Empty<IParameter>();
-            var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
+            var Source = Array.Find(ReadSources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -201,16 +209,18 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<dynamic>> ExecuteAsync<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
             where TObject : class
         {
+            if (queries is null)
+                return Array.Empty<TObject>();
             if (queries.Any(x => x.Value.SelectValues.Count > 0))
             {
                 return await GetSubView(queries).ConfigureAwait(false);
             }
             var ObjectType = typeof(TObject);
-            var ReadOnlySources = MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(ObjectType).Any()).OrderBy(x => x.Order).ToArray();
-            var ParentMapping = GetParentMapping(ObjectType, MappingManager);
+            var ReadOnlySources = ReadSources.Where(x => x.GetChildMappings(ObjectType).Any()).ToArray();
+            var ParentMapping = GetParentMapping(ObjectType, ReadSources);
             if (ParentMapping is null)
                 return Array.Empty<TObject>();
-            var KeyName = GetIDListCacheKey(queries);
+            var KeyName = GetIDListCacheKey(queries.Values);
             var IDList = GetCachedIDList(KeyName, Cache);
             IDList = await GetIDList(IDList, KeyName, queries).ConfigureAwait(false);
             var MissingCachedItems = GetMissedCachedItems<TObject>(IDList, Cache, ReadOnlySources);
@@ -258,7 +268,7 @@ namespace Inflatable.Sessions
         {
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
+            var Source = Array.Find(ReadSources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -291,7 +301,7 @@ namespace Inflatable.Sessions
         {
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
+            var Source = Array.Find(ReadSources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -339,10 +349,10 @@ namespace Inflatable.Sessions
             where TData : class
         {
             Type ObjectType = typeof(TObject);
-            var ParentMapping = GetParentMapping(ObjectType, MappingManager);
+            var ParentMapping = GetParentMapping(ObjectType, ReadSources);
             if (ParentMapping is null)
                 return Array.Empty<TData>().ToObservableList(x => x);
-            var ReadOnlySources = MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TData)).Any()).OrderBy(x => x.Order).ToArray();
+            var ReadOnlySources = ReadSources.Where(x => x.GetChildMappings(typeof(TData)).Any()).ToArray();
             foreach (var Source in ReadOnlySources)
             {
                 var TempProperty = FindProperty<TObject, TData>(Source, propertyName);
@@ -393,7 +403,7 @@ namespace Inflatable.Sessions
         public ISession Save<TObject>(params TObject[] objectsToSave)
             where TObject : class
         {
-            Commands.Add(new SaveCommand(MappingManager, QueryProviderManager, Cache, objectsToSave));
+            Commands.Add(new SaveCommand(QueryProviderManager, Cache, objectsToSave));
             return this;
         }
 
@@ -542,15 +552,11 @@ namespace Inflatable.Sessions
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="queries">The queries.</param>
         /// <returns>The ID list cache key</returns>
-        private static string GetIDListCacheKey<TObject>(IDictionary<IMappingSource, QueryData<TObject>>? queries)
+        private static string GetIDListCacheKey<TObject>(ICollection<QueryData<TObject>>? queries)
                 where TObject : class
         {
-            var ReturnValue = queries?.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n") ?? string.Empty;
-            var Parameters = (queries?.Values
-                ?.SelectMany(x => x.Parameters)
-                ?.Distinct()
-                ?? Array.Empty<IParameter>());
-            foreach (var Parameter in Parameters)
+            var ReturnValue = queries?.ToString(x => x + "_" + x.Source.Source.Name, "\n") ?? string.Empty;
+            foreach (var Parameter in queries?.SelectMany(x => x.Parameters)?.Distinct() ?? Array.Empty<IParameter>())
             {
                 ReturnValue = Parameter.AddParameter(ReturnValue);
             }
@@ -596,13 +602,11 @@ namespace Inflatable.Sessions
         /// Gets the parent mapping.
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
-        /// <param name="mappingManager">The mapping manager.</param>
+        /// <param name="sources">The sources.</param>
         /// <returns>The parent mapping</returns>
-        private static IMapping? GetParentMapping(Type objectType, MappingManager mappingManager)
+        private static IMapping? GetParentMapping(Type objectType, IMappingSource[] sources)
         {
-            return mappingManager
-                .Sources
-                .Where(x => x.CanRead)
+            return sources
                 .SelectMany(x => x.GetChildMappings(objectType).SelectMany(y => x.GetParentMapping(y.ObjectType)))
                 .Distinct()
                 .FirstOrDefault(x => x.IDProperties.Count > 0);
@@ -678,8 +682,9 @@ namespace Inflatable.Sessions
             var results = new List<QueryResults>();
             var firstRun = true;
             //Run queries
-            foreach (var Source in mappingSources)
+            for (int i = 0; i < mappingSources.Length; ++i)
             {
+                var Source = mappingSources[i];
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
                 var ResultingQueries = Generator.GenerateQueries(QueryType.LoadData, missingCachedItems);
                 var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
@@ -709,8 +714,9 @@ namespace Inflatable.Sessions
                 {
                     List<string> TagList = new List<string>();
                     string Key = string.Empty;
-                    foreach (var Source in mappingSources)
+                    for (int i = 0; i < mappingSources.Length; ++i)
                     {
+                        var Source = mappingSources[i];
                         var IDValue = GetParentMapping(QueryResult.Query.ReturnType, Source)?
                             .IDProperties
                             .OrderBy(x => x.Name)
@@ -808,7 +814,7 @@ namespace Inflatable.Sessions
                 return idList;
             var Results = new List<QueryResults>();
             var Tags = new List<string>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()).OrderBy(x => x.Order))
+            foreach (var Source in ReadSources.Where(x => x.GetChildMappings(typeof(TObject)).Any()))
             {
                 var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
@@ -897,7 +903,7 @@ namespace Inflatable.Sessions
         private async Task<IEnumerable<dynamic>> GetSubView<TObject>(IDictionary<IMappingSource, QueryData<TObject>> queries)
                     where TObject : class
         {
-            var KeyName = GetIDListCacheKey(queries);
+            var KeyName = GetIDListCacheKey(queries.Values);
             var ObjectList = GetCachedValues<TObject>(KeyName, Cache);
             if (ObjectList.Any())
                 return ObjectList;

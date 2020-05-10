@@ -38,12 +38,11 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteCommand"/> class.
         /// </summary>
-        /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objectsToDelete">The objects to delete.</param>
-        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, params object[] objectsToDelete)
-            : base(mappingManager, queryProviderManager, cache, objectsToDelete)
+        public DeleteCommand(QueryProviderManager queryProviderManager, ICache cache, params object[] objectsToDelete)
+            : base(queryProviderManager, cache, objectsToDelete)
         {
         }
 

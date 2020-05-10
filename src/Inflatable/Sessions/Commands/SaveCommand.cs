@@ -43,12 +43,11 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="SaveCommand"/> class.
         /// </summary>
-        /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        public SaveCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
-            : base(mappingManager, queryProviderManager, cache, objects)
+        public SaveCommand(QueryProviderManager queryProviderManager, ICache cache, object[] objects)
+            : base(queryProviderManager, cache, objects)
         {
         }
 
