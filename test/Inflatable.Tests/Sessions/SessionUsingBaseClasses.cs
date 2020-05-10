@@ -54,15 +54,14 @@ namespace Inflatable.Tests.Sessions
             };
             await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
 
-            var TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.ID > 3).ToArray();
+            var TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.BaseClassValue1 > 2).ToArray();
 
             var ResultCount = await TempSession.Delete(TestObject).ExecuteAsync().ConfigureAwait(false);
-            Assert.Equal(3, ResultCount);
+            Assert.Equal(2, ResultCount);
             TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
-            Assert.Equal(3, TestObject.Length);
+            Assert.Equal(4, TestObject.Length);
             Assert.Equal(2, TestObject.OfType<ConcreteClass1>().Count());
-            Assert.Single(TestObject.OfType<ConcreteClass2>());
-            Assert.True(TestObject.All(x => x.ID <= 3));
+            Assert.Equal(2, TestObject.OfType<ConcreteClass2>().Count());
         }
 
         [Fact]
