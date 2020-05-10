@@ -12,7 +12,6 @@ using Inflatable.Tests.TestDatabases.MapProperties.Mappings;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using Serilog;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -56,7 +55,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task AllNoParametersWithDataInDatabase()
         {
-            _ = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Results = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
@@ -65,29 +64,20 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             Assert.Single(Results);
             var Results2 = await TestObject.ExecuteAsync<IMapPropertyInterface>("SELECT ID_ as [ID] FROM IMapPropertyInterface_", CommandType.Text, "Default").ConfigureAwait(false);
-            Assert.Single(Results2);
+            Assert.NotEmpty(Results2);
         }
 
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
+            await DeleteData().ConfigureAwait(false);
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
             var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -99,7 +89,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Result1 = new MapPropertiesWithBaseClasses
             {
@@ -148,7 +138,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task LoadMapPropertyWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Result = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().Where(x => x.ID == 1).First();
             Assert.NotNull(Result.MappedClass);
@@ -158,7 +148,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
@@ -180,7 +170,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             var UpdatedResults = Results.ForEach(x =>
@@ -194,37 +184,57 @@ namespace Inflatable.Tests.Sessions
             Assert.True(Results.All(x => x.MappedClass == null));
         }
 
+        private static async Task DeleteData()
+        {
+            await Helper
+                            .CreateBatch()
+                            .AddQuery(CommandType.Text, "DELETE FROM MapPropertiesWithBaseClasses_")
+                            .AddQuery(CommandType.Text, "DELETE FROM MapProperty1_")
+                            .ExecuteScalarAsync<int>().ConfigureAwait(false);
+        }
+
         private async Task SetupDataAsync()
         {
-            try
-            {
-                await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
-                    .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
-            }
-            catch { }
-            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()
-                .AddQuery(CommandType.Text, @"INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
-INSERT INTO [dbo].[MapPropertyBaseClass_]([BaseValue1_],[IMapPropertyInterface_ID_]) VALUES (1,1);
-INSERT INTO [dbo].[MapProperty1_]([ChildValue1_],[MapPropertyBaseClass_ID_]) VALUES (2,1);
-
-INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
-INSERT INTO [dbo].[MapPropertyBaseClass_]([BaseValue1_],[IMapPropertyInterface_ID_]) VALUES (1,2);
-INSERT INTO [dbo].[MapProperty2_]([ChildValue2_],[MapPropertyBaseClass_ID_]) VALUES (2,2);
-
-INSERT INTO [dbo].[IMapPropertyInterface_] DEFAULT VALUES;
-INSERT INTO [dbo].[MapPropertyBaseClass_]([BaseValue1_],[IMapPropertyInterface_ID_]) VALUES (1,3);
-INSERT INTO [dbo].[MapProperty1_]([ChildValue1_],[MapPropertyBaseClass_ID_]) VALUES (2,3);
-
-INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,1)
-INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (0,2)
-INSERT INTO [dbo].[MapPropertiesWithBaseClasses_]([BoolValue_],[IMapPropertyInterface_MappedClass_ID_]) VALUES (1,3)")
+                .AddQuery(CommandType.Text, "DELETE FROM MapPropertiesWithBaseClasses_")
+                .AddQuery(CommandType.Text, "DELETE FROM MapProperty1_")
                 .ExecuteScalarAsync<int>().ConfigureAwait(false);
+            var InitialData = new MapPropertiesWithBaseClasses[]
+            {
+                new MapPropertiesWithBaseClasses
+                {
+                    BoolValue=true,
+                    MappedClass = new MapProperty1
+                    {
+                        BaseValue1=1,
+                    ChildValue1=2
+                    }
+                },
+                new MapPropertiesWithBaseClasses
+                {
+                    BoolValue=false,
+                    MappedClass = new MapProperty1
+                    {
+                        BaseValue1=1,
+                    ChildValue1=2
+                    }
+                },
+                new MapPropertiesWithBaseClasses
+                {
+                    BoolValue=true,
+                    MappedClass = new MapProperty1
+                    {
+                        BaseValue1=1,
+                    ChildValue1=2
+                    }
+                },
+            };
+
+            await Session.Save(InitialData.Select(x => x.MappedClass).ToArray()).ExecuteAsync().ConfigureAwait(false);
+            await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

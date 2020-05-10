@@ -111,7 +111,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ManyToManyProperties_ID_", Result.Parameters[0].ID);
-            Assert.Equal("DELETE FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE [dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_;", Result.QueryString);
+            Assert.Equal("DELETE FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE ([dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_);", Result.QueryString);
             Assert.Equal(QueryType.JoinsDelete, Result.QueryType);
         }
 
