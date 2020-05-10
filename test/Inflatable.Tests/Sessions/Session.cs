@@ -1,15 +1,8 @@
 ﻿using BigBook;
-using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
-using Inflatable.QueryProvider;
-using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.SimpleTest;
-using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
-using Serilog;
 using System;
 using System.Data;
 using System.Linq;
@@ -20,37 +13,10 @@ namespace Inflatable.Tests.Sessions
 {
     public class SessionTests : TestingFixture
     {
-        public SessionTests()
-        {
-            InternalMappingManager = new MappingManager(new[] {
-                new AllReferencesAndIDMappingWithDatabase()
-            },
-            new IDatabase[]{
-                new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
-            ObjectPool);
-            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
-
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
-
-            CacheManager = Canister.Builder.Bootstrapper.Resolve<BigBook.Caching.Manager>();
-            CacheManager.Cache().Clear();
-        }
-
-        public static Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
-        public BigBook.Caching.Manager CacheManager { get; set; }
-        public MappingManager InternalMappingManager { get; set; }
-
-        public QueryProviderManager InternalQueryProviderManager { get; set; }
-        public SchemaManager InternalSchemaManager { get; set; }
-
         [Fact]
         public void Creation()
         {
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             Assert.NotNull(TestObject);
         }
 
@@ -132,7 +98,7 @@ namespace Inflatable.Tests.Sessions
             Assert.Equal(3, Result);
         }
 
-        [Fact(Skip = "Takes a bit")]
+        [Fact]
         public async Task InsertHundredsOfObjects()
         {
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();

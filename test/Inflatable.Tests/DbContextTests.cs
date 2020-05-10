@@ -1,6 +1,4 @@
-﻿using Inflatable.ClassMapper;
-using Inflatable.Schema;
-using Inflatable.Sessions;
+﻿using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
@@ -19,7 +17,6 @@ namespace Inflatable.Tests
         [Fact]
         public async Task BaseClassSelect()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -125,7 +122,6 @@ namespace Inflatable.Tests
         [Fact]
         public async Task CustomPropertyLoading()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             var TestObject = new MapPropertiesCustomLoad

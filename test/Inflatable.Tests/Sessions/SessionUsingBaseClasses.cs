@@ -1,6 +1,4 @@
 ﻿using BigBook;
-using Inflatable.ClassMapper;
-using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
@@ -17,7 +15,6 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassDelete()
         {
-            var TempSchemaManager = new SchemaManager(Canister.Builder.Bootstrapper.Resolve<MappingManager>(), Configuration, null, DataModeler, Sherlock, Helper);
             var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {

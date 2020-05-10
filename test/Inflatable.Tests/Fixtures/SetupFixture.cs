@@ -1,5 +1,6 @@
 ﻿using FileCurator.Registration;
 using Inflatable.Registration;
+using Inflatable.Schema;
 using Inflatable.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
@@ -40,9 +41,11 @@ namespace Inflatable.Tests.Fixtures
                                                 .Build();
                 Canister.Builder.Bootstrapper.Resolve<ISession>();
             }
+            var Temp = SchemaManager;
         }
 
         public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
+        public static SchemaManager SchemaManager => Canister.Builder.Bootstrapper.Resolve<SchemaManager>();
 
         public void Dispose()
         {

@@ -107,7 +107,7 @@ namespace Inflatable.Tests.Sessions
             Assert.Empty(Results);
         }
 
-        [Fact(Skip = "Takes a while")]
+        [Fact]
         public async Task InsertHundredsOfObjectsWithCascade()
         {
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();

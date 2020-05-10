@@ -2,7 +2,6 @@
 using Data.Modeler;
 using Holmes;
 using Inflatable.ClassMapper;
-using Inflatable.Schema;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.ObjectPool;
 using Serilog;
@@ -15,11 +14,6 @@ namespace Inflatable.Tests.BaseClasses
     [Collection("Test collection")]
     public abstract class TestingFixture
     {
-        public TestingFixture()
-        {
-            var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
-        }
-
         protected static string DatabaseName = "TestDatabase";
         protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
         public static IConfiguration Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
