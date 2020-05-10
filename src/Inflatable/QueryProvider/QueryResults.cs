@@ -95,6 +95,19 @@ namespace Inflatable.QueryProvider
         public static void RemoveCacheTag(string name, ICache? cache) => cache?.RemoveByTag(name);
 
         /// <summary>
+        /// Adds the specified results.
+        /// </summary>
+        /// <param name="results">The results.</param>
+        public void Add(QueryResults results)
+        {
+            if (results is null || results.Query.ReturnType != Query.ReturnType)
+            {
+                return;
+            }
+            Values.Add(results.Values);
+        }
+
+        /// <summary>
         /// Determines whether this instance can copy the specified results.
         /// </summary>
         /// <param name="results">The results.</param>

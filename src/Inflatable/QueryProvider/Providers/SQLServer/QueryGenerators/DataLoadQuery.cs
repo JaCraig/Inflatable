@@ -75,10 +75,28 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             if (ids is null || ids.Count == 0)
                 return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
+            List<List<Dynamo>> IDSplit = new List<List<Dynamo>>
+            {
+                new List<Dynamo>()
+            };
+            var CurrentCount = 0;
+            foreach (var ID in ids)
+            {
+                CurrentCount += ID.Count;
+                if (CurrentCount > 1000)
+                {
+                    IDSplit.Add(new List<Dynamo>());
+                    CurrentCount = 0;
+                }
+                IDSplit[^1].Add(ID);
+            }
             foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
-                ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, ids), QueryType, GetParameters(ids, IDProperties)));
+                foreach (var Split in IDSplit)
+                {
+                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, Split), QueryType, GetParameters(Split, IDProperties)));
+                }
             }
             return ReturnValue.ToArray();
         }

@@ -625,7 +625,7 @@ namespace Inflatable.Sessions
                 }
                 else if (firstRun)
                 {
-                    Result?.CopyOrAdd(TempQuery, IDProperties);
+                    Result?.Add(TempQuery);
                 }
                 else
                 {
