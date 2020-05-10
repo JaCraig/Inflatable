@@ -97,7 +97,7 @@ namespace Inflatable.Sessions
         /// Gets or sets the commands.
         /// </summary>
         /// <value>The commands.</value>
-        private IList<Commands.Interfaces.ICommand> Commands { get; }
+        private List<Commands.Interfaces.ICommand> Commands { get; }
 
         /// <summary>
         /// Gets the logger.
@@ -124,19 +124,7 @@ namespace Inflatable.Sessions
         /// <returns>The number of rows affected.</returns>
         public int Execute()
         {
-            var Result = 0;
-            RemoveDuplicateCommands();
-            foreach (var Source in MappingManager.Sources
-                                                 .Where(x => x.CanWrite)
-                                                 .OrderBy(x => x.Order))
-            {
-                for (int x = 0, CommandsCount = Commands.Count; x < CommandsCount; ++x)
-                {
-                    Result += Commands[x].Execute(Source, DynamoFactory);
-                }
-            }
-            Commands.Clear();
-            return Result;
+            return Task.Run(async () => await ExecuteAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -173,38 +161,29 @@ namespace Inflatable.Sessions
         public async Task<IEnumerable<TObject>> ExecuteAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
             where TObject : class
         {
-            //TODO: CHANGE CACHING SYSTEM HERE TO CACHE INDIVIDUAL ITEMS (KEYS SHOULD BE BASED ON INDIVIDUAL ITEM)
             parameters ??= Array.Empty<IParameter>();
-            var Parameters = ConvertParameters(parameters);
-            var KeyName = command + "_" + connection;
-            Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
-            if (QueryResults.IsCached(KeyName, Cache))
-            {
-                return QueryResults.GetCached(KeyName, Cache).SelectMany(x => x.ConvertValues<TObject>());
-            }
             var Source = Array.Find(MappingManager.Sources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
             }
+            var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
+            var Parameters = ConvertParameters(parameters);
+            var KeyName = command + "_" + connection;
+            Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
+            if (Cache.TryGetValue(KeyName, out var ReturnValue) && ReturnValue is Dynamo[] ReturnValueDynamos)
+            {
+                return Convert<TObject>(ObjectType, ReturnValueDynamos);
+            }
 
-            var IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
             Batch.AddQuery(type, command, Parameters);
-            var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
             {
-                var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).Select(x => new QueryResults(new Query(ObjectType,
-                                                                                                    CommandType.Text,
-                                                                                                    command,
-                                                                                                    QueryType.LinqQuery,
-                                                                                                    Parameters),
-                                                                                        x.Cast<Dynamo>(),
-                                                                                        this))
-                                                          .ToList();
+                var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).SelectMany(x => x.Cast<Dynamo>()).ToArray();
 
-                QueryResults.CacheValues(KeyName, Results, Cache);
-                return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
+                Cache.Add(KeyName, Results, new string[] { ObjectType.Name, typeof(TObject).Name });
+                return Convert<TObject>(ObjectType, Results);
             }
             catch
             {
@@ -627,6 +606,27 @@ namespace Inflatable.Sessions
                 .SelectMany(x => x.GetChildMappings(objectType).SelectMany(y => x.GetParentMapping(y.ObjectType)))
                 .Distinct()
                 .FirstOrDefault(x => x.IDProperties.Count > 0);
+        }
+
+        /// <summary>
+        /// Converts the specified object type.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="objectType">Type of the object.</param>
+        /// <param name="dynamos">The dynamos.</param>
+        /// <returns>The converted values.</returns>
+        private TObject[] Convert<TObject>(Type objectType, Dynamo[] dynamos)
+                    where TObject : class
+        {
+            var ReturnValues = new TObject[dynamos.Length];
+            for (int x = 0; x < dynamos.Length; ++x)
+            {
+                var Value = dynamos[x].To(objectType) as TObject;
+                if (Value is IORMObject oRMObject)
+                    oRMObject.Session0 = this;
+                ReturnValues[x] = Value!;
+            }
+            return ReturnValues;
         }
 
         /// <summary>
