@@ -22,7 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB;
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
@@ -44,9 +44,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            CachedResults = new ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator>();
             StringBuilderPool = stringBuilderPool;
         }
+
+        /// <summary>
+        /// The lock object
+        /// </summary>
+        private readonly object LockObject = new object();
 
         /// <summary>
         /// Gets the configuration.
@@ -63,13 +67,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Gets or sets the dictionary.
         /// </summary>
         /// <value>The dictionary.</value>
-        private ConcurrentDictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; }
+        private Dictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; } = new Dictionary<Tuple<Type, IMappingSource>, IGenerator>();
 
         /// <summary>
         /// Gets the string builder pool.
         /// </summary>
         /// <value>The string builder pool.</value>
-        private ObjectPool<StringBuilder> StringBuilderPool { get; }
+        private ObjectPool<StringBuilder>? StringBuilderPool { get; }
 
         /// <summary>
         /// Creates a batch for running commands
@@ -77,7 +81,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <param name="source">The source.</param>
         /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory) => new SQLHelper(StringBuilderPool, dynamoFactory, Configuration).CreateBatch(Provider, source.Name);
+        public SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory) => new SQLHelper(StringBuilderPool!, dynamoFactory, Configuration).CreateBatch(Provider, source?.Name ?? string.Empty);
 
         /// <summary>
         /// Creates a generator object
@@ -89,14 +93,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
             where TMappedClass : class
         {
             var Key = new Tuple<Type, IMappingSource>(typeof(TMappedClass), mappingInformation);
-            if (CachedResults.ContainsKey(Key))
+            if (CachedResults.TryGetValue(Key, out var ReturnValue))
+                return (IGenerator<TMappedClass>)ReturnValue;
+            lock (LockObject)
             {
-                return (IGenerator<TMappedClass>)CachedResults[Key];
+                if (CachedResults.TryGetValue(Key, out ReturnValue))
+                    return (IGenerator<TMappedClass>)ReturnValue;
+                ReturnValue = new SQLServerGenerator<TMappedClass>(mappingInformation, StringBuilderPool!);
+                CachedResults.Add(Key, ReturnValue);
             }
-
-            var ReturnValue = new SQLServerGenerator<TMappedClass>(mappingInformation, StringBuilderPool);
-            CachedResults.AddOrUpdate(Key, ReturnValue, (_, y) => y);
-            return ReturnValue;
+            return (IGenerator<TMappedClass>)ReturnValue;
         }
     }
 }

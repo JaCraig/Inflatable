@@ -1,5 +1,6 @@
 ﻿using BigBook;
 using Inflatable.ClassMapper;
+using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
@@ -31,11 +32,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public DataLoadQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation, objectPool)
         {
-            IDProperties = MappingInformation.GetChildMappings(typeof(TMappedClass))
+            IDProperties = MappingInformation.GetChildMappings(MappedClassType)
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                              .Distinct()
-                                             .SelectMany(x => x.IDProperties);
+                                             .SelectMany(x => x.IDProperties)
+                                             .ToArray();
+            IDColumnInfo = IDProperties.Select(x => x.GetColumnInfo()[0]).ToArray();
         }
+
+        /// <summary>
+        /// Gets the identifier column information.
+        /// </summary>
+        /// <value>The identifier column information.</value>
+        public IQueryColumnInfo[] IDColumnInfo { get; }
 
         /// <summary>
         /// Gets the type of the query.
@@ -47,13 +56,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Gets the identifier properties.
         /// </summary>
         /// <value>The identifier properties.</value>
-        private IEnumerable<IIDProperty> IDProperties { get; }
+        private IIDProperty[] IDProperties { get; }
+
+        /// <summary>
+        /// Gets the type of the mapped class.
+        /// </summary>
+        /// <value>The type of the mapped class.</value>
+        private Type MappedClassType { get; } = typeof(TMappedClass);
 
         /// <summary>
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateDeclarations() => Array.Empty<IQuery>();
 
         /// <summary>
         /// Generates the query.
@@ -76,12 +91,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 return Array.Empty<IQuery>();
             var ReturnValue = new List<IQuery>();
             var ItemSize = ids.FirstOrDefault()?.Count ?? 1;
-            foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
+            foreach (var ChildMapping in MappingInformation.GetChildMappings(MappedClassType))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
                 foreach (var Split in SplitList(ids, 1000 / ItemSize))
                 {
-                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, Split), QueryType, GetParameters(Split, IDProperties)));
+                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, Split), QueryType, GetParameters(Split, IDColumnInfo)));
                 }
             }
             return ReturnValue.ToArray();
@@ -143,7 +158,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the parameter list.
         /// </summary>
         /// <param name="node">The node.</param>
-        /// <param name="data">The data.</param>
         /// <returns></returns>
         private string GenerateParameterList(Utils.TreeNode<Type> node)
         {
@@ -180,7 +194,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the select query.
         /// </summary>
         /// <param name="node">The node.</param>
-        /// <param name="data">The data.</param>
+        /// <param name="ids">The ids.</param>
         /// <returns></returns>
         private string GenerateSelectQuery(Utils.TreeNode<Type>? node, Memory<Dynamo> ids)
         {
@@ -227,6 +241,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <summary>
         /// Generates the where clause.
         /// </summary>
+        /// <param name="ids">The ids.</param>
         /// <returns>The WHERE clause</returns>
         private string GenerateWhereClause(Memory<Dynamo> ids)
         {
@@ -258,17 +273,23 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="ids">The ids.</param>
         /// <param name="idProperties">The identifier properties.</param>
         /// <returns>The parameters</returns>
-        private IParameter?[] GetParameters(Memory<Dynamo> ids, IEnumerable<IIDProperty> idProperties)
+        private IParameter?[] GetParameters(Memory<Dynamo> ids, IQueryColumnInfo[] idProperties)
         {
-            List<IParameter?> ReturnValues = new List<IParameter?>();
+            IParameter?[] ReturnValues = new IParameter?[ids.Length * idProperties.Length];
             var IDSpan = ids.Span;
+            int CurrentSpot = 0;
             for (int x = 0; x < IDSpan.Length; ++x)
             {
                 var Value = IDSpan[x];
-                var TempParams = idProperties.ForEach(x => x.GetColumnInfo()[0].GetAsParameter(Value)).ForEach(y => { y.ID += x; });
-                ReturnValues.AddRange(TempParams ?? Array.Empty<IParameter?>());
+                for (int y = 0; y < idProperties.Length; ++y)
+                {
+                    var TempParam = idProperties[y].GetAsParameter(Value);
+                    TempParam.ID += x;
+                    ReturnValues[CurrentSpot] = TempParam;
+                    ++CurrentSpot;
+                }
             }
-            return ReturnValues.ToArray();
+            return ReturnValues;
         }
     }
 }

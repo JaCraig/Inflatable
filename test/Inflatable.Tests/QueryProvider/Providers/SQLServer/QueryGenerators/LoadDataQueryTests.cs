@@ -62,10 +62,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                ObjectPool);
             var TestObject = new DataLoadQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateDeclarations();
-            Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
-            Assert.Empty(Result[0].Parameters);
-            Assert.Equal("", Result[0].QueryString);
-            Assert.Equal(QueryType.LoadData, Result[0].QueryType);
+            Assert.Empty(Result);
         }
 
         [Fact]

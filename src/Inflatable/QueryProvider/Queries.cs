@@ -19,7 +19,6 @@ using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,14 +30,6 @@ namespace Inflatable.QueryProvider
     /// <seealso cref="IQueries"/>
     public class Queries : IQueries
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Queries"/> class.
-        /// </summary>
-        public Queries()
-        {
-            InternalDictionary = new ConcurrentDictionary<QueryType, IQuery?>();
-        }
-
         /// <summary>
         /// Gets the count.
         /// </summary>
@@ -61,13 +52,13 @@ namespace Inflatable.QueryProvider
         /// Gets the values.
         /// </summary>
         /// <value>The values.</value>
-        public ICollection<IQuery?> Values => InternalDictionary?.Values ?? Array.Empty<IQuery?>();
+        public ICollection<IQuery?> Values => InternalDictionary.Values;
 
         /// <summary>
         /// Gets or sets the internal dictionary.
         /// </summary>
         /// <value>The internal dictionary.</value>
-        private ConcurrentDictionary<QueryType, IQuery?> InternalDictionary { get; }
+        private Dictionary<QueryType, IQuery?> InternalDictionary { get; } = new Dictionary<QueryType, IQuery?>();
 
         /// <summary>
         /// Gets or sets the <see cref="IQuery"/> with the specified key.
@@ -105,7 +96,7 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.</returns>
-        public bool Contains(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary?.Contains(item) ?? false;
+        public bool Contains(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary.Contains(item);
 
         /// <summary>
         /// Determines whether the specified key contains key.
@@ -138,7 +129,7 @@ namespace Inflatable.QueryProvider
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<QueryType, IQuery?>>? GetEnumerator() => InternalDictionary?.GetEnumerator();
+        public IEnumerator<KeyValuePair<QueryType, IQuery?>>? GetEnumerator() => InternalDictionary.GetEnumerator();
 
         /// <summary>
         /// Gets the enumerator.
@@ -151,14 +142,14 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns>True if it is removed, false otherwise.</returns>
-        public bool Remove(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary.TryRemove(item.Key, out _);
+        public bool Remove(KeyValuePair<QueryType, IQuery?> item) => InternalDictionary.Remove(item.Key);
 
         /// <summary>
         /// Removes the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>True if it is removed, false otherwise.</returns>
-        public bool Remove(QueryType key) => InternalDictionary.TryRemove(key, out _);
+        public bool Remove(QueryType key) => InternalDictionary.Remove(key);
 
         /// <summary>
         /// Tries the get value.
