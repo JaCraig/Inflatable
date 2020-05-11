@@ -49,7 +49,7 @@ namespace Inflatable.LinqExpression
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Builders = new Dictionary<IMappingSource, QueryData<TObject>>();
-            foreach (var Source in MappingManager.Sources.Where(x => x.CanRead && x.GetChildMappings(typeof(TObject)).Any()))
+            foreach (var Source in MappingManager.ReadSources.Where(x => x.GetChildMappings(typeof(TObject)).Any()))
             {
                 Builders.Add(Source, new QueryData<TObject>(Source));
             }

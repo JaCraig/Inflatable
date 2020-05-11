@@ -216,15 +216,15 @@ namespace Inflatable.Sessions
                 return await GetSubView(queries).ConfigureAwait(false);
             }
             var ObjectType = typeof(TObject);
-            var ReadOnlySources = ReadSources.Where(x => x.GetChildMappings(ObjectType).Any()).ToArray();
-            var ParentMapping = GetParentMapping(ObjectType, ReadSources);
+            var TempReadSources = queries.Keys.ToArray();
+            var ParentMapping = GetParentMapping(ObjectType, TempReadSources);
             if (ParentMapping is null)
                 return Array.Empty<TObject>();
             var KeyName = GetIDListCacheKey(queries.Values);
             var IDList = GetCachedIDList(KeyName, Cache);
             IDList = await GetIDList(IDList, KeyName, queries).ConfigureAwait(false);
-            var MissingCachedItems = GetMissedCachedItems<TObject>(IDList, Cache, ReadOnlySources);
-            await FillCache<TObject>(MissingCachedItems, ReadOnlySources).ConfigureAwait(false);
+            var MissingCachedItems = GetMissedCachedItems<TObject>(IDList, Cache, TempReadSources);
+            await FillCache<TObject>(MissingCachedItems, TempReadSources).ConfigureAwait(false);
             return GetCachedItems<TObject>(IDList, Cache, ParentMapping) ?? Array.Empty<TObject>();
         }
 
@@ -239,14 +239,13 @@ namespace Inflatable.Sessions
         {
             var Results = new List<QueryResults>();
             var FirstRun = true;
-            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator is null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
@@ -487,7 +486,9 @@ namespace Inflatable.Sessions
         private static IEnumerable<TObject> GetCachedValues<TObject>(string keyName, ICache cache)
                     where TObject : class
         {
-            return QueryResults.GetCached(keyName, cache)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
+            if (!cache.TryGetValue(keyName, out var ReturnValue) || !(ReturnValue is List<QueryResults> QueryResults))
+                return Array.Empty<TObject>();
+            return QueryResults.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
         }
 
         /// <summary>
@@ -686,6 +687,8 @@ namespace Inflatable.Sessions
             {
                 var Source = mappingSources[i];
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
+                if (Generator is null)
+                    continue;
                 var ResultingQueries = Generator.GenerateQueries(QueryType.LoadData, missingCachedItems);
                 var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
                 for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
@@ -748,6 +751,8 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             var Generator = QueryProviderManager.CreateGenerator<TObject>(source.Key);
+            if (Generator is null)
+                return;
             var ResultingQueries = Generator.GenerateQueries(source.Value);
             var Batch = QueryProviderManager.CreateBatch(source.Key.Source, DynamoFactory);
             for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
@@ -814,10 +819,12 @@ namespace Inflatable.Sessions
                 return idList;
             var Results = new List<QueryResults>();
             var Tags = new List<string>();
-            foreach (var Source in ReadSources.Where(x => x.GetChildMappings(typeof(TObject)).Any()))
+            foreach (var Source in ReadSources)
             {
-                var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
                 var Generator = QueryProviderManager.CreateGenerator<TObject>(Source);
+                if (Generator is null)
+                    continue;
+                var Batch = QueryProviderManager.CreateBatch(Source.Source, DynamoFactory);
                 var Property = FindProperty<TObject, TData>(Source, propertyName);
                 var Queries = Generator.GenerateQueries(QueryType.LoadProperty, objectToLoadProperty, Property);
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
@@ -868,23 +875,22 @@ namespace Inflatable.Sessions
                 return idList;
             var Results = new List<QueryResults>();
             var FirstRun = true;
-            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator is null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
             var Tags = new List<string>();
-            foreach (var Source in TempQueries)
+            foreach (var Source in queries.Keys)
             {
-                foreach (var ParentMapping in Source.Key.GetChildMappings<TObject>().SelectMany(x => Source.Key.GetParentMapping(x.ObjectType)))
+                foreach (var ParentMapping in Source.GetChildMappings<TObject>().SelectMany(x => Source.GetParentMapping(x.ObjectType)))
                 {
                     Tags.AddIfUnique(ParentMapping.ObjectType.Name);
                 }
@@ -910,23 +916,22 @@ namespace Inflatable.Sessions
             var Results = new List<QueryResults>();
             var FirstRun = true;
 
-            var TempQueries = queries.Where(x => x.Value.Source.CanRead && x.Value.Source.GetChildMappings(typeof(TObject)).Any());
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator != null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator != null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
-            foreach (var Source in TempQueries.Where(x => x.Value.WhereClause.InternalOperator is null)
+            foreach (var Source in queries.Where(x => x.Value.WhereClause.InternalOperator is null)
                                               .OrderBy(x => x.Key.Order))
             {
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
             var Tags = new List<string>();
-            foreach (var Source in TempQueries)
+            foreach (var Source in queries.Keys)
             {
-                foreach (var ParentMapping in Source.Key.GetChildMappings<TObject>().SelectMany(x => Source.Key.GetParentMapping(x.ObjectType)))
+                foreach (var ParentMapping in Source.GetChildMappings<TObject>().SelectMany(x => Source.GetParentMapping(x.ObjectType)))
                 {
                     Tags.AddIfUnique(ParentMapping.ObjectType.Name);
                 }
