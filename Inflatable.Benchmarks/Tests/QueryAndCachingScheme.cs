@@ -20,15 +20,15 @@ namespace InflatableBenchmarks.Benchmarks.Tests
     [MemoryDiagnoser, HtmlExporter]
     public class QueryAndCachingSchemeReferencesOnly
     {
-        private DbContext<SimpleClass> Original { get; set; }
-
         [GlobalCleanup]
         public async Task Cleanup()
         {
             try
             {
-                var Configuration = Canister.Builder.Bootstrapper.Resolve<IConfiguration>();
-                var Batch = Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
+                var Configuration = Canister.Builder.Bootstrapper?.Resolve<IConfiguration>();
+                var Batch = Canister.Builder.Bootstrapper?.Resolve<SQLHelper>();
+                if (Batch is null || Configuration is null)
+                    return;
                 await Batch.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
                     .AddQuery(CommandType.Text, "ALTER DATABASE SpeedTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE SpeedTestDatabase SET ONLINE\r\nDROP DATABASE SpeedTestDatabase")
                     .ExecuteScalarAsync<int>().ConfigureAwait(false);
@@ -54,10 +54,10 @@ namespace InflatableBenchmarks.Benchmarks.Tests
             Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
                 .AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
-                .RegisterMirage()
-                .Build();
+                ?.RegisterMirage()
+                ?.Build();
             Console.WriteLine("Setting up session");
-            Canister.Builder.Bootstrapper.Resolve<Session>();
+            Canister.Builder.Bootstrapper?.Resolve<Session>();
 
             Console.WriteLine("Setting up values");
             var Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();

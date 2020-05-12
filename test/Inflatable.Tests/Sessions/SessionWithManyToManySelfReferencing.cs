@@ -51,7 +51,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task AllNoParametersWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Results = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().ToArray();
@@ -166,7 +166,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task LoadMapPropertyWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().Skip(1).Take(1).First();
@@ -276,7 +276,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
             var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()

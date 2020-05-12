@@ -169,7 +169,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task LoadMapPropertyWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Result = DbContext<MapProperties>.CreateQuery().First();
             Assert.NotNull(Result.MappedClass);

@@ -35,10 +35,10 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Single(Source2.Mappings);
             var Source1Mapping = Source1.Mappings.First().Value;
             var Source2Mapping = Source2.Mappings.First().Value;
-            Assert.Equal(1, Source1Mapping.IDProperties.Count);
-            Assert.Equal(1, Source2Mapping.IDProperties.Count);
-            Assert.Equal(1, Source1Mapping.ReferenceProperties.Count);
-            Assert.Equal(1, Source2Mapping.ReferenceProperties.Count);
+            Assert.Single(Source1Mapping.IDProperties);
+            Assert.Single(Source2Mapping.IDProperties);
+            Assert.Single(Source1Mapping.ReferenceProperties);
+            Assert.Single(Source2Mapping.ReferenceProperties);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
-using System.Linq;
 using Xunit;
 
 namespace Inflatable.Tests.ClassMapper
@@ -20,8 +19,8 @@ namespace Inflatable.Tests.ClassMapper
         {
             Assert.NotNull(TestObject);
             Assert.Equal(typeof(MockDatabaseMapping), TestObject.DatabaseConfigType);
-            Assert.Equal(1, TestObject.IDProperties.Count);
-            Assert.Equal("ID_", TestObject.IDProperties.First().ColumnName);
+            Assert.Single(TestObject.IDProperties);
+            Assert.Equal("ID_", TestObject.IDProperties[0].ColumnName);
             Assert.Equal(36, TestObject.ReferenceProperties.Count);
             Assert.Equal(typeof(AllReferencesAndID), TestObject.ObjectType);
             Assert.Equal(10, TestObject.Order);
@@ -29,7 +28,7 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Empty(TestObject.Queries);
             Assert.Equal("_", TestObject.Suffix);
             Assert.Equal("AllReferencesAndID_", TestObject.TableName);
-            Assert.Equal(0, TestObject.AutoIDProperties.Count);
+            Assert.Empty(TestObject.AutoIDProperties);
         }
     }
 }

@@ -261,7 +261,7 @@ namespace Inflatable.Tests.Sessions
         private async Task SetupDataAsync()
         {
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
-            var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM AllReferencesAndID_")

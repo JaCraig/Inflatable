@@ -13,7 +13,7 @@ namespace TestApp
         private const string StringVal1Const = "A";
         private const string StringVal2Const = "ASDFGHKL";
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             Canister.Builder.CreateContainer(null)
                 .AddAssembly(typeof(Program).Assembly)

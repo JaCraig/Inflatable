@@ -41,7 +41,8 @@ namespace Inflatable.Tests.Fixtures
                                                 .Build();
                 Canister.Builder.Bootstrapper.Resolve<ISession>();
             }
-            var Temp = SchemaManager;
+
+            _ = SchemaManager;
         }
 
         public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();

@@ -110,7 +110,7 @@ namespace Inflatable.Sessions.Commands
                         var Item = ManyToManyValueList[x];
                         FinalList.Add(Item);
                     }
-                    DeleteJoins(@object, source, batch, joinsBatch, ManyToManyProperty, ManyToManyValueList);
+                    DeleteJoins(@object, source, joinsBatch, ManyToManyProperty, ManyToManyValueList);
                     for (int x = 0, FinalListCount = FinalList.Count; x < FinalListCount; ++x)
                     {
                         var Item = FinalList[x];
@@ -245,11 +245,10 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="object">The object.</param>
         /// <param name="source">The source.</param>
-        /// <param name="batch">The batch.</param>
         /// <param name="joinsBatch">The joins batch.</param>
         /// <param name="ManyToManyProperty">The many to many property.</param>
         /// <param name="ManyToManyValueList">The many to many value list.</param>
-        private void DeleteJoins(object @object, IMappingSource source, SQLHelper batch, SQLHelper joinsBatch, IManyToManyProperty ManyToManyProperty, IList ManyToManyValueList)
+        private void DeleteJoins(object @object, IMappingSource source, SQLHelper joinsBatch, IManyToManyProperty ManyToManyProperty, IList ManyToManyValueList)
         {
             if (ManyToManyProperty.DatabaseJoinsCascade)
             {

@@ -58,7 +58,6 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
             PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
-            ForeignMapping = new List<IMapping>();
         }
 
         /// <summary>
@@ -95,7 +94,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets the foreign mapping.
         /// </summary>
         /// <value>The foreign mapping.</value>
-        public List<IMapping> ForeignMapping { get; protected set; }
+        public List<IMapping> ForeignMapping { get; protected set; } = new List<IMapping>();
 
         /// <summary>
         /// Gets the name of the internal field.
@@ -228,7 +227,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode() => Name.GetHashCode() * ParentMapping.GetHashCode() % int.MaxValue;
+        public override int GetHashCode() => Name.GetHashCode(StringComparison.Ordinal) * ParentMapping.GetHashCode() % int.MaxValue;
 
         /// <summary>
         /// Gets the property's value from the object sent in
@@ -293,7 +292,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are similar, false otherwise</returns>
         public bool Similar(IManyToManyProperty secondProperty)
         {
-            return secondProperty.TableName == TableName
+            return !(secondProperty is null)
+                && secondProperty.TableName == TableName
                 && secondProperty.Name == Name;
         }
 

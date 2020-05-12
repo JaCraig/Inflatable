@@ -91,9 +91,9 @@ namespace Inflatable.Tests.ClassMapper
             ObjectPool)
             .Sources
             .First();
-            Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties.Count);
-            Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties.Count);
-            Assert.Equal(1, TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties.Count);
+            Assert.Single(TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties);
+            Assert.Single(TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties);
+            Assert.Single(TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties);
         }
     }
 }

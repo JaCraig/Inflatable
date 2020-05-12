@@ -20,17 +20,17 @@ namespace Inflatable.Tests.ClassMapper
         {
             Assert.NotNull(TestObject);
             Assert.Equal(typeof(TestDatabaseMapping), TestObject.DatabaseConfigType);
-            Assert.Equal(1, TestObject.IDProperties.Count);
+            Assert.Single(TestObject.IDProperties);
             Assert.Equal("ID_", TestObject.IDProperties.First().ColumnName);
-            Assert.Equal(1, TestObject.ReferenceProperties.Count);
+            Assert.Single(TestObject.ReferenceProperties);
             Assert.Equal(typeof(MapProperties), TestObject.ObjectType);
             Assert.Equal(10, TestObject.Order);
             Assert.Equal("", TestObject.Prefix);
             Assert.Empty(TestObject.Queries);
             Assert.Equal("_", TestObject.Suffix);
             Assert.Equal("MapProperties_", TestObject.TableName);
-            Assert.Equal(0, TestObject.AutoIDProperties.Count);
-            Assert.Equal(1, TestObject.MapProperties.Count);
+            Assert.Empty(TestObject.AutoIDProperties);
+            Assert.Single(TestObject.MapProperties);
         }
     }
 }

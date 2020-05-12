@@ -13,7 +13,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <summary>
         /// Generates the query.
         /// </summary>
-        /// <param name="data">The data.</param>
+        /// <param name="ids">The ids.</param>
         /// <returns>The resulting query</returns>
         IQuery[] GenerateQueries(Dynamo[] ids);
     }
