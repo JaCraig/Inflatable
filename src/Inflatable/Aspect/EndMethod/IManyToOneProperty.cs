@@ -19,7 +19,6 @@ using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -64,7 +63,7 @@ namespace Inflatable.Aspect.EndMethod
         /// <param name="property">The property.</param>
         private static void LoadList(string returnValueName, StringBuilder builder, IManyToOneProperty property)
         {
-            builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.InternalFieldName + "Loaded")
+            builder.AppendLineFormat("if(!{0}&&!(Session0 is null))", property.InternalFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperties<{1},{2}>(this,\"{3}\");",
                         property.InternalFieldName,
@@ -72,7 +71,7 @@ namespace Inflatable.Aspect.EndMethod
                         property.TypeName,
                         property.Name)
                 .AppendLineFormat("{0}=true;", property.InternalFieldName + "Loaded")
-                .AppendLineFormat("if({0}!=null)", property.InternalFieldName)
+                .AppendLineFormat("if(!({0} is null))", property.InternalFieldName)
                 .AppendLine("{")
                 .AppendLineFormat("((ObservableList<{1}>){0}).CollectionChanged += (x, y) => NotifyPropertyChanged0(\"{2}\");", property.InternalFieldName, property.TypeName, property.Name)
                 .AppendLineFormat(@"((ObservableList<{1}>){0}).ForEach(TempObject => {{
@@ -93,7 +92,7 @@ namespace Inflatable.Aspect.EndMethod
         /// <param name="property">The property.</param>
         private static void LoadSingle(string returnValueName, StringBuilder builder, IManyToOneProperty property)
         {
-            builder.AppendLineFormat("if(!{0}&&Session0!=null)", property.InternalFieldName + "Loaded")
+            builder.AppendLineFormat("if(!{0}&&!(Session0 is null))", property.InternalFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
                         property.InternalFieldName,
@@ -101,7 +100,7 @@ namespace Inflatable.Aspect.EndMethod
                         property.TypeName,
                         property.Name)
                 .AppendLineFormat("{0}=true;", property.InternalFieldName + "Loaded")
-                .AppendLineFormat("if({0}!=null)", property.InternalFieldName)
+                .AppendLineFormat("if(!({0} is null))", property.InternalFieldName)
                 .AppendLine("{")
                 .AppendLineFormat("({0} as INotifyPropertyChanged).PropertyChanged+=(x,y)=>NotifyPropertyChanged0(\"{1}\");", property.InternalFieldName, property.Name)
                 .AppendLine("}")

@@ -18,7 +18,6 @@ using BigBook;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.Interfaces;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -47,7 +46,7 @@ namespace Inflatable.Aspect.EndMethod
                 return;
             }
 
-            builder.AppendLineFormat("if(!{0}&&Session0!=null)", Property.InternalFieldName + "Loaded")
+            builder.AppendLineFormat("if(!{0}&&!(Session0 is null))", Property.InternalFieldName + "Loaded")
                 .AppendLine("{")
                 .AppendLineFormat("{0}=Session0.LoadProperty<{1},{2}>(this,\"{3}\");",
                         Property.InternalFieldName,
@@ -55,7 +54,7 @@ namespace Inflatable.Aspect.EndMethod
                         Property.TypeName,
                         Property.Name)
                 .AppendLineFormat("{0}=true;", Property.InternalFieldName + "Loaded")
-                .AppendLineFormat("if({0}!=null)", Property.InternalFieldName)
+                .AppendLineFormat("if(!({0} is null))", Property.InternalFieldName)
                 .AppendLine("{")
                 .AppendLineFormat("({0} as INotifyPropertyChanged).PropertyChanged+=(x,y)=>NotifyPropertyChanged0(\"{1}\");", Property.InternalFieldName, Property.Name)
                 .AppendLine("}")

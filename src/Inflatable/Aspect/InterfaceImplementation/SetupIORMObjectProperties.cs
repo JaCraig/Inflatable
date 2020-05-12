@@ -62,7 +62,7 @@ public event PropertyChangedEventHandler PropertyChanged
                     .AppendLine(@"private void NotifyPropertyChanged0([CallerMemberName]string propertyName="""")
 {
     var Handler = propertyChanged_;
-    if (Handler != null)
+    if (!(Handler is null))
         Handler(this, new PropertyChangedEventArgs(propertyName));
 }");
             }

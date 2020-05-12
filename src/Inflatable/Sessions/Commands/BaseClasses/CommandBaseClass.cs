@@ -194,7 +194,12 @@ namespace Inflatable.Sessions.Commands.BaseClasses
             Cache.RemoveByTag($"{TempType.Name}_{IDNames}");
             foreach (var Mapping in ParentMappings)
             {
-                Cache.RemoveByTag(Mapping.ObjectType.Name);
+                var MappingType = Mapping.ObjectType;
+                while (MappingType != typeof(object))
+                {
+                    Cache.RemoveByTag(MappingType.Name);
+                    MappingType = MappingType.BaseType;
+                }
             }
             Cache.RemoveByTag(TempType.Name);
         }
