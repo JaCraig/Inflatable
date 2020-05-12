@@ -724,15 +724,25 @@ namespace Inflatable.Sessions
                             .IDProperties
                             .OrderBy(x => x.Name)
                             .ToString(x => x.Name + "_" + x.GetColumnInfo()[0].GetValue(Result)?.ToString() ?? string.Empty, "_");
-                        foreach (var ParentMapping in Source.GetChildMappings(QueryResult.Query.ReturnType)
-                                                         .SelectMany(x => Source.GetParentMapping(x.ObjectType))
-                                                         .Distinct())
-                        {
-                            if (ParentMapping is null)
-                                continue;
-                            TagList.AddIfUnique($"{ParentMapping.ObjectType.Name}_{IDValue}");
-                        }
-                        TagList.AddIfUnique($"{QueryResult.Query.ReturnType.Name}_{IDValue}");
+                        GetTags(TagList, IDValue, Source, QueryResult.Query.ReturnType);
+                        //GetTags(TagList, IDValue, Source, typeof(TObject));
+                        //foreach (var ParentMapping in Source.GetChildMappings(QueryResult.Query.ReturnType)
+                        //                                 .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                        //                                 .Distinct())
+                        //{
+                        //    if (ParentMapping is null)
+                        //        continue;
+                        //    TagList.AddIfUnique($"{ParentMapping.ObjectType.Name}_{IDValue}");
+                        //}
+                        //foreach (var ParentMapping in Source.GetChildMappings(typeof(TObject))
+                        //                                 .SelectMany(x => Source.GetParentMapping(x.ObjectType))
+                        //                                 .Distinct())
+                        //{
+                        //    if (ParentMapping is null)
+                        //        continue;
+                        //    TagList.AddIfUnique($"{ParentMapping.ObjectType.Name}_{IDValue}");
+                        //}
+                        //TagList.AddIfUnique($"{QueryResult.Query.ReturnType.Name}_{IDValue}");
                     }
                     Cache.Add(Guid.NewGuid().ToString(), new CachedResult(Result, QueryResult.Query.ReturnType), TagList);
                 }
@@ -938,6 +948,35 @@ namespace Inflatable.Sessions
             }
             Cache.Add(KeyName, Results, Tags);
             return Results?.SelectMany(x => x.ConvertValues<TObject>())?.ToArray() ?? Array.Empty<TObject>();
+        }
+
+        /// <summary>
+        /// Gets the tags.
+        /// </summary>
+        /// <param name="tagList">The tag list.</param>
+        /// <param name="iDValue">The id value.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="type">The type.</param>
+        private void GetTags(List<string> tagList, string? iDValue, IMappingSource source, Type type)
+        {
+            if (type is null)
+                return;
+            foreach (var ParentMapping in source.GetChildMappings(type)
+                                                         .SelectMany(x => source.GetParentMapping(x.ObjectType))
+                                                         .Distinct())
+            {
+                if (ParentMapping is null)
+                    continue;
+                tagList.AddIfUnique($"{ParentMapping.ObjectType.Name}_{iDValue}");
+            }
+            var Interfaces = type.GetInterfaces();
+            for (int i = 0; i < Interfaces.Length; i++)
+            {
+                tagList.AddIfUnique($"{Interfaces[i].Name}_{iDValue}");
+            }
+            type = type.BaseType;
+            if (type != typeof(object))
+                GetTags(tagList, iDValue, source, type);
         }
 
         /// <summary>
