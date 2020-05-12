@@ -30,24 +30,29 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
     <None Include="Enums\SchemaGeneration.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Holmes" Version="3.0.24" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Holmes" Version="3.0.25" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Serilog" Version="2.9.0" />
-    <PackageReference Include="SQLHelper.DB" Version="3.1.26" />
-    <PackageReference Include="Data.Modeler" Version="3.0.31" />
+    <PackageReference Include="SQLHelper.DB" Version="3.1.27" />
+    <PackageReference Include="Data.Modeler" Version="3.0.32" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.1" />
     <PackageReference Include="Mirage" Version="3.0.5" />
     <PackageReference Include="Aspectus" Version="4.0.9" />
-    <PackageReference Include="BigBook" Version="3.0.37" />
+    <PackageReference Include="BigBook" Version="3.0.39" />
   </ItemGroup>
 </Project>

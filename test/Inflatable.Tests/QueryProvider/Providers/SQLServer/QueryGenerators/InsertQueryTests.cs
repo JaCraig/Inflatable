@@ -60,7 +60,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             var Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
             Assert.Empty(Result[0].Parameters);
-            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result[0].QueryString);
+            Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result[2].QueryString);
             Assert.Equal(QueryType.Insert, Result[0].QueryType);
 
             Assert.Equal(CommandType.Text, Result[1].DatabaseCommandType);
@@ -70,7 +70,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 
             Assert.Equal(CommandType.Text, Result[2].DatabaseCommandType);
             Assert.Empty(Result[2].Parameters);
-            Assert.Equal("DECLARE @ConcreteClass1_ID_Temp AS BIGINT;", Result[2].QueryString);
+            Assert.Equal("DECLARE @ConcreteClass1_ID_Temp AS BIGINT;", Result[0].QueryString);
             Assert.Equal(QueryType.Insert, Result[2].QueryType);
         }
 
@@ -95,10 +95,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(3, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal(1, Result.Parameters[1].InternalValue);
-            Assert.Equal("BaseClassValue1", Result.Parameters[1].ID);
-            Assert.Equal(2, Result.Parameters[2].InternalValue);
-            Assert.Equal("Value1", Result.Parameters[2].ID);
+            Assert.Equal(1, Result.Parameters[2].InternalValue);
+            Assert.Equal("BaseClassValue1", Result.Parameters[2].ID);
+            Assert.Equal(2, Result.Parameters[1].InternalValue);
+            Assert.Equal("Value1", Result.Parameters[1].ID);
             Assert.Equal("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);\r\nSET @BaseClass1_ID_Temp=SCOPE_IDENTITY();\r\n\r\nINSERT INTO [dbo].[ConcreteClass1_]([dbo].[ConcreteClass1_].[Value1_],[dbo].[ConcreteClass1_].[BaseClass1_ID_]) VALUES (@Value1,@BaseClass1_ID_Temp);\r\n", Result.QueryString);
             Assert.Equal(QueryType.Insert, Result.QueryType);
         }

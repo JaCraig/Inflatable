@@ -85,10 +85,10 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal(3, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal(1, Result.Parameters[1].InternalValue);
-            Assert.Equal("BaseClassValue1", Result.Parameters[1].ID);
-            Assert.Equal(2, Result.Parameters[2].InternalValue);
-            Assert.Equal("Value1", Result.Parameters[2].ID);
+            Assert.Equal(1, Result.Parameters[2].InternalValue);
+            Assert.Equal("BaseClassValue1", Result.Parameters[2].ID);
+            Assert.Equal(2, Result.Parameters[1].InternalValue);
+            Assert.Equal("Value1", Result.Parameters[1].ID);
             Assert.Equal("UPDATE [dbo].[BaseClass1_]\r\nSET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1\r\nFROM [dbo].[BaseClass1_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n\r\nUPDATE [dbo].[ConcreteClass1_]\r\nSET [dbo].[ConcreteClass1_].[Value1_]=@Value1\r\nFROM [dbo].[ConcreteClass1_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.QueryString);
             Assert.Equal(QueryType.Update, Result.QueryType);
         }
