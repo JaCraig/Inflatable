@@ -192,15 +192,6 @@ namespace Inflatable.Sessions.Commands.BaseClasses
                 return;
             var IDNames = parentMapping.IDProperties.OrderBy(x => x.Name).ToString(x => x.Name + "_" + x.GetColumnInfo()[0].GetValue(itemToRemove)?.ToString() ?? string.Empty, "_");
             Cache.RemoveByTag($"{TempType.Name}_{IDNames}");
-            foreach (var Mapping in ParentMappings)
-            {
-                var MappingType = Mapping.ObjectType;
-                while (MappingType != typeof(object))
-                {
-                    Cache.RemoveByTag(MappingType.Name);
-                    MappingType = MappingType.BaseType;
-                }
-            }
             Cache.RemoveByTag(TempType.Name);
         }
 

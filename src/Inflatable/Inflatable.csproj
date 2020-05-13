@@ -53,6 +53,6 @@
     <PackageReference Include="Valkyrie" Version="3.0.1" />
     <PackageReference Include="Mirage" Version="3.0.5" />
     <PackageReference Include="Aspectus" Version="4.0.9" />
-    <PackageReference Include="BigBook" Version="3.0.41" />
+    <PackageReference Include="BigBook" Version="3.0.42" />
   </ItemGroup>
 </Project>

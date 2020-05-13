@@ -79,7 +79,7 @@ namespace Inflatable.Tests.Sessions
         {
             await DeleteData().ConfigureAwait(false);
             _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
-            var TestObject = new Session(InternalMappingManager, InternalSchemaManager, InternalQueryProviderManager, Logger, CacheManager, DynamoFactory);
+            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
