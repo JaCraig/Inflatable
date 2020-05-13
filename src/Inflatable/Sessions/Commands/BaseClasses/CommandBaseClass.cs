@@ -170,11 +170,11 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Determines if the object was seen before.
         /// </summary>
-        /// <param name="object">The object.</param>
+        /// <param name="newItem">The object.</param>
         /// <param name="objectsSeen">The objects seen already.</param>
         /// <param name="source">The source.</param>
         /// <returns>True if it was seen, otherwise false.</returns>
-        protected static bool WasObjectSeen(object @object, IList<object> objectsSeen, IMappingSource source) => objectsSeen.Contains(@object, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
+        protected static bool WasObjectSeen(object newItem, IList<object> objectsSeen, IMappingSource source) => objectsSeen.Contains(newItem, new SimpleEqualityComparer<object>((x, y) => CompareObjects(x, y, source), x => x.GetHashCode()));
 
         /// <summary>
         /// Removes the items from cache.
