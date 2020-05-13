@@ -78,7 +78,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -88,7 +88,6 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
         {
-            //TODO: BREAK UP THE VARIOUS QUERIES TO SIMPLIFY THINGS.
             var ParentMappings = MappingInformation.GetChildMappings(AssociatedType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct().ToList();
             return property switch
             {
@@ -147,8 +146,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     AsStatement = " AS " + GetTableName(ParentMapping, suffix);
                 }
 
-                Result.AppendFormat("INNER JOIN {0}{1} ON {2}", GetTableName(ParentMapping), AsStatement, TempIDProperties)
-                    .Append(GenerateFromClause(ParentNode));
+                Result.AppendFormat("INNER JOIN {0}{1} ON {2}", GetTableName(ParentMapping), AsStatement, TempIDProperties);
+                Result.Append(GenerateFromClause(ParentNode));
                 ObjectPool.Return(TempIDProperties);
             }
 
@@ -183,11 +182,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
                 Separator = ",";
             }
-            //foreach (var ReferenceProperty in Mapping.ReferenceProperties)
-            //{
-            //    Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
-            //    Separator = ",";
-            //}
+            foreach (var ReferenceProperty in Mapping.ReferenceProperties)
+            {
+                Result.AppendFormat("{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
+                Separator = ",";
+            }
             var ReturnValue = Result.ToString();
             ObjectPool.Return(Result);
             return ReturnValue;
@@ -242,8 +241,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     Separator = " AND ";
                 }
             }
-            Result.AppendLine()
-                .AppendFormat("INNER JOIN {0} ON {1}", "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "]", TempIDProperties);
+            Result.AppendLine();
+            Result.AppendFormat("INNER JOIN {0} ON {1}", "[" + property.ParentMapping.SchemaName + "].[" + property.TableName + "]", TempIDProperties);
             var ReturnValue = Result.ToString();
             ObjectPool.Return(Result);
             ObjectPool.Return(TempIDProperties);
@@ -302,10 +301,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             const string SameObject = "2";
 
             //Get From Clause
-            FromClause.Append(GetTableName(ForeignMapping))
-                .Append(GenerateFromClause(foreignNode.Root))
-                .Append(GenerateParentFromClause(property, SameObject))
-                .Append(GenerateFromClause(MappingInformation.TypeGraphs[property.ParentMapping.ObjectType]?.Root, SameObject));
+            FromClause.Append(GetTableName(ForeignMapping));
+            FromClause.Append(GenerateFromClause(foreignNode.Root));
+            FromClause.Append(GenerateParentFromClause(property, SameObject));
+            FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[property.ParentMapping.ObjectType]?.Root, SameObject));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
@@ -341,9 +340,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             //Get From Clause
-            FromClause.Append(GetTableName(ForeignMapping))
-                .Append(GenerateFromClause(foreignNode.Root))
-                .Append(GenerateParentFromClause(property));
+            FromClause.Append(GetTableName(ForeignMapping));
+            FromClause.Append(GenerateFromClause(foreignNode.Root));
+            FromClause.Append(GenerateParentFromClause(property));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
@@ -379,8 +378,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ForeignMapping = MappingInformation.Mappings[foreignNode.Root.Data];
 
             //Get From Clause
-            FromClause.Append(GetTableName(ForeignMapping))
-                .Append(GenerateFromClause(foreignNode.Root));
+            FromClause.Append(GetTableName(ForeignMapping));
+            FromClause.Append(GenerateFromClause(foreignNode.Root));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));
@@ -424,9 +423,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             const string SameObject = "2";
 
-            FromClause.Append(GetTableName(ForeignMapping))
-                .Append(GenerateFromClause(foreignNode.Root))
-                .Append(GenerateParentFromClause(manyToOne, ParentMapping, SameObject));
+            FromClause.Append(GetTableName(ForeignMapping));
+            FromClause.Append(GenerateFromClause(foreignNode.Root));
+            FromClause.Append(GenerateParentFromClause(manyToOne, ParentMapping, SameObject));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(foreignNode.Root));

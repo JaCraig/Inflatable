@@ -36,13 +36,15 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandBaseClass"/> class.
         /// </summary>
+        /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        protected CommandBaseClass(QueryProviderManager queryProviderManager, ICache cache, object[] objects)
+        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
         {
             QueryProviderManager = queryProviderManager;
             Objects = (objects ?? Array.Empty<object>()).Where(x => x != null).ToArray();
+            MappingManager = mappingManager;
             Cache = cache;
         }
 
@@ -63,6 +65,12 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// </summary>
         /// <value>The objects.</value>
         public object[] Objects { get; private set; }
+
+        /// <summary>
+        /// Gets the mapping manager.
+        /// </summary>
+        /// <value>The mapping manager.</value>
+        protected MappingManager MappingManager { get; }
 
         /// <summary>
         /// Gets the query provider manager.
@@ -179,20 +187,11 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <summary>
         /// Removes the items from cache.
         /// </summary>
-        /// <param name="itemToRemove">The object.</param>
-        /// <param name="source">The source.</param>
-        protected void RemoveItemsFromCache(object itemToRemove, IMappingSource source)
+        /// <param name="object">The object.</param>
+        protected void RemoveItemsFromCache(object @object)
         {
-            if (itemToRemove is null || source is null)
-                return;
-            var TempType = GetActualType(itemToRemove);
-            var ParentMappings = source.GetParentMapping(TempType);
-            var parentMapping = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            if (parentMapping is null)
-                return;
-            var IDNames = parentMapping.IDProperties.OrderBy(x => x.Name).ToString(x => x.Name + "_" + x.GetColumnInfo()[0].GetValue(itemToRemove)?.ToString() ?? string.Empty, "_");
-            Cache.RemoveByTag($"{TempType.Name}_{IDNames}");
-            Cache.RemoveByTag(TempType.Name);
+            var TempType = GetActualType(@object);
+            QueryResults.RemoveCacheTag(TempType.GetName(), Cache);
         }
 
         /// <summary>

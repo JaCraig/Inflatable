@@ -43,11 +43,12 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="SaveCommand"/> class.
         /// </summary>
+        /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        public SaveCommand(QueryProviderManager queryProviderManager, ICache cache, object[] objects)
-            : base(queryProviderManager, cache, objects)
+        public SaveCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
+            : base(mappingManager, queryProviderManager, cache, objects)
         {
         }
 
@@ -76,7 +77,7 @@ namespace Inflatable.Sessions.Commands
         /// <returns>The number of rows that are modified.</returns>
         public override async Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory)
         {
-            if (Objects.Length == 0 || source is null)
+            if (Objects.Length == 0)
             {
                 return 0;
             }
@@ -255,12 +256,12 @@ namespace Inflatable.Sessions.Commands
                 var ObjectQuery = ObjectQueries[x];
                 var IDProperty = idProperties.FirstOrDefault(y => y.AutoIncrement);
                 var ReturnedID = batch.AddQuery((_, ResultList, InsertObject) =>
-                                                {
-                                                    if (IDProperty?.AutoIncrement == true)
-                                                    {
-                                                        IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0])!);
-                                                    }
-                                                },
+                {
+                    if (IDProperty?.AutoIncrement == true)
+                    {
+                        IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0])!);
+                    }
+                },
                                                 @object,
                                                 ObjectQuery.DatabaseCommandType,
                                                 ObjectQuery.QueryString,
@@ -312,7 +313,7 @@ namespace Inflatable.Sessions.Commands
                 }
             }
 
-            RemoveItemsFromCache(@object, source);
+            RemoveItemsFromCache(@object);
         }
 
         /// <summary>
@@ -320,7 +321,6 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
-        /// <param name="deleteBatch">The delete batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
         private void SaveJoins(IMappingSource source, SQLHelper batch, SQLHelper deleteBatch, IList<object> objectsSeen)
         {

@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 using BigBook;
+using BigBook.Caching.Interfaces;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
@@ -63,17 +64,35 @@ namespace Inflatable.QueryProvider
         public List<Dynamo> Values { get; }
 
         /// <summary>
-        /// Adds the specified results.
+        /// Gets the cached items as a list.
         /// </summary>
+        /// <param name="keyName">Name of the key.</param>
         /// <param name="results">The results.</param>
-        public void Add(QueryResults results)
-        {
-            if (results is null || results.Query.ReturnType != Query.ReturnType)
-            {
-                return;
-            }
-            Values.Add(results.Values);
-        }
+        /// <param name="cache">The cache.</param>
+        public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache) => cache?.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
+
+        /// <summary>
+        /// Gets the cached value.
+        /// </summary>
+        /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
+        /// <returns>The cached value</returns>
+        public static List<QueryResults> GetCached(string keyName, ICache? cache) => (List<QueryResults>)(cache?[keyName] ?? new List<QueryResults>());
+
+        /// <summary>
+        /// Determines whether the specified key name is cached.
+        /// </summary>
+        /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
+        /// <returns><c>true</c> if the specified key name is cached; otherwise, <c>false</c>.</returns>
+        public static bool IsCached(string keyName, ICache? cache) => cache?.ContainsKey(keyName) ?? false;
+
+        /// <summary>
+        /// Removes the cache tag.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="cache">The cache.</param>
+        public static void RemoveCacheTag(string name, ICache? cache) => cache?.RemoveByTag(name);
 
         /// <summary>
         /// Determines whether this instance can copy the specified results.
@@ -110,6 +129,38 @@ namespace Inflatable.QueryProvider
                 var Value = results.Values[i];
                 var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x)?.Equals(y.GetColumnInfo()[0].GetValue(Value)) == true));
                 if (MyValue != null)
+                {
+                    Value.CopyTo(MyValue);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copies the specified return value.
+        /// </summary>
+        /// <param name="results">The results.</param>
+        /// <param name="idProperties">The identifier properties.</param>
+        public void CopyOrAdd(QueryResults results, IEnumerable<IIDProperty> idProperties)
+        {
+            if (results is null || results.Query.ReturnType != Query.ReturnType)
+            {
+                return;
+            }
+
+            if (!idProperties.Any())
+            {
+                Values.Add(results.Values);
+                return;
+            }
+            for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
+            {
+                var Value = results.Values[i];
+                var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x)?.Equals(y.GetColumnInfo()[0].GetValue(Value)) == true));
+                if (MyValue is null)
+                {
+                    Values.Add(Value);
+                }
+                else
                 {
                     Value.CopyTo(MyValue);
                 }

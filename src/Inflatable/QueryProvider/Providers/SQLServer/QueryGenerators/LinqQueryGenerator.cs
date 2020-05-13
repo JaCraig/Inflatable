@@ -60,7 +60,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
 
         /// <summary>
         /// Generates the query.
@@ -75,11 +75,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
-                var QueryText = GenerateSelectQuery(TypeGraph?.Root, data);
-                if (!string.IsNullOrEmpty(QueryText))
-                {
-                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, QueryText, QueryType, data.Parameters.ToArray()));
-                }
+                ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, data), QueryType, data.Parameters.ToArray()));
             }
             return ReturnValue.ToArray();
         }
@@ -109,8 +105,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
                     Separator = " AND ";
                 }
-                Result.AppendLine()
-                    .AppendFormat(CultureInfo.InvariantCulture, "INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
+                Result.AppendLine();
+                Result.AppendFormat(CultureInfo.InvariantCulture, "INNER JOIN {0} ON {1}", GetTableName(ParentMapping), IDProperties);
                 ObjectPool.Return(IDProperties);
                 Result.Append(GenerateFromClause(ParentNode));
             }
@@ -191,9 +187,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(IDProperty), "[" + IDProperty.Name + "]");
                 Separator = ",";
             }
-            foreach (var ReferenceProperty in Mapping.ReferenceProperties.Where(x => (data.SelectValues.Count > 0
-                                                                                  && data.SelectValues.Any(y => y.Name == x.Name))
-                                                                                  || data.OrderByValues.Any(y => y.Property.Name == x.Name)))
+            foreach (var ReferenceProperty in Mapping.ReferenceProperties.Where(x => data.SelectValues.Count == 0
+                                                                                  || data.SelectValues.Any(y => y.Name == x.Name)))
             {
                 Result.AppendFormat(CultureInfo.InvariantCulture, "{0}{1} AS {2}", Separator, GetColumnName(ReferenceProperty), "[" + ReferenceProperty.Name + "]");
                 Separator = ",";
@@ -221,21 +216,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Get From Clause
-            FromClause.Append(GetTableName(Mapping))
-                .Append(GenerateFromClause(node));
+            FromClause.Append(GetTableName(Mapping));
+            FromClause.Append(GenerateFromClause(node));
 
             //Get parameter listing
             ParameterList.Append(GenerateParameterList(node, data));
-
-            if (ParameterList.Length == 0)
-            {
-                ObjectPool.Return(Builder);
-                ObjectPool.Return(ParameterList);
-                ObjectPool.Return(FromClause);
-                ObjectPool.Return(WhereClause);
-                ObjectPool.Return(OrderByClause);
-                return string.Empty;
-            }
 
             //Get Where Clause
             WhereClause.Append(GenerateWhereClause(data, Mapping));
@@ -263,9 +248,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
             if (!data.Count)
             {
-                Builder.Append("ORDER BY ")
-                    .Append(OrderByClause)
-                    .AppendLine();
+                if (OrderByClause.Length > 0)
+                {
+                    Builder.Append("ORDER BY ")
+                        .Append(OrderByClause)
+                        .AppendLine();
+                }
                 if (data.Top > 0 || data.Skip > 0)
                 {
                     Builder.Append("OFFSET ").Append(data.Skip).AppendLine(" ROWS")
