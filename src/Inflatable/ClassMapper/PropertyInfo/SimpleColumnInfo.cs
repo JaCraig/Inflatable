@@ -246,7 +246,7 @@ namespace Inflatable.ClassMapper.Column
                 return;
             }
 
-            var TempPropertyValue = (TDataType)propertyValue;
+            var TempPropertyValue = propertyValue is null ? default : (TDataType)propertyValue;
             SetAction(TempObject, TempPropertyValue);
         }
 
