@@ -198,19 +198,32 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="property">The property.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The result</returns>
-        private string GenerateParentFromClause(IMapProperty property, string suffix)
+        private string GenerateParentFromClause(Utils.TreeNode<Type> foreignTree, IMapProperty property, string suffix)
         {
             var Result = ObjectPool.Get();
             var TempIDProperties = ObjectPool.Get();
             var Separator = string.Empty;
-            foreach (var ForeignMapping in property.ForeignMapping)
+            var Types = foreignTree.ToList();
+            IMapping ForeignMapping = null;
+            foreach (var Type in Types)
             {
-                foreach (var IDProperty in ForeignMapping.IDProperties)
-                {
-                    TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, ForeignMapping, suffix), GetForeignColumnName(ForeignMapping));
-                    Separator = " AND ";
-                }
+                ForeignMapping = MappingInformation.Mappings[Type];
+                if (ForeignMapping.IDProperties.Count > 0)
+                    break;
             }
+            foreach (var IDProperty in ForeignMapping.IDProperties)
+            {
+                TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, ForeignMapping, suffix), GetForeignColumnName(ForeignMapping));
+                Separator = " AND ";
+            }
+            //foreach (var ForeignMapping in property.ForeignMapping)
+            //{
+            //    foreach (var IDProperty in ForeignMapping.IDProperties)
+            //    {
+            //        TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetColumnName(property, ForeignMapping, suffix), GetForeignColumnName(ForeignMapping));
+            //        Separator = " AND ";
+            //    }
+            //}
             Result.AppendLine();
             var AsStatement = string.IsNullOrEmpty(suffix) ? string.Empty : " as [" + property.ParentMapping.TableName + suffix + "]";
             Result.AppendFormat("INNER JOIN {0} ON {1}", GetTableName(property.ParentMapping) + AsStatement, TempIDProperties);
@@ -303,7 +316,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //Get From Clause
             FromClause.Append(GetTableName(ForeignMapping));
             FromClause.Append(GenerateFromClause(foreignNode.Root));
-            FromClause.Append(GenerateParentFromClause(property, SameObject));
+            FromClause.Append(GenerateParentFromClause(foreignNode.Root, property, SameObject));
             FromClause.Append(GenerateFromClause(MappingInformation.TypeGraphs[property.ParentMapping.ObjectType]?.Root, SameObject));
 
             //Get parameter listing

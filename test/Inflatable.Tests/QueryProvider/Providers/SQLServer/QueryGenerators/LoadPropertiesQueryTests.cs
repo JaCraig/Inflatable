@@ -8,6 +8,7 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
+using Inflatable.Tests.TestDatabases.ComplexPropertyLoad.Mappings;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties.Mappings;
@@ -280,6 +281,38 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.Equal("SELECT [dbo].[AllReferencesAndID_].[ID_] AS [ID],[dbo].[AllReferencesAndID_].[BoolValue_] AS [BoolValue],[dbo].[AllReferencesAndID_].[ByteArrayValue_] AS [ByteArrayValue],[dbo].[AllReferencesAndID_].[ByteValue_] AS [ByteValue],[dbo].[AllReferencesAndID_].[CharValue_] AS [CharValue],[dbo].[AllReferencesAndID_].[DateTimeValue_] AS [DateTimeValue],[dbo].[AllReferencesAndID_].[DecimalValue_] AS [DecimalValue],[dbo].[AllReferencesAndID_].[DoubleValue_] AS [DoubleValue],[dbo].[AllReferencesAndID_].[FloatValue_] AS [FloatValue],[dbo].[AllReferencesAndID_].[GuidValue_] AS [GuidValue],[dbo].[AllReferencesAndID_].[IntValue_] AS [IntValue],[dbo].[AllReferencesAndID_].[LongValue_] AS [LongValue],[dbo].[AllReferencesAndID_].[NullableBoolValue_] AS [NullableBoolValue],[dbo].[AllReferencesAndID_].[NullableByteValue_] AS [NullableByteValue],[dbo].[AllReferencesAndID_].[NullableCharValue_] AS [NullableCharValue],[dbo].[AllReferencesAndID_].[NullableDateTimeValue_] AS [NullableDateTimeValue],[dbo].[AllReferencesAndID_].[NullableDecimalValue_] AS [NullableDecimalValue],[dbo].[AllReferencesAndID_].[NullableDoubleValue_] AS [NullableDoubleValue],[dbo].[AllReferencesAndID_].[NullableFloatValue_] AS [NullableFloatValue],[dbo].[AllReferencesAndID_].[NullableGuidValue_] AS [NullableGuidValue],[dbo].[AllReferencesAndID_].[NullableIntValue_] AS [NullableIntValue],[dbo].[AllReferencesAndID_].[NullableLongValue_] AS [NullableLongValue],[dbo].[AllReferencesAndID_].[NullableSByteValue_] AS [NullableSByteValue],[dbo].[AllReferencesAndID_].[NullableShortValue_] AS [NullableShortValue],[dbo].[AllReferencesAndID_].[NullableTimeSpanValue_] AS [NullableTimeSpanValue],[dbo].[AllReferencesAndID_].[NullableUIntValue_] AS [NullableUIntValue],[dbo].[AllReferencesAndID_].[NullableULongValue_] AS [NullableULongValue],[dbo].[AllReferencesAndID_].[NullableUShortValue_] AS [NullableUShortValue],[dbo].[AllReferencesAndID_].[SByteValue_] AS [SByteValue],[dbo].[AllReferencesAndID_].[ShortValue_] AS [ShortValue],[dbo].[AllReferencesAndID_].[StringValue1_] AS [StringValue1],[dbo].[AllReferencesAndID_].[StringValue2_] AS [StringValue2],[dbo].[AllReferencesAndID_].[TimeSpanValue_] AS [TimeSpanValue],[dbo].[AllReferencesAndID_].[UIntValue_] AS [UIntValue],[dbo].[AllReferencesAndID_].[ULongValue_] AS [ULongValue],[dbo].[AllReferencesAndID_].[UShortValue_] AS [UShortValue],[dbo].[AllReferencesAndID_].[UriValue_] AS [UriValue]\r\nFROM [dbo].[AllReferencesAndID_]\r\nINNER JOIN [dbo].[MapPropertiesFromComplexClass_] as [MapPropertiesFromComplexClass_2] ON [MapPropertiesFromComplexClass_2].[AllReferencesAndID_MappedClass_ID_]=[dbo].[AllReferencesAndID_].[ID_]\r\nINNER JOIN [dbo].[IMapPropertiesInterface_] AS [IMapPropertiesInterface_2] ON [MapPropertiesFromComplexClass_2].[IMapPropertiesInterface_ID_]=[IMapPropertiesInterface_2].[ID_]\r\nWHERE [IMapPropertiesInterface_2].[ID_]=@ID;", Result.QueryString);
             Assert.Equal(QueryType.LoadProperty, Result.QueryType);
+        }
+
+        [Fact]
+        public void GenerateQueryWithMapToMergedInterface()
+        {
+            var Mappings = new MappingSource(new IMapping[] {
+                new MapPropertyByInterfaceMapping(),
+                new IMappedClassMapping(),
+                new MappedClass1Mapping(),
+                new MappedClass2Mapping()
+            },
+                   new MockDatabaseMapping(),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
+               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               ObjectPool);
+            var MapProperty = Mappings.Mappings[typeof(TestDatabases.ComplexPropertyLoad.MapPropertyByInterface)].MapProperties.First();
+            MapProperty.Setup(Mappings);
+            var TestObject = new LoadPropertiesQuery<TestDatabases.ComplexPropertyLoad.MapPropertyByInterface>(Mappings, ObjectPool);
+            var Result = TestObject.GenerateQueries(new TestDatabases.ComplexPropertyLoad.MapPropertyByInterface { ID = 10 }, MapProperty);
+            Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
+            Assert.Single(Result[0].Parameters);
+            Assert.Equal(10, Result[0].Parameters[0].InternalValue);
+            Assert.Equal("ID", Result[0].Parameters[0].ID);
+            Assert.Equal("SELECT [dbo].[MappedClass1_].[ID_] AS [ID]\r\nFROM [dbo].[MappedClass1_]\r\nINNER JOIN [dbo].[MapPropertyByInterface_] as [MapPropertyByInterface_2] ON [MapPropertyByInterface_2].[MappedClass1_MappedClass_ID_]=[dbo].[MappedClass1_].[ID_]\r\nWHERE [MapPropertyByInterface_2].[ID_]=@ID;", Result[0].QueryString);
+            Assert.Equal(QueryType.LoadProperty, Result[0].QueryType);
+
+            Assert.Equal(CommandType.Text, Result[1].DatabaseCommandType);
+            Assert.Single(Result[1].Parameters);
+            Assert.Equal(10, Result[1].Parameters[0].InternalValue);
+            Assert.Equal("ID", Result[1].Parameters[0].ID);
+            Assert.Equal("SELECT [dbo].[MappedClass2_].[ID_] AS [ID]\r\nFROM [dbo].[MappedClass2_]\r\nINNER JOIN [dbo].[MapPropertyByInterface_] as [MapPropertyByInterface_2] ON [MapPropertyByInterface_2].[MappedClass2_MappedClass_ID_]=[dbo].[MappedClass2_].[ID_]\r\nWHERE [MapPropertyByInterface_2].[ID_]=@ID;", Result[1].QueryString);
+            Assert.Equal(QueryType.LoadProperty, Result[1].QueryType);
         }
 
         [Fact]
