@@ -63,7 +63,7 @@ namespace InflatableBenchmarks.Benchmarks.Tests
             var Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
 
             Console.WriteLine("Saving values");
-            new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();
+            AsyncHelper.RunSync(() => new DbContext().Save(Values).ExecuteAsync());
 
             Console.WriteLine(DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList().Count + " values returned each operation.");
 

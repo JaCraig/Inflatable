@@ -1,4 +1,5 @@
-﻿using Inflatable.Sessions;
+﻿using BigBook;
+using Inflatable.Sessions;
 using Sundial.Core.Attributes;
 using Sundial.Core.Interfaces;
 
@@ -32,9 +33,7 @@ namespace Inflatable.SpeedTests.Sessions
                 }
                 TempSession.Save(TempItem);
             }
-            TempSession.ExecuteAsync()
-                .GetAwaiter()
-                .GetResult();
+            AsyncHelper.RunSync(() => TempSession.ExecuteAsync());
         }
     }
 }
