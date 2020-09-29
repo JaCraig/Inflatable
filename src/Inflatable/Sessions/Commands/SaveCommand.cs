@@ -161,6 +161,15 @@ namespace Inflatable.Sessions.Commands
             }
         }
 
+        /// <summary>
+        /// Cascades the many to one properties.
+        /// </summary>
+        /// <param name="object">The object.</param>
+        /// <param name="source">The source.</param>
+        /// <param name="batch">The batch.</param>
+        /// <param name="declarationBatch">The declaration batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        /// <param name="parentMappings">The parent mappings.</param>
         private void CascadeManyToOneProperties(object @object,
             IMappingSource source,
             SQLHelper batch,
@@ -353,6 +362,9 @@ namespace Inflatable.Sessions.Commands
         /// <param name="property">The property.</param>
         private void SavePropertyJoins(object @object, IMappingSource source, SQLHelper batch, SQLHelper deleteBatch, IClassProperty property)
         {
+            var ORMObject = @object as IORMObject;
+            if (!(ORMObject?.PropertiesChanged0.Contains(property.Name) ?? true))
+                return;
             var LinksGenerator = QueryProviderManager.CreateGenerator(property.ParentMapping.ObjectType, source);
             var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, property);
             for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)

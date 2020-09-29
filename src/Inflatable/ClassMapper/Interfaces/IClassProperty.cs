@@ -31,6 +31,12 @@ namespace Inflatable.ClassMapper.Interfaces
         Query? LoadPropertyQuery { get; }
 
         /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>The name.</value>
+        string Name { get; }
+
+        /// <summary>
         /// Gets the parent mapping.
         /// </summary>
         /// <value>The parent mapping.</value>
