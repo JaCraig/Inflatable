@@ -80,20 +80,20 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">Mapping source.</param>
         /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory)
+        public override Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory)
         {
             if (Objects.Length == 0)
             {
-                return 0;
+                return Task.FromResult(0);
             }
 
             CreateBatch(source, dynamoFactory, out var Batch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
-                return 0;
+                return Task.FromResult(0);
             }
 
-            return await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false);
+            return Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>();
         }
 
         /// <summary>
