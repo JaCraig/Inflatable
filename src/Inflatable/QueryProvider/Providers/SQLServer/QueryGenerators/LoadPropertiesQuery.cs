@@ -75,6 +75,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private ListMapping<string, QueryGeneratorData> Queries { get; }
 
         /// <summary>
+        /// The lock object
+        /// </summary>
+        private static object LockObject = new object();
+
+        /// <summary>
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
@@ -566,14 +571,20 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(property.Name))
             {
-                foreach (var ChildMapping in ChildMappings)
+                lock (LockObject)
                 {
-                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+                    if (!Queries.ContainsKey(property.Name))
+                    {
+                        foreach (var ChildMapping in ChildMappings)
+                        {
+                            var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(property.Name, new QueryGeneratorData(ChildMapping,
-                        IDProperties,
-                        GenerateSelectQuery(ForeignTypeGraph, property)
-                    ));
+                            Queries.Add(property.Name, new QueryGeneratorData(ChildMapping,
+                                IDProperties,
+                                GenerateSelectQuery(ForeignTypeGraph, property)
+                            ));
+                        }
+                    }
                 }
             }
             foreach (var TempQuery in Queries[property.Name])
@@ -607,16 +618,22 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                foreach (var ChildMapping in ChildMappings)
+                lock (LockObject)
                 {
-                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+                    if (!Queries.ContainsKey(manyToOne.Name))
+                    {
+                        foreach (var ChildMapping in ChildMappings)
+                        {
+                            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                            var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(manyToOne.Name, new QueryGeneratorData(
-                        ChildMapping,
-                        IDProperties,
-                        GenerateSelectQuery(ForeignTypeGraph, TypeGraph, manyToOne)
-                    ));
+                            Queries.Add(manyToOne.Name, new QueryGeneratorData(
+                                ChildMapping,
+                                IDProperties,
+                                GenerateSelectQuery(ForeignTypeGraph, TypeGraph, manyToOne)
+                            ));
+                        }
+                    }
                 }
             }
             foreach (var TempQuery in Queries[manyToOne.Name])
@@ -651,15 +668,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                foreach (var ChildMapping in ChildMappings)
+                lock (LockObject)
                 {
-                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+                    if (!Queries.ContainsKey(manyToOne.Name))
+                    {
+                        foreach (var ChildMapping in ChildMappings)
+                        {
+                            var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(manyToOne.Name, new QueryGeneratorData(
-                        ChildMapping,
-                        IDProperties,
-                        GenerateSelectQuery(ForeignTypeGraph, manyToOne)
-                    ));
+                            Queries.Add(manyToOne.Name, new QueryGeneratorData(
+                                ChildMapping,
+                                IDProperties,
+                                GenerateSelectQuery(ForeignTypeGraph, manyToOne)
+                            ));
+                        }
+                    }
                 }
             }
             foreach (var TempQuery in Queries[manyToOne.Name])
@@ -694,16 +717,22 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(property.Name))
             {
-                foreach (var ChildMapping in ChildMappings)
+                lock (LockObject)
                 {
-                    var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-                    var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
+                    if (!Queries.ContainsKey(property.Name))
+                    {
+                        foreach (var ChildMapping in ChildMappings)
+                        {
+                            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
+                            var ForeignTypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
 
-                    Queries.Add(property.Name, new QueryGeneratorData(
-                        ChildMapping,
-                        IDProperties,
-                        GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property)
-                    ));
+                            Queries.Add(property.Name, new QueryGeneratorData(
+                                ChildMapping,
+                                IDProperties,
+                                GenerateSelectQuery(ForeignTypeGraph, TypeGraph, property)
+                            ));
+                        }
+                    }
                 }
             }
             foreach (var TempQuery in Queries[property.Name])
