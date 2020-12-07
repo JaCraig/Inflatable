@@ -49,7 +49,7 @@ namespace Inflatable.Interfaces
         /// <typeparam name="TDataType">The type of the ata type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(Expression<Func<TClassType, IList<TDataType?>>> expression)
+        ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(Expression<Func<TClassType, IList<TDataType>>> expression)
             where TDataType : class;
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Inflatable.Interfaces
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(Expression<Func<TClassType, IList<TDataType?>>> expression)
+        ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(Expression<Func<TClassType, IList<TDataType>>> expression)
             where TDataType : class;
 
         /// <summary>

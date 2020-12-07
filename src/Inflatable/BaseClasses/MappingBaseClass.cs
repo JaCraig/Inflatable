@@ -355,7 +355,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType?>>> expression)
+        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
             where TDataType : class
         {
             if (expression is null)
@@ -372,7 +372,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType?>>> expression)
+        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
             where TDataType : class
         {
             if (expression is null)
