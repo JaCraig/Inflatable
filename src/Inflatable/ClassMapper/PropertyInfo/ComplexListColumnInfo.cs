@@ -34,8 +34,8 @@ namespace Inflatable.ClassMapper.Column
         where TDataType : class
     {
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="ComplexListColumnInfo{TClassType, TDataType}"/> class.
+        /// Initializes a new instance of the <see cref="ComplexListColumnInfo{TClassType,
+        /// TDataType}"/> class.
         /// </summary>
         /// <param name="child">The child.</param>
         /// <param name="columnName">Name of the column.</param>
@@ -43,7 +43,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="isForeign">if set to <c>true</c> [is foreign].</param>
         /// <param name="schemaName">Name of the schema.</param>
         /// <param name="tableName">Name of the table.</param>
-        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType>> compiledExpression, bool isForeign, string schemaName, string tableName)
+        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType?>> compiledExpression, bool isForeign, string schemaName, string tableName)
         {
             Child = child;
             ColumnName = columnName;
@@ -69,7 +69,7 @@ namespace Inflatable.ClassMapper.Column
         /// The compiled expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, IList<TDataType>> CompiledExpression { get; set; }
+        public Func<TClassType, IList<TDataType?>> CompiledExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -124,7 +124,7 @@ namespace Inflatable.ClassMapper.Column
         /// <returns>The parameter version of the property</returns>
         public IParameter? GetAsParameter(object? objectValue)
         {
-            var ParamValue = objectValue is null ? null : (object)CompiledExpression((objectValue as TClassType)!).FirstOrDefault();
+            var ParamValue = objectValue is null ? null : (object)CompiledExpression((objectValue as TClassType)!).FirstOrDefault()!;
             return GetAsParameter(objectValue, ParamValue);
         }
 
@@ -181,7 +181,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>True if it is, false otherwise.</returns>
-        public bool IsDefault(object @object)
+        public bool IsDefault(object? @object)
         {
             return ReferenceEquals(@object, default(TClassType))
                 || IsDefault(@object, CompiledExpression((@object as TClassType)!).FirstOrDefault());
@@ -193,14 +193,14 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
-        public bool IsDefault(object @object, object paramValue) => Child.IsDefault(paramValue);
+        public bool IsDefault(object? @object, object? paramValue) => Child.IsDefault(paramValue);
 
         /// <summary>
         /// Sets the property's value for the object sent in.
         /// </summary>
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object propertyValue)
+        public void SetValue(object? objectToSet, object? propertyValue)
         {
             if (ReferenceEquals(objectToSet, default(TClassType)))
             {
@@ -216,7 +216,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object paramValue, object propertyValue) => Child.SetValue(paramValue, propertyValue);
+        public void SetValue(object objectToSet, object? paramValue, object? propertyValue) => Child.SetValue(paramValue, propertyValue);
 
         /// <summary>
         /// Gets the property's value from the object sent in

@@ -35,21 +35,21 @@ namespace Inflatable.ClassMapper.Interfaces
     /// <summary>
     /// Many to one property interface
     /// </summary>
-    /// <typeparam name="ClassType">The class type.</typeparam>
-    /// <typeparam name="DataType">The data type.</typeparam>
-    /// <typeparam name="ReturnType">The return type.</typeparam>
+    /// <typeparam name="TClassType">The class type.</typeparam>
+    /// <typeparam name="TDataType">The data type.</typeparam>
+    /// <typeparam name="TReturnType">The return type.</typeparam>
     /// <seealso cref="IClassProperty"/>
     /// <seealso cref="IFluentInterface"/>
-    public interface IManyToOneProperty<ClassType, DataType, ReturnType> : IFluentInterface
-        where ClassType : class
-        where DataType : class
-        where ReturnType : IManyToOneProperty<ClassType, DataType, ReturnType>
+    public interface IManyToOneProperty<TClassType, TDataType, TReturnType> : IFluentInterface
+        where TClassType : class
+        where TDataType : class
+        where TReturnType : IManyToOneProperty<TClassType, TDataType, TReturnType>
     {
         /// <summary>
         /// Cascades changes to the mapped instance.
         /// </summary>
         /// <returns>This</returns>
-        ReturnType CascadeChanges();
+        TReturnType CascadeChanges();
 
         /// <summary>
         /// Loads the property using the query specified.
@@ -57,43 +57,43 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <param name="queryText">The query text.</param>
         /// <param name="type">The type.</param>
         /// <returns>This</returns>
-        ReturnType LoadUsing(string queryText, CommandType type);
+        TReturnType LoadUsing(string queryText, CommandType type);
 
         /// <summary>
         /// Called when you want to override the default referential integrity and do nothing on delete.
         /// </summary>
         /// <returns>This</returns>
-        ReturnType OnDeleteDoNothing();
+        TReturnType OnDeleteDoNothing();
 
         /// <summary>
         /// Sets the name of the column.
         /// </summary>
         /// <param name="columnName">Name of the column.</param>
         /// <returns>This</returns>
-        ReturnType SetColumnName(string columnName);
+        TReturnType SetColumnName(string columnName);
     }
 
     /// <summary>
     /// Many to many property
     /// </summary>
-    /// <typeparam name="ClassType">The class type.</typeparam>
-    /// <typeparam name="DataType">The data type.</typeparam>
+    /// <typeparam name="TClassType">The class type.</typeparam>
+    /// <typeparam name="TDataType">The data type.</typeparam>
     /// <seealso cref="IFluentInterface"/>
-    public interface IManyToOneProperty<ClassType, DataType> : IManyToOneProperty
-        where ClassType : class
-        where DataType : class
+    public interface IManyToOneProperty<TClassType, TDataType> : IManyToOneProperty
+        where TClassType : class
+        where TDataType : class
     {
         /// <summary>
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        Func<ClassType, DataType> CompiledExpression { get; }
+        Func<TClassType, TDataType?> CompiledExpression { get; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        Expression<Func<ClassType, DataType>> Expression { get; }
+        Expression<Func<TClassType, TDataType?>> Expression { get; }
     }
 
     /// <summary>
@@ -127,12 +127,6 @@ namespace Inflatable.ClassMapper.Interfaces
         string InternalFieldName { get; }
 
         /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>The name.</value>
-        string Name { get; }
-
-        /// <summary>
         /// Gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
@@ -156,9 +150,9 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
-        /// <param name="Object">Object to get the value from</param>
+        /// <param name="ModelObject">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        object? GetValue(object Object);
+        object? GetValue(object ModelObject);
 
         /// <summary>
         /// Sets up the property (used internally)

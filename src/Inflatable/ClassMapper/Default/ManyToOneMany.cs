@@ -33,18 +33,18 @@ namespace Inflatable.ClassMapper.Default
     /// <summary>
     /// Many to one Many side
     /// </summary>
-    /// <typeparam name="ClassType">The type of the lass type.</typeparam>
-    /// <typeparam name="DataType">The type of the ata type.</typeparam>
-    public class ManyToOneMany<ClassType, DataType> : ManyToOneManyPropertyBase<ClassType, DataType, ManyToOneMany<ClassType, DataType>>
-        where ClassType : class
-        where DataType : class
+    /// <typeparam name="TClassType">The type of the lass type.</typeparam>
+    /// <typeparam name="TDataType">The type of the ata type.</typeparam>
+    public class ManyToOneMany<TClassType, TDataType> : ManyToOneManyPropertyBase<TClassType, TDataType, ManyToOneMany<TClassType, TDataType>>
+        where TClassType : class
+        where TDataType : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ManyToOneMany{ClassType, DataType}"/> class.
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ManyToOneMany(Expression<Func<ClassType, IList<DataType>>> expression, IMapping mapping)
+        public ManyToOneMany(Expression<Func<TClassType, IList<TDataType?>>> expression, IMapping mapping)
             : base(expression, mapping)
         {
         }
@@ -57,8 +57,8 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToOneProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<ClassType, IList<DataType>>(Expression).Convert<TResult>();
-            var ReturnObject = new ManyToOneMany<TResult, DataType>(Result, mapping);
+            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType?>>(Expression).Convert<TResult>();
+            var ReturnObject = new ManyToOneMany<TResult, TDataType>(Result, mapping);
             if (Cascade)
             {
                 ReturnObject.CascadeChanges();
@@ -83,13 +83,15 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(IMappingSource mappings)
         {
-            var ActualParent = mappings.GetChildMappings<ClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
+            if (mappings is null)
+                return;
+            var ActualParent = mappings.GetChildMappings<TClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
             var TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
             {
                 return ActualParent.IDProperties.ForEach(x =>
                 {
-                    return new ComplexColumnInfo<ClassType, ClassType>(
+                    return new ComplexColumnInfo<TClassType, TClassType>(
                         x.GetColumnInfo()[0],
                         ColumnName + x.ParentMapping.TableName + x.ColumnName,
                         y => y,
@@ -103,7 +105,7 @@ namespace Inflatable.ClassMapper.Default
             {
                 return TempMapping?.IDProperties.ForEach(x =>
                 {
-                    return new ComplexListColumnInfo<ClassType, DataType>(
+                    return new ComplexListColumnInfo<TClassType, TDataType>(
                         x.GetColumnInfo()[0],
                         x.ColumnName,
                         CompiledExpression,
@@ -124,14 +126,16 @@ namespace Inflatable.ClassMapper.Default
         /// <exception cref="ArgumentException">Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}</exception>
         public override void Setup(IMappingSource mappings, ISource sourceSpec)
         {
-            ForeignMapping = mappings.GetChildMappings<DataType>()
+            if (sourceSpec is null || mappings is null)
+                return;
+            ForeignMapping = mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
                                      .Distinct()
                                      .ToList();
             if (ForeignMapping is null)
             {
-                throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
+                throw new ArgumentException($"Foreign key IDs could not be found for {typeof(TClassType).Name}.{Name}");
             }
 
             foreach (var TempMapping in ForeignMapping)

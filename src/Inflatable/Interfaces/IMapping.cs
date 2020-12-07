@@ -30,44 +30,62 @@ namespace Inflatable.Interfaces
     /// <summary>
     /// Class mapping interface
     /// </summary>
-    /// <typeparam name="ClassType">Class type</typeparam>
+    /// <typeparam name="TClassType">Class type</typeparam>
     /// <seealso cref="IMapping"/>
-    public interface IMapping<ClassType> : IMapping
-        where ClassType : class
+    public interface IMapping<TClassType> : IMapping
+        where TClassType : class
     {
         /// <summary>
         /// Declares a property as an ID
         /// </summary>
-        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="TDataType">Data type</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the ID object</returns>
-        ID<ClassType, DataType> ID<DataType>(Expression<Func<ClassType, DataType>> expression);
+        ID<TClassType, TDataType> ID<TDataType>(Expression<Func<TClassType, TDataType>> expression);
 
         /// <summary>
         /// Sets a property as a many to many type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the ata type.</typeparam>
+        /// <typeparam name="TDataType">The type of the ata type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        ManyToMany<ClassType, DataType> ManyToMany<DataType>(Expression<Func<ClassType, IList<DataType>>> expression)
-            where DataType : class;
+        ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(Expression<Func<TClassType, IList<TDataType?>>> expression)
+            where TDataType : class;
+
+        /// <summary>
+        /// Sets a property as a many to one type.
+        /// </summary>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The many to many object</returns>
+        ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(Expression<Func<TClassType, IList<TDataType?>>> expression)
+            where TDataType : class;
+
+        /// <summary>
+        /// Sets a property as a many to one type.
+        /// </summary>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
+        /// <param name="expression">Expression pointing to the property</param>
+        /// <returns>The many to many object</returns>
+        ManyToOneSingle<TClassType, TDataType> ManyToOne<TDataType>(Expression<Func<TClassType, TDataType?>> expression)
+            where TDataType : class;
 
         /// <summary>
         /// Sets a property as a map type.
         /// </summary>
-        /// <typeparam name="DataType">The type of the data type.</typeparam>
+        /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The map object</returns>
-        Map<ClassType, DataType> Map<DataType>(Expression<Func<ClassType, DataType>> expression)
-            where DataType : class;
+        Map<TClassType, TDataType> Map<TDataType>(Expression<Func<TClassType, TDataType?>> expression)
+            where TDataType : class;
 
         /// <summary>
         /// Sets a property as a reference type
         /// </summary>
-        /// <typeparam name="DataType">Data type</typeparam>
+        /// <typeparam name="TDataType">Data type</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the reference object</returns>
-        Reference<ClassType, DataType> Reference<DataType>(Expression<Func<ClassType, DataType>> expression);
+        Reference<TClassType, TDataType> Reference<TDataType>(Expression<Func<TClassType, TDataType>> expression);
     }
 
     /// <summary>

@@ -41,8 +41,8 @@ namespace Inflatable.BaseClasses
         where TDatabaseType : IDatabase
     {
         /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="MappingBaseClass{TClassType, TDatabaseType}"/> class.
+        /// Initializes a new instance of the <see cref="MappingBaseClass{TClassType,
+        /// TDatabaseType}"/> class.
         /// </summary>
         /// <param name="tableName">Name of the table.</param>
         /// <param name="schemaName">Name of the schema.</param>
@@ -69,16 +69,6 @@ namespace Inflatable.BaseClasses
             _HashCode = TableName.GetHashCode(StringComparison.InvariantCulture) * DatabaseConfigType.GetHashCode() % int.MaxValue;
             _ToString = ObjectType.Name;
         }
-
-        /// <summary>
-        /// The hash code
-        /// </summary>
-        private readonly int _HashCode;
-
-        /// <summary>
-        /// To string
-        /// </summary>
-        private readonly string _ToString;
 
         /// <summary>
         /// Gets the automatic identifier properties.
@@ -170,6 +160,16 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <value>The name of the table.</value>
         public string TableName { get; }
+
+        /// <summary>
+        /// The hash code
+        /// </summary>
+        private readonly int _HashCode;
+
+        /// <summary>
+        /// To string
+        /// </summary>
+        private readonly string _ToString;
 
         /// <summary>
         /// Determines if the two items are not equal
@@ -355,7 +355,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
+        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType?>>> expression)
             where TDataType : class
         {
             if (expression is null)
@@ -372,7 +372,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
+        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType?>>> expression)
             where TDataType : class
         {
             if (expression is null)
@@ -389,7 +389,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToOneSingle<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
+        public ManyToOneSingle<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType?>> expression)
             where TDataType : class
         {
             if (expression is null)
@@ -407,7 +407,7 @@ namespace Inflatable.BaseClasses
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The map object</returns>
         /// <exception cref="ArgumentNullException">expression</exception>
-        public Map<TClassType, TDataType> Map<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
+        public Map<TClassType, TDataType> Map<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType?>> expression)
             where TDataType : class
         {
             if (expression is null)

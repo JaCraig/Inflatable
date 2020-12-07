@@ -40,7 +40,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="isForeign">if set to <c>true</c> [is foreign].</param>
         /// <param name="schemaName">Name of the schema.</param>
         /// <param name="tableName">Name of the table.</param>
-        public ComplexColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, TDataType> compiledExpression, bool isForeign, string schemaName, string tableName)
+        public ComplexColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, TDataType?> compiledExpression, bool isForeign, string schemaName, string tableName)
         {
             Child = child;
             ColumnName = columnName;
@@ -66,7 +66,7 @@ namespace Inflatable.ClassMapper.Column
         /// The compiled expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, TDataType> CompiledExpression { get; set; }
+        public Func<TClassType, TDataType?> CompiledExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -180,7 +180,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>True if it is, false otherwise.</returns>
-        public bool IsDefault(object @object) => ReferenceEquals(@object, default(TClassType)) || (!(CompiledExpression is null) && IsDefault(@object, CompiledExpression((@object as TClassType)!)));
+        public bool IsDefault(object? @object) => ReferenceEquals(@object, default(TClassType)) || (!(CompiledExpression is null) && IsDefault(@object, CompiledExpression((@object as TClassType)!)));
 
         /// <summary>
         /// Determines whether the specified object is default.
@@ -188,7 +188,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="object">The object.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
-        public bool IsDefault(object @object, object paramValue) => Child.IsDefault(paramValue);
+        public bool IsDefault(object @object, object? paramValue) => Child.IsDefault(paramValue);
 
         /// <summary>
         /// Sets the property's value for the object sent in.
@@ -202,7 +202,7 @@ namespace Inflatable.ClassMapper.Column
                 return;
             }
 
-            SetValue(objectToSet, CompiledExpression((objectToSet as TClassType)!), propertyValue);
+            SetValue(objectToSet, CompiledExpression((objectToSet as TClassType)!)!, propertyValue);
         }
 
         /// <summary>

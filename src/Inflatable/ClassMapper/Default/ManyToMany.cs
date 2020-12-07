@@ -33,18 +33,18 @@ namespace Inflatable.ClassMapper.Default
     /// <summary>
     /// Many to many mapping type.
     /// </summary>
-    /// <typeparam name="ClassType">The class type.</typeparam>
-    /// <typeparam name="DataType">The data type.</typeparam>
-    public class ManyToMany<ClassType, DataType> : ManyClassPropertyBase<ClassType, DataType, ManyToMany<ClassType, DataType>>
-        where ClassType : class
-        where DataType : class
+    /// <typeparam name="TClassType">The class type.</typeparam>
+    /// <typeparam name="TDataType">The data type.</typeparam>
+    public class ManyToMany<TClassType, TDataType> : ManyClassPropertyBase<TClassType, TDataType, ManyToMany<TClassType, TDataType>>
+        where TClassType : class
+        where TDataType : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ManyToMany{ClassType, DataType}"/> class.
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ManyToMany(Expression<Func<ClassType, IList<DataType>>> expression, IMapping mapping)
+        public ManyToMany(Expression<Func<TClassType, IList<TDataType?>>> expression, IMapping mapping)
             : base(expression, mapping)
         {
         }
@@ -57,8 +57,8 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToManyProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<ClassType, IList<DataType>>(Expression).Convert<TResult>();
-            var ReturnObject = new ManyToMany<TResult, DataType>(Result, mapping);
+            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType>>(Expression).Convert<TResult>();
+            var ReturnObject = new ManyToMany<TResult, TDataType>(Result, mapping);
             if (Cascade)
             {
                 ReturnObject.CascadeChanges();
@@ -95,7 +95,7 @@ namespace Inflatable.ClassMapper.Default
             var TempColumns = new List<IQueryColumnInfo>();
             TempColumns.AddRange(ParentIDMappings.ForEach(x =>
             {
-                return new ComplexColumnInfo<ClassType, ClassType>(
+                return new ComplexColumnInfo<TClassType, TClassType>(
                     x.GetColumnInfo()[0],
                     Prefix + x.ParentMapping.TableName + x.ColumnName,
                     y => y,
@@ -108,7 +108,7 @@ namespace Inflatable.ClassMapper.Default
             {
                 return TempMapping.IDProperties.ForEach(x =>
                 {
-                    return new ComplexListColumnInfo<ClassType, DataType>(
+                    return new ComplexListColumnInfo<TClassType, TDataType>(
                         x.GetColumnInfo()[0],
                         x.ParentMapping.TableName + x.ColumnName,
                         CompiledExpression,
@@ -129,14 +129,14 @@ namespace Inflatable.ClassMapper.Default
         /// <exception cref="ArgumentException">Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}</exception>
         public override void Setup(IMappingSource mappings, ISource sourceSpec)
         {
-            ForeignMapping = mappings.GetChildMappings<DataType>()
+            ForeignMapping = mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
                                      .Distinct()
                                      .ToList();
             if (ForeignMapping is null)
             {
-                throw new ArgumentException($"Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}");
+                throw new ArgumentException($"Foreign key IDs could not be found for {typeof(TClassType).Name}.{Name}");
             }
 
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();

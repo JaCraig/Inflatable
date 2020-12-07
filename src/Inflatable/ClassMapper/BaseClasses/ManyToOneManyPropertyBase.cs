@@ -46,7 +46,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected ManyToOneManyPropertyBase(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
+        protected ManyToOneManyPropertyBase(Expression<Func<TClassType, IList<TDataType?>>> expression, IMapping mapping)
         {
             if (expression is null)
             {
@@ -86,13 +86,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, IList<TDataType>> CompiledExpression { get; }
+        public Func<TClassType, IList<TDataType?>> CompiledExpression { get; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        public Expression<Func<TClassType, IList<TDataType>>> Expression { get; }
+        public Expression<Func<TClassType, IList<TDataType?>>> Expression { get; }
 
         /// <summary>
         /// Gets the foreign mapping.
@@ -225,7 +225,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode() => Name.GetHashCode() * ParentMapping.GetHashCode() % int.MaxValue;
+        public override int GetHashCode() => Name.GetHashCode(StringComparison.InvariantCulture) * ParentMapping.GetHashCode() % int.MaxValue;
 
         /// <summary>
         /// Gets the property's value from the object sent in
@@ -285,7 +285,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="secondProperty">The second property.</param>
         /// <returns>True if they are similar, false otherwise</returns>
-        public bool Similar(IManyToOneProperty secondProperty) => secondProperty.Name == Name;
+        public bool Similar(IManyToOneProperty secondProperty) => secondProperty?.Name == Name;
 
         /// <summary>
         /// Gets the property as a string

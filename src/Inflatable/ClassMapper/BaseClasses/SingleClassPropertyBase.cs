@@ -31,22 +31,22 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <summary>
     /// Property base class
     /// </summary>
-    /// <typeparam name="ClassType">The type of the class type.</typeparam>
-    /// <typeparam name="DataType">The type of the data type.</typeparam>
-    /// <typeparam name="ReturnType">The type of the return type.</typeparam>
+    /// <typeparam name="TClassType">The type of the class type.</typeparam>
+    /// <typeparam name="TDataType">The type of the data type.</typeparam>
+    /// <typeparam name="TReturnType">The type of the return type.</typeparam>
     /// <seealso cref="IProperty{ClassType, DataType, ReturnType}"/>
     /// <seealso cref="IProperty{ClassType, DataType}"/>
-    public abstract class SingleClassPropertyBase<ClassType, DataType, ReturnType> : IMapProperty<ClassType, DataType, ReturnType>, IMapProperty<ClassType, DataType>
-        where ClassType : class
-        where DataType : class
-        where ReturnType : IMapProperty<ClassType, DataType, ReturnType>
+    public abstract class SingleClassPropertyBase<TClassType, TDataType, TReturnType> : IMapProperty<TClassType, TDataType, TReturnType>, IMapProperty<TClassType, TDataType>
+        where TClassType : class
+        where TDataType : class
+        where TReturnType : IMapProperty<TClassType, TDataType, TReturnType>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected SingleClassPropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
+        protected SingleClassPropertyBase(Expression<Func<TClassType, TDataType?>> expression, IMapping mapping)
         {
             if (expression is null)
             {
@@ -64,7 +64,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             Expression = expression;
             InternalFieldName = "_" + Name + "Derived";
             ParentMapping = mapping;
-            PropertyType = typeof(DataType);
+            PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
             ForeignMapping = new List<IMapping>();
         }
@@ -91,13 +91,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<ClassType, DataType> CompiledExpression { get; protected set; }
+        public Func<TClassType, TDataType?> CompiledExpression { get; protected set; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        public Expression<Func<ClassType, DataType>> Expression { get; protected set; }
+        public Expression<Func<TClassType, TDataType?>> Expression { get; protected set; }
 
         /// <summary>
         /// Gets the foreign mapping.
@@ -165,7 +165,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>returns true if they are not equal, false otherwise</returns>
-        public static bool operator !=(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator !=(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !(first == second);
         }
@@ -176,7 +176,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>True if the first item is less than the second, false otherwise</returns>
-        public static bool operator <(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator <(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
         }
@@ -187,7 +187,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>true if the first and second item are the same, false otherwise</returns>
-        public static bool operator ==(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator ==(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
         }
@@ -198,7 +198,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
-        public static bool operator >(SingleClassPropertyBase<ClassType, DataType, ReturnType> first, SingleClassPropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator >(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() > second.GetHashCode();
         }
@@ -233,10 +233,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Cascades changes to the mapped instance.
         /// </summary>
         /// <returns>This</returns>
-        public ReturnType CascadeChanges()
+        public TReturnType CascadeChanges()
         {
             Cascade = true;
-            return (ReturnType)(IMapProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IMapProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj) => (obj is SingleClassPropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
+        public override bool Equals(object obj) => (obj is SingleClassPropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
@@ -265,23 +265,23 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Returns the hash code for the property
         /// </summary>
         /// <returns>The hash code for the property</returns>
-        public override int GetHashCode() => Name.GetHashCode() * ParentMapping.GetHashCode() % int.MaxValue;
+        public override int GetHashCode() => Name.GetHashCode(StringComparison.InvariantCulture) * ParentMapping.GetHashCode() % int.MaxValue;
 
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="Object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        public object? GetValue(object Object) => !(Object is ClassType TempObject) ? null : CompiledExpression(TempObject);
+        public object? GetValue(object Object) => !(Object is TClassType TempObject) ? null : CompiledExpression(TempObject);
 
         /// <summary>
         /// Determines whether this instance is unique.
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsUnique()
+        public TReturnType IsUnique()
         {
             Unique = true;
-            return (ReturnType)(IMapProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IMapProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -290,20 +290,20 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="queryText">The query text.</param>
         /// <param name="type">The type.</param>
         /// <returns>This</returns>
-        public ReturnType LoadUsing(string queryText, CommandType type)
+        public TReturnType LoadUsing(string queryText, CommandType type)
         {
             LoadPropertyQuery = new Query(PropertyType, type, queryText, QueryType.LoadProperty);
-            return (ReturnType)(IMapProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IMapProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Called when you want to override the default referential integrity and do nothing on delete.
         /// </summary>
         /// <returns>This</returns>
-        public ReturnType OnDeleteDoNothing()
+        public TReturnType OnDeleteDoNothing()
         {
             OnDeleteDoNothingValue = true;
-            return (ReturnType)(IMapProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IMapProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -325,8 +325,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if they are similar, false otherwise</returns>
         public bool Similar(IMapProperty secondProperty)
         {
-            return secondProperty.ColumnName == ColumnName
-                && secondProperty.Name == Name;
+            return secondProperty?.ColumnName == ColumnName
+                && secondProperty?.Name == Name;
         }
 
         /// <summary>

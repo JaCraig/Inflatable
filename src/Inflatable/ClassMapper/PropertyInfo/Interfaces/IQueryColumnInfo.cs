@@ -116,7 +116,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns><c>true</c> if the specified object is default; otherwise, <c>false</c>.</returns>
-        bool IsDefault(object @object);
+        bool IsDefault(object? @object);
 
         /// <summary>
         /// Determines whether the specified object is default.
@@ -131,7 +131,7 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// </summary>
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="propertyValue">The property value.</param>
-        void SetValue(object objectToSet, object propertyValue);
+        void SetValue(object? objectToSet, object? propertyValue);
 
         /// <summary>
         /// Sets the value.
@@ -139,6 +139,6 @@ namespace Inflatable.ClassMapper.Column.Interfaces
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <param name="propertyValue">The property value.</param>
-        void SetValue(object objectToSet, object paramValue, object propertyValue);
+        void SetValue(object objectToSet, object? paramValue, object propertyValue);
     }
 }
