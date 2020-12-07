@@ -176,7 +176,7 @@ namespace Inflatable.Sessions
             {
                 return QueryResults.GetCached(KeyName, Cache).SelectMany(x => x.ConvertValues<TObject>());
             }
-            var Source = MappingManager.ReadSources.FirstOrDefault(x => x.Source.Name == connection);
+            var Source = Array.Find(MappingManager.ReadSources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -189,14 +189,14 @@ namespace Inflatable.Sessions
             var ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
             {
-                var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).Select(x => new QueryResults(new Query(ObjectType,
+                var Results = (await Batch.ExecuteAsync().ConfigureAwait(false)).ConvertAll(x => new QueryResults(new Query(ObjectType,
                                                                                                     CommandType.Text,
                                                                                                     command,
                                                                                                     QueryType.LinqQuery,
                                                                                                     Parameters.ToArray()),
                                                                                         x.Cast<Dynamo>(),
                                                                                         this))
-                                                          .ToList();
+;
 
                 QueryResults.CacheValues(KeyName, Results, Cache);
                 return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
@@ -286,7 +286,7 @@ namespace Inflatable.Sessions
         {
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            var Source = MappingManager.ReadSources.FirstOrDefault(x => x.Source.Name == connection);
+            var Source = Array.Find(MappingManager.ReadSources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
@@ -319,7 +319,7 @@ namespace Inflatable.Sessions
         {
             parameters ??= Array.Empty<IParameter>();
             var Parameters = ConvertParameters(parameters);
-            var Source = MappingManager.ReadSources.FirstOrDefault(x => x.Source.Name == connection);
+            var Source = Array.Find(MappingManager.ReadSources, x => x.Source.Name == connection);
             if (Source is null)
             {
                 throw new ArgumentException($"Source not found {connection}");
