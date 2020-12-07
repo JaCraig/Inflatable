@@ -79,13 +79,13 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        Func<TClassType, TDataType?> CompiledExpression { get; }
+        Func<TClassType, TDataType> CompiledExpression { get; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        Expression<Func<TClassType, TDataType?>> Expression { get; }
+        Expression<Func<TClassType, TDataType>> Expression { get; }
     }
 
     /// <summary>

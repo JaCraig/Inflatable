@@ -43,7 +43,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="isForeign">if set to <c>true</c> [is foreign].</param>
         /// <param name="schemaName">Name of the schema.</param>
         /// <param name="tableName">Name of the table.</param>
-        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType?>> compiledExpression, bool isForeign, string schemaName, string tableName)
+        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType>> compiledExpression, bool isForeign, string schemaName, string tableName)
         {
             Child = child;
             ColumnName = columnName;
@@ -69,7 +69,7 @@ namespace Inflatable.ClassMapper.Column
         /// The compiled expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, IList<TDataType?>> CompiledExpression { get; set; }
+        public Func<TClassType, IList<TDataType>> CompiledExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.

@@ -44,7 +44,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected ManyClassPropertyBase(Expression<Func<TClassType, IList<TDataType?>>> expression, IMapping mapping)
+        protected ManyClassPropertyBase(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
         {
             if (expression is null)
             {
@@ -76,7 +76,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, IList<TDataType?>> CompiledExpression { get; }
+        public Func<TClassType, IList<TDataType>> CompiledExpression { get; }
 
         /// <summary>
         /// Gets a value indicating whether [database joins cascade].
@@ -88,7 +88,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        public Expression<Func<TClassType, IList<TDataType?>>> Expression { get; }
+        public Expression<Func<TClassType, IList<TDataType>>> Expression { get; }
 
         /// <summary>
         /// Gets the foreign mapping.

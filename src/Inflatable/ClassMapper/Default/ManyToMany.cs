@@ -44,7 +44,7 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ManyToMany(Expression<Func<TClassType, IList<TDataType?>>> expression, IMapping mapping)
+        public ManyToMany(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
             : base(expression, mapping)
         {
         }
@@ -83,6 +83,8 @@ namespace Inflatable.ClassMapper.Default
         /// <param name="mappings">The mappings.</param>
         public override void SetColumnInfo(IMappingSource mappings)
         {
+            if (mappings is null)
+                return;
             var Prefix = string.Empty;
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
@@ -129,6 +131,8 @@ namespace Inflatable.ClassMapper.Default
         /// <exception cref="ArgumentException">Foreign key IDs could not be found for {typeof(ClassType).Name}.{Name}</exception>
         public override void Setup(IMappingSource mappings, ISource sourceSpec)
         {
+            if (mappings is null || sourceSpec is null)
+                return;
             ForeignMapping = mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)

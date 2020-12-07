@@ -44,7 +44,7 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ManyToOneMany(Expression<Func<TClassType, IList<TDataType?>>> expression, IMapping mapping)
+        public ManyToOneMany(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
             : base(expression, mapping)
         {
         }
@@ -57,7 +57,7 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToOneProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType?>>(Expression).Convert<TResult>();
+            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType>>(Expression).Convert<TResult>();
             var ReturnObject = new ManyToOneMany<TResult, TDataType>(Result, mapping);
             if (Cascade)
             {
