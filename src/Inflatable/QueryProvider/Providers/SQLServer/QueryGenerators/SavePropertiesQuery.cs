@@ -76,6 +76,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private ListMapping<string, QueryGeneratorData> Queries { get; }
 
         /// <summary>
+        /// The lock object
+        /// </summary>
+        private static readonly object LockObject = new object();
+
+        /// <summary>
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
@@ -388,18 +393,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (!Queries.ContainsKey(property.Name))
             {
-                var ForeignMappings = MappingInformation.GetChildMappings(property.PropertyType)
+                lock (LockObject)
+                {
+                    if (!Queries.ContainsKey(property.Name))
+                    {
+                        var ForeignMappings = MappingInformation.GetChildMappings(property.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                             .Distinct();
-                var ForeignIDProperties = ForeignMappings.SelectMany(x => x.IDProperties);
+                        var ForeignIDProperties = ForeignMappings.SelectMany(x => x.IDProperties);
 
-                foreach (var ForeignMapping in ForeignMappings)
-                {
-                    Queries.Add(property.Name, new QueryGeneratorData(
-                        MappingInformation.Mappings[ForeignMapping.ObjectType],
-                        IDProperties,
-                        GenerateJoinSaveQuery(ForeignIDProperties, property)
-                    ));
+                        foreach (var ForeignMapping in ForeignMappings)
+                        {
+                            Queries.Add(property.Name, new QueryGeneratorData(
+                                MappingInformation.Mappings[ForeignMapping.ObjectType],
+                                IDProperties,
+                                GenerateJoinSaveQuery(ForeignIDProperties, property)
+                            ));
+                        }
+                    }
                 }
             }
             if (!(property.GetValue(queryObject) is IEnumerable ItemList))
@@ -432,18 +443,24 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                var ForeignMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType)
+                lock (LockObject)
+                {
+                    if (!Queries.ContainsKey(manyToOne.Name))
+                    {
+                        var ForeignMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                             .Distinct();
-                var ForeignIDProperties = ForeignMappings.SelectMany(x => x.IDProperties);
+                        var ForeignIDProperties = ForeignMappings.SelectMany(x => x.IDProperties);
 
-                foreach (var ForeignMapping in ForeignMappings)
-                {
-                    Queries.Add(manyToOne.Name, new QueryGeneratorData(
-                        MappingInformation.Mappings[ForeignMapping.ObjectType],
-                        IDProperties,
-                        GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
-                    ));
+                        foreach (var ForeignMapping in ForeignMappings)
+                        {
+                            Queries.Add(manyToOne.Name, new QueryGeneratorData(
+                                MappingInformation.Mappings[ForeignMapping.ObjectType],
+                                IDProperties,
+                                GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
+                            ));
+                        }
+                    }
                 }
             }
             if (!(manyToOne.GetValue(queryObject) is IEnumerable ItemList))
@@ -478,19 +495,25 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                var ForeignMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType)
+                lock (LockObject)
+                {
+                    if (!Queries.ContainsKey(manyToOne.Name))
+                    {
+                        var ForeignMappings = MappingInformation.GetChildMappings(manyToOne.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                             .Distinct();
-                var ForeignIDProperties = ForeignMappings
-                                            .SelectMany(x => x.IDProperties);
+                        var ForeignIDProperties = ForeignMappings
+                                                    .SelectMany(x => x.IDProperties);
 
-                foreach (var ForeignMapping in ForeignMappings)
-                {
-                    Queries.Add(manyToOne.Name, new QueryGeneratorData(
-                        MappingInformation.Mappings[ForeignMapping.ObjectType],
-                        IDProperties,
-                        GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
-                    ));
+                        foreach (var ForeignMapping in ForeignMappings)
+                        {
+                            Queries.Add(manyToOne.Name, new QueryGeneratorData(
+                                MappingInformation.Mappings[ForeignMapping.ObjectType],
+                                IDProperties,
+                                GenerateJoinSaveQuery(ForeignIDProperties, manyToOne)
+                            ));
+                        }
+                    }
                 }
             }
             var ReturnValue = new List<IQuery>();
@@ -517,19 +540,25 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(mapProperty.Name))
             {
-                var ForeignMappings = MappingInformation.GetChildMappings(mapProperty.PropertyType)
+                lock (LockObject)
+                {
+                    if (!Queries.ContainsKey(mapProperty.Name))
+                    {
+                        var ForeignMappings = MappingInformation.GetChildMappings(mapProperty.PropertyType)
                                             .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                             .Distinct();
-                var ForeignIDProperties = ForeignMappings
-                                            .SelectMany(x => x.IDProperties);
+                        var ForeignIDProperties = ForeignMappings
+                                                    .SelectMany(x => x.IDProperties);
 
-                foreach (var ForeignMapping in ForeignMappings)
-                {
-                    Queries.Add(mapProperty.Name, new QueryGeneratorData(
-                        MappingInformation.Mappings[ForeignMapping.ObjectType],
-                        IDProperties,
-                        GenerateJoinSaveQuery(ForeignIDProperties, mapProperty)
-                    ));
+                        foreach (var ForeignMapping in ForeignMappings)
+                        {
+                            Queries.Add(mapProperty.Name, new QueryGeneratorData(
+                                MappingInformation.Mappings[ForeignMapping.ObjectType],
+                                IDProperties,
+                                GenerateJoinSaveQuery(ForeignIDProperties, mapProperty)
+                            ));
+                        }
+                    }
                 }
             }
             var ReturnValue = new List<IQuery>();
