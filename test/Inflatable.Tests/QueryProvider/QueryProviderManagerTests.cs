@@ -6,7 +6,7 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
 using System.Linq;
 using Xunit;
@@ -18,8 +18,8 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void CreateBatch()
         {
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
             var Result = TestObject.CreateBatch(new MockDatabaseMapping(), DynamoFactory);
             Assert.NotNull(Result);
         }
@@ -36,11 +36,11 @@ namespace Inflatable.Tests.QueryProvider
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
             Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.NotNull(Result);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
@@ -49,8 +49,8 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Creation()
         {
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
             Assert.Equal(SqlClientFactory.Instance, TestObject.Providers.Keys.First());
             Assert.Equal(TempQueryProvider, TestObject.Providers.Values.First());
         }

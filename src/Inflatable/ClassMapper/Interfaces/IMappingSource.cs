@@ -18,7 +18,7 @@ using BigBook;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.Utils;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 

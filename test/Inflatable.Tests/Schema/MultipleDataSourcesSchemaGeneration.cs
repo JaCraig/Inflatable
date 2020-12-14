@@ -6,7 +6,6 @@ using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MultipleDataSources.Mappings;
-using Serilog;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -27,8 +26,8 @@ namespace Inflatable.Tests.Schema
                 new TestDatabaseMapping(),
                 new TestDatabase2Mapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool);
         }
 
@@ -47,7 +46,7 @@ namespace Inflatable.Tests.Schema
                     .ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
             catch { }
-            var TestObject = new SchemaManager(Mappings, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var TestObject = new SchemaManager(Mappings, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             Assert.Equal(2, TestObject.Models.Count());
             var TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase");
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);

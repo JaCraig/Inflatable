@@ -10,7 +10,6 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,13 +32,13 @@ namespace Inflatable.Tests.Sessions
             new IDatabase[]{
                 new TestDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool);
-            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
 
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
 
             CacheManager = Canister.Builder.Bootstrapper.Resolve<BigBook.Caching.Manager>();
             CacheManager.Cache().Clear();
@@ -315,7 +314,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var TestObject = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()

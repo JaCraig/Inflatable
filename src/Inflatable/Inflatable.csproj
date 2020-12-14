@@ -46,18 +46,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Holmes" Version="3.0.29" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+    <PackageReference Include="Holmes" Version="3.0.31" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="SQLHelper.DB" Version="3.1.31" />
-    <PackageReference Include="Data.Modeler" Version="3.0.35" />
+    <PackageReference Include="SQLHelper.DB" Version="3.1.32" />
+    <PackageReference Include="Data.Modeler" Version="3.0.36" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.2" />
     <PackageReference Include="Mirage" Version="3.0.6" />
-    <PackageReference Include="Aspectus" Version="4.0.10" />
-    <PackageReference Include="BigBook" Version="3.0.47" />
+    <PackageReference Include="Aspectus" Version="4.0.16" />
+    <PackageReference Include="BigBook" Version="3.0.51" />
   </ItemGroup>
 </Project>

@@ -17,9 +17,8 @@ limitations under the License.
 using BigBook;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
-using Serilog;
-using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,16 +45,16 @@ namespace Inflatable.ClassMapper
             IEnumerable<IMapping> mappings,
             IEnumerable<IDatabase> sources,
             QueryProviderManager queryProvider,
-            ILogger logger,
+            ILogger<MappingManager>? logger,
             ObjectPool<StringBuilder> objectPool)
         {
-            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
+            Logger = logger;
             ObjectPool = objectPool ?? throw new ArgumentNullException(nameof(objectPool));
             mappings ??= Array.Empty<IMapping>();
 
-            var Debug = Logger.IsEnabled(LogEventLevel.Debug);
+            var Debug = Logger.IsEnabled(LogLevel.Debug);
 
-            Logger.Information("Setting up mapping information");
+            Logger.LogInformation("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
             foreach (var Item in mappings)
             {
@@ -81,15 +80,10 @@ namespace Inflatable.ClassMapper
                 {
                     Builder.AppendLine(Sources[i].ToString());
                 }
-                Logger.Debug("{Info:l}", Builder.ToString());
+                Logger.LogDebug("{0}", Builder.ToString());
                 ObjectPool.Return(Builder);
             }
         }
-
-        /// <summary>
-        /// To string value
-        /// </summary>
-        private string? _ToString;
 
         /// <summary>
         /// Gets or sets the logger.
@@ -120,6 +114,11 @@ namespace Inflatable.ClassMapper
         /// </summary>
         /// <value>The write sources.</value>
         public IMappingSource[] WriteSources { get; set; }
+
+        /// <summary>
+        /// To string value
+        /// </summary>
+        private string? _ToString;
 
         /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.

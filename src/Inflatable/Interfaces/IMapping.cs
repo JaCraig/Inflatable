@@ -18,7 +18,7 @@ using Inflatable.ClassMapper.Default;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;

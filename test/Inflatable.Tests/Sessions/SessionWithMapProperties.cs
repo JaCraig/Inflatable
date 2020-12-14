@@ -10,7 +10,6 @@ using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
-using Serilog;
 using System;
 using System.Data;
 using System.Linq;
@@ -31,13 +30,13 @@ namespace Inflatable.Tests.Sessions
             new IDatabase[]{
                 new TestDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool);
-            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
 
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
 
             CacheManager = Canister.Builder.Bootstrapper.Resolve<BigBook.Caching.Manager>();
             CacheManager.Cache().Clear();
@@ -100,7 +99,7 @@ namespace Inflatable.Tests.Sessions
         public async Task DeleteWithNoDataInDatabase()
         {
             await DeleteData().ConfigureAwait(false);
-            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 1 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -251,7 +250,7 @@ namespace Inflatable.Tests.Sessions
         public async Task UpdateWithNoDataInDatabase()
         {
             await DeleteData().ConfigureAwait(false);
-            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var Result = new MapProperties
             {
@@ -281,7 +280,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            var TestObject = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            var TestObject = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()

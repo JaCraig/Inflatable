@@ -8,7 +8,7 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System.Data;
 using Xunit;
 
@@ -28,7 +28,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
             Canister.Builder.Bootstrapper.Resolve<ILogger>(),
             ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -49,7 +49,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -72,7 +72,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
                Canister.Builder.Bootstrapper.Resolve<ILogger>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);

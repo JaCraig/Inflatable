@@ -16,7 +16,7 @@ limitations under the License.
 
 using Inflatable.Interfaces;
 using Inflatable.Utils;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 

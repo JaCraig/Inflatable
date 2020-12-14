@@ -8,7 +8,6 @@ using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Interfaces;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using Serilog;
 using System.Linq;
 using Xunit;
 
@@ -30,8 +29,8 @@ namespace Inflatable.Tests.ClassMapper
             new IDatabase[]{
                 new MockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool)
             .Sources
             .First();
@@ -86,8 +85,8 @@ namespace Inflatable.Tests.ClassMapper
             new IDatabase[]{
                 new MockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool)
             .Sources
             .First();

@@ -18,8 +18,7 @@ using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
-using Serilog;
-using Serilog.Events;
+using Microsoft.Extensions.Logging;
 using SQLHelperDB;
 using System;
 using System.Collections.Generic;
@@ -40,10 +39,10 @@ namespace Inflatable.QueryProvider
         /// <param name="providers">The providers.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">providers</exception>
-        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger logger)
+        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger<QueryProviderManager> logger)
         {
-            Logger = logger ?? Log.Logger ?? new LoggerConfiguration().CreateLogger() ?? throw new ArgumentNullException(nameof(logger));
-            IsDebug = Logger.IsEnabled(LogEventLevel.Debug);
+            Logger = logger;
+            IsDebug = Logger.IsEnabled(LogLevel.Debug);
             providers ??= Array.Empty<Interfaces.IQueryProvider>();
             foreach (var Provider in providers.Where(x => x.GetType().Assembly != typeof(QueryProviderManager).Assembly))
             {
@@ -58,11 +57,6 @@ namespace Inflatable.QueryProvider
             }
             CreateGeneratorMethod = typeof(QueryProviderManager).GetMethod("CreateGenerator", new Type[] { typeof(IMappingSource) });
         }
-
-        /// <summary>
-        /// The lock object
-        /// </summary>
-        private readonly object LockObject = new object();
 
         /// <summary>
         /// Gets the logger.
@@ -95,6 +89,11 @@ namespace Inflatable.QueryProvider
         private bool IsDebug { get; }
 
         /// <summary>
+        /// The lock object
+        /// </summary>
+        private readonly object LockObject = new object();
+
+        /// <summary>
         /// Creates a batch.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -116,7 +115,7 @@ namespace Inflatable.QueryProvider
 
             if (IsDebug)
             {
-                Logger.Debug("Creating batch for data source {SourceName:l}", source.Name);
+                Logger.LogDebug("Creating batch for data source {0}", source.Name);
             }
 
             return QueryProvider.Batch(source, dynamoFactory);
@@ -144,7 +143,7 @@ namespace Inflatable.QueryProvider
 
             if (IsDebug)
             {
-                Logger.Debug("Creating generator for type {TypeName:l} in {SourceName:l}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
+                Logger.LogDebug("Creating generator for type {0} in {1}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
             }
 
             return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);

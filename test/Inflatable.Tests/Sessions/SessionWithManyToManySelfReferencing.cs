@@ -9,7 +9,7 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties.Mappings;
-using Serilog;
+using SQLHelperDB;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -29,13 +29,13 @@ namespace Inflatable.Tests.Sessions
             new IDatabase[]{
                 new TestDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool);
-            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
 
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool);
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, Logger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
 
             CacheManager = Canister.Builder.Bootstrapper.Resolve<BigBook.Caching.Manager>();
             CacheManager.Cache().Clear();
@@ -107,7 +107,7 @@ namespace Inflatable.Tests.Sessions
                     .ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
             catch { }
-            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -259,7 +259,7 @@ namespace Inflatable.Tests.Sessions
                     .ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
             catch { }
-            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var Result = new ManyToManyPropertySelfReferencing
             {
@@ -276,7 +276,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            _ = new SchemaManager(MappingManager, Configuration, Logger, DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
             var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()

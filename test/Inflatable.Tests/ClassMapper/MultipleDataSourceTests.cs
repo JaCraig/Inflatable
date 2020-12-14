@@ -5,7 +5,6 @@ using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.MultipleDataSources.Mappings;
-using Serilog;
 using System.Linq;
 using Xunit;
 
@@ -24,8 +23,8 @@ namespace Inflatable.Tests.ClassMapper
                 new MockDatabaseMapping(),
                 new SecondMockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool) }, Logger),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            GetLogger<MappingManager>(),
             ObjectPool);
 
             Assert.Equal(2, TestObject.Sources.Count());

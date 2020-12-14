@@ -19,6 +19,7 @@ using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
 using SQLHelperDB;
 using System;
@@ -40,17 +41,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="stringBuilderPool">The string builder pool.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">configuration</exception>
-        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool)
+        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, ILogger<SQLHelper> logger)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             StringBuilderPool = stringBuilderPool;
+            Logger = logger;
         }
-
-        /// <summary>
-        /// The lock object
-        /// </summary>
-        private readonly object LockObject = new object();
 
         /// <summary>
         /// Gets the configuration.
@@ -70,10 +68,21 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         private Dictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; } = new Dictionary<Tuple<Type, IMappingSource>, IGenerator>();
 
         /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        /// <value>The logger.</value>
+        private ILogger<SQLHelper> Logger { get; }
+
+        /// <summary>
         /// Gets the string builder pool.
         /// </summary>
         /// <value>The string builder pool.</value>
         private ObjectPool<StringBuilder>? StringBuilderPool { get; }
+
+        /// <summary>
+        /// The lock object
+        /// </summary>
+        private readonly object LockObject = new object();
 
         /// <summary>
         /// Creates a batch for running commands
@@ -81,7 +90,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <param name="source">The source.</param>
         /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory) => new SQLHelper(StringBuilderPool!, dynamoFactory, Configuration).CreateBatch(Provider, source?.Name ?? string.Empty);
+        public SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory) => new SQLHelper(StringBuilderPool!, dynamoFactory, Configuration, Logger).CreateBatch(Provider, source?.Name ?? string.Empty);
 
         /// <summary>
         /// Creates a generator object

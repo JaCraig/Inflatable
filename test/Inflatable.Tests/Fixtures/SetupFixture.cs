@@ -5,7 +5,6 @@ using Inflatable.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -33,7 +32,9 @@ namespace Inflatable.Tests.Fixtures
         {
             if (Canister.Builder.Bootstrapper == null)
             {
-                _ = Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
+                var Services = new ServiceCollection();
+                Services.AddLogging();
+                _ = Canister.Builder.CreateContainer(Services)
                                                 .AddAssembly(typeof(SetupFixture).Assembly)
                                                 .RegisterInflatable()
                                                 .RegisterFileCurator()

@@ -23,7 +23,7 @@ using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.Schema;
 using Inflatable.Sessions.Commands;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -56,7 +56,7 @@ namespace Inflatable.Sessions
         public Session(MappingManager mappingManager,
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,
-            ILogger logger,
+            ILogger<Session> logger,
             BigBook.Caching.Manager cacheManager,
             DynamoFactory dynamoFactory)
         {
@@ -203,7 +203,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.Debug("Failed on query: " + Batch);
+                Logger.LogDebug("Failed on query: " + Batch);
                 throw;
             }
         }
@@ -300,7 +300,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.Debug("Failed on query: " + Batch.ToString());
+                Logger.LogDebug("Failed on query: " + Batch.ToString());
                 throw;
             }
         }
@@ -335,7 +335,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.Debug("Failed on query: " + Batch.ToString());
+                Logger.LogDebug("Failed on query: " + Batch.ToString());
                 throw;
             }
         }
@@ -373,7 +373,7 @@ namespace Inflatable.Sessions
                 }
                 catch
                 {
-                    Logger.Debug("Failed on query: " + Batch.ToString());
+                    Logger.LogDebug("Failed on query: " + Batch.ToString());
                     throw;
                 }
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
@@ -430,7 +430,7 @@ namespace Inflatable.Sessions
                 }
                 catch
                 {
-                    Logger.Debug("Failed on query: " + Batch);
+                    Logger.LogDebug("Failed on query: " + Batch);
                     throw;
                 }
 
@@ -571,7 +571,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.Debug("Failed on query: " + Batch);
+                Logger.LogDebug("Failed on query: " + Batch);
                 throw;
             }
             for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)

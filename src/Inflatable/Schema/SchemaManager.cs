@@ -19,7 +19,7 @@ using Data.Modeler;
 using Holmes;
 using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using SQLHelperDB;
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace Inflatable.Schema
         /// <param name="sherlock">The sherlock analyzer.</param>
         /// <param name="sQLHelper">The s ql helper.</param>
         /// <exception cref="ArgumentNullException">logger</exception>
-        public SchemaManager(MappingManager mappings, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, SQLHelper sQLHelper)
+        public SchemaManager(MappingManager mappings, IConfiguration config, ILogger<SchemaManager> logger, DataModeler dataModeler, Sherlock sherlock, SQLHelper sQLHelper)
         {
             Models = mappings.Sources.ToList(x => new DataModel(x, config, logger!, dataModeler, sherlock, sQLHelper));
         }

@@ -16,7 +16,7 @@ limitations under the License.
 
 using Inflatable.Interfaces;
 using Inflatable.Utils;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -75,7 +75,7 @@ namespace Inflatable.ClassMapper.TypeGraph
             {
                 var MappingParent = mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
-                logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                logger.LogDebug("Merging {0} into {1}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
             if (node.Parent != null && Mapping.Merge)
@@ -83,7 +83,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                 var MappingParent = mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
                 node.Parent.Nodes.AddRange(node.Nodes);
-                logger.Debug("Merging {ParentMapping:l} into {Mapping:l}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                logger.LogDebug("Merging {0} into {1}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
             return false;

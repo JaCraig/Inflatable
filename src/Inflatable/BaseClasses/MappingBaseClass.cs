@@ -20,7 +20,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
-using Serilog;
+using Microsoft.Extensions.Logging;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -424,7 +424,7 @@ namespace Inflatable.BaseClasses
         /// <param name="logger">The logger.</param>
         public void Reduce(ILogger logger)
         {
-            var IsDebug = logger?.IsEnabled(Serilog.Events.LogEventLevel.Debug) ?? false;
+            var IsDebug = logger?.IsEnabled(LogLevel.Debug) ?? false;
             for (var x = 0; x < IDProperties.Count; ++x)
             {
                 var IDProperty1 = IDProperties[x];
@@ -434,7 +434,7 @@ namespace Inflatable.BaseClasses
                     if (IDProperty1 == IDProperty2)
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate ID and removing {Name:l} from mapping {Mapping:l}", IDProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate ID and removing {0} from mapping {1}", IDProperty2.Name, ObjectType.Name);
                         IDProperties.Remove(IDProperty2);
                         --y;
                     }
@@ -449,7 +449,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate reference and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -464,7 +464,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate map and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -479,7 +479,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to many and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -495,7 +495,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to one and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -512,7 +512,7 @@ namespace Inflatable.BaseClasses
         {
             if (parentMapping is null)
                 return;
-            var IsDebug = logger?.IsEnabled(Serilog.Events.LogEventLevel.Debug) ?? false;
+            var IsDebug = logger?.IsEnabled(LogLevel.Debug) ?? false;
             for (var x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
             {
                 var ReferenceProperty1 = parentMapping.ReferenceProperties[x];
@@ -522,7 +522,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate reference and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate reference and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -537,7 +537,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate map and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate map and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -552,7 +552,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate many to many and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to many and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
                         --y;
                     }
@@ -568,7 +568,7 @@ namespace Inflatable.BaseClasses
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.Debug("Found duplicate many to one and removing {Name:l} from mapping {Mapping:l}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to one and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
                         --y;
                     }
