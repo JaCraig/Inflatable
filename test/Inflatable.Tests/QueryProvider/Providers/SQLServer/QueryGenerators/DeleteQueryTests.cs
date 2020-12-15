@@ -8,7 +8,6 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using Microsoft.Extensions.Logging;
 using System.Data;
 using Xunit;
 
@@ -29,7 +28,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
             Assert.Equal(typeof(ConcreteClass1), TestObject.AssociatedType);
@@ -50,7 +49,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateDeclarations();
@@ -73,7 +72,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10 })[0];

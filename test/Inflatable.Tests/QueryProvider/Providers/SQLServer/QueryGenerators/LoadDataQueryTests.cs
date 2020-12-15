@@ -17,7 +17,6 @@ using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.MapProperties.Mappings;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
-using Microsoft.Extensions.Logging;
 using System.Data;
 using Xunit;
 
@@ -38,7 +37,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new DataLoadQuery<ConcreteClass1>(Mappings, ObjectPool);
             Assert.Equal(typeof(ConcreteClass1), TestObject.AssociatedType);
@@ -59,7 +58,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DataLoadQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateDeclarations();
@@ -79,7 +78,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DataLoadQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new Dynamo[] { DynamoFactory.Create(new { ID = 1 }) })[0];
@@ -99,7 +98,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties[0];
             var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
@@ -124,7 +123,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
 
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyFromComplexClass)].ManyToOneProperties[0];
@@ -154,7 +153,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
 
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties[0];
@@ -185,7 +184,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
 
             var ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneOneFromComplexClass)].ManyToOneProperties[0];
@@ -214,7 +213,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
 
             var ManyToOneOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties[0];
@@ -243,7 +242,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties[0];
             MapProperty.Setup(Mappings);
@@ -267,7 +266,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapPropertiesFromComplexClass)].MapProperties[0];
             MapProperty.Setup(Mappings);
@@ -290,7 +289,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapPropertyReferencesSelf)].MapProperties[0];
             MapProperty.Setup(Mappings);
@@ -313,7 +312,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties[0];
             MapProperty.Setup(Mappings);

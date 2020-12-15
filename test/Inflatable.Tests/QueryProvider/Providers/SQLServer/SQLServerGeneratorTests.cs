@@ -7,7 +7,6 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
@@ -27,7 +26,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
@@ -47,7 +46,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass1())[0].QueryString);
@@ -100,7 +99,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings, ObjectPool);
             Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass2())[0].QueryString);
@@ -153,7 +152,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings, ObjectPool);
 

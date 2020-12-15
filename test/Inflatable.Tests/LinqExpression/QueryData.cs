@@ -1,4 +1,5 @@
-﻿using Inflatable.Interfaces;
+﻿using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.Tests.BaseClasses;
@@ -16,7 +17,7 @@ namespace Inflatable.Tests.LinqExpression
         [Fact]
         public void AddParameter()
         {
-            var TestObject = new QueryData<AllReferencesAndID>(new Inflatable.ClassMapper.MappingSource(new List<IMapping>(), new MockDatabaseMappingForMockMapping(), Canister.Builder.Bootstrapper.Resolve<QueryProviderManager>(), null, ObjectPool));
+            var TestObject = new QueryData<AllReferencesAndID>(new MappingSource(new List<IMapping>(), new MockDatabaseMappingForMockMapping(), Canister.Builder.Bootstrapper.Resolve<QueryProviderManager>(), GetLogger<MappingSource>(), ObjectPool));
             TestObject.Parameters.Add(new Parameter<int>("0", 1));
             Assert.Equal(1, TestObject.Parameters.Count);
             Assert.Equal(DbType.Int32, TestObject.Parameters[0].DatabaseType);

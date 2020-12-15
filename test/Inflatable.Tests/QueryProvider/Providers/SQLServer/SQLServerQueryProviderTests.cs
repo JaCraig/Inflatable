@@ -6,7 +6,6 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using Microsoft.Extensions.Logging;
 using System.Data.SqlClient;
 using Xunit;
 
@@ -36,7 +35,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+                GetLogger<MappingSource>(),
                ObjectPool);
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);

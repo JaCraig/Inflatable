@@ -11,7 +11,6 @@ using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
 using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
-using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Linq;
 using Xunit;
@@ -33,7 +32,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                 new MockDatabaseMapping(),
                 new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+            GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new InsertQuery<ConcreteClass1>(Mappings, ObjectPool);
             Assert.Equal(typeof(ConcreteClass1), TestObject.AssociatedType);
@@ -54,7 +53,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new InsertQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateDeclarations();
@@ -87,7 +86,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new InsertQuery<ConcreteClass1>(Mappings, ObjectPool);
             var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
@@ -112,7 +111,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             var TestObject = new InsertQuery<MapProperties>(Mappings, ObjectPool);
@@ -136,7 +135,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             },
                    new MockDatabaseMapping(),
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-               Canister.Builder.Bootstrapper.Resolve<ILogger>(),
+               GetLogger<MappingSource>(),
                ObjectPool);
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             var TestObject = new InsertQuery<MapProperties>(Mappings, ObjectPool);
