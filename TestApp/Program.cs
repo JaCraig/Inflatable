@@ -3,6 +3,7 @@ using Inflatable;
 using Inflatable.Benchmarks.Models;
 using Inflatable.Registration;
 using Inflatable.Sessions;
+using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
 using System;
 using System.Data;
@@ -56,7 +57,9 @@ namespace TestApp
 
         private static void Main()
         {
-            Canister.Builder.CreateContainer(null)
+            var Services = new ServiceCollection();
+            Services.AddLogging();
+            Canister.Builder.CreateContainer(Services)
                 .AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
                 .Build();
