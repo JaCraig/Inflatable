@@ -2,14 +2,11 @@
 using BigBook;
 using Inflatable;
 using Inflatable.Benchmarks.Models;
-using Inflatable.Registration;
 using Inflatable.Sessions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mirage.Registration;
 using SQLHelperDB;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -51,11 +48,9 @@ namespace InflatableBenchmarks.Benchmarks.Tests
         [GlobalSetup]
         public void Setup()
         {
-            Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
-                .AddAssembly(typeof(Program).Assembly)
+            new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
-                ?.RegisterMirage()
-                ?.Build();
+                ?.RegisterMirage());
             Console.WriteLine("Setting up session");
             Canister.Builder.Bootstrapper?.Resolve<Session>();
 

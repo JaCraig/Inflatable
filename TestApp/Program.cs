@@ -1,7 +1,6 @@
 ﻿using BigBook;
 using Inflatable;
 using Inflatable.Benchmarks.Models;
-using Inflatable.Registration;
 using Inflatable.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
@@ -58,11 +57,9 @@ namespace TestApp
         private static void Main()
         {
             var Services = new ServiceCollection();
-            Services.AddLogging();
-            Canister.Builder.CreateContainer(Services)
-                .AddAssembly(typeof(Program).Assembly)
-                .RegisterInflatable()
-                .Build();
+            Services.AddLogging()
+                .AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
+                .RegisterInflatable());
             Console.WriteLine("Setting up session");
             Canister.Builder.Bootstrapper.Resolve<ISession>();
             try

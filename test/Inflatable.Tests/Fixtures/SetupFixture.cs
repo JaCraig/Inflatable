@@ -1,6 +1,4 @@
-﻿using FileCurator.Registration;
-using Inflatable.Registration;
-using Inflatable.Schema;
+﻿using Inflatable.Schema;
 using Inflatable.Sessions;
 using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
@@ -8,7 +6,6 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using TestFountain.Registration;
 using Xunit;
 
 namespace Inflatable.Tests.Fixtures
@@ -33,13 +30,11 @@ namespace Inflatable.Tests.Fixtures
             if (Canister.Builder.Bootstrapper == null)
             {
                 var Services = new ServiceCollection();
-                Services.AddLogging();
-                _ = Canister.Builder.CreateContainer(Services)
-                                                .AddAssembly(typeof(SetupFixture).Assembly)
+                Services.AddLogging()
+                    .AddCanisterModules(x => x.AddAssembly(typeof(SetupFixture).Assembly)
                                                 .RegisterInflatable()
                                                 .RegisterFileCurator()
-                                                .RegisterTestFountain()
-                                                .Build();
+                                                .RegisterTestFountain());
                 Canister.Builder.Bootstrapper.Resolve<ISession>();
             }
 
