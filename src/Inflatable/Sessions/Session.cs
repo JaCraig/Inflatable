@@ -15,15 +15,19 @@ limitations under the License.
 */
 
 using BigBook;
-using BigBook.Caching.Interfaces;
+using DragonHoard.Core;
+using DragonHoard.Core.Interfaces;
+using DragonHoard.InMemory;
 using Inflatable.ClassMapper;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
+using Inflatable.Registration;
 using Inflatable.Schema;
 using Inflatable.Sessions.Commands;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -57,14 +61,16 @@ namespace Inflatable.Sessions
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,
             ILogger<Session> logger,
-            BigBook.Caching.Manager cacheManager,
-            DynamoFactory dynamoFactory)
+            Cache cacheManager,
+            DynamoFactory dynamoFactory,
+            IEnumerable<IOptions<InflatableOptions>> options)
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            Cache = cacheManager?.Cache();
+            Options = options.FirstOrDefault()?.Value ?? InflatableOptions.Default;
+            Cache = cacheManager?.GetOrAddCache(new InMemoryCacheOptions { MaxCacheSize = Options.MaxCacheSize, CompactionPercentage = .2, ScanFrequency = Options.ScanFrequency }, "Inflatable");
             DynamoFactory = dynamoFactory;
         }
 
@@ -78,7 +84,7 @@ namespace Inflatable.Sessions
         /// Gets the cache manager.
         /// </summary>
         /// <value>The cache manager.</value>
-        private ICache Cache { get; }
+        private ICache? Cache { get; }
 
         /// <summary>
         /// Gets or sets the commands.
@@ -91,6 +97,12 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <value>The logger.</value>
         private ILogger Logger { get; }
+
+        /// <summary>
+        /// Gets the options.
+        /// </summary>
+        /// <value>The options.</value>
+        private InflatableOptions Options { get; }
 
         /// <summary>
         /// The mapping manager
@@ -172,9 +184,9 @@ namespace Inflatable.Sessions
             var Parameters = ConvertParameters(parameters);
             var KeyName = command + "_" + connection;
             Parameters.ForEach(x => KeyName = x.AddParameter(KeyName));
-            if (QueryResults.IsCached(KeyName, Cache))
+            if (QueryResults.TryGetCached(KeyName, Cache, out var CachedResults))
             {
-                return QueryResults.GetCached(KeyName, Cache).SelectMany(x => x.ConvertValues<TObject>());
+                return CachedResults.SelectMany(x => x.ConvertValues<TObject>());
             }
             var Source = Array.Find(MappingManager.ReadSources, x => x.Source.Name == connection);
             if (Source is null)
@@ -198,7 +210,7 @@ namespace Inflatable.Sessions
                                                                                         this))
 ;
 
-                QueryResults.CacheValues(KeyName, Results, Cache);
+                QueryResults.CacheValues(KeyName, Results, Cache, Options);
                 return Results.SelectMany(x => x.ConvertValues<TObject>()).ToArray();
             }
             catch
@@ -223,9 +235,9 @@ namespace Inflatable.Sessions
                 ?.Distinct()
                 ?? Array.Empty<IParameter>())
                 ?.ForEach(x => KeyName = x.AddParameter(KeyName));
-            if (QueryResults.IsCached(KeyName, Cache))
+            if (QueryResults.TryGetCached(KeyName, Cache, out var CachedResults))
             {
-                return QueryResults.GetCached(KeyName, Cache)?.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
+                return CachedResults.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
             }
             var Results = new List<QueryResults>();
             var FirstRun = true;
@@ -242,7 +254,7 @@ namespace Inflatable.Sessions
                 await GenerateQueryAsync(Results, FirstRun, Source).ConfigureAwait(false);
                 FirstRun = false;
             }
-            QueryResults.CacheValues(KeyName, Results, Cache);
+            QueryResults.CacheValues(KeyName, Results, Cache, Options);
             return Results?.SelectMany(x => x.ConvertValues<TObject>())?.ToArray() ?? Array.Empty<TObject>();
         }
 
@@ -314,7 +326,7 @@ namespace Inflatable.Sessions
         /// <param name="connection">The connection name.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects</returns>
-        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentException">Source not found {connection}</exception>
         public Task<TObject> ExecuteScalarAsync<TObject>(string command, CommandType type, string connection, params object[] parameters)
         {
             parameters ??= Array.Empty<IParameter>();

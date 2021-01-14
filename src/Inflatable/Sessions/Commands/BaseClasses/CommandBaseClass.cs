@@ -15,8 +15,8 @@ limitations under the License.
 */
 
 using BigBook;
-using BigBook.Caching.Interfaces;
 using BigBook.Comparison;
+using DragonHoard.Core.Interfaces;
 using Inflatable.ClassMapper;
 using Inflatable.QueryProvider;
 using Inflatable.Sessions.Commands.Interfaces;

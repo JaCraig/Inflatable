@@ -34,7 +34,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                ?.RegisterSQLHelper()
                                ?.RegisterDataModeler()
                                ?.RegisterBigBookOfDataTypes()
-                               ?.RegisterHolmes();
+                               ?.RegisterHolmes()
+                               ?.RegisterInMemoryHoard();
         }
     }
 }

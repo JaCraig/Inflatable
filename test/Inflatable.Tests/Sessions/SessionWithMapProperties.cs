@@ -1,4 +1,5 @@
 ﻿using BigBook;
+using DragonHoard.Core;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
@@ -38,12 +39,12 @@ namespace Inflatable.Tests.Sessions
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
             InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
 
-            CacheManager = Canister.Builder.Bootstrapper.Resolve<BigBook.Caching.Manager>();
-            CacheManager.Cache().Clear();
+            CacheManager = Canister.Builder.Bootstrapper.Resolve<Cache>();
+            CacheManager.GetOrAddCache("Inflatable").Compact(1);
         }
 
         public static Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
-        public BigBook.Caching.Manager CacheManager { get; set; }
+        public Cache CacheManager { get; set; }
         public MappingManager InternalMappingManager { get; set; }
 
         public QueryProviderManager InternalQueryProviderManager { get; set; }

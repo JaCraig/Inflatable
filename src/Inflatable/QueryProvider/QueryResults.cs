@@ -15,10 +15,12 @@ limitations under the License.
 */
 
 using BigBook;
-using BigBook.Caching.Interfaces;
+using DragonHoard.Core;
+using DragonHoard.Core.Interfaces;
 using Inflatable.Aspect.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
+using Inflatable.Registration;
 using Inflatable.Sessions;
 using System;
 using System.Collections.Generic;
@@ -69,23 +71,16 @@ namespace Inflatable.QueryProvider
         /// <param name="keyName">Name of the key.</param>
         /// <param name="results">The results.</param>
         /// <param name="cache">The cache.</param>
-        public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache) => cache?.Add(keyName, results, results.Select(x => x.Query.ReturnType.GetName()).ToArray());
-
-        /// <summary>
-        /// Gets the cached value.
-        /// </summary>
-        /// <param name="keyName">Name of the key.</param>
-        /// <param name="cache">The cache.</param>
-        /// <returns>The cached value</returns>
-        public static List<QueryResults> GetCached(string keyName, ICache? cache) => (List<QueryResults>)(cache?[keyName] ?? new List<QueryResults>());
-
-        /// <summary>
-        /// Determines whether the specified key name is cached.
-        /// </summary>
-        /// <param name="keyName">Name of the key.</param>
-        /// <param name="cache">The cache.</param>
-        /// <returns><c>true</c> if the specified key name is cached; otherwise, <c>false</c>.</returns>
-        public static bool IsCached(string keyName, ICache? cache) => cache?.ContainsKey(keyName) ?? false;
+        /// <param name="inflatableOptions">The inflatable options.</param>
+        public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache, InflatableOptions inflatableOptions)
+        {
+            var CacheOptions = new CacheEntryOptions { Size = 1, Tags = results.Select(x => x.Query.ReturnType.GetName()).ToArray() };
+            if (inflatableOptions.AbsoluteExpirationQueriesKeptInCache != default)
+                CacheOptions.AbsoluteExpirationRelativeToNow = inflatableOptions.AbsoluteExpirationQueriesKeptInCache;
+            if (inflatableOptions.SlidingExpirationQueriesKeptInCache != default)
+                CacheOptions.SlidingExpiration = inflatableOptions.SlidingExpirationQueriesKeptInCache;
+            cache?.Set(keyName, results, CacheOptions);
+        }
 
         /// <summary>
         /// Removes the cache tag.
@@ -93,6 +88,24 @@ namespace Inflatable.QueryProvider
         /// <param name="name">The name.</param>
         /// <param name="cache">The cache.</param>
         public static void RemoveCacheTag(string name, ICache? cache) => cache?.RemoveByTag(name);
+
+        /// <summary>
+        /// Gets the cached value.
+        /// </summary>
+        /// <param name="keyName">Name of the key.</param>
+        /// <param name="cache">The cache.</param>
+        /// <param name="results">The results.</param>
+        /// <returns>The cached value</returns>
+        public static bool TryGetCached(string keyName, ICache? cache, out List<QueryResults> results)
+        {
+            if (cache is null || !cache.TryGetValue(keyName, out List<QueryResults> value))
+            {
+                results = default;
+                return false;
+            }
+            results = value;
+            return true;
+        }
 
         /// <summary>
         /// Determines whether this instance can copy the specified results.
