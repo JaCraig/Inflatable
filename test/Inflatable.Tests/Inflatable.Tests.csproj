@@ -4,7 +4,7 @@
     <Description>Tests for Inflatable</Description>
     <AssemblyTitle>Inflatable.Tests</AssemblyTitle>
     <Authors>James Craig</Authors>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>Inflatable.Tests</AssemblyName>
     <PackageId>Inflatable.Tests</PackageId>
