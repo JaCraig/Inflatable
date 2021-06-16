@@ -55,7 +55,7 @@ namespace Inflatable.Sessions
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cacheManager">The cache manager.</param>
         /// <param name="options">The options.</param>
-        /// <param name="logger">The logger.</param>
+        /// <param name="logger">The Logger?.</param>
         /// <exception cref="ArgumentNullException">
         /// mappingManager or queryProviderManager or logger
         /// </exception>
@@ -66,12 +66,12 @@ namespace Inflatable.Sessions
             QueryProviderManager queryProviderManager,
             Cache cacheManager,
             IEnumerable<IOptions<InflatableOptions>> options,
-            ILogger<Session> logger = null)
+            ILogger<Session>? logger = null)
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
             Commands = new List<Commands.Interfaces.ICommand>();
-            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            Logger = logger;
             Options = options.FirstOrDefault()?.Value ?? InflatableOptions.Default;
             Cache = cacheManager?.GetOrAddCache(new InMemoryCacheOptions { MaxCacheSize = Options.MaxCacheSize, CompactionPercentage = .2, ScanFrequency = Options.ScanFrequency }, "Inflatable");
         }
@@ -89,10 +89,10 @@ namespace Inflatable.Sessions
         private IList<Commands.Interfaces.ICommand> Commands { get; }
 
         /// <summary>
-        /// Gets the logger.
+        /// Gets the Logger.
         /// </summary>
-        /// <value>The logger.</value>
-        private ILogger Logger { get; }
+        /// <value>The Logger.</value>
+        private ILogger? Logger { get; }
 
         /// <summary>
         /// Gets the options.
@@ -211,7 +211,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.LogDebug("Failed on query: " + Batch);
+                Logger?.LogDebug("Failed on query: " + Batch);
                 throw;
             }
         }
@@ -308,7 +308,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.LogDebug("Failed on query: " + Batch.ToString());
+                Logger?.LogDebug("Failed on query: " + Batch.ToString());
                 throw;
             }
         }
@@ -343,7 +343,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.LogDebug("Failed on query: " + Batch.ToString());
+                Logger?.LogDebug("Failed on query: " + Batch.ToString());
                 throw;
             }
         }
@@ -381,7 +381,7 @@ namespace Inflatable.Sessions
                 }
                 catch
                 {
-                    Logger.LogDebug("Failed on query: " + Batch.ToString());
+                    Logger?.LogDebug("Failed on query: " + Batch.ToString());
                     throw;
                 }
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
@@ -438,7 +438,7 @@ namespace Inflatable.Sessions
                 }
                 catch
                 {
-                    Logger.LogDebug("Failed on query: " + Batch);
+                    Logger?.LogDebug("Failed on query: " + Batch);
                     throw;
                 }
 
@@ -579,7 +579,7 @@ namespace Inflatable.Sessions
             }
             catch
             {
-                Logger.LogDebug("Failed on query: " + Batch);
+                Logger?.LogDebug("Failed on query: " + Batch);
                 throw;
             }
             for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)

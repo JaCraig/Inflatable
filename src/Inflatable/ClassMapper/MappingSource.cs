@@ -53,13 +53,13 @@ namespace Inflatable.ClassMapper
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
             Logger = logger;
-            Logger.LogInformation("Setting up {Name:l}", source.Name);
+            Logger?.LogInformation("Setting up {Name:l}", source.Name);
 
             QueryProvider = queryProvider ?? throw new ArgumentNullException(nameof(queryProvider));
             ConcreteTypes = Array.Empty<Type>();
             mappings ??= Array.Empty<IMapping>();
 
-            IsDebug = Logger.IsEnabled(LogLevel.Debug);
+            IsDebug = Logger?.IsEnabled(LogLevel.Debug) ?? false;
             var TempSourceOptions = Source.SourceOptions;
             if (!(TempSourceOptions is null))
             {
@@ -78,9 +78,9 @@ namespace Inflatable.ClassMapper
             ParentTypes = new ListMapping<Type, Type>();
             ObjectPool = objectPool;
 
-            Logger.LogInformation("Adding mappings for {0}", Source.Name);
+            Logger?.LogInformation("Adding mappings for {0}", Source.Name);
             Mappings = mappings.ToDictionary(x => x.ObjectType);
-            Logger.LogInformation("Setting up type graphs for {0}", Source.Name);
+            Logger?.LogInformation("Setting up type graphs for {0}", Source.Name);
             TypeGraphs = Mappings.ToDictionary(Item => Item.Key, Item => Generator.Generate(Item.Key, Mappings));
 
             SetupChildTypes();
@@ -136,7 +136,7 @@ namespace Inflatable.ClassMapper
         /// <summary>
         /// Logger for the system
         /// </summary>
-        public ILogger Logger { get; }
+        public ILogger? Logger { get; }
 
         /// <summary>
         /// Gets or sets the mappings.
@@ -341,7 +341,7 @@ namespace Inflatable.ClassMapper
             if (!Optimize)
                 return;
 
-            Logger.LogInformation("Merging mappings for {0}", Source.Name);
+            Logger?.LogInformation("Merging mappings for {0}", Source.Name);
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
                 MergeMapping.Merge(TempTypeGraph, Mappings, Logger);
@@ -356,7 +356,7 @@ namespace Inflatable.ClassMapper
             if (!Optimize)
                 return;
 
-            Logger.LogInformation("Reducing mappings for {0}", Source.Name);
+            Logger?.LogInformation("Reducing mappings for {0}", Source.Name);
             foreach (var TempTypeGraph in TypeGraphs.Values)
             {
                 ReduceMapping.Reduce(TempTypeGraph, Mappings, Logger);
@@ -381,7 +381,7 @@ namespace Inflatable.ClassMapper
             foreach (var Item in Mappings.Keys.Where(x => !NeededTypes.Contains(x)))
             {
                 if (IsDebug)
-                    Logger.LogDebug("Removing mapping {MappingName:l} from {SourceName:l} as mapping has been merged.", Item.Name, Source.Name);
+                    Logger?.LogDebug("Removing mapping {MappingName:l} from {SourceName:l} as mapping has been merged.", Item.Name, Source.Name);
                 Mappings.Remove(Item);
                 TypeGraphs.Remove(Item);
             }
@@ -403,7 +403,7 @@ namespace Inflatable.ClassMapper
                 if (CurrentMapping.IDProperties.Count > 0)
                     continue;
                 if (IsDebug)
-                    Logger.LogDebug("Adding identity key to {0} in {1} as one is not defined.", CurrentMapping, Source.Name);
+                    Logger?.LogDebug("Adding identity key to {0} in {1} as one is not defined.", CurrentMapping, Source.Name);
                 CurrentMapping.AddAutoKey();
             }
         }
@@ -414,7 +414,7 @@ namespace Inflatable.ClassMapper
         /// <returns>The concrete types found</returns>
         private void SetupChildTypes()
         {
-            Logger.LogInformation("Setting up child type discovery for {0}", Source.Name);
+            Logger?.LogInformation("Setting up child type discovery for {0}", Source.Name);
             ConcreteTypes = DiscoverConcreteTypes.FindConcreteTypes(TypeGraphs);
             for (var i = 0; i < ConcreteTypes.Length; i++)
             {
@@ -436,7 +436,7 @@ namespace Inflatable.ClassMapper
         /// </summary>
         private void SetupParentTypes()
         {
-            Logger.LogInformation("Setting up parent type discovery for {0}", Source.Name);
+            Logger?.LogInformation("Setting up parent type discovery for {0}", Source.Name);
             for (var i = 0; i < ConcreteTypes.Length; i++)
             {
                 var ConcreteType = ConcreteTypes[i];

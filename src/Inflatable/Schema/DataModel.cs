@@ -100,7 +100,7 @@ namespace Inflatable.Schema
         /// <param name="source">The source.</param>
         /// <param name="sourceConnection">The source connection.</param>
         /// <param name="batch">The batch.</param>
-        private static async Task AnalyzeSchemaAsync(Sherlock sherlock, ILogger logger, IMappingSource source, IConnection sourceConnection, SQLHelper batch)
+        private static async Task AnalyzeSchemaAsync(Sherlock sherlock, ILogger? logger, IMappingSource source, IConnection sourceConnection, SQLHelper batch)
         {
             if (!source.ApplyAnalysis
                 && !source.GenerateAnalysis)
@@ -108,14 +108,14 @@ namespace Inflatable.Schema
                 return;
             }
 
-            logger.LogInformation("Analyzing {0} for suggestions.", sourceConnection.DatabaseName);
+            logger?.LogInformation("Analyzing {0} for suggestions.", sourceConnection.DatabaseName);
             var Results = await sherlock.AnalyzeAsync(sourceConnection).ConfigureAwait(false);
             batch.CreateBatch();
             foreach (var Result in Results)
             {
-                logger.LogInformation("Finding: {0}", Result.Text);
-                logger.LogInformation("Metrics: {0}", Result.Metrics);
-                logger.LogInformation("Suggested Fix: {0}", Result.Fix);
+                logger?.LogInformation("Finding: {0}", Result.Text);
+                logger?.LogInformation("Metrics: {0}", Result.Metrics);
+                logger?.LogInformation("Suggested Fix: {0}", Result.Fix);
                 if (source.ApplyAnalysis && string.IsNullOrEmpty(Result.Fix))
                 {
                     batch.AddQuery(CommandType.Text, Result.Fix);
@@ -123,7 +123,7 @@ namespace Inflatable.Schema
             }
             if (source.ApplyAnalysis)
             {
-                logger.LogInformation("Applying fixes for {0}.", sourceConnection.DatabaseName);
+                logger?.LogInformation("Applying fixes for {0}.", sourceConnection.DatabaseName);
                 await batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
         }
@@ -137,7 +137,7 @@ namespace Inflatable.Schema
         /// <param name="sourceConnection">The source connection.</param>
         /// <param name="sourceSpec">The source spec.</param>
         /// <returns>The generated schema changes.</returns>
-        private static async Task<string[]> GenerateSchemaAsync(IMappingSource source, ILogger logger, DataModeler dataModeler, IConnection sourceConnection, ISource sourceSpec)
+        private static async Task<string[]> GenerateSchemaAsync(IMappingSource source, ILogger? logger, DataModeler dataModeler, IConnection sourceConnection, ISource sourceSpec)
         {
             if (!source.UpdateSchema
                 && !source.GenerateSchema)
@@ -145,22 +145,22 @@ namespace Inflatable.Schema
                 return Array.Empty<string>();
             }
 
-            var Debug = logger.IsEnabled(LogLevel.Debug);
+            var Debug = logger?.IsEnabled(LogLevel.Debug) ?? false;
 
             var Generator = dataModeler.GetSchemaGenerator(source.Source.Provider);
             if (Generator is null)
                 return Array.Empty<string>();
 
-            logger.LogInformation("Getting structure for {0}", sourceConnection.DatabaseName);
+            logger?.LogInformation("Getting structure for {0}", sourceConnection.DatabaseName);
             var OriginalSource = !string.IsNullOrEmpty(sourceConnection.DatabaseName) ? (await Generator.GetSourceStructureAsync(sourceConnection).ConfigureAwait(false)) : null;
 
             SetupTableStructures(logger, sourceConnection, source, sourceSpec);
 
-            logger.LogInformation("Generating schema changes for {0}", sourceConnection.DatabaseName);
+            logger?.LogInformation("Generating schema changes for {0}", sourceConnection.DatabaseName);
             var GeneratedSchemaChanges = Generator.GenerateSchema(sourceSpec, OriginalSource!) ?? Array.Empty<string>();
             if (Debug)
             {
-                logger.LogDebug("Schema changes generated: {0}", GeneratedSchemaChanges);
+                logger?.LogDebug("Schema changes generated: {0}", GeneratedSchemaChanges);
             }
 
             if (!source.UpdateSchema)
@@ -168,7 +168,7 @@ namespace Inflatable.Schema
                 return GeneratedSchemaChanges;
             }
 
-            logger.LogInformation("Applying schema changes for {0}", sourceConnection.DatabaseName);
+            logger?.LogInformation("Applying schema changes for {0}", sourceConnection.DatabaseName);
             await Generator.SetupAsync(GeneratedSchemaChanges, sourceConnection).ConfigureAwait(false);
             return GeneratedSchemaChanges;
         }
@@ -178,7 +178,7 @@ namespace Inflatable.Schema
         /// </summary>
         private static void SetupForeignKeys(ILogger logger, IConnection sourceConnection, ISource sourceSpec)
         {
-            logger.LogInformation("Setting up foreign keys for {0}", sourceConnection.DatabaseName);
+            logger?.LogInformation("Setting up foreign keys for {0}", sourceConnection.DatabaseName);
             sourceSpec.Tables.ForEach(x => x.SetupForeignKeys());
         }
 
@@ -191,7 +191,7 @@ namespace Inflatable.Schema
         /// <param name="sourceSpec">The source spec.</param>
         private static void SetupTables(ILogger logger, IConnection sourceConnection, IMappingSource source, ISource sourceSpec)
         {
-            logger.LogInformation("Setting up table structure for {0}", sourceConnection.DatabaseName);
+            logger?.LogInformation("Setting up table structure for {0}", sourceConnection.DatabaseName);
             foreach (var Mapping in source.Mappings.Values.OrderBy(x => x.Order))
             {
                 if (!DefaultSchemas.Contains(Mapping.SchemaName))

@@ -30,10 +30,13 @@ namespace Inflatable.Tests.Fixtures
         {
             if (Canister.Builder.Bootstrapper is null)
             {
-                var Services = new ServiceCollection();
-                Services.AddLogging(builder => builder.AddSerilog())
-                    .AddCanisterModules();
-                Canister.Builder.Bootstrapper.Resolve<ISession>();
+                lock (LockObject)
+                {
+                    var Services = new ServiceCollection();
+                    Services.AddLogging(builder => builder.AddSerilog())
+                        .AddCanisterModules();
+                    Canister.Builder.Bootstrapper.Resolve<ISession>();
+                }
             }
 
             _ = SchemaManager;
@@ -41,6 +44,7 @@ namespace Inflatable.Tests.Fixtures
 
         public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
         public static SchemaManager SchemaManager => Canister.Builder.Bootstrapper.Resolve<SchemaManager>();
+        private static object LockObject = new object();
 
         public void Dispose()
         {
