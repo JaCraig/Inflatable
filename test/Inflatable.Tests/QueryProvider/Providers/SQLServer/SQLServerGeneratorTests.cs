@@ -25,7 +25,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
@@ -45,7 +45,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
@@ -98,7 +98,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings, ObjectPool);
@@ -151,7 +151,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings, ObjectPool);

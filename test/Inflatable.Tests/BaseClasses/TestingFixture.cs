@@ -38,14 +38,18 @@ namespace Inflatable.Tests.BaseClasses
         public static ObjectPool<StringBuilder> ObjectPool => Canister.Builder.Bootstrapper.Resolve<ObjectPool<StringBuilder>>();
         public static SchemaManager SchemaManager => Canister.Builder.Bootstrapper.Resolve<SchemaManager>();
         public static Sherlock Sherlock => Canister.Builder.Bootstrapper.Resolve<Sherlock>();
-        public static ILogger<SQLHelper> SQLHelperLogger => Canister.Builder.Bootstrapper.Resolve<ILogger<SQLHelper>>();
         protected static string DatabaseName = "TestDatabase";
         protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
         private static readonly object LockObject = new object();
 
-        public static ILogger<T> GetLogger<T>()
+        public static ILogger<T>? GetLogger<T>()
         {
-            return Canister.Builder.Bootstrapper.Resolve<ILogger<T>>();
+            try
+            {
+                return Canister.Builder.Bootstrapper.Resolve<ILogger<T>>();
+            }
+            catch { }
+            return null;
         }
 
         public void Dispose()

@@ -17,7 +17,7 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void CreateBatch()
         {
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
             var Result = TestObject.CreateBatch(new MockDatabaseMapping());
             Assert.NotNull(Result);
@@ -35,10 +35,10 @@ namespace Inflatable.Tests.QueryProvider
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                 GetLogger<MappingSource>(),
                ObjectPool);
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.NotNull(Result);
@@ -48,7 +48,7 @@ namespace Inflatable.Tests.QueryProvider
         [Fact]
         public void Creation()
         {
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
             Assert.Equal(SqlClientFactory.Instance, TestObject.Providers.Keys.First());
             Assert.Equal(TempQueryProvider, TestObject.Providers.Values.First());

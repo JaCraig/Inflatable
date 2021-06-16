@@ -36,7 +36,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -57,7 +57,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -80,7 +80,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -99,7 +99,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new ManyToManyPropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
@@ -132,7 +132,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new AllReferencesAndIDMappingWithDatabase()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
@@ -165,7 +165,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new ManyToOneOnePropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
@@ -208,7 +208,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new AllReferencesAndIDMappingWithDatabase()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
@@ -240,7 +240,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new ManyToOneManyPropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
@@ -272,7 +272,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IMapPropertiesInterfaceMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapPropertiesFromComplexClass)].MapProperties.First();
@@ -298,7 +298,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new MapPropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
@@ -324,7 +324,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new MapPropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
@@ -350,7 +350,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IMapPropertiesInterfaceMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(MapPropertyReferencesSelf)].MapProperties.First();
@@ -376,7 +376,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IMapPropertiesInterfaceWithMapMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties.First();

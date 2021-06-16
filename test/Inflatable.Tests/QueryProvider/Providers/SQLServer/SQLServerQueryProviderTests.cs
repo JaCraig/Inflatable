@@ -16,7 +16,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void Batch()
         {
-            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var Result = TestObject.Batch(new TestDatabases.Databases.TestDatabase2Mapping());
             Assert.NotNull(Result);
         }
@@ -24,7 +24,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void CreateGenerator()
         {
-            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var Mappings = new MappingSource(new IMapping[] {
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
@@ -34,7 +34,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                 GetLogger<MappingSource>(),
                ObjectPool);
             var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
@@ -44,7 +44,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void Creation()
         {
-            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             Assert.Equal(Configuration, TestObject.Configuration);
             Assert.Equal(SqlClientFactory.Instance, TestObject.Provider);
         }

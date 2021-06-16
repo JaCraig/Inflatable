@@ -33,7 +33,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new DeletePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -54,7 +54,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeletePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -77,7 +77,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeletePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -96,7 +96,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new ManyToManyPropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
@@ -123,7 +123,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new ManyToOneOnePropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
@@ -145,7 +145,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new ManyToOneOnePropertiesMapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();

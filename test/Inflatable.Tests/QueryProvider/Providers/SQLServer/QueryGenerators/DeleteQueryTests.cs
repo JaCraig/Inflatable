@@ -27,7 +27,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -48,7 +48,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -71,7 +71,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                 new IInterface2Mapping()
             },
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);

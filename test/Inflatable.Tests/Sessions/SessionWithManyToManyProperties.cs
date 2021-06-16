@@ -33,12 +33,12 @@ namespace Inflatable.Tests.Sessions
             new IDatabase[]{
                 new TestDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
             InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
 
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
 
             CacheManager = Canister.Builder.Bootstrapper.Resolve<Cache>();

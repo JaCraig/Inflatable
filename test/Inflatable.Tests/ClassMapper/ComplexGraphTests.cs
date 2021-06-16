@@ -29,7 +29,7 @@ namespace Inflatable.Tests.ClassMapper
             new IDatabase[]{
                 new MockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>())
             .Sources
@@ -85,7 +85,7 @@ namespace Inflatable.Tests.ClassMapper
             new IDatabase[]{
                 new MockDatabaseMapping()
             },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
+            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>())
             .Sources
