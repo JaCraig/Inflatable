@@ -28,23 +28,43 @@ namespace Inflatable.Tests.Fixtures
     {
         public SetupFixture()
         {
-            if (Canister.Builder.Bootstrapper is null)
-            {
-                lock (LockObject)
-                {
-                    var Services = new ServiceCollection();
-                    Services.AddLogging(builder => builder.AddSerilog())
-                        .AddCanisterModules();
-                    Canister.Builder.Bootstrapper.Resolve<ISession>();
-                }
-            }
-
+            InitProvider();
             _ = SchemaManager;
         }
 
-        public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
-        public static SchemaManager SchemaManager => Canister.Builder.Bootstrapper.Resolve<SchemaManager>();
-        private static object LockObject = new object();
+        public static ServiceProvider Provider { get; set; }
+        public SQLHelper Helper => Resolve<SQLHelper>();
+        public SchemaManager SchemaManager => Resolve<SchemaManager>();
+
+        private static readonly object LockObject = new object();
+
+        public static void InitProvider()
+        {
+            if (Provider is null)
+            {
+                lock (LockObject)
+                {
+                    if (Provider is null)
+                    {
+                        var Services = new ServiceCollection();
+                        Services.AddLogging(builder => builder.AddSerilog())
+                            .AddCanisterModules();
+                        Provider = Services.BuildServiceProvider();
+                        Resolve<ISession>();
+                    }
+                }
+            }
+        }
+
+        public static T Resolve<T>()
+        {
+            try
+            {
+                return Provider.GetRequiredService<T>();
+            }
+            catch { }
+            return default;
+        }
 
         public void Dispose()
         {

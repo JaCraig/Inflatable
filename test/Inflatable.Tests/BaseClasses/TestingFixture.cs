@@ -2,6 +2,7 @@
 using Holmes;
 using Inflatable.ClassMapper;
 using Inflatable.Schema;
+using Inflatable.Tests.Fixtures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
@@ -15,41 +16,39 @@ namespace Inflatable.Tests.BaseClasses
     [Collection("Test collection")]
     public abstract class TestingFixture : IDisposable
     {
-        //protected TestingFixture()
-        //{
-        //    if (Canister.Builder.Bootstrapper is null)
-        //    {
-        //        lock (LockObject)
-        //        {
-        //            var Services = new ServiceCollection();
-        //            Services.AddLogging(builder => builder.AddSerilog())
-        //                .AddCanisterModules();
-        //            Canister.Builder.Bootstrapper.Resolve<ISession>();
-        //        }
-        //    }
+        protected TestingFixture()
+        {
+            SetupFixture.InitProvider();
+        }
 
-        //    _ = SchemaManager;
-        //}
-
-        public static IConfiguration Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
-        public static DataModeler DataModeler => Canister.Builder.Bootstrapper.Resolve<DataModeler>();
-        public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
-        public static MappingManager MappingManager => Canister.Builder.Bootstrapper.Resolve<MappingManager>();
-        public static ObjectPool<StringBuilder> ObjectPool => Canister.Builder.Bootstrapper.Resolve<ObjectPool<StringBuilder>>();
-        public static SchemaManager SchemaManager => Canister.Builder.Bootstrapper.Resolve<SchemaManager>();
-        public static Sherlock Sherlock => Canister.Builder.Bootstrapper.Resolve<Sherlock>();
+        public IConfiguration Configuration => Resolve<IConfigurationRoot>();
+        public DataModeler DataModeler => Resolve<DataModeler>();
+        public SQLHelper Helper => Resolve<SQLHelper>();
+        public MappingManager MappingManager => Resolve<MappingManager>();
+        public ObjectPool<StringBuilder> ObjectPool => Resolve<ObjectPool<StringBuilder>>();
+        public SchemaManager SchemaManager => Resolve<SchemaManager>();
+        public Sherlock Sherlock => Resolve<Sherlock>();
         protected static string DatabaseName = "TestDatabase";
         protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
-        private static readonly object LockObject = new object();
 
         public static ILogger<T>? GetLogger<T>()
         {
             try
             {
-                return Canister.Builder.Bootstrapper.Resolve<ILogger<T>>();
+                return Resolve<ILogger<T>>();
             }
             catch { }
             return null;
+        }
+
+        public static T Resolve<T>()
+        {
+            try
+            {
+                return SetupFixture.Resolve<T>();
+            }
+            catch { }
+            return default;
         }
 
         public void Dispose()

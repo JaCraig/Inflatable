@@ -11,11 +11,11 @@ namespace Inflatable.Tests
         [Fact]
         public void RegistrationTests()
         {
-            var TempMappingManager = Canister.Builder.Bootstrapper.Resolve<MappingManager>();
+            var TempMappingManager = Resolve<MappingManager>();
             Assert.NotNull(TempMappingManager);
-            var SchemaManager = Canister.Builder.Bootstrapper.Resolve<SchemaManager>();
+            var SchemaManager = Resolve<SchemaManager>();
             Assert.NotNull(SchemaManager);
-            var QueryManager = Canister.Builder.Bootstrapper.Resolve<QueryProviderManager>();
+            var QueryManager = Resolve<QueryProviderManager>();
             Assert.NotNull(QueryManager);
         }
     }

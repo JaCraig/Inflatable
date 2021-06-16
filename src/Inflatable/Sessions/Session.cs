@@ -59,8 +59,7 @@ namespace Inflatable.Sessions
         /// <exception cref="ArgumentNullException">
         /// mappingManager or queryProviderManager or logger
         /// </exception>
-        public Session(Aspectus.Aspectus aspectus,
-            DataMapper dataMapper,
+        public Session(DataMapper dataMapper,
             MappingManager mappingManager,
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,

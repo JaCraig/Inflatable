@@ -11,8 +11,8 @@ namespace Inflatable.Tests.LinqExpression
     {
         public QueryTranslatorTests()
         {
-            Mappings = Canister.Builder.Bootstrapper.Resolve<MappingManager>();
-            QueryProviders = Canister.Builder.Bootstrapper.Resolve<QueryProviderManager>();
+            Mappings = Resolve<MappingManager>();
+            QueryProviders = Resolve<QueryProviderManager>();
         }
 
         private MappingManager Mappings { get; }

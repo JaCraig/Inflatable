@@ -38,11 +38,11 @@ namespace Inflatable.Tests.Sessions
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
 
-            CacheManager = Canister.Builder.Bootstrapper.Resolve<Cache>();
+            CacheManager = Resolve<Cache>();
             CacheManager.GetOrAddCache("Inflatable").Compact(1);
         }
 
-        public static Aspectus.Aspectus AOPManager => Canister.Builder.Bootstrapper.Resolve<Aspectus.Aspectus>();
+        public static Aspectus.Aspectus AOPManager => Resolve<Aspectus.Aspectus>();
         public Cache CacheManager { get; set; }
         public MappingManager InternalMappingManager { get; set; }
 
@@ -52,7 +52,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task AllNoParametersWithDataInDatabase()
         {
-            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Results = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().ToArray();
@@ -62,7 +62,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -74,7 +74,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabaseAndCascade()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -86,7 +86,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -109,7 +109,7 @@ namespace Inflatable.Tests.Sessions
             }
             catch { }
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -120,7 +120,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result1 = new ManyToManyPropertySelfReferencing
@@ -167,7 +167,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task LoadMapPropertyWithDataInDatabase()
         {
-            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().Skip(1).Take(1).First();
@@ -178,7 +178,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleCascadeWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -201,7 +201,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -224,7 +224,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -242,7 +242,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             Assert.Equal(0, await TestObject.Save<ManyToManyPropertySelfReferencing>(null).ExecuteAsync().ConfigureAwait(false));
         }
@@ -261,7 +261,7 @@ namespace Inflatable.Tests.Sessions
             }
             catch { }
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
             var Result = new ManyToManyPropertySelfReferencing
             {
                 BoolValue = false
@@ -278,7 +278,7 @@ namespace Inflatable.Tests.Sessions
         private async Task SetupDataAsync()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var Session = Resolve<ISession>();
             await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM Parent_Child")

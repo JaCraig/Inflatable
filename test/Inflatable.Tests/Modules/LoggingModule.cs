@@ -26,12 +26,13 @@ namespace Inflatable.Tests.Modules
                 return;
             }
 
-            bootstrapper.Register<ILogger>(new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration()
                                             .WriteTo
                                             .File("./Log.txt")
                                             .MinimumLevel
-                                            .Debug()
-                                            .CreateLogger(),
+                                            .Information()
+                                            .CreateLogger();
+            bootstrapper.Register<ILogger>(Log.Logger,
                                         ServiceLifetime.Singleton);
         }
     }

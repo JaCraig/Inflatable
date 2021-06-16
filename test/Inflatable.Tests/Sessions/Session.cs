@@ -16,14 +16,14 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public void Creation()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
             Assert.NotNull(TestObject);
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 2 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -35,7 +35,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -48,7 +48,7 @@ namespace Inflatable.Tests.Sessions
         {
             await DeleteDatabaseData().ConfigureAwait(false);
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -59,7 +59,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task Execute()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var TempResults = DbContext<AllReferencesAndID>.CreateQuery().ToList();
@@ -74,7 +74,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task ExecuteDynamic()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var TempResults = DbContext<AllReferencesAndID>.CreateQuery().ToList();
@@ -89,7 +89,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task ExecuteScalar()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = await TestObject.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM AllReferencesAndID_",
@@ -101,7 +101,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertHundredsOfObjects()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             for (int x = 0; x < 1000; ++x)
@@ -124,7 +124,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjects()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result1 = new AllReferencesAndID
@@ -174,7 +174,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertSingleObject()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = new AllReferencesAndID
@@ -198,7 +198,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -212,7 +212,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             Assert.Equal(0, await TestObject.Save<AllReferencesAndID>(null).ExecuteAsync().ConfigureAwait(false));
@@ -221,7 +221,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithDataInDatabase()
         {
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             await SetupDataAsync().ConfigureAwait(false);
             var Result = (await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false)).First();
@@ -236,7 +236,7 @@ namespace Inflatable.Tests.Sessions
         {
             await DeleteDatabaseData().ConfigureAwait(false);
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TestObject = Resolve<ISession>();
 
             var Result = new AllReferencesAndID()
             {
@@ -250,7 +250,7 @@ namespace Inflatable.Tests.Sessions
         /// <summary>
         /// Deletes the database data.
         /// </summary>
-        private static async Task DeleteDatabaseData()
+        private async Task DeleteDatabaseData()
         {
             await Helper
                          .CreateBatch()
@@ -261,7 +261,7 @@ namespace Inflatable.Tests.Sessions
         private async Task SetupDataAsync()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            _ = Resolve<ISession>();
             await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM AllReferencesAndID_")

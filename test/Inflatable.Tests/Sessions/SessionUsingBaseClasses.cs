@@ -15,7 +15,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassDelete()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -64,7 +64,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassInsert()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -110,7 +110,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassUpdate()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()

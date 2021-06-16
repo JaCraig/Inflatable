@@ -17,7 +17,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task BaseClassSelect()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -63,7 +63,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Count()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
@@ -122,7 +122,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task CustomPropertyLoading()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
 
             var TestObject = new MapPropertiesCustomLoad
             {
@@ -150,7 +150,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Distinct()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<SimpleClassNoID>.CreateQuery().Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var TempData = new SimpleClassNoID[] {
@@ -213,7 +213,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task First()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
@@ -266,7 +266,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task ManyToOneWithNonMergeBaseClass()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             var TempData = new CompanyManyToOne[] {
                 new CompanyManyToOne()
                 {
@@ -300,7 +300,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task OrderBy()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -354,7 +354,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Select()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -401,7 +401,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Take()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -446,7 +446,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task WhereStartsWith()
         {
-            var TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<SimpleClassNoID>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
