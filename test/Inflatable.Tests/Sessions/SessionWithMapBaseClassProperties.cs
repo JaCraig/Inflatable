@@ -34,9 +34,9 @@ namespace Inflatable.Tests.Sessions
                 new TestDatabaseMapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            GetLogger<MappingManager>(),
-            ObjectPool);
-            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            ObjectPool,
+            GetLogger<MappingManager>());
+            InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
 
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
             InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
@@ -78,7 +78,7 @@ namespace Inflatable.Tests.Sessions
         public async Task DeleteWithNoDataInDatabase()
         {
             await DeleteData().ConfigureAwait(false);
-            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
             var Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default").ConfigureAwait(false);
             await TestObject.Delete(Result.ToArray()).ExecuteAsync().ConfigureAwait(false);
@@ -195,7 +195,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            var TestObject = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            var TestObject = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var Session = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()

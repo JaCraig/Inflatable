@@ -62,20 +62,18 @@ namespace Inflatable.Sessions.Commands
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override int Execute(IMappingSource source, DynamoFactory dynamoFactory)
+        public override int Execute(IMappingSource source)
         {
-            return Task.Run(async () => await ExecuteAsync(source, dynamoFactory).ConfigureAwait(false)).GetAwaiter().GetResult();
+            return Task.Run(async () => await ExecuteAsync(source).ConfigureAwait(false)).GetAwaiter().GetResult();
         }
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public override async Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory)
+        public override async Task<int> ExecuteAsync(IMappingSource source)
         {
             if (Objects.Length == 0)
             {
@@ -83,7 +81,7 @@ namespace Inflatable.Sessions.Commands
             }
 
             var ReturnValue = 0;
-            CreateBatch(source, dynamoFactory, out var Batch, out var DeclarationBatch, out var ObjectsSeen);
+            CreateBatch(source, out var Batch, out var DeclarationBatch, out var ObjectsSeen);
             if (ObjectsSeen.Count == 0)
             {
                 return 0;
@@ -92,8 +90,8 @@ namespace Inflatable.Sessions.Commands
             ValidateObjects(ObjectsSeen);
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
-            Batch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
-            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
+            Batch = QueryProviderManager.CreateBatch(source.Source);
+            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
             SaveJoins(source, Batch, DeclarationBatch, ObjectsSeen);
             Batch = DeclarationBatch.RemoveDuplicateCommands().AddQuery(Batch);
             ReturnValue += await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false);
@@ -232,14 +230,13 @@ namespace Inflatable.Sessions.Commands
         /// Creates the batch.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <param name="Batch">The batch.</param>
         /// <param name="DeclarationBatch">The declaration batch.</param>
         /// <param name="ObjectsSeen">The objects seen.</param>
-        private void CreateBatch(IMappingSource source, DynamoFactory dynamoFactory, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen)
+        private void CreateBatch(IMappingSource source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen)
         {
-            Batch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
-            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source, dynamoFactory);
+            Batch = QueryProviderManager.CreateBatch(source.Source);
+            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
             ObjectsSeen = new List<object>();
             for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
             {

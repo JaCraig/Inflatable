@@ -47,7 +47,7 @@ namespace Inflatable.Tests.Sessions
         public async Task DeleteWithNoDataInDatabase()
         {
             await DeleteDatabaseData().ConfigureAwait(false);
-            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             var Result = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT TOP 1 ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default").ConfigureAwait(false);
@@ -235,7 +235,7 @@ namespace Inflatable.Tests.Sessions
         public async Task UpdateWithNoDataInDatabase()
         {
             await DeleteDatabaseData().ConfigureAwait(false);
-            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TestObject = Canister.Builder.Bootstrapper.Resolve<ISession>();
 
             var Result = new AllReferencesAndID()
@@ -260,7 +260,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
-            _ = new SchemaManager(MappingManager, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             _ = Canister.Builder.Bootstrapper.Resolve<ISession>();
             await Helper
                 .CreateBatch()

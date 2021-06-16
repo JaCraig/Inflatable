@@ -75,11 +75,6 @@ namespace Inflatable.Aspect
         }
 
         /// <summary>
-        /// The exception caught constant
-        /// </summary>
-        private const string ExceptionCaughtConst = "var Exception=CaughtException;";
-
-        /// <summary>
         /// Set of assemblies that the aspect requires
         /// </summary>
         public ICollection<MetadataReference> AssembliesUsing { get; }
@@ -164,6 +159,11 @@ namespace Inflatable.Aspect
         };
 
         /// <summary>
+        /// The exception caught constant
+        /// </summary>
+        private const string ExceptionCaughtConst = "var Exception=CaughtException;";
+
+        /// <summary>
         /// Used to hook into the object once it has been created
         /// </summary>
         /// <param name="value">Object created by the system</param>
@@ -230,7 +230,7 @@ namespace Inflatable.Aspect
         public string SetupInterfaces(Type type)
         {
             var Builder = ObjectPool.Get();
-            foreach (var InterfaceHelper in InterfaceImplementationHelpers)
+            foreach (var InterfaceHelper in InterfaceImplementationHelpers.OrderBy(x => x.Order))
             {
                 Builder.AppendLine(InterfaceHelper.Setup(type, this, ObjectPool));
             }

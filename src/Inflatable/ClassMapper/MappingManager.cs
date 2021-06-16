@@ -45,16 +45,16 @@ namespace Inflatable.ClassMapper
             IEnumerable<IMapping> mappings,
             IEnumerable<IDatabase> sources,
             QueryProviderManager queryProvider,
-            ILogger<MappingManager>? logger,
-            ObjectPool<StringBuilder> objectPool)
+            ObjectPool<StringBuilder> objectPool,
+            ILogger<MappingManager>? logger = null)
         {
             Logger = logger;
             ObjectPool = objectPool ?? throw new ArgumentNullException(nameof(objectPool));
             mappings ??= Array.Empty<IMapping>();
 
-            var Debug = Logger.IsEnabled(LogLevel.Debug);
+            var Debug = Logger?.IsEnabled(LogLevel.Debug) ?? false;
 
-            Logger.LogInformation("Setting up mapping information");
+            Logger?.LogInformation("Setting up mapping information");
             var TempSourceMappings = new ListMapping<Type, IMapping>();
             foreach (var Item in mappings)
             {
@@ -80,7 +80,7 @@ namespace Inflatable.ClassMapper
                 {
                     Builder.AppendLine(Sources[i].ToString());
                 }
-                Logger.LogDebug("{0}", Builder.ToString());
+                Logger?.LogDebug("{0}", Builder.ToString());
                 ObjectPool.Return(Builder);
             }
         }
@@ -89,7 +89,7 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the logger.
         /// </summary>
         /// <value>The logger.</value>
-        public ILogger Logger { get; set; }
+        public ILogger? Logger { get; set; }
 
         /// <summary>
         /// Gets or sets the ObjectPool.

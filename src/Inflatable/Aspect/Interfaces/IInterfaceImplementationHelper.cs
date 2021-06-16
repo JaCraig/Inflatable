@@ -26,6 +26,12 @@ namespace Inflatable.Aspect.Interfaces
     public interface IInterfaceImplementationHelper
     {
         /// <summary>
+        /// Gets the order.
+        /// </summary>
+        /// <value>The order.</value>
+        int Order { get; }
+
+        /// <summary>
         /// Setups the specified type.
         /// </summary>
         /// <param name="type">The type.</param>

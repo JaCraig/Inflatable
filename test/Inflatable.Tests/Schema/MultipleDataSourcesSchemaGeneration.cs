@@ -27,8 +27,8 @@ namespace Inflatable.Tests.Schema
                 new TestDatabase2Mapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            GetLogger<MappingManager>(),
-            ObjectPool);
+            ObjectPool,
+            GetLogger<MappingManager>());
         }
 
         private MappingManager Mappings { get; }
@@ -46,7 +46,7 @@ namespace Inflatable.Tests.Schema
                     .ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
             catch { }
-            var TestObject = new SchemaManager(Mappings, Configuration, GetLogger<SchemaManager>(), DataModeler, Sherlock, Helper);
+            var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             Assert.Equal(2, TestObject.Models.Count());
             var TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase");
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);

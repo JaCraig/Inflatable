@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
@@ -43,7 +42,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <param name="stringBuilderPool">The string builder pool.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">configuration</exception>
-        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, ILogger<SQLHelper> logger)
+        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, ILogger<SQLHelper> logger = null)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             StringBuilderPool = stringBuilderPool;
@@ -88,9 +87,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory) => new SQLHelper(StringBuilderPool!, dynamoFactory, Configuration, Logger).CreateBatch(Provider, source?.Name ?? string.Empty);
+        public SQLHelper Batch(IDatabase source) => new SQLHelper(StringBuilderPool!, Configuration, Logger).CreateBatch(Provider, source?.Name ?? string.Empty);
 
         /// <summary>
         /// Creates a generator object

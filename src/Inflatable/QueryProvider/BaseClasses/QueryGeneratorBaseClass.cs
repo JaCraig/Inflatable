@@ -21,6 +21,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Microsoft.Extensions.ObjectPool;
+using ObjectCartographer;
 using System;
 using System.Data;
 using System.Globalization;
@@ -188,7 +189,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="iDProperty">The i d property.</param>
         /// <returns>The parameter type name</returns>
-        protected string GetParameterType(IIDProperty iDProperty) => iDProperty?.PropertyType.To(SqlDbType.Int).ToString().ToUpper(CultureInfo.InvariantCulture) ?? string.Empty;
+        protected string GetParameterType(IIDProperty iDProperty) => iDProperty?.PropertyType.To<SqlDbType>().ToString().ToUpper(CultureInfo.InvariantCulture) ?? string.Empty;
 
         /// <summary>
         /// Gets the name of the parent column.

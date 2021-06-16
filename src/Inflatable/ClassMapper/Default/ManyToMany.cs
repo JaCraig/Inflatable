@@ -22,6 +22,7 @@ using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Utils;
+using ObjectCartographer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -177,7 +178,7 @@ namespace Inflatable.ClassMapper.Default
             foreach (var ParentIDMapping in ParentIDMappings)
             {
                 JoinTable.AddColumn<object>(Prefix + ParentIDMapping.ParentMapping.TableName + ParentIDMapping.ColumnName,
-                                ParentIDMapping.PropertyType.To(DbType.Int32),
+                                ParentIDMapping.PropertyType.To<DbType>(),
                                 ParentIDMapping.MaxLength,
                                 false,
                                 false,
@@ -197,7 +198,7 @@ namespace Inflatable.ClassMapper.Default
                 foreach (var ForeignIDMapping in TempMapping.IDProperties)
                 {
                     JoinTable.AddColumn<object>(ForeignIDMapping.ParentMapping.TableName + ForeignIDMapping.ColumnName,
-                                    ForeignIDMapping.PropertyType.To(DbType.Int32),
+                                    ForeignIDMapping.PropertyType.To<DbType>(),
                                     ForeignIDMapping.MaxLength,
                                     false,
                                     false,

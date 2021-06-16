@@ -82,17 +82,15 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract int Execute(IMappingSource source, DynamoFactory dynamoFactory);
+        public abstract int Execute(IMappingSource source);
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>The number of rows that are modified.</returns>
-        public abstract Task<int> ExecuteAsync(IMappingSource source, DynamoFactory dynamoFactory);
+        public abstract Task<int> ExecuteAsync(IMappingSource source);
 
         /// <summary>
         /// Merges the specified command.

@@ -19,7 +19,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
-            var Result = TestObject.CreateBatch(new MockDatabaseMapping(), DynamoFactory);
+            var Result = TestObject.CreateBatch(new MockDatabaseMapping());
             Assert.NotNull(Result);
         }
 

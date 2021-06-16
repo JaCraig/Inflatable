@@ -15,10 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.LinqExpression.WhereClauses.Interfaces;
+using ObjectCartographer;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -94,7 +94,7 @@ namespace Inflatable.LinqExpression.WhereClauses
                     break;
 
                 default:
-                    ReturnValue.Add(new Parameter<object>(Count.ToString(), Value.GetType().To(DbType.Int32), Value));
+                    ReturnValue.Add(new Parameter<object>(Count.ToString(), Value.GetType().To<DbType>(), Value));
                     break;
             }
             return ReturnValue;

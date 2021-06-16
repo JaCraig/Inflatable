@@ -1,5 +1,5 @@
-﻿using BigBook.DataMapper.Interfaces;
-using Inflatable.ClassMapper.Interfaces;
+﻿using Inflatable.ClassMapper.Interfaces;
+using Inflatable.Interfaces;
 using System.Collections.Generic;
 
 namespace Inflatable.QueryProvider.MappingData

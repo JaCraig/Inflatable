@@ -19,6 +19,7 @@ using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using ObjectCartographer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -69,16 +70,6 @@ namespace Inflatable.ClassMapper.BaseClasses
             _HashCode = Name.GetHashCode(StringComparison.Ordinal) * ParentMapping.GetHashCode() % int.MaxValue;
             _ToString = $"{PropertyType.GetName()} {ParentMapping}.{Name}";
         }
-
-        /// <summary>
-        /// The hash code
-        /// </summary>
-        private readonly int _HashCode;
-
-        /// <summary>
-        /// To string
-        /// </summary>
-        private readonly string _ToString;
 
         /// <summary>
         /// Gets a value indicating whether to [automatic increment].
@@ -192,6 +183,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         protected Action<TClassType, TDataType> SetAction { get; set; }
 
         /// <summary>
+        /// The hash code
+        /// </summary>
+        private readonly int _HashCode;
+
+        /// <summary>
+        /// To string
+        /// </summary>
+        private readonly string _ToString;
+
+        /// <summary>
         /// != operator
         /// </summary>
         /// <param name="left">left item</param>
@@ -279,7 +280,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public void AddToChildTable(ITable table)
         {
             table?.AddColumn(ParentMapping.TableName + ColumnName,
-                PropertyType.To(DbType.Int32),
+                PropertyType.To<DbType>(),
                 MaxLength,
                 Nullable,
                 false,
@@ -301,7 +302,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public void AddToTable(ITable table)
         {
             table?.AddColumn(ColumnName,
-                PropertyType.To(DbType.Int32),
+                PropertyType.To<DbType>(),
                 MaxLength,
                 Nullable,
                 AutoIncrement,

@@ -21,6 +21,7 @@ using Inflatable.QueryProvider.BaseClasses;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Interfaces;
 using Microsoft.Extensions.ObjectPool;
+using ObjectCartographer;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -153,7 +154,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                         TempParameter!);
                 }
                 return new Parameter<object>(Prefix + x.ParentMapping.TableName + x.ColumnName,
-                    x.PropertyType.To<Type, SqlDbType>(),
+                    x.PropertyType.To<SqlDbType>(),
                     Value);
             }));
             return ReturnValues.ToArray();

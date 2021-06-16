@@ -30,8 +30,8 @@ namespace Inflatable.Tests.ClassMapper
                 new MockDatabaseMapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            GetLogger<MappingManager>(),
-            ObjectPool)
+            ObjectPool,
+            GetLogger<MappingManager>())
             .Sources
             .First();
             Assert.Equal(5, TestObject.Mappings.Count);
@@ -86,8 +86,8 @@ namespace Inflatable.Tests.ClassMapper
                 new MockDatabaseMapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            GetLogger<MappingManager>(),
-            ObjectPool)
+            ObjectPool,
+            GetLogger<MappingManager>())
             .Sources
             .First();
             Assert.Single(TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties);

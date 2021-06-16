@@ -22,6 +22,7 @@ using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.Utils;
+using ObjectCartographer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -135,7 +136,7 @@ namespace Inflatable.ClassMapper.Default
                     }
 
                     ParentTable.AddColumn<object>(ColumnName + TempMapping.TableName + IDMapping.ColumnName,
-                                    IDMapping.PropertyType.To(DbType.Int32),
+                                    IDMapping.PropertyType.To<DbType>(),
                                     IDMapping.MaxLength,
                                     true,
                                     false,

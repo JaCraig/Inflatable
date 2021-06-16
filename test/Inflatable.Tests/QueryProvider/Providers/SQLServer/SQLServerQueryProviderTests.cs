@@ -17,7 +17,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         public void Batch()
         {
             var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger);
-            var Result = TestObject.Batch(new TestDatabases.Databases.TestDatabase2Mapping(), DynamoFactory);
+            var Result = TestObject.Batch(new TestDatabases.Databases.TestDatabase2Mapping());
             Assert.NotNull(Result);
         }
 

@@ -16,6 +16,7 @@ limitations under the License.
 
 using BigBook;
 using Inflatable.ClassMapper.Column.Interfaces;
+using ObjectCartographer;
 using SQLHelperDB.HelperClasses;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
@@ -164,7 +165,7 @@ namespace Inflatable.ClassMapper.Column
                 var TempParameter = ParamValue as string;
                 return new StringParameter(PropertyName, TempParameter!);
             }
-            return new Parameter<object>(PropertyName, PropertyType.To<Type, DbType>(), ParamValue);
+            return new Parameter<object>(PropertyName, PropertyType.To<DbType>(), ParamValue);
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Inflatable.ClassMapper.Column
                 var TempParameter = ParamValue as string;
                 return new StringParameter(PropertyName, TempParameter!);
             }
-            return new Parameter<object>(PropertyName, PropertyType.To<Type, DbType>(), ParamValue);
+            return new Parameter<object>(PropertyName, PropertyType.To<DbType>(), ParamValue);
         }
 
         /// <summary>

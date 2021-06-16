@@ -193,7 +193,7 @@ namespace Inflatable.QueryProvider
             }
 
             var Value = value.To(Query.ReturnType);
-            ((IORMObject)Value).Session0 = Session;
+            ((IORMObject)Value).InitializeORMObject0(Session);
             return Value;
         }
     }

@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-using BigBook;
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using SQLHelperDB;
@@ -36,9 +35,8 @@ namespace Inflatable.QueryProvider.Interfaces
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>A batch object</returns>
-        SQLHelper Batch(IDatabase source, DynamoFactory dynamoFactory);
+        SQLHelper Batch(IDatabase source);
 
         /// <summary>
         /// Creates a generator object

@@ -19,6 +19,7 @@ using Data.Modeler.Providers.Interfaces;
 using Inflatable.ClassMapper.Column.Interfaces;
 using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
+using ObjectCartographer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -252,7 +253,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         public void AddToTable(ITable table)
         {
             table.AddColumn(ColumnName,
-                PropertyType.To(DbType.Int32),
+                PropertyType.To<DbType>(),
                 MaxLength,
                 Nullable,
                 false,

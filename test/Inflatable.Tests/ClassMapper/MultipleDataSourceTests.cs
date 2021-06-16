@@ -24,8 +24,8 @@ namespace Inflatable.Tests.ClassMapper
                 new SecondMockDatabaseMapping()
             },
             new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, SQLHelperLogger) }, GetLogger<QueryProviderManager>()),
-            GetLogger<MappingManager>(),
-            ObjectPool);
+            ObjectPool,
+            GetLogger<MappingManager>());
 
             Assert.Equal(2, TestObject.Sources.Count());
             var Source1 = TestObject.Sources.First(x => x.Source.GetType() == typeof(MockDatabaseMapping));

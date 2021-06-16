@@ -42,12 +42,12 @@ namespace Inflatable.Schema
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="config">The configuration.</param>
-        /// <param name="logger">The logger.</param>
         /// <param name="dataModeler">The data modeler.</param>
         /// <param name="sherlock">The sherlock.</param>
         /// <param name="batch">The batch.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">source or config or logger</exception>
-        public DataModel(IMappingSource source, IConfiguration config, ILogger logger, DataModeler dataModeler, Sherlock sherlock, SQLHelper batch)
+        public DataModel(IMappingSource source, IConfiguration config, DataModeler dataModeler, Sherlock sherlock, SQLHelper batch, ILogger? logger = null)
         {
             if (config is null)
                 throw new ArgumentNullException(nameof(config));

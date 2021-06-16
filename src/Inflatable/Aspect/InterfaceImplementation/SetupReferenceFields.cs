@@ -30,6 +30,12 @@ namespace Inflatable.Aspect.InterfaceImplementation
     public class SetupReferenceFields : IInterfaceImplementationHelper
     {
         /// <summary>
+        /// Gets the order.
+        /// </summary>
+        /// <value>The order.</value>
+        public int Order { get; }
+
+        /// <summary>
         /// Setups the specified type.
         /// </summary>
         /// <param name="type">The type.</param>

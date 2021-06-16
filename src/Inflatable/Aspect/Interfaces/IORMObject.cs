@@ -36,5 +36,11 @@ namespace Inflatable.Aspect.Interfaces
         /// </summary>
         /// <value>The ORM session object.</value>
         ISession Session0 { get; set; }
+
+        /// <summary>
+        /// Initializes the orm object.
+        /// </summary>
+        /// <param name="session">The session.</param>
+        void InitializeORMObject0(ISession session);
     }
 }

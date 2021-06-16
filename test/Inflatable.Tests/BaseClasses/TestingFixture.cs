@@ -1,5 +1,4 @@
-﻿using BigBook;
-using Data.Modeler;
+﻿using Data.Modeler;
 using Holmes;
 using Inflatable.ClassMapper;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +15,6 @@ namespace Inflatable.Tests.BaseClasses
     {
         public static IConfiguration Configuration => Canister.Builder.Bootstrapper.Resolve<IConfigurationRoot>();
         public static DataModeler DataModeler => Canister.Builder.Bootstrapper.Resolve<DataModeler>();
-        public static DynamoFactory DynamoFactory => Canister.Builder.Bootstrapper.Resolve<DynamoFactory>();
         public static SQLHelper Helper => Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
         public static MappingManager MappingManager => Canister.Builder.Bootstrapper.Resolve<MappingManager>();
         public static ObjectPool<StringBuilder> ObjectPool => Canister.Builder.Bootstrapper.Resolve<ObjectPool<StringBuilder>>();

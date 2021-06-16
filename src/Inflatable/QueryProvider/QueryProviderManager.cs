@@ -39,10 +39,10 @@ namespace Inflatable.QueryProvider
         /// <param name="providers">The providers.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">providers</exception>
-        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger<QueryProviderManager> logger)
+        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger<QueryProviderManager> logger = null)
         {
             Logger = logger;
-            IsDebug = Logger.IsEnabled(LogLevel.Debug);
+            IsDebug = Logger?.IsEnabled(LogLevel.Debug) ?? false;
             providers ??= Array.Empty<Interfaces.IQueryProvider>();
             foreach (var Provider in providers.Where(x => x.GetType().Assembly != typeof(QueryProviderManager).Assembly))
             {
@@ -97,11 +97,10 @@ namespace Inflatable.QueryProvider
         /// Creates a batch.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="dynamoFactory">The dynamo factory.</param>
         /// <returns>Creates a batch</returns>
         /// <exception cref="ArgumentNullException">source</exception>
         /// <exception cref="ArgumentException">Provider not found</exception>
-        public SQLHelper CreateBatch(IDatabase source, DynamoFactory dynamoFactory)
+        public SQLHelper CreateBatch(IDatabase source)
         {
             if (source is null)
             {
@@ -118,7 +117,7 @@ namespace Inflatable.QueryProvider
                 Logger.LogDebug("Creating batch for data source {0}", source.Name);
             }
 
-            return QueryProvider.Batch(source, dynamoFactory);
+            return QueryProvider.Batch(source);
         }
 
         /// <summary>

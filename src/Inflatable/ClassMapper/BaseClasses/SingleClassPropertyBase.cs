@@ -21,6 +21,7 @@ using Inflatable.ClassMapper.Interfaces;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
+using ObjectCartographer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -212,7 +213,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ForeignMapping.ForEach(TempMapping => TempMapping.IDProperties.ForEach(x =>
              {
                  table.AddColumn<object>(TempMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
-                                 x.PropertyType.To(DbType.Int32),
+                                 x.PropertyType.To<DbType>(),
                                  x.MaxLength,
                                  true,
                                  false,

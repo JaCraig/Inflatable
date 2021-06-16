@@ -1,6 +1,7 @@
 ﻿using Inflatable.Schema;
 using Inflatable.Sessions;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using SQLHelperDB;
 using System;
 using System.Data;
@@ -27,14 +28,11 @@ namespace Inflatable.Tests.Fixtures
     {
         public SetupFixture()
         {
-            if (Canister.Builder.Bootstrapper == null)
+            if (Canister.Builder.Bootstrapper is null)
             {
                 var Services = new ServiceCollection();
-                Services.AddLogging()
-                    .AddCanisterModules(x => x.AddAssembly(typeof(SetupFixture).Assembly)
-                                                .RegisterInflatable()
-                                                .RegisterFileCurator()
-                                                .RegisterTestFountain());
+                Services.AddLogging(builder => builder.AddSerilog())
+                    .AddCanisterModules();
                 Canister.Builder.Bootstrapper.Resolve<ISession>();
             }
 
