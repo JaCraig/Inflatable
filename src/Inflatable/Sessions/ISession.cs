@@ -28,6 +28,11 @@ namespace Inflatable.Sessions
     public interface ISession
     {
         /// <summary>
+        /// Clears the cache.
+        /// </summary>
+        void ClearCache();
+
+        /// <summary>
         /// Deletes the specified objects to delete.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>

@@ -28,6 +28,7 @@ namespace Inflatable.Tests.BaseClasses
         public ObjectPool<StringBuilder> ObjectPool => Resolve<ObjectPool<StringBuilder>>();
         public SchemaManager SchemaManager => Resolve<SchemaManager>();
         public Sherlock Sherlock => Resolve<Sherlock>();
+        protected static readonly object TestRunLock = new object();
         protected static string DatabaseName = "TestDatabase";
         protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false";
 
@@ -42,6 +43,7 @@ namespace Inflatable.Tests.BaseClasses
         }
 
         public static T Resolve<T>()
+             where T : class
         {
             try
             {

@@ -30,7 +30,7 @@ namespace Inflatable.Tests.Modules
                                             .WriteTo
                                             .File("./Log.txt")
                                             .MinimumLevel
-                                            .Information()
+                                            .Debug()
                                             .CreateLogger();
             bootstrapper.Register<ILogger>(Log.Logger,
                                         ServiceLifetime.Singleton);

@@ -110,6 +110,14 @@ namespace Inflatable.Sessions
         private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
+        /// Clears the cache.
+        /// </summary>
+        public void ClearCache()
+        {
+            Cache.Compact(100);
+        }
+
+        /// <summary>
         /// Adds the objects for deletion.
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>

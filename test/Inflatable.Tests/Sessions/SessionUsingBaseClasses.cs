@@ -1,4 +1,5 @@
 ﻿using BigBook;
+using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
@@ -13,10 +14,11 @@ namespace Inflatable.Tests.Sessions
     public class SessionUsingBaseClasses : TestingFixture
     {
         [Fact]
-        public async Task BaseClassDelete()
+        public void BaseClassDelete()
         {
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TempSession = Resolve<ISession>();
-            await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
+            AsyncHelper.RunSync(() => TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync());
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -49,11 +51,11 @@ namespace Inflatable.Tests.Sessions
                     BaseClassValue1=3
                 }
             };
-            await TempSession.Save(TempData).ExecuteAsync().ConfigureAwait(false);
+            AsyncHelper.RunSync(() => TempSession.Save(TempData).ExecuteAsync());
 
             var TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.BaseClassValue1 > 2).ToArray();
 
-            var ResultCount = await TempSession.Delete(TestObject).ExecuteAsync().ConfigureAwait(false);
+            var ResultCount = AsyncHelper.RunSync(() => TempSession.Delete(TestObject).ExecuteAsync());
             Assert.Equal(2, ResultCount);
             TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(4, TestObject.Length);
@@ -64,6 +66,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassInsert()
         {
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {
@@ -110,6 +113,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task BaseClassUpdate()
         {
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync().ConfigureAwait(false);
             var TempData = new BaseClass1[] {

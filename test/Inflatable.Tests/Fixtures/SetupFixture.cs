@@ -57,10 +57,14 @@ namespace Inflatable.Tests.Fixtures
         }
 
         public static T Resolve<T>()
+             where T : class
         {
             try
             {
-                return Provider.GetRequiredService<T>();
+                var Result = Canister.Builder.Bootstrapper?.Resolve<T>();
+                if (Result is ISession ResultSession)
+                    ResultSession.ClearCache();
+                return Result;
             }
             catch { }
             return default;

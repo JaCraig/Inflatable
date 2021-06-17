@@ -1,4 +1,5 @@
-﻿using Inflatable.Sessions;
+﻿using Inflatable.Schema;
+using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
@@ -213,6 +214,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task First()
         {
+            _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             var TempSession = Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -247,19 +249,19 @@ namespace Inflatable.Tests
             var Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).First();
             Assert.Equal(4, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            Result = TestObject.Where(x => x.ID == 6).First();
+            Result = TestObject.Where(x => x.ID == 600).First();
             Assert.Null(Result);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).FirstOrDefault();
             Assert.Equal(4, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            Result = TestObject.Where(x => x.ID == 6).FirstOrDefault();
+            Result = TestObject.Where(x => x.ID == 600).FirstOrDefault();
             Assert.Null(Result);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Single();
             Assert.Equal(4, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            Result = TestObject.Where(x => x.ID == 6).SingleOrDefault();
+            Result = TestObject.Where(x => x.ID == 600).SingleOrDefault();
             Assert.Null(Result);
         }
 
