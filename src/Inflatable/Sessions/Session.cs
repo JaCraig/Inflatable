@@ -78,16 +78,6 @@ namespace Inflatable.Sessions
         }
 
         /// <summary>
-        /// The mapping manager
-        /// </summary>
-        private readonly MappingManager MappingManager;
-
-        /// <summary>
-        /// The query provider manager
-        /// </summary>
-        private readonly QueryProviderManager QueryProviderManager;
-
-        /// <summary>
         /// Gets the aspectus.
         /// </summary>
         /// <value>The aspectus.</value>
@@ -116,6 +106,16 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <value>The options.</value>
         private InflatableOptions Options { get; }
+
+        /// <summary>
+        /// The mapping manager
+        /// </summary>
+        private readonly MappingManager MappingManager;
+
+        /// <summary>
+        /// The query provider manager
+        /// </summary>
+        private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
         /// Clears the cache.
@@ -177,8 +177,6 @@ namespace Inflatable.Sessions
             Commands.Clear();
             return Result;
         }
-
-        --
 
         /// <summary>
         /// Executes the specified command and returns items of a specific type.
