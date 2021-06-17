@@ -59,7 +59,8 @@ namespace Inflatable.Sessions
         /// <exception cref="ArgumentNullException">
         /// mappingManager or queryProviderManager or logger
         /// </exception>
-        public Session(DataMapper dataMapper,
+        public Session(Aspectus.Aspectus aspectus,
+            DataMapper dataMapper,
             MappingManager mappingManager,
             SchemaManager schemaManager,
             QueryProviderManager queryProviderManager,
@@ -73,7 +74,24 @@ namespace Inflatable.Sessions
             Logger = logger;
             Options = options.FirstOrDefault()?.Value ?? InflatableOptions.Default;
             Cache = cacheManager?.GetOrAddCache(new InMemoryCacheOptions { MaxCacheSize = Options.MaxCacheSize, CompactionPercentage = .2, ScanFrequency = Options.ScanFrequency }, "Inflatable");
+            Aspectus = aspectus;
         }
+
+        /// <summary>
+        /// The mapping manager
+        /// </summary>
+        private readonly MappingManager MappingManager;
+
+        /// <summary>
+        /// The query provider manager
+        /// </summary>
+        private readonly QueryProviderManager QueryProviderManager;
+
+        /// <summary>
+        /// Gets the aspectus.
+        /// </summary>
+        /// <value>The aspectus.</value>
+        private Aspectus.Aspectus Aspectus { get; }
 
         /// <summary>
         /// Gets the cache manager.
@@ -98,16 +116,6 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <value>The options.</value>
         private InflatableOptions Options { get; }
-
-        /// <summary>
-        /// The mapping manager
-        /// </summary>
-        private readonly MappingManager MappingManager;
-
-        /// <summary>
-        /// The query provider manager
-        /// </summary>
-        private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
         /// Clears the cache.
@@ -170,6 +178,8 @@ namespace Inflatable.Sessions
             return Result;
         }
 
+        --
+
         /// <summary>
         /// Executes the specified command and returns items of a specific type.
         /// </summary>
@@ -210,7 +220,8 @@ namespace Inflatable.Sessions
                                                                                                     QueryType.LinqQuery,
                                                                                                     Parameters.ToArray()),
                                                                                         x.Cast<Dynamo>(),
-                                                                                        this))
+                                                                                        this,
+                                                                                        Aspectus))
 ;
 
                 QueryResults.CacheValues(KeyName, Results, Cache, Options);
@@ -396,7 +407,7 @@ namespace Inflatable.Sessions
                     if (x >= Queries.Length)
                         continue;
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
-                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this);
+                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this, Aspectus);
                     var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));
                     if (Result != null)
                     {
@@ -452,7 +463,7 @@ namespace Inflatable.Sessions
                 for (int x = 0, ResultListsCount = ResultLists.Count; x < ResultListsCount; ++x)
                 {
                     var IDProperties = Source.GetParentMapping(Queries[x].ReturnType).SelectMany(y => y.IDProperties);
-                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this);
+                    var TempQuery = new QueryResults(Queries[x], ResultLists[x].Cast<Dynamo>(), this, Aspectus);
                     var Result = Results.Find(y => y.CanCopy(TempQuery, IDProperties));
                     if (Result != null)
                     {
@@ -592,7 +603,7 @@ namespace Inflatable.Sessions
             for (int x = 0, ResultCount = Result.Count; x < ResultCount; ++x)
             {
                 var IDProperties = source.Key.GetParentMapping(ResultingQueries[x].ReturnType).SelectMany(y => y.IDProperties);
-                var TempResult = new QueryResults(ResultingQueries[x], Result[x].Cast<Dynamo>(), this);
+                var TempResult = new QueryResults(ResultingQueries[x], Result[x].Cast<Dynamo>(), this, Aspectus);
                 var CopyResult = results.Find(y => y.CanCopy(TempResult, IDProperties));
                 if (CopyResult is null && firstRun)
                 {

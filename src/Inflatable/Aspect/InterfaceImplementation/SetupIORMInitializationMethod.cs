@@ -48,6 +48,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
             {
                 Builder.AppendLine(Field.InternalFieldName + "Loaded = false;");
             }
+            Builder.AppendLine("PropertiesChanged0.Clear();");
             Builder.AppendLine("}");
             var Result = Builder.ToString();
             objectPool.Return(Builder);

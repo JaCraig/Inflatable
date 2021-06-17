@@ -39,13 +39,18 @@ namespace Inflatable.QueryProvider
         /// <param name="query">The query.</param>
         /// <param name="values">The values.</param>
         /// <param name="session">The session.</param>
+        /// <param name="aspectus">The aspectus.</param>
+        /// <exception cref="System.ArgumentNullException">session or query</exception>
         /// <exception cref="ArgumentNullException">query</exception>
-        public QueryResults(IQuery query, IEnumerable<Dynamo> values, ISession session)
+        public QueryResults(IQuery query, IEnumerable<Dynamo> values, ISession session, Aspectus.Aspectus aspectus)
         {
             Session = session ?? throw new ArgumentNullException(nameof(session));
             Values = values?.ToList() ?? new List<Dynamo>();
             Query = query ?? throw new ArgumentNullException(nameof(query));
+            Aspectus = aspectus;
         }
+
+        public Aspectus.Aspectus Aspectus { get; }
 
         /// <summary>
         /// Gets the query.
@@ -192,7 +197,7 @@ namespace Inflatable.QueryProvider
                 return null;
             }
 
-            var Value = value.To(Query.ReturnType);
+            var Value = value.To(Aspectus.Create(Query.ReturnType), Query.ReturnType);
             ((IORMObject)Value).InitializeORMObject0(Session);
             return Value;
         }
