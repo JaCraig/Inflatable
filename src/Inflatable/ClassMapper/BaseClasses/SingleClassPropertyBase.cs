@@ -335,5 +335,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <returns>The string representation of the property</returns>
         public override string ToString() => PropertyType.GetName() + " " + ParentMapping + "." + Name;
+
+        /// <summary>
+        /// Sets the name of the column.
+        /// </summary>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns>This</returns>
+        public TReturnType WithColumnName(string columnName)
+        {
+            ColumnName = columnName;
+            return (TReturnType)(IMapProperty<TClassType, TDataType, TReturnType>)this;
+        }
     }
 }

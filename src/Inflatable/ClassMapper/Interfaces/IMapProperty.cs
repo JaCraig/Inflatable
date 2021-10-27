@@ -61,6 +61,13 @@ namespace Inflatable.ClassMapper.Interfaces
         /// </summary>
         /// <returns>This</returns>
         TReturnType OnDeleteDoNothing();
+
+        /// <summary>
+        /// Sets the name of the column.
+        /// </summary>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns>This</returns>
+        TReturnType WithColumnName(string columnName);
     }
 
     /// <summary>
