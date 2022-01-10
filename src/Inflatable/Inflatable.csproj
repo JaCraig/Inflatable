@@ -46,18 +46,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DragonHoard.InMemory" Version="1.0.13" />
-    <PackageReference Include="Holmes" Version="3.0.38" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
+    <PackageReference Include="DragonHoard.InMemory" Version="1.0.14" />
+    <PackageReference Include="Holmes" Version="3.0.39" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SQLHelper.DB" Version="3.1.43" />
-    <PackageReference Include="Data.Modeler" Version="3.0.42" />
+    <PackageReference Include="SQLHelper.DB" Version="3.1.44" />
+    <PackageReference Include="Data.Modeler" Version="3.0.43" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="3.0.6" />
     <PackageReference Include="Mirage" Version="3.0.14" />
     <PackageReference Include="Aspectus" Version="4.0.21" />
-    <PackageReference Include="BigBook" Version="4.0.13" />
+    <PackageReference Include="BigBook" Version="4.0.15" />
   </ItemGroup>
 </Project>
