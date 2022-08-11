@@ -37,8 +37,17 @@ namespace Inflatable
         /// Initializes a new instance of the <see cref="DbContext"/> class.
         /// </summary>
         public DbContext()
+            : this(Canister.Builder.Bootstrapper?.Resolve<ISession>())
         {
-            InternalSession = Canister.Builder.Bootstrapper?.Resolve<ISession>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbContext"/> class.
+        /// </summary>
+        /// <param name="internalSession">The internal session.</param>
+        public DbContext(ISession? internalSession)
+        {
+            InternalSession = internalSession ?? Canister.Builder.Bootstrapper?.Resolve<ISession>();
         }
 
         /// <summary>

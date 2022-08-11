@@ -54,7 +54,8 @@ namespace Inflatable.Modules
                 .RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton)
                 .RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton)
                 .RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton)
-                .Register(typeof(QueryTranslator<>));
+                .Register(typeof(QueryTranslator<>))
+                .Register<DbContext>();
         }
     }
 }
