@@ -55,7 +55,7 @@ namespace Inflatable.Schema
                 throw new ArgumentNullException(nameof(source));
 
             var sourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
-            var sourceSpec = DataModeler.CreateSource(sourceConnection.DatabaseName ?? string.Empty);
+            ISource? sourceSpec = DataModeler.CreateSource(sourceConnection.DatabaseName ?? string.Empty);
             SourceSpec = sourceSpec;
             GeneratedSchemaChanges = Task.Run(async () => await GenerateSchemaAsync(source, logger, dataModeler, sourceConnection, sourceSpec).ConfigureAwait(false)).GetAwaiter().GetResult();
             Task.Run(async () => await AnalyzeSchemaAsync(sherlock, logger, source, sourceConnection, batch).ConfigureAwait(false)).GetAwaiter().GetResult();
@@ -109,22 +109,22 @@ namespace Inflatable.Schema
             }
 
             logger?.LogInformation("Analyzing {0} for suggestions.", sourceConnection.DatabaseName);
-            var Results = await sherlock.AnalyzeAsync(sourceConnection).ConfigureAwait(false);
-            batch.CreateBatch();
-            foreach (var Result in Results)
+            System.Collections.Generic.IEnumerable<Finding>? Results = await sherlock.AnalyzeAsync(sourceConnection).ConfigureAwait(false);
+            _ = batch.CreateBatch();
+            foreach (Finding? Result in Results)
             {
                 logger?.LogInformation("Finding: {0}", Result.Text);
                 logger?.LogInformation("Metrics: {0}", Result.Metrics);
                 logger?.LogInformation("Suggested Fix: {0}", Result.Fix);
                 if (source.ApplyAnalysis && string.IsNullOrEmpty(Result.Fix))
                 {
-                    batch.AddQuery(CommandType.Text, Result.Fix);
+                    _ = batch.AddQuery(CommandType.Text, Result.Fix);
                 }
             }
             if (source.ApplyAnalysis)
             {
                 logger?.LogInformation("Applying fixes for {0}.", sourceConnection.DatabaseName);
-                await batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
+                _ = await batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
         }
 
@@ -147,12 +147,12 @@ namespace Inflatable.Schema
 
             var Debug = logger?.IsEnabled(LogLevel.Debug) ?? false;
 
-            var Generator = dataModeler.GetSchemaGenerator(source.Source.Provider);
+            ISchemaGenerator? Generator = dataModeler.GetSchemaGenerator(source.Source.Provider);
             if (Generator is null)
                 return Array.Empty<string>();
 
             logger?.LogInformation("Getting structure for {0}", sourceConnection.DatabaseName);
-            var OriginalSource = !string.IsNullOrEmpty(sourceConnection.DatabaseName) ? (await Generator.GetSourceStructureAsync(sourceConnection).ConfigureAwait(false)) : null;
+            ISource? OriginalSource = !string.IsNullOrEmpty(sourceConnection.DatabaseName) ? (await Generator.GetSourceStructureAsync(sourceConnection).ConfigureAwait(false)) : null;
 
             SetupTableStructures(logger, sourceConnection, source, sourceSpec);
 
@@ -160,7 +160,7 @@ namespace Inflatable.Schema
             var GeneratedSchemaChanges = Generator.GenerateSchema(sourceSpec, OriginalSource!) ?? Array.Empty<string>();
             if (Debug)
             {
-                logger?.LogDebug("Schema changes generated: {0}", GeneratedSchemaChanges);
+                logger?.LogDebug("Schema changes generated: {0}", new object[] { GeneratedSchemaChanges });
             }
 
             if (!source.UpdateSchema)
@@ -192,72 +192,72 @@ namespace Inflatable.Schema
         private static void SetupTables(ILogger logger, IConnection sourceConnection, IMappingSource source, ISource sourceSpec)
         {
             logger?.LogInformation("Setting up table structure for {0}", sourceConnection.DatabaseName);
-            foreach (var Mapping in source.Mappings.Values.OrderBy(x => x.Order))
+            foreach (IMapping? Mapping in source.Mappings.Values.OrderBy(x => x.Order))
             {
                 if (!DefaultSchemas.Contains(Mapping.SchemaName))
                 {
-                    sourceSpec.Schemas.AddIfUnique(Mapping.SchemaName);
+                    _ = sourceSpec.Schemas.AddIfUnique(Mapping.SchemaName);
                 }
 
-                var Table = sourceSpec.AddTable(Mapping.TableName, Mapping.SchemaName);
-                var Tree = source.TypeGraphs[Mapping.ObjectType];
-                var ParentMappings = Tree?.Root.Nodes.ForEach(x => source.Mappings[x.Data]) ?? Array.Empty<IMapping>();
-                foreach (var ID in Mapping.IDProperties)
+                ITable? Table = sourceSpec.AddTable(Mapping.TableName, Mapping.SchemaName);
+                Utils.Tree<Type>? Tree = source.TypeGraphs[Mapping.ObjectType];
+                System.Collections.Generic.IEnumerable<IMapping>? ParentMappings = Tree?.Root.Nodes.ForEach(x => source.Mappings[x.Data]) ?? Array.Empty<IMapping>();
+                foreach (ClassMapper.Interfaces.IIDProperty? ID in Mapping.IDProperties)
                 {
                     ID.Setup();
                     ID.AddToTable(Table);
                 }
-                foreach (var ID in Mapping.AutoIDProperties)
+                foreach (ClassMapper.Interfaces.IAutoIDProperty? ID in Mapping.AutoIDProperties)
                 {
                     ID.Setup();
                     ID.AddToTable(Table);
                 }
-                foreach (var Reference in Mapping.ReferenceProperties)
+                foreach (ClassMapper.Interfaces.IProperty? Reference in Mapping.ReferenceProperties)
                 {
                     Reference.Setup();
                     Reference.AddToTable(Table);
                 }
-                foreach (var Map in Mapping.MapProperties)
+                foreach (ClassMapper.Interfaces.IMapProperty? Map in Mapping.MapProperties)
                 {
                     Map.Setup(source);
                     Map.AddToTable(Table);
                 }
-                foreach (var Map in Mapping.ManyToManyProperties)
+                foreach (ClassMapper.Interfaces.IManyToManyProperty? Map in Mapping.ManyToManyProperties)
                 {
                     Map.Setup(source, sourceSpec);
                 }
-                foreach (var ParentMapping in ParentMappings)
+                foreach (IMapping? ParentMapping in ParentMappings)
                 {
-                    foreach (var ID in ParentMapping.IDProperties)
+                    foreach (ClassMapper.Interfaces.IIDProperty? ID in ParentMapping.IDProperties)
                     {
                         ID.Setup();
                         ID.AddToChildTable(Table);
                     }
-                    foreach (var ID in ParentMapping.AutoIDProperties)
+                    foreach (ClassMapper.Interfaces.IAutoIDProperty? ID in ParentMapping.AutoIDProperties)
                     {
                         ID.Setup();
                         ID.AddToChildTable(Table);
                     }
                 }
             }
-            foreach (var Mapping in source.Mappings.Values.OrderBy(x => x.Order))
+            foreach (IMapping? Mapping in source.Mappings.Values.OrderBy(x => x.Order))
             {
-                foreach (var Map in Mapping.ManyToOneProperties)
+                foreach (ClassMapper.Interfaces.IManyToOneProperty? Map in Mapping.ManyToOneProperties)
                 {
                     Map.Setup(source, sourceSpec);
                 }
             }
-            foreach (var Mapping in source.Mappings.Values.OrderBy(x => x.Order))
+            foreach (IMapping? Mapping in source.Mappings.Values.OrderBy(x => x.Order))
             {
-                foreach (var Map in Mapping.ManyToOneProperties)
+                foreach (ClassMapper.Interfaces.IManyToOneProperty? Map in Mapping.ManyToOneProperties)
                 {
                     Map.SetColumnInfo(source);
                 }
-                foreach (var Map in Mapping.ManyToManyProperties)
+                foreach (ClassMapper.Interfaces.IManyToManyProperty? Map in Mapping.ManyToManyProperties)
                 {
                     Map.SetColumnInfo(source);
                 }
-                foreach (var Map in Mapping.MapProperties)
+                foreach (ClassMapper.Interfaces.IMapProperty? Map in Mapping.MapProperties)
                 {
                     Map.SetColumnInfo(source);
                 }
