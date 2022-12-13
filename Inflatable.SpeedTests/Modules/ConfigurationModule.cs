@@ -7,10 +7,10 @@ namespace Inflatable.Tests.Modules
 {
     public class ConfigurationModule : IModule
     {
-        protected readonly string ConnectionString = "Data Source=localhost;Initial Catalog=SpeedTestDatabase;Integrated Security=SSPI;Pooling=false";
         public int Order => 1;
+        protected readonly string ConnectionString = "Data Source=localhost;Initial Catalog=SpeedTestDatabase;Integrated Security=SSPI;Pooling=false";
 
-        public void Load(IBootstrapper bootstrapper)
+        public void Load(IServiceCollection bootstrapper)
         {
             if (bootstrapper == null)
             {
@@ -21,11 +21,11 @@ namespace Inflatable.Tests.Modules
                 {
                     { "ConnectionStrings:Default", ConnectionString },
                 };
-            var Configuration = new ConfigurationBuilder()
+            IConfigurationRoot Configuration = new ConfigurationBuilder()
                              .AddInMemoryCollection(dict)
                              .Build();
-            bootstrapper.Register<IConfiguration>(Configuration, ServiceLifetime.Singleton);
-            bootstrapper.Register<IConfigurationRoot>(Configuration, ServiceLifetime.Singleton);
+            bootstrapper.AddSingleton<IConfiguration>(Configuration);
+            bootstrapper.AddSingleton<IConfigurationRoot>(Configuration);
         }
     }
 }

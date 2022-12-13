@@ -18,10 +18,12 @@ namespace TestApp
         private const string StringVal1Const = "A";
         private const string StringVal2Const = "ASDFGHKL";
 
+        private static ServiceProvider Services;
+
         private static void ComplexTest()
         {
             Console.WriteLine("Setting up values");
-            var Values = 200.Times(x =>
+            ComplexClass[] Values = 200.Times(x =>
             {
                 var ReturnValue = new ComplexClass() { Value1 = "A", Value2 = 1, Value3 = 2 };
                 ReturnValue.ManyToOneProperty.Add(new ComplexClass2() { DateValue = DateTime.Now });
@@ -44,7 +46,7 @@ namespace TestApp
 
         private static void DataCleanup()
         {
-            var Helper = Canister.Builder.Bootstrapper.Resolve<SQLHelper>();
+            SQLHelper Helper = Services.GetService<SQLHelper>();
             try
             {
                 Task.Run(async () => await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
@@ -56,12 +58,10 @@ namespace TestApp
 
         private static void Main()
         {
-            var Services = new ServiceCollection();
-            Services.AddLogging()
-                .AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
-                .RegisterInflatable());
+            Services = new ServiceCollection().AddLogging()
+                .AddCanisterModules().BuildServiceProvider();
             Console.WriteLine("Setting up session");
-            Canister.Builder.Bootstrapper.Resolve<ISession>();
+            Services.GetService<ISession>();
             try
             {
                 ComplexTest();
@@ -76,7 +76,7 @@ namespace TestApp
         private static void SimpleTest()
         {
             Console.WriteLine("Setting up values");
-            var Values = 200.Times(x => new SimpleClass() { BoolValue = x % 2 == 0, StringValue1 = StringVal1Const, StringValue2 = StringVal2Const }).ToArray();
+            SimpleClass[] Values = 200.Times(x => new SimpleClass() { BoolValue = x % 2 == 0, StringValue1 = StringVal1Const, StringValue2 = StringVal2Const }).ToArray();
 
             Console.WriteLine("Saving values");
             new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();

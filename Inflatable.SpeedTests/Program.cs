@@ -8,10 +8,10 @@ namespace Inflatable.SpeedTests
     {
         private static void Main(string[] args)
         {
-            new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
+            ServiceProvider Services = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
                 .RegisterSundial()
-                .RegisterInflatable());
-            var Runner = Canister.Builder.Bootstrapper.Resolve<TimedTaskRunner>();
+                .RegisterInflatable()).BuildServiceProvider();
+            TimedTaskRunner Runner = Services.GetService<TimedTaskRunner>();
             Runner.Run();
             Console.ReadKey();
         }

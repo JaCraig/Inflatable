@@ -1,21 +1,22 @@
 ﻿using Inflatable.Sessions;
+using Microsoft.Extensions.DependencyInjection;
 using Sundial.Core.Attributes;
 using Sundial.Core.Interfaces;
+using System;
 
 namespace Inflatable.SpeedTests.Sessions
 {
     [Series("InsertBatch", 10, "HTML")]
     public class SessionInsertBatch : ITimedTask
     {
-        public SessionInsertBatch()
+        public SessionInsertBatch(IServiceProvider serviceProvider)
         {
-            TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            TempSession = serviceProvider.GetService<ISession>();
         }
 
-        private readonly ISession TempSession;
         public bool Baseline => false;
-
         public string Name => "Session Insert Batch";
+        private readonly ISession TempSession;
 
         public void Dispose()
         {

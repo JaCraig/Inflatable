@@ -17,13 +17,15 @@ namespace InflatableBenchmarks.Benchmarks.Tests
     [MemoryDiagnoser, HtmlExporter]
     public class QueryAndCachingSchemeReferencesOnly
     {
+        private IServiceProvider ServiceProvider;
+
         [GlobalCleanup]
         public async Task Cleanup()
         {
             try
             {
-                var Configuration = Canister.Builder.Bootstrapper?.Resolve<IConfiguration>();
-                var Batch = Canister.Builder.Bootstrapper?.Resolve<SQLHelper>();
+                IConfiguration? Configuration = ServiceProvider.GetService<IConfiguration>();
+                SQLHelper? Batch = ServiceProvider.GetService<SQLHelper>();
                 if (Batch is null || Configuration is null)
                     return;
                 await Batch.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
@@ -34,28 +36,22 @@ namespace InflatableBenchmarks.Benchmarks.Tests
         }
 
         [Benchmark]
-        public void NoQuery()
-        {
-            _ = 2500.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
-        }
+        public void NoQuery() => _ = 2500.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
 
         [Benchmark(Baseline = true)]
-        public void OriginalQuery()
-        {
-            DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList();
-        }
+        public void OriginalQuery() => DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList();
 
         [GlobalSetup]
         public void Setup()
         {
-            new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
+            ServiceProvider = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
-                ?.RegisterMirage());
+                ?.RegisterMirage()).BuildServiceProvider();
             Console.WriteLine("Setting up session");
-            Canister.Builder.Bootstrapper?.Resolve<Session>();
+            ServiceProvider.GetService<Session>();
 
             Console.WriteLine("Setting up values");
-            var Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
+            SimpleClass[] Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
 
             Console.WriteLine("Saving values");
             AsyncHelper.RunSync(() => new DbContext().Save(Values).ExecuteAsync());

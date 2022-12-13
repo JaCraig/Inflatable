@@ -22,6 +22,7 @@ using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.Schema;
 using Inflatable.Sessions;
+using Inflatable.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Inflatable.Modules
@@ -41,21 +42,22 @@ namespace Inflatable.Modules
         /// Loads the module using the bootstrapper
         /// </summary>
         /// <param name="bootstrapper">The bootstrapper.</param>
-        public void Load(IBootstrapper bootstrapper)
+        public void Load(IServiceCollection bootstrapper)
         {
-            bootstrapper?.RegisterAll<IMapping>()
-                .RegisterAll<IDatabase>()
-                .RegisterAll<QueryProvider.Interfaces.IQueryProvider>()
-                .Register<MappingManager>(ServiceLifetime.Singleton)
-                .Register<SchemaManager>(ServiceLifetime.Singleton)
-                .Register<QueryProviderManager>(ServiceLifetime.Singleton)
-                .Register<Session>()
-                .Register<ISession, Session>()
-                .RegisterAll<IStartMethodHelper>(ServiceLifetime.Singleton)
-                .RegisterAll<IInterfaceImplementationHelper>(ServiceLifetime.Singleton)
-                .RegisterAll<IEndMethodHelper>(ServiceLifetime.Singleton)
-                .Register(typeof(QueryTranslator<>))
-                .Register<DbContext>();
+            Services.ServiceCollection = bootstrapper;
+            bootstrapper?.AddAllTransient<IMapping>()
+                ?.AddAllTransient<IDatabase>()
+                ?.AddAllTransient<QueryProvider.Interfaces.IQueryProvider>()
+                ?.AddSingleton<MappingManager>()
+                ?.AddSingleton<SchemaManager>()
+                ?.AddSingleton<QueryProviderManager>()
+                ?.AddTransient<Session>()
+                ?.AddTransient<ISession, Session>()
+                ?.AddAllSingleton<IStartMethodHelper>()
+                ?.AddAllSingleton<IInterfaceImplementationHelper>()
+                ?.AddAllSingleton<IEndMethodHelper>()
+                ?.AddTransient(typeof(QueryTranslator<>))
+                ?.AddTransient<DbContext>();
         }
     }
 }

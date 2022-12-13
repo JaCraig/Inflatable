@@ -20,6 +20,8 @@ namespace Inflatable.Benchmarks.Tests
         [Params(10, 50, 100, 1000)]
         public int Count { get; set; }
 
+        private static IServiceProvider ServiceProvider;
+
         [Benchmark]
         public async Task BatchSaveAsync()
         {
@@ -37,8 +39,8 @@ namespace Inflatable.Benchmarks.Tests
         {
             try
             {
-                var Configuration = Canister.Builder.Bootstrapper?.Resolve<IConfiguration>();
-                var Batch = Canister.Builder.Bootstrapper?.Resolve<SQLHelper>();
+                IConfiguration? Configuration = ServiceProvider.GetService<IConfiguration>();
+                SQLHelper? Batch = ServiceProvider.GetService<SQLHelper>();
                 if (Batch is null || Configuration is null)
                     return;
                 await Batch.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
@@ -51,11 +53,11 @@ namespace Inflatable.Benchmarks.Tests
         [GlobalSetup]
         public void Setup()
         {
-            new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
+            ServiceProvider = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
-                ?.RegisterMirage());
+                ?.RegisterMirage()).BuildServiceProvider();
             Console.WriteLine("Setting up session");
-            Canister.Builder.Bootstrapper?.Resolve<Session>();
+            ServiceProvider.GetService<Session>();
         }
 
         [Benchmark]

@@ -36,7 +36,7 @@ namespace Inflatable.Tests.Fixtures
         public SQLHelper Helper => Resolve<SQLHelper>();
         public SchemaManager SchemaManager => Resolve<SchemaManager>();
 
-        private static readonly object LockObject = new object();
+        private static readonly object LockObject = new();
 
         public static void InitProvider()
         {
@@ -61,7 +61,7 @@ namespace Inflatable.Tests.Fixtures
         {
             try
             {
-                var Result = Canister.Builder.Bootstrapper?.Resolve<T>();
+                T Result = Provider.GetService<T>();
                 if (Result is ISession ResultSession)
                     ResultSession.ClearCache();
                 return Result;

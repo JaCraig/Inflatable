@@ -16,7 +16,7 @@ namespace Inflatable.Tests.Modules
         protected static string MockDatabaseConnectionString => "Data Source=localhost;Initial Catalog=MockDatabase;Integrated Security=SSPI;Pooling=false";
         protected static string MockDatabaseForMockMappingConnectionString => "Data Source=localhost;Initial Catalog=MockDatabaseForMockMapping;Integrated Security=SSPI;Pooling=false";
 
-        public void Load(IBootstrapper bootstrapper)
+        public void Load(IServiceCollection bootstrapper)
         {
             if (bootstrapper == null)
             {
@@ -30,11 +30,11 @@ namespace Inflatable.Tests.Modules
                     { "ConnectionStrings:MockDatabase",MockDatabaseConnectionString },
                     { "ConnectionStrings:MockDatabaseForMockMapping",MockDatabaseForMockMappingConnectionString }
                 };
-            var Configuration = new ConfigurationBuilder()
+            IConfigurationRoot Configuration = new ConfigurationBuilder()
                              .AddInMemoryCollection(dict)
                              .Build();
-            bootstrapper.Register<IConfiguration>(Configuration, ServiceLifetime.Singleton);
-            bootstrapper.Register(Configuration, ServiceLifetime.Singleton);
+            bootstrapper.AddSingleton<IConfiguration>(Configuration);
+            bootstrapper.AddSingleton(Configuration);
         }
     }
 }

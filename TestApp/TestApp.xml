@@ -15,7 +15,7 @@
             Order to run this in
             </summary>
         </member>
-        <member name="M:InflatableBenchmarks.Benchmarks.Modules.LoggingModule.Load(Canister.Interfaces.IBootstrapper)">
+        <member name="M:InflatableBenchmarks.Benchmarks.Modules.LoggingModule.Load(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             Loads the module using the bootstrapper
             </summary>

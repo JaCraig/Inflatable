@@ -19,6 +19,8 @@ using BigBook.Queryable.BaseClasses;
 using Inflatable.ClassMapper;
 using Inflatable.LinqExpression;
 using Inflatable.Sessions;
+using Inflatable.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,7 +39,7 @@ namespace Inflatable
         /// Initializes a new instance of the <see cref="DbContext"/> class.
         /// </summary>
         public DbContext()
-            : this(Canister.Builder.Bootstrapper?.Resolve<ISession>())
+            : this(Services.ServiceProvider?.GetService<ISession>())
         {
         }
 
@@ -47,7 +49,7 @@ namespace Inflatable
         /// <param name="internalSession">The internal session.</param>
         public DbContext(ISession? internalSession)
         {
-            InternalSession = internalSession ?? Canister.Builder.Bootstrapper?.Resolve<ISession>();
+            InternalSession = internalSession ?? Services.ServiceProvider?.GetService<ISession>();
         }
 
         /// <summary>
@@ -64,7 +66,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query</returns>
-        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<ISession>().ExecuteDynamicAsync(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<dynamic>)Array.Empty<dynamic>());
+        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteDynamicAsync(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<dynamic>)Array.Empty<dynamic>());
 
         /// <summary>
         /// Adds a delete command.
@@ -121,7 +123,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query.</returns>
-        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<ISession>().ExecuteAsync<TObject>(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<TObject>)Array.Empty<TObject>());
+        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteAsync<TObject>(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<TObject>)Array.Empty<TObject>());
 
         /// <summary>
         /// Executes the query getting a scalar asynchronously.
@@ -131,7 +133,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The first object returned by the query.</returns>
-        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters) => Canister.Builder.Bootstrapper?.Resolve<ISession>().ExecuteScalarAsync<TObject>(command, type, connection, parameters)!;
+        public static Task<TObject> ExecuteScalarAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteScalarAsync<TObject>(command, type, connection, parameters)!;
 
         /// <summary>
         /// Executes the query represented by a specified expression tree.
@@ -140,13 +142,13 @@ namespace Inflatable
         /// <returns>The value that results from executing the specified query.</returns>
         public override object? Execute(Expression expression)
         {
-            var Results = Translate(expression);
-            var TempSession = Canister.Builder.Bootstrapper?.Resolve<ISession>();
+            IDictionary<IMappingSource, QueryData<TObject>> Results = Translate(expression);
+            ISession? TempSession = Services.ServiceProvider?.GetService<ISession>();
             if (TempSession is null)
                 return null;
             if (Results.Values.Any(x => x?.Count ?? false))
                 return Task.Run(async () => await TempSession.ExecuteCountAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult();
-            var DatabaseValues = Task.Run(async () => await TempSession.ExecuteAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
+            IEnumerable<dynamic> DatabaseValues = Task.Run(async () => await TempSession.ExecuteAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
             return Results.Values.Any(x => (x?.Top ?? 0) == 1) ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 
@@ -162,6 +164,6 @@ namespace Inflatable
         /// </summary>
         /// <param name="expression">The expression.</param>
         /// <returns>The translated expression</returns>
-        private static IDictionary<IMappingSource, QueryData<TObject>> Translate(Expression expression) => Canister.Builder.Bootstrapper?.Resolve<QueryTranslator<TObject>>().Translate(expression) ?? new Dictionary<IMappingSource, QueryData<TObject>>();
+        private static IDictionary<IMappingSource, QueryData<TObject>> Translate(Expression expression) => Services.ServiceProvider?.GetService<QueryTranslator<TObject>>()?.Translate(expression) ?? new Dictionary<IMappingSource, QueryData<TObject>>();
     }
 }

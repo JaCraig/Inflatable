@@ -1,22 +1,23 @@
 ﻿using BigBook;
 using Inflatable.Sessions;
+using Microsoft.Extensions.DependencyInjection;
 using Sundial.Core.Attributes;
 using Sundial.Core.Interfaces;
+using System;
 
 namespace Inflatable.SpeedTests.Sessions
 {
     [Series("InsertBatch", 10, "HTML")]
     public class SessionInsertBatchAsync : ITimedTask
     {
-        public SessionInsertBatchAsync()
+        public SessionInsertBatchAsync(IServiceProvider serviceProvider)
         {
-            TempSession = Canister.Builder.Bootstrapper.Resolve<ISession>();
+            TempSession = serviceProvider.GetService<ISession>();
         }
 
-        private readonly ISession TempSession;
         public bool Baseline => true;
-
         public string Name => "Session Insert Batch Async";
+        private readonly ISession TempSession;
 
         public void Dispose()
         {
