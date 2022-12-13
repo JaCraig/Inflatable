@@ -24,6 +24,7 @@ namespace Inflatable.Utils
                 }
                 return _ServiceProvider;
             }
+            set => _ServiceProvider = value;
         }
 
         /// <summary>
