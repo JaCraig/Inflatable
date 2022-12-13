@@ -20,11 +20,23 @@ namespace Inflatable.Utils
                     return _ServiceProvider;
                 lock (LockObject)
                 {
+                    if (_ServiceProvider is not null)
+                        return _ServiceProvider;
                     _ServiceProvider = (ServiceCollection ?? new ServiceCollection().AddCanisterModules())?.BuildServiceProvider();
                 }
                 return _ServiceProvider;
             }
-            set => _ServiceProvider = value;
+            set
+            {
+                if (_ServiceProvider is not null)
+                    return;
+                lock (LockObject)
+                {
+                    if (_ServiceProvider is not null)
+                        return;
+                    _ServiceProvider = value;
+                }
+            }
         }
 
         /// <summary>
