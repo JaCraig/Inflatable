@@ -29,7 +29,7 @@ namespace Inflatable.QueryProvider.Interfaces
         /// <summary>
         /// Provider name associated with the query provider
         /// </summary>
-        DbProviderFactory Provider { get; }
+        DbProviderFactory[] Providers { get; }
 
         /// <summary>
         /// Creates a batch for running commands

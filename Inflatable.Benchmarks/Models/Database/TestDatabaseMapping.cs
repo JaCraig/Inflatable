@@ -1,7 +1,7 @@
 ﻿using Inflatable.DataSource;
 using Inflatable.Interfaces;
+using Microsoft.Data.SqlClient;
 using System.Data.Common;
-using System.Data.SqlClient;
 
 namespace Inflatable.Benchmarks.Models.Database
 {

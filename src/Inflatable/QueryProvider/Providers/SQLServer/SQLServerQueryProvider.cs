@@ -17,6 +17,7 @@ limitations under the License.
 using Inflatable.ClassMapper;
 using Inflatable.Interfaces;
 using Inflatable.QueryProvider.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
@@ -24,7 +25,6 @@ using SQLHelperDB;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Text;
 
 namespace Inflatable.QueryProvider.Providers.SQLServer
@@ -58,7 +58,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <summary>
         /// Provider name associated with the query provider
         /// </summary>
-        public DbProviderFactory Provider => SqlClientFactory.Instance;
+        public DbProviderFactory[] Providers => new DbProviderFactory[] { SqlClientFactory.Instance, System.Data.SqlClient.SqlClientFactory.Instance };
 
         /// <summary>
         /// Gets or sets the dictionary.
@@ -88,7 +88,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source) => new SQLHelper(StringBuilderPool!, Configuration, Logger).CreateBatch(Provider, source?.Name ?? string.Empty);
+        public SQLHelper Batch(IDatabase source) => new SQLHelper(StringBuilderPool!, Configuration, Logger).CreateBatch(source.Provider, source?.Name ?? string.Empty);
 
         /// <summary>
         /// Creates a generator object

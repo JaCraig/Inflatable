@@ -1,7 +1,7 @@
 ﻿using Inflatable.DataSource;
 using Inflatable.Interfaces;
 using System.Data.Common;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Inflatable.SpeedTests.ManyToManyProperties.Databases
 {

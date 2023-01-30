@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
 using System;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TestApp.Models;

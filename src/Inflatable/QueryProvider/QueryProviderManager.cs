@@ -44,15 +44,20 @@ namespace Inflatable.QueryProvider
             Logger = logger;
             IsDebug = Logger?.IsEnabled(LogLevel.Debug) ?? false;
             providers ??= Array.Empty<Interfaces.IQueryProvider>();
-            foreach (var Provider in providers.Where(x => x.GetType().Assembly != typeof(QueryProviderManager).Assembly))
+            foreach (var QueryProvider in providers.Where(x => x.GetType().Assembly != typeof(QueryProviderManager).Assembly))
             {
-                Providers.Add(Provider.Provider, Provider);
-            }
-            foreach (var Provider in providers.Where(x => x.GetType().Assembly == typeof(QueryProviderManager).Assembly))
-            {
-                if (!Providers.Keys.Contains(Provider.Provider))
+                foreach (var Provider in QueryProvider.Providers)
                 {
-                    Providers.Add(Provider.Provider, Provider);
+                    if (!Providers.ContainsKey(Provider))
+                        Providers.Add(Provider, QueryProvider);
+                }
+            }
+            foreach (var QueryProvider in providers.Where(x => x.GetType().Assembly == typeof(QueryProviderManager).Assembly))
+            {
+                foreach (var Provider in QueryProvider.Providers)
+                {
+                    if (!Providers.ContainsKey(Provider))
+                        Providers.Add(Provider, QueryProvider);
                 }
             }
             CreateGeneratorMethod = typeof(QueryProviderManager).GetMethod("CreateGenerator", new Type[] { typeof(IMappingSource) });

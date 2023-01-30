@@ -6,7 +6,7 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Xunit;
 
 namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
@@ -46,7 +46,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         {
             var TestObject = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             Assert.Equal(Configuration, TestObject.Configuration);
-            Assert.Equal(SqlClientFactory.Instance, TestObject.Provider);
+            Assert.Contains(SqlClientFactory.Instance, TestObject.Providers);
         }
     }
 }
