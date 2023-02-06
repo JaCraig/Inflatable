@@ -8,11 +8,11 @@ Inflatable is an ORM. It supports .Net Core as well as full .Net.
 
 Inflatable  relies on [Canister](https://github.com/JaCraig/Canister) in order to hook itself up. In order for this to work, you must do the following at startup:
 
-    Canister.Builder.CreateContainer(new List<ServiceDescriptor>())
-                    .RegisterInflatable()
-                    .Build();
+    var MyServices = new ServiceCollection();
+    MyServices.AddCanisterModules();
+    ...
 					
-The RegisterInflatable function is an extension method that registers it with the IoC container. When this is done, Inflatable is ready to use.
+The AddCanisterModules function is an extension method that registers it with the IoC container. When this is done, Inflatable is ready to use.
 
 ## Basic Usage
 
@@ -28,7 +28,5 @@ In order to save or delete an object, you must create an instance of DbContext o
 
     await new DbContext<MyPoco>().Save(MyObject).ExecuteAsync();
 	
-Or:
-
-    await Canister.Builder.Bootstrapper.Resolve<Session>().Save(MyObject).ExecuteAsync();
+Or you can resolve the DbContext from the service provider for your app.
 	
