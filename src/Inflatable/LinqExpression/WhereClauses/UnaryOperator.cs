@@ -50,19 +50,16 @@ namespace Inflatable.LinqExpression.WhereClauses
         }
 
         /// <summary>
-        /// The converter
-        /// </summary>
-        private static readonly IDictionary<ExpressionType, Func<UnaryOperator, string>> Converter = new Dictionary<ExpressionType, Func<UnaryOperator, string>>
-        {
-            [ExpressionType.Not] = x => $"NOT {x.InternalOperator}",
-            [ExpressionType.Convert] = x => x.InternalOperator.ToString()
-        };
-
-        /// <summary>
         /// Gets the iternal operator.
         /// </summary>
         /// <value>The iternal operator.</value>
         public IOperator InternalOperator { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is null.
+        /// </summary>
+        /// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+        public bool IsNull { get; }
 
         /// <summary>
         /// Gets the operator.
@@ -81,6 +78,15 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <value>The type code.</value>
         public Type TypeCode { get; }
+
+        /// <summary>
+        /// The converter
+        /// </summary>
+        private static readonly IDictionary<ExpressionType, Func<UnaryOperator, string>> Converter = new Dictionary<ExpressionType, Func<UnaryOperator, string>>
+        {
+            [ExpressionType.Not] = x => $"NOT {x.InternalOperator}",
+            [ExpressionType.Convert] = x => x.InternalOperator.ToString()
+        };
 
         /// <summary>
         /// Copies this instance.

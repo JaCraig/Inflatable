@@ -112,6 +112,27 @@ namespace Inflatable.Tests.LinqExpression
         }
 
         [Fact]
+        public void TranslateWhereNull()
+        {
+            var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
+            IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
+            const int LocalVariable = 45;
+            TestQuery = TestQuery.Where(x => x.StringValue1 == null)
+                                 .Where(x => x.StringValue2 != null);
+            var TempData = TestObject.Translate(TestQuery.Expression);
+            Assert.Equal(2, TempData.Count);
+            var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];
+            Assert.Equal("WHERE (([dbo].[AllReferencesAndID_].[StringValue1_] IS NULL) AND ([dbo].[AllReferencesAndID_].[StringValue2_] IS NOT NULL))", Result.WhereClause.ToString());
+            var Parameters = Result.WhereClause.GetParameters();
+            Assert.Equal("1", Parameters[0].ID);
+            Assert.Null(Parameters[0].InternalValue);
+            Assert.Equal(DbType.Int32, Parameters[0].DatabaseType);
+            Assert.Equal("2", Parameters[1].ID);
+            Assert.Null(Parameters[1].InternalValue);
+            Assert.Equal(DbType.Int32, Parameters[1].DatabaseType);
+        }
+
+        [Fact]
         public void TranslateWhereStartsWith()
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);

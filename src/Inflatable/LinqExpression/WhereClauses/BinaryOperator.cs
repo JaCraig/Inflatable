@@ -40,12 +40,52 @@ namespace Inflatable.LinqExpression.WhereClauses
         public BinaryOperator(IOperator left, IOperator right, ExpressionType operatorType)
         {
             Operator = operatorType;
+            if (left.IsNull)
+            {
+                (right, left) = (left, right);
+            }
             Left = left ?? throw new ArgumentNullException(nameof(left));
             Right = right ?? throw new ArgumentNullException(nameof(right));
             Left.Parent = this;
             Right.Parent = this;
             TypeCode = TypeCodeConverter[operatorType](this);
         }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is null.
+        /// </summary>
+        /// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+        public bool IsNull { get; }
+
+        /// <summary>
+        /// Gets the left.
+        /// </summary>
+        /// <value>The left.</value>
+        public IOperator Left { get; private set; }
+
+        /// <summary>
+        /// Gets the operator.
+        /// </summary>
+        /// <value>The operator.</value>
+        public ExpressionType Operator { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the parent.
+        /// </summary>
+        /// <value>The parent.</value>
+        public IOperator? Parent { get; set; }
+
+        /// <summary>
+        /// Gets the right.
+        /// </summary>
+        /// <value>The right.</value>
+        public IOperator Right { get; private set; }
+
+        /// <summary>
+        /// Gets the type code.
+        /// </summary>
+        /// <value>The type code.</value>
+        public Type TypeCode { get; }
 
         /// <summary>
         /// The converter
@@ -97,36 +137,6 @@ namespace Inflatable.LinqExpression.WhereClauses
             [ExpressionType.OrElse] = _ => typeof(bool),
             [ExpressionType.AndAlso] = _ => typeof(bool)
         };
-
-        /// <summary>
-        /// Gets the left.
-        /// </summary>
-        /// <value>The left.</value>
-        public IOperator Left { get; private set; }
-
-        /// <summary>
-        /// Gets the operator.
-        /// </summary>
-        /// <value>The operator.</value>
-        public ExpressionType Operator { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the parent.
-        /// </summary>
-        /// <value>The parent.</value>
-        public IOperator? Parent { get; set; }
-
-        /// <summary>
-        /// Gets the right.
-        /// </summary>
-        /// <value>The right.</value>
-        public IOperator Right { get; private set; }
-
-        /// <summary>
-        /// Gets the type code.
-        /// </summary>
-        /// <value>The type code.</value>
-        public Type TypeCode { get; }
 
         /// <summary>
         /// Copies this instance.
@@ -205,6 +215,13 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public override string ToString() => "(" + Left + Converter[Operator] + Right + ")";
+        public override string ToString()
+        {
+            if (Operator == ExpressionType.Equal && Right.IsNull)
+                return "(" + Left + " IS " + Right + ")";
+            if (Operator == ExpressionType.NotEqual && Right.IsNull)
+                return "(" + Left + " IS NOT " + Right + ")";
+            return "(" + Left + Converter[Operator] + Right + ")";
+        }
     }
 }

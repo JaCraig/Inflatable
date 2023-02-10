@@ -47,6 +47,12 @@ namespace Inflatable.LinqExpression.WhereClauses
         }
 
         /// <summary>
+        /// Gets a value indicating whether this instance is null.
+        /// </summary>
+        /// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+        public bool IsNull { get; }
+
+        /// <summary>
         /// Gets the type of the method.
         /// </summary>
         /// <value>The type of the method.</value>

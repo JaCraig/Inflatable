@@ -28,6 +28,12 @@ namespace Inflatable.LinqExpression.WhereClauses.Interfaces
     public interface IOperator
     {
         /// <summary>
+        /// Gets a value indicating whether this instance is null.
+        /// </summary>
+        /// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+        bool IsNull { get; }
+
+        /// <summary>
         /// Gets or sets the parent.
         /// </summary>
         /// <value>The parent.</value>

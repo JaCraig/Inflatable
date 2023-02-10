@@ -44,6 +44,7 @@ namespace Inflatable.LinqExpression.WhereClauses
             Count = count;
             Value = value;
             TypeCode = value is null ? typeof(object) : Value.GetType();
+            IsNull = value is null;
         }
 
         /// <summary>
@@ -51,6 +52,12 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <value>The count.</value>
         public int Count { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is null.
+        /// </summary>
+        /// <value><c>true</c> if this instance is null; otherwise, <c>false</c>.</value>
+        public bool IsNull { get; }
 
         /// <summary>
         /// Gets or sets the parent.
