@@ -4,6 +4,46 @@
         <name>TestApp</name>
     </assembly>
     <members>
+        <member name="T:TestApp.Program">
+            <summary>
+            Example program to show how to use the ORM
+            </summary>
+        </member>
+        <member name="F:TestApp.Program.StringVal1Const">
+            <summary>
+            The string val1 constant
+            </summary>
+        </member>
+        <member name="F:TestApp.Program.StringVal2Const">
+            <summary>
+            The string val2 constant
+            </summary>
+        </member>
+        <member name="F:TestApp.Program.Services">
+            <summary>
+            The services for the application
+            </summary>
+        </member>
+        <member name="M:TestApp.Program.ComplexTest">
+            <summary>
+            A more complex example
+            </summary>
+        </member>
+        <member name="M:TestApp.Program.DataCleanup">
+            <summary>
+            Data cleanup task
+            </summary>
+        </member>
+        <member name="M:TestApp.Program.Main">
+            <summary>
+            Defines the entry point of the application.
+            </summary>
+        </member>
+        <member name="M:TestApp.Program.SimpleTest">
+            <summary>
+            The simple test example
+            </summary>
+        </member>
         <member name="T:InflatableBenchmarks.Benchmarks.Modules.LoggingModule">
             <summary>
             Logging module

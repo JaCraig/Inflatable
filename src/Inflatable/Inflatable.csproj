@@ -28,8 +28,17 @@
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Title>Inflatable</Title>
+    <Copyright>Copyright © James Craig 2017</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/JaCraig/Inflatable</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/JaCraig/Inflatable/blob/master/CHANGELOG.md</PackageReleaseNotes>
+	  <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
-
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
@@ -42,22 +51,28 @@
 
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="Enums\SchemaGeneration.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DragonHoard.InMemory" Version="2.0.1" />
-    <PackageReference Include="Holmes" Version="4.0.5" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
+    <PackageReference Include="DragonHoard.InMemory" Version="2.0.5" />
+    <PackageReference Include="Holmes" Version="4.0.9" />
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SQLHelper.DB" Version="4.0.4" />
-    <PackageReference Include="Data.Modeler" Version="4.0.6" />
+    <PackageReference Include="Data.Modeler" Version="4.0.8" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
-    <PackageReference Include="Valkyrie" Version="4.0.1" />
-    <PackageReference Include="Mirage" Version="4.0.1" />
-    <PackageReference Include="Aspectus" Version="5.0.0" />
-    <PackageReference Include="BigBook" Version="5.0.2" />
+    <PackageReference Include="Valkyrie" Version="4.0.4" />
+    <PackageReference Include="Mirage" Version="4.0.2" />
   </ItemGroup>
+	<Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
+		<Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
+		<Exec Command="dotnet husky install" StandardOutputImportance="Low" StandardErrorImportance="High" WorkingDirectory="../.." />
+	</Target>
 </Project>
