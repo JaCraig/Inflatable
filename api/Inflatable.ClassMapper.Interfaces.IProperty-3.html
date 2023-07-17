@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IProperty&lt;ClassType, DataType, ReturnType&gt;
+ | Inflatable API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IProperty&lt;ClassType, DataType, ReturnType&gt;
+ | Inflatable API Reference ">
+      <meta name="generator" content="docfx ">
+  
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+
+            <a class="brand" href="../index.html">
+              <img src="../images/icon.png" alt="Inflatable" class="logomark">
+              <span class="brand-title">Inflatable</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+
+                    <div>
+                      <div class="mobile-hide">
+
+                        <a class="brand" href="../index.html">
+                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
+                          <span class="brand-title">Inflatable</span>
+                        </a>                      </div>
+
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+  
+                </div>            </nav>
+
+            <main class="main-panel">
+
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+ 
+
+                <div role="main" class="hide-when-search">
+
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                         <div id="contribution">
+                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                         </div>
+
+                    <article class="content wrap" id="_content" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3">
+
+
+
+  <h1 id="Inflatable_ClassMapper_Interfaces_IProperty_3" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3" class="text-break">Interface IProperty&lt;ClassType, DataType, ReturnType&gt;
+</h1>
+  <div class="markdown level0 summary"><p>Property interface</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.ClassMapper.html">ClassMapper</a>.<a class="xref" href="Inflatable.ClassMapper.Interfaces.html">Interfaces</a></h6>
+  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
+  <h5 id="Inflatable_ClassMapper_Interfaces_IProperty_3_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IProperty&lt;ClassType, DataType, ReturnType&gt; : IFluentInterface where ClassType : class where ReturnType : IProperty&lt;ClassType, DataType, ReturnType&gt;</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">ClassType</span></td>
+        <td><p>Class type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">DataType</span></td>
+        <td><p>Data type</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">ReturnType</span></td>
+        <td><p>Return type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_IsIndexed.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.IsIndexed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L40">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_IsIndexed_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.IsIndexed*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_IsIndexed" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.IsIndexed">IsIndexed()</h4>
+  <div class="markdown level1 summary"><p>Determines whether this instance is indexed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType IsIndexed()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_IsReadOnly.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.IsReadOnly%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L46">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_IsReadOnly_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.IsReadOnly*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_IsReadOnly" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.IsReadOnly">IsReadOnly()</h4>
+  <div class="markdown level1 summary"><p>Determines whether [is read only].</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType IsReadOnly()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_IsUnique.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.IsUnique%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L52">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_IsUnique_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.IsUnique*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_IsUnique" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.IsUnique">IsUnique()</h4>
+  <div class="markdown level1 summary"><p>Determines whether this instance is unique.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType IsUnique()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_WithColumnName_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.WithColumnName(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L59">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithColumnName_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithColumnName*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithColumnName_System_String_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithColumnName(System.String)">WithColumnName(string)</h4>
+  <div class="markdown level1 summary"><p>Sets the name of the field in the database.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType WithColumnName(string columnName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">columnName</span></td>
+        <td><p>Name of the field.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_WithComputedColumnSpecification_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.WithComputedColumnSpecification(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L66">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithComputedColumnSpecification_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithComputedColumnSpecification*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithComputedColumnSpecification_System_String_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithComputedColumnSpecification(System.String)">WithComputedColumnSpecification(string)</h4>
+  <div class="markdown level1 summary"><p>Sets the computed column specification if the source allows it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType WithComputedColumnSpecification(string computedColumnSpecification)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">computedColumnSpecification</span></td>
+        <td><p>The computed column specification.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_WithConstraint_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.WithConstraint(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L73">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithConstraint_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithConstraint*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithConstraint_System_String_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithConstraint(System.String)">WithConstraint(string)</h4>
+  <div class="markdown level1 summary"><p>Sets a constraint on the field if the source allows it.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType WithConstraint(string constraint)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">constraint</span></td>
+        <td><p>The constraint.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_WithDefaultValue_System_Func__1__.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.WithDefaultValue(System.Func%7B%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L80">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithDefaultValue_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithDefaultValue*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithDefaultValue_System_Func__1__" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithDefaultValue(System.Func{`1})">WithDefaultValue(Func&lt;DataType&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets the default value of the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType WithDefaultValue(Func&lt;DataType&gt; value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;DataType&gt;</td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_WithMaxLength.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.WithMaxLength%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L93">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithMaxLength_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithMaxLength*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithMaxLength" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithMaxLength">WithMaxLength()</h4>
+  <div class="markdown level1 summary"><p>Sets the length for the property to MAX.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType WithMaxLength()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Interfaces_IProperty_3_WithMaxLength_System_Int32_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Interfaces.IProperty%603.WithMaxLength(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/Interfaces/IProperty.cs/#L87">View Source</a>
+  </span>
+  <a id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithMaxLength_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithMaxLength*"></a>
+  <h4 id="Inflatable_ClassMapper_Interfaces_IProperty_3_WithMaxLength_System_Int32_" data-uid="Inflatable.ClassMapper.Interfaces.IProperty`3.WithMaxLength(System.Int32)">WithMaxLength(int)</h4>
+  <div class="markdown level1 summary"><p>Sets the max length for the property (or precision for items like decimal values)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ReturnType WithMaxLength(int maxLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">maxLength</span></td>
+        <td><p>Max length</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReturnType</span></td>
+        <td><p>this</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+</article>
+                </div>
+
+                <div class="copyright-footer">
+                    <span>&#169; James Craig. All rights reserved.</span>
+                </div>
+            </main>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+</html>

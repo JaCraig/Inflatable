@@ -1,0 +1,1911 @@
+{
+  "homepages": [],
+  "source_base_path": "/home/runner/work/Inflatable/Inflatable/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.EndMethod.IListProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.EndMethod.IListProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.EndMethod.IManyToOnePropertyLazyLoad.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.EndMethod.IManyToOnePropertyLazyLoad.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.EndMethod.SingleProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.EndMethod.SingleProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.EndMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.EndMethod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupIORMInitializationMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupIORMInitializationMethod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupIORMObjectProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupIORMObjectProperties.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupManyToManyFields.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupManyToManyFields.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupMapFields.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupMapFields.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupReferenceFields.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupReferenceFields.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.InterfaceImplementation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.Interfaces.IEndMethodHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.Interfaces.IEndMethodHelper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.Interfaces.IInterfaceImplementationHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.Interfaces.IInterfaceImplementationHelper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.Interfaces.IORMObject.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.Interfaces.IORMObject.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.Interfaces.IStartMethodHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.Interfaces.IStartMethodHelper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.ORMAspect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.ORMAspect.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.StartMethod.IDStartMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.StartMethod.IDStartMethod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.StartMethod.MapStartMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.StartMethod.MapStartMethod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.StartMethod.ReferenceStartMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.StartMethod.ReferenceStartMethod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.StartMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.StartMethod.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Aspect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Aspect.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.BaseClasses.MappingBaseClass-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.BaseClasses.MappingBaseClass-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.BaseClasses.ObjectBaseClass-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.BaseClasses.ObjectBaseClass-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.BaseClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.BaseClasses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.IDPropertyBase-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.IDPropertyBase-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyClassPropertyBase-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyClassPropertyBase-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyToOneOnePropertyBase-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyToOneOnePropertyBase-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.PropertyBase-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.SingleClassPropertyBase-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.SingleClassPropertyBase-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.BaseClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.BaseClasses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Column.ComplexColumnInfo-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Column.ComplexColumnInfo-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Column.ComplexListColumnInfo-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Column.ComplexListColumnInfo-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Column.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Column.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Column.SimpleColumnInfo-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Column.SimpleColumnInfo-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Column.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Column.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.AutoID.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.AutoID.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.ID-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.ID-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.ManyToMany-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.ManyToMany-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.ManyToOneMany-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.ManyToOneMany-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.ManyToOneSingle-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.ManyToOneSingle-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.Map-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.Map-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.Reference-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.Reference-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Default.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Default.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.IMappingSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.IMappingSource.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IAutoIDProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IAutoIDProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IClassProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IClassProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneListProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneListProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty-3.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.IPropertyColumns.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.IPropertyColumns.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.MappingManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.MappingManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.MappingSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.MappingSource.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.TypeGraph.DiscoverConcreteTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.TypeGraph.DiscoverConcreteTypes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.TypeGraph.Generator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.TypeGraph.Generator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.TypeGraph.MergeMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.TypeGraph.MergeMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.TypeGraph.ReduceMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.TypeGraph.ReduceMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.TypeGraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.TypeGraph.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.ClassMapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.ClassMapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.DataSource.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.DataSource.Options.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.DataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.DataSource.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.DbContext-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.DbContext-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.DbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.DbContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Enums.SchemaAnalysis.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Enums.SchemaAnalysis.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Enums.SchemaGeneration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Enums.SchemaGeneration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Enums.SourceAccess.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Enums.SourceAccess.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Interfaces.IDatabase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Interfaces.IDatabase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Interfaces.IMapping-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Interfaces.IMapping-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Interfaces.IMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Interfaces.IMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Interfaces.IObject-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Interfaces.IObject-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.HelperClasses.Evaluator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.HelperClasses.Evaluator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.HelperClasses.Nominator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.HelperClasses.Nominator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.HelperClasses.SubtreeEvaluator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.HelperClasses.SubtreeEvaluator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.HelperClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.HelperClasses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.Interfaces.IQueryData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.Interfaces.IQueryData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.OrderBy.Enums.Direction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.OrderBy.Enums.Direction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.OrderBy.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.OrderBy.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.OrderBy.OrderByClause.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.OrderBy.OrderByClause.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.OrderBy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.OrderBy.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.QueryData-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.QueryData-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.QueryTranslator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.QueryTranslator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.Select.ColumnProjector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.Select.ColumnProjector.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.Select.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.Select.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.BinaryOperator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.BinaryOperator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.Constant.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Constant.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.EmptyClause.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.EmptyClause.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.LikeOperator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.LikeOperator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.Property-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Property-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.UnaryOperator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.UnaryOperator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.WhereClause-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.WhereClause-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.WhereVisitor-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.WhereVisitor-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.WhereClauses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.WhereClauses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.LinqExpression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.LinqExpression.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Modules.AOPModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Modules.AOPModule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Modules.InflatableModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Modules.InflatableModule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Modules.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Modules.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.BaseClasses.GeneratorBaseClass-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.BaseClasses.GeneratorBaseClass-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.BaseClasses.LinqQueryGeneratorBaseClass-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.BaseClasses.LinqQueryGeneratorBaseClass-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.BaseClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.BaseClasses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.CachedResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.CachedResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Enums.QueryType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Enums.QueryType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IDataQueryGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IDataQueryGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IGenerator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.ILinqQueryGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.ILinqQueryGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IPropertyQueryGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IPropertyQueryGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueries.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IQuery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQuery.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueryGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueryGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueryProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueryProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.MappingData.IQueryMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.MappingData.IQueryMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.MappingData.IQueryPropertyMapping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.MappingData.IQueryPropertyMapping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.MappingData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.MappingData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DataLoadQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DataLoadQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeletePropertiesQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeletePropertiesQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeleteQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeleteQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.QueryGeneratorData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.QueryGeneratorData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.InsertQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.InsertQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LoadPropertiesQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LoadPropertiesQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.SavePropertiesQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.SavePropertiesQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.UpdateQuery-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.UpdateQuery-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerGenerator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerGenerator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerQueryProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerQueryProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Queries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Queries.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.Query.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.Query.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.QueryProviderManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.QueryProviderManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.QueryResults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.QueryResults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.QueryProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.QueryProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Registration.InflatableOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Registration.InflatableOptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Registration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Registration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Schema.DataModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Schema.DataModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Schema.SchemaManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Schema.SchemaManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Schema.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Schema.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.BaseClasses.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.BaseClasses.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.DeleteCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.DeleteCommand.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.Enums.CommandType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.Enums.CommandType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.Enums.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.Interfaces.ICommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.Interfaces.ICommand.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.Interfaces.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.SaveCommand.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.SaveCommand.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Commands.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Commands.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.ISession.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.ISession.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.Session.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.Session.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.SessionQueryInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.SessionQueryInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Sessions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Sessions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Utils.ExpressionTypeConverter-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Utils.ExpressionTypeConverter-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Utils.Tree-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Utils.Tree-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Utils.TreeNode-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Utils.TreeNode-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Utils.Visitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Utils.Visitor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.Utils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Inflatable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Inflatable.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Microsoft.Extensions.DependencyInjection.Registration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.Extensions.DependencyInjection.Registration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Microsoft.Extensions.DependencyInjection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.Extensions.DependencyInjection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/icon.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/icon.png"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

@@ -1,0 +1,2116 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class MappingBaseClass&lt;TClassType, TDatabaseType&gt;
+ | Inflatable API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class MappingBaseClass&lt;TClassType, TDatabaseType&gt;
+ | Inflatable API Reference ">
+      <meta name="generator" content="docfx ">
+  
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+
+            <a class="brand" href="../index.html">
+              <img src="../images/icon.png" alt="Inflatable" class="logomark">
+              <span class="brand-title">Inflatable</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+
+                    <div>
+                      <div class="mobile-hide">
+
+                        <a class="brand" href="../index.html">
+                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
+                          <span class="brand-title">Inflatable</span>
+                        </a>                      </div>
+
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+  
+                </div>            </nav>
+
+            <main class="main-panel">
+
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+ 
+
+                <div role="main" class="hide-when-search">
+
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                         <div id="contribution">
+                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                         </div>
+
+                    <article class="content wrap" id="_content" data-uid="Inflatable.BaseClasses.MappingBaseClass`2">
+
+
+
+  <h1 id="Inflatable_BaseClasses_MappingBaseClass_2" data-uid="Inflatable.BaseClasses.MappingBaseClass`2" class="text-break">Class MappingBaseClass&lt;TClassType, TDatabaseType&gt;
+</h1>
+  <div class="markdown level0 summary"><p>Mapping base class</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">MappingBaseClass&lt;TClassType, TDatabaseType&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+    <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.BaseClasses.html">BaseClasses</a></h6>
+  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class MappingBaseClass&lt;TClassType, TDatabaseType&gt; : IMapping&lt;TClassType&gt;, IMapping where TClassType : class where TDatabaseType : IDatabase</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TClassType</span></td>
+        <td><p>The type of the lass type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TDatabaseType</span></td>
+        <td><p>The type of the atabase type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2__ctor_System_String_System_String_System_String_System_String_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.%23ctor(System.String%2CSystem.String%2CSystem.String%2CSystem.String%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L53">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2__ctor_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.#ctor*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2__ctor_System_String_System_String_System_String_System_String_System_Int32_System_Boolean_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.#ctor(System.String,System.String,System.String,System.String,System.Int32,System.Boolean)">MappingBaseClass(string, string, string, string, int, bool)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Inflatable.BaseClasses.MappingBaseClass-2.html">MappingBaseClass&lt;TClassType, TDatabaseType&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MappingBaseClass(string tableName = &quot;&quot;, string schemaName = &quot;dbo&quot;, string suffix = &quot;_&quot;, string prefix = &quot;&quot;, int order = 10, bool merge = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">tableName</span></td>
+        <td><p>Name of the table.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">schemaName</span></td>
+        <td><p>Name of the schema.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">suffix</span></td>
+        <td><p>The suffix.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">prefix</span></td>
+        <td><p>The prefix.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><span class="parametername">order</span></td>
+        <td><p>The order.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><span class="parametername">merge</span></td>
+        <td><p>if set to <code>true</code> [merge] this mapping when possible.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2__ctor_System_String_System_String_System_String_System_String_System_Int32_System_Boolean__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_AutoIDProperties.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.AutoIDProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L77">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_AutoIDProperties_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.AutoIDProperties*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_AutoIDProperties" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.AutoIDProperties">AutoIDProperties</h4>
+  <div class="markdown level1 summary"><p>Gets the automatic identifier properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IAutoIDProperty&gt; AutoIDProperties { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IAutoIDProperty.html">IAutoIDProperty</a>&gt;</td>
+        <td><p>The automatic identifier properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_AutoIDProperties_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_DatabaseConfigType.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.DatabaseConfigType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L83">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_DatabaseConfigType_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.DatabaseConfigType*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_DatabaseConfigType" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.DatabaseConfigType">DatabaseConfigType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of the database configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type DatabaseConfigType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><p>The type of the database configuration.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_DatabaseConfigType_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_IDProperties.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.IDProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L89">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_IDProperties_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.IDProperties*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_IDProperties" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.IDProperties">IDProperties</h4>
+  <div class="markdown level1 summary"><p>ID properties</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IIDProperty&gt; IDProperties { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IIDProperty.html">IIDProperty</a>&gt;</td>
+        <td><p>The identifier properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_IDProperties_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ManyToManyProperties.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ManyToManyProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L95">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToManyProperties_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToManyProperties*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToManyProperties" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToManyProperties">ManyToManyProperties</h4>
+  <div class="markdown level1 summary"><p>Gets the many to many properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IManyToManyProperty&gt; ManyToManyProperties { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html">IManyToManyProperty</a>&gt;</td>
+        <td><p>The many to many properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToManyProperties_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ManyToOneProperties.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ManyToOneProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L101">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOneProperties_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToOneProperties*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOneProperties" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToOneProperties">ManyToOneProperties</h4>
+  <div class="markdown level1 summary"><p>Gets the many to one properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IManyToOneProperty&gt; ManyToOneProperties { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html">IManyToOneProperty</a>&gt;</td>
+        <td><p>The many to one properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOneProperties_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_MapProperties.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.MapProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L107">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_MapProperties_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.MapProperties*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_MapProperties" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.MapProperties">MapProperties</h4>
+  <div class="markdown level1 summary"><p>Gets the map properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IMapProperty&gt; MapProperties { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IMapProperty.html">IMapProperty</a>&gt;</td>
+        <td><p>The map properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_MapProperties_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Merge.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Merge%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L114">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Merge_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Merge*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Merge" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Merge">Merge</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether this <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a>
+should be merged.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Merge { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><code>true</code> if merge this instance; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Merge_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ObjectType.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ObjectType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L120">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ObjectType_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ObjectType*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ObjectType" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ObjectType">ObjectType</h4>
+  <div class="markdown level1 summary"><p>The object type associated with the mapping</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type ObjectType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><p>The type of the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ObjectType_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Order.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Order%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L126">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Order_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Order*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Order" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Order">Order</h4>
+  <div class="markdown level1 summary"><p>Order that the mappings are initialized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Order { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>The order.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Order_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Prefix.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Prefix%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L132">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Prefix_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Prefix*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Prefix" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Prefix">Prefix</h4>
+  <div class="markdown level1 summary"><p>Prefix used for defining properties/table name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Prefix { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The prefix.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Prefix_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Queries.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Queries%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L138">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Queries_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Queries*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Queries" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Queries">Queries</h4>
+  <div class="markdown level1 summary"><p>Gets the queries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IQueries Queries { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></td>
+        <td><p>The queries.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Queries_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ReferenceProperties.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ReferenceProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L144">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ReferenceProperties_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ReferenceProperties*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ReferenceProperties" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ReferenceProperties">ReferenceProperties</h4>
+  <div class="markdown level1 summary"><p>Reference Properties list</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;IProperty&gt; ReferenceProperties { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a>&gt;</td>
+        <td><p>The reference properties.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ReferenceProperties_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_SchemaName.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.SchemaName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L150">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_SchemaName_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.SchemaName*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_SchemaName" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.SchemaName">SchemaName</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the schema.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string SchemaName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The name of the schema.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_SchemaName_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Suffix.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Suffix%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L156">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Suffix_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Suffix*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Suffix" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Suffix">Suffix</h4>
+  <div class="markdown level1 summary"><p>Suffix used for defining properties/table name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Suffix { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The suffix.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Suffix_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_TableName.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.TableName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L162">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_TableName_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.TableName*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_TableName" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.TableName">TableName</h4>
+  <div class="markdown level1 summary"><p>Table name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TableName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The name of the table.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_TableName_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_AddAutoKey.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.AddAutoKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L199">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_AddAutoKey_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.AddAutoKey*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_AddAutoKey" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.AddAutoKey">AddAutoKey()</h4>
+  <div class="markdown level1 summary"><p>Adds an automatic key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddAutoKey()</code></pre>
+  </div>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_AddAutoKey_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ContainsProperty_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ContainsProperty(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L206">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ContainsProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ContainsProperty*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ContainsProperty_System_String_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ContainsProperty(System.String)">ContainsProperty(string)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the mapping contains a property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ContainsProperty(string propertyName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td><p>Name of the property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p><code>true</code> if the mapping contains the specified property; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ContainsProperty_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Copy_Inflatable_Interfaces_IMapping_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Copy(Inflatable.Interfaces.IMapping)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L219">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Copy_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Copy*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Copy_Inflatable_Interfaces_IMapping_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Copy(Inflatable.Interfaces.IMapping)">Copy(IMapping)</h4>
+  <div class="markdown level1 summary"><p>Copies the specified mapping.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Copy(IMapping mapping)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
+        <td><span class="parametername">mapping</span></td>
+        <td><p>The mapping.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Copy_Inflatable_Interfaces_IMapping__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.CopyProperty(Inflatable.ClassMapper.Interfaces.IIDProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L249">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty(Inflatable.ClassMapper.Interfaces.IIDProperty)">CopyProperty(IIDProperty)</h4>
+  <div class="markdown level1 summary"><p>Copies the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyProperty(IIDProperty prop)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IIDProperty.html">IIDProperty</a></td>
+        <td><span class="parametername">prop</span></td>
+        <td><p>The property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToManyProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L289">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToManyProperty)">CopyProperty(IManyToManyProperty)</h4>
+  <div class="markdown level1 summary"><p>Copies the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyProperty(IManyToManyProperty prop)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html">IManyToManyProperty</a></td>
+        <td><span class="parametername">prop</span></td>
+        <td><p>The property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToOneProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L279">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToOneProperty)">CopyProperty(IManyToOneProperty)</h4>
+  <div class="markdown level1 summary"><p>Copies the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyProperty(IManyToOneProperty prop)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html">IManyToOneProperty</a></td>
+        <td><span class="parametername">prop</span></td>
+        <td><p>The property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.CopyProperty(Inflatable.ClassMapper.Interfaces.IMapProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L269">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty(Inflatable.ClassMapper.Interfaces.IMapProperty)">CopyProperty(IMapProperty)</h4>
+  <div class="markdown level1 summary"><p>Copies the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyProperty(IMapProperty prop)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IMapProperty.html">IMapProperty</a></td>
+        <td><span class="parametername">prop</span></td>
+        <td><p>The property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.CopyProperty(Inflatable.ClassMapper.Interfaces.IProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L259">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.CopyProperty(Inflatable.ClassMapper.Interfaces.IProperty)">CopyProperty(IProperty)</h4>
+  <div class="markdown level1 summary"><p>Copies the property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyProperty(IProperty prop)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></td>
+        <td><span class="parametername">prop</span></td>
+        <td><p>The property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L300">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Equals_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Equals*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Equals_System_Object_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Equals(System.Object)">Equals(object?)</h4>
+  <div class="markdown level1 summary"><p>determines if the mappings are equal</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a></div>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Equals_System_Object__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_GetColumnName_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.GetColumnName(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L312">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_GetColumnName_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.GetColumnName*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_GetColumnName_System_String_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.GetColumnName(System.String)">GetColumnName(string)</h4>
+  <div class="markdown level1 summary"><p>Gets the name of the column based on property name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetColumnName(string propertyName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">propertyName</span></td>
+        <td><p>Name of the property.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The column name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_GetColumnName_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_GetHashCode.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L333">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_GetHashCode_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.GetHashCode*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_GetHashCode" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Gets the mapping's hash code</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>Hash code for the mapping</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a></div>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_GetHashCode_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ID__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ID%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L342">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ID_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ID*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ID__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ID``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Declares a property as an ID</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ID&lt;TClassType, TDataType&gt; ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ID-2.html">ID</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>the ID object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>Data type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>expression</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ID__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ManyToMany%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2CSystem.Collections.Generic.IList%7B%60%600%7D%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L358">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToMany_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToMany*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToMany``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a many to many type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManyToMany&lt;TClassType, TDataType&gt; ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;TDataType&gt;&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ManyToMany-2.html">ManyToMany</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The many to many object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0_____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ManyToOne%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2CSystem.Collections.Generic.IList%7B%60%600%7D%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L375">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToOne*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToOne``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a many to one type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManyToOneMany&lt;TClassType, TDataType&gt; ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;TDataType&gt;&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ManyToOneMany-2.html">ManyToOneMany</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The many to many object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0_____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ManyToOne%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L392">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToOne*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ManyToOne``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a many to one type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ManyToOneSingle&lt;TClassType, TDataType&gt; ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ManyToOneSingle-2.html">ManyToOneSingle</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The many to many object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Map__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Map%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L410">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Map_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Map*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Map__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Map``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">Map&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a map type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Map&lt;TClassType, TDataType&gt; Map&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.Map-2.html">Map</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The map object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>expression</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Map__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Reduce(Inflatable.Interfaces.IMapping%2CMicrosoft.Extensions.Logging.ILogger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L511">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Reduce_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Reduce*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Reduce(Inflatable.Interfaces.IMapping,Microsoft.Extensions.Logging.ILogger)">Reduce(IMapping, ILogger)</h4>
+  <div class="markdown level1 summary"><p>Reduces this instance based on parent mapping properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reduce(IMapping parentMapping, ILogger logger)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
+        <td><span class="parametername">parentMapping</span></td>
+        <td><p>The parent mapping.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></td>
+        <td><span class="parametername">logger</span></td>
+        <td><p>The logger.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Reduce_Microsoft_Extensions_Logging_ILogger_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Reduce(Microsoft.Extensions.Logging.ILogger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L425">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Reduce_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Reduce*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Reduce_Microsoft_Extensions_Logging_ILogger_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Reduce(Microsoft.Extensions.Logging.ILogger)">Reduce(ILogger)</h4>
+  <div class="markdown level1 summary"><p>Reduces this instance and removes duplicate properties</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reduce(ILogger logger)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></td>
+        <td><span class="parametername">logger</span></td>
+        <td><p>The logger.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Reduce_Microsoft_Extensions_Logging_ILogger__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Reference%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L586">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Reference_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Reference*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Reference``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a reference type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Reference&lt;TClassType, TDataType&gt; Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.Reference-2.html">Reference</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>the reference object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>Data type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>expression</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter___.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.SetQuery(Inflatable.QueryProvider.Enums.QueryType%2CSystem.String%2CSystem.Data.CommandType%2CSQLHelperDB.HelperClasses.Interfaces.IParameter%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L605">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_SetQuery_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.SetQuery*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter___" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.SetQuery(Inflatable.QueryProvider.Enums.QueryType,System.String,System.Data.CommandType,SQLHelperDB.HelperClasses.Interfaces.IParameter[])">SetQuery(QueryType, string, CommandType, params IParameter[])</h4>
+  <div class="markdown level1 summary"><p>Sets the default query based on query type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
+        <td><span class="parametername">queryType</span></td>
+        <td><p>Type of the query.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><span class="parametername">queryString</span></td>
+        <td><p>The query string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.commandtype">CommandType</a></td>
+        <td><span class="parametername">databaseCommandType</span></td>
+        <td><p>Type of the database command.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/0027a68cf67cc11eda15924d51ea0cb6dd7585c0/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
+        <td><p>This</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>queryString</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_Setup.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.Setup%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L617">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_Setup_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Setup*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_Setup" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.Setup">Setup()</h4>
+  <div class="markdown level1 summary"><p>Sets up the mapping</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Setup()</code></pre>
+  </div>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_Setup_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_ToString.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L625">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_ToString_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ToString*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_ToString" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Converts the mapping to a string</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
+        <td><p>The table name</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a></div>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_ToString_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <h3 id="operators">Operators
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_op_Equality_Inflatable_BaseClasses_MappingBaseClass__0__1__Inflatable_BaseClasses_MappingBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.op_Equality(Inflatable.BaseClasses.MappingBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.MappingBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L191">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_op_Equality_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.op_Equality*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_op_Equality_Inflatable_BaseClasses_MappingBaseClass__0__1__Inflatable_BaseClasses_MappingBaseClass__0__1__" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.op_Equality(Inflatable.BaseClasses.MappingBaseClass{`0,`1},Inflatable.BaseClasses.MappingBaseClass{`0,`1})">operator ==(MappingBaseClass&lt;TClassType, TDatabaseType&gt;?, MappingBaseClass&lt;TClassType, TDatabaseType&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Determines if the two items are equal</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(MappingBaseClass&lt;TClassType, TDatabaseType&gt;? Item1, MappingBaseClass&lt;TClassType, TDatabaseType&gt;? Item2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.MappingBaseClass-2.html">MappingBaseClass</a>&lt;TClassType, TDatabaseType&gt;</td>
+        <td><span class="parametername">Item1</span></td>
+        <td><p>Item 1</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.MappingBaseClass-2.html">MappingBaseClass</a>&lt;TClassType, TDatabaseType&gt;</td>
+        <td><span class="parametername">Item2</span></td>
+        <td><p>Item 2</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>True if they are equal, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_op_Equality_Inflatable_BaseClasses_MappingBaseClass__0__1__Inflatable_BaseClasses_MappingBaseClass__0__1___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_MappingBaseClass_2_op_Inequality_Inflatable_BaseClasses_MappingBaseClass__0__1__Inflatable_BaseClasses_MappingBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.MappingBaseClass%602.op_Inequality(Inflatable.BaseClasses.MappingBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.MappingBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/MappingBaseClass.cs/#L180">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_MappingBaseClass_2_op_Inequality_" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.op_Inequality*"></a>
+  <h4 id="Inflatable_BaseClasses_MappingBaseClass_2_op_Inequality_Inflatable_BaseClasses_MappingBaseClass__0__1__Inflatable_BaseClasses_MappingBaseClass__0__1__" data-uid="Inflatable.BaseClasses.MappingBaseClass`2.op_Inequality(Inflatable.BaseClasses.MappingBaseClass{`0,`1},Inflatable.BaseClasses.MappingBaseClass{`0,`1})">operator !=(MappingBaseClass&lt;TClassType, TDatabaseType&gt;?, MappingBaseClass&lt;TClassType, TDatabaseType&gt;?)</h4>
+  <div class="markdown level1 summary"><p>Determines if the two items are not equal</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(MappingBaseClass&lt;TClassType, TDatabaseType&gt;? Item1, MappingBaseClass&lt;TClassType, TDatabaseType&gt;? Item2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.MappingBaseClass-2.html">MappingBaseClass</a>&lt;TClassType, TDatabaseType&gt;</td>
+        <td><span class="parametername">Item1</span></td>
+        <td><p>Item 1</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.MappingBaseClass-2.html">MappingBaseClass</a>&lt;TClassType, TDatabaseType&gt;</td>
+        <td><span class="parametername">Item2</span></td>
+        <td><p>Item 2</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>True if they are not equal, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_BaseClasses_MappingBaseClass_2_op_Inequality_Inflatable_BaseClasses_MappingBaseClass__0__1__Inflatable_BaseClasses_MappingBaseClass__0__1___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping&lt;TClassType&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping-1.html">IMapping</a>&lt;TClassType&gt;</div>
+  </div>
+
+</article>
+                </div>
+
+                <div class="copyright-footer">
+                    <span>&#169; James Craig. All rights reserved.</span>
+                </div>
+            </main>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+</html>

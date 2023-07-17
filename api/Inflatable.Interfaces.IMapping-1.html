@@ -1,0 +1,666 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Interface IMapping&lt;TClassType&gt;
+ | Inflatable API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Interface IMapping&lt;TClassType&gt;
+ | Inflatable API Reference ">
+      <meta name="generator" content="docfx ">
+  
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+
+            <a class="brand" href="../index.html">
+              <img src="../images/icon.png" alt="Inflatable" class="logomark">
+              <span class="brand-title">Inflatable</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+
+                    <div>
+                      <div class="mobile-hide">
+
+                        <a class="brand" href="../index.html">
+                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
+                          <span class="brand-title">Inflatable</span>
+                        </a>                      </div>
+
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+  
+                </div>            </nav>
+
+            <main class="main-panel">
+
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+ 
+
+                <div role="main" class="hide-when-search">
+
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                         <div id="contribution">
+                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                         </div>
+
+                    <article class="content wrap" id="_content" data-uid="Inflatable.Interfaces.IMapping`1">
+
+
+
+  <h1 id="Inflatable_Interfaces_IMapping_1" data-uid="Inflatable.Interfaces.IMapping`1" class="text-break">Interface IMapping&lt;TClassType&gt;
+</h1>
+  <div class="markdown level0 summary"><p>Class mapping interface</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_AutoIDProperties">IMapping.AutoIDProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_DatabaseConfigType">IMapping.DatabaseConfigType</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_IDProperties">IMapping.IDProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_ManyToManyProperties">IMapping.ManyToManyProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_ManyToOneProperties">IMapping.ManyToOneProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_MapProperties">IMapping.MapProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Merge">IMapping.Merge</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_ObjectType">IMapping.ObjectType</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Order">IMapping.Order</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Prefix">IMapping.Prefix</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Queries">IMapping.Queries</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_ReferenceProperties">IMapping.ReferenceProperties</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_SchemaName">IMapping.SchemaName</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Suffix">IMapping.Suffix</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_TableName">IMapping.TableName</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_AddAutoKey">IMapping.AddAutoKey()</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_ContainsProperty_System_String_">IMapping.ContainsProperty(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Copy_Inflatable_Interfaces_IMapping_">IMapping.Copy(IMapping)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty_">IMapping.CopyProperty(IIDProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty_">IMapping.CopyProperty(IProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty_">IMapping.CopyProperty(IMapProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty_">IMapping.CopyProperty(IManyToOneProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty_">IMapping.CopyProperty(IManyToManyProperty)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_GetColumnName_System_String_">IMapping.GetColumnName(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Reduce_Microsoft_Extensions_Logging_ILogger_">IMapping.Reduce(ILogger)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger_">IMapping.Reduce(IMapping, ILogger)</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter___">IMapping.SetQuery(QueryType, string, CommandType, params IParameter[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Inflatable.Interfaces.IMapping.html#Inflatable_Interfaces_IMapping_Setup">IMapping.Setup()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.Interfaces.html">Interfaces</a></h6>
+  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
+  <h5 id="Inflatable_Interfaces_IMapping_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IMapping&lt;TClassType&gt; : IMapping where TClassType : class</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TClassType</span></td>
+        <td><p>Class type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1_ID__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601.ID%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L44">View Source</a>
+  </span>
+  <a id="Inflatable_Interfaces_IMapping_1_ID_" data-uid="Inflatable.Interfaces.IMapping`1.ID*"></a>
+  <h4 id="Inflatable_Interfaces_IMapping_1_ID__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.Interfaces.IMapping`1.ID``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Declares a property as an ID</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ID&lt;TClassType, TDataType&gt; ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ID-2.html">ID</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>the ID object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>Data type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_Interfaces_IMapping_1_ID__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601.ManyToMany%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2CSystem.Collections.Generic.IList%7B%60%600%7D%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L52">View Source</a>
+  </span>
+  <a id="Inflatable_Interfaces_IMapping_1_ManyToMany_" data-uid="Inflatable.Interfaces.IMapping`1.ManyToMany*"></a>
+  <h4 id="Inflatable_Interfaces_IMapping_1_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____" data-uid="Inflatable.Interfaces.IMapping`1.ManyToMany``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a many to many type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ManyToMany&lt;TClassType, TDataType&gt; ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;TDataType&gt;&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ManyToMany-2.html">ManyToMany</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The many to many object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the ata type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_Interfaces_IMapping_1_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0_____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601.ManyToOne%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2CSystem.Collections.Generic.IList%7B%60%600%7D%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L61">View Source</a>
+  </span>
+  <a id="Inflatable_Interfaces_IMapping_1_ManyToOne_" data-uid="Inflatable.Interfaces.IMapping`1.ManyToOne*"></a>
+  <h4 id="Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____" data-uid="Inflatable.Interfaces.IMapping`1.ManyToOne``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a many to one type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ManyToOneMany&lt;TClassType, TDataType&gt; ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;TDataType&gt;&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ManyToOneMany-2.html">ManyToOneMany</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The many to many object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0_____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601.ManyToOne%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L70">View Source</a>
+  </span>
+  <a id="Inflatable_Interfaces_IMapping_1_ManyToOne_" data-uid="Inflatable.Interfaces.IMapping`1.ManyToOne*"></a>
+  <h4 id="Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.Interfaces.IMapping`1.ManyToOne``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a many to one type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ManyToOneSingle&lt;TClassType, TDataType&gt; ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.ManyToOneSingle-2.html">ManyToOneSingle</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The many to many object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1_Map__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601.Map%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L79">View Source</a>
+  </span>
+  <a id="Inflatable_Interfaces_IMapping_1_Map_" data-uid="Inflatable.Interfaces.IMapping`1.Map*"></a>
+  <h4 id="Inflatable_Interfaces_IMapping_1_Map__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.Interfaces.IMapping`1.Map``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">Map&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a map type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Map&lt;TClassType, TDataType&gt; Map&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt; expression) where TDataType : class</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.Map-2.html">Map</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>The map object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>The type of the data type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_Interfaces_IMapping_1_Map__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_1_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0___.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%601.Reference%60%601(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%60%600%7D%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L88">View Source</a>
+  </span>
+  <a id="Inflatable_Interfaces_IMapping_1_Reference_" data-uid="Inflatable.Interfaces.IMapping`1.Reference*"></a>
+  <h4 id="Inflatable_Interfaces_IMapping_1_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.Interfaces.IMapping`1.Reference``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Sets a property as a reference type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Reference&lt;TClassType, TDataType&gt; Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt; expression)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;&gt;</td>
+        <td><span class="parametername">expression</span></td>
+        <td><p>Expression pointing to the property</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.ClassMapper.Default.Reference-2.html">Reference</a>&lt;TClassType, TDataType&gt;</td>
+        <td><p>the reference object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TDataType</span></td>
+        <td><p>Data type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Inflatable_Interfaces_IMapping_1_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></div>
+  </div>
+
+</article>
+                </div>
+
+                <div class="copyright-footer">
+                    <span>&#169; James Craig. All rights reserved.</span>
+                </div>
+            </main>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+</html>

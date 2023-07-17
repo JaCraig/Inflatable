@@ -1,0 +1,889 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Class ObjectBaseClass&lt;TObjectType, TIDType&gt;
+ | Inflatable API Reference </title>
+      <meta name="viewport" content="width=device-width">
+      <meta name="title" content="Class ObjectBaseClass&lt;TObjectType, TIDType&gt;
+ | Inflatable API Reference ">
+      <meta name="generator" content="docfx ">
+  
+      <link rel="shortcut icon" href="../favicon.ico">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
+      <link rel="stylesheet" href="../styles/config.css">
+      <link rel="stylesheet" href="../styles/discord.css">
+      <link rel="stylesheet" href="../styles/singulink.css">
+      <link rel="stylesheet" href="../styles/main.css">
+      <meta property="docfx:navrel" content="../toc.html">
+      <meta property="docfx:tocrel" content="toc.html">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
+    </head>
+    <body>
+        <div class="top-navbar">
+            <a class="burger-icon" onclick="toggleMenu()">
+                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
+            </a>
+
+
+            <a class="brand" href="../index.html">
+              <img src="../images/icon.png" alt="Inflatable" class="logomark">
+              <span class="brand-title">Inflatable</span>
+            </a>        </div>
+
+        <div class="body-content">
+            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+
+            <nav id="sidebar" role="navigation">
+                <div class="sidebar">
+
+                    <div>
+                      <div class="mobile-hide">
+
+                        <a class="brand" href="../index.html">
+                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
+                          <span class="brand-title">Inflatable</span>
+                        </a>                      </div>
+
+                      <div class="sidesearch">
+                        <form id="search" role="search" class="search">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
+                        </form>
+                      </div>
+
+                      <div id="navbar">
+                      </div>
+                    </div>                    <div class="sidebar-item-separator"></div>
+
+                        <div id="sidetoggle">
+                          <div id="sidetoc"></div>
+                        </div>
+                </div>
+                <div class="footer">
+  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+  
+                </div>            </nav>
+
+            <main class="main-panel">
+
+                <div id="search-results" style="display: none;">
+                  <h1 class="search-list">Search Results for <span></span></h1>
+                  <div class="sr-items">
+                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
+                  </div>
+                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+                </div>
+ 
+
+                <div role="main" class="hide-when-search">
+
+                        <div class="subnav navbar navbar-default">
+                          <div class="container hide-when-search" id="breadcrumb">
+                            <ul class="breadcrumb">
+                              <li></li>
+                            </ul>
+                          </div>
+                        </div>
+
+                         <div id="contribution">
+                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                         </div>
+
+                    <article class="content wrap" id="_content" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2">
+
+
+
+  <h1 id="Inflatable_BaseClasses_ObjectBaseClass_2" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2" class="text-break">Class ObjectBaseClass&lt;TObjectType, TIDType&gt;
+</h1>
+  <div class="markdown level0 summary"><p>Object base class helper. This is not required but automatically sets up basic functions and
+properties to simplify things a bit.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+    <div class="level1"><span class="xref">ObjectBaseClass&lt;TObjectType, TIDType&gt;</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a></div>
+    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable</a>&lt;TObjectType&gt;</div>
+    <div><a class="xref" href="Inflatable.Interfaces.IObject-1.html">IObject</a>&lt;TIDType&gt;</div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.BaseClasses.html">BaseClasses</a></h6>
+  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
+  <h5 id="Inflatable_BaseClasses_ObjectBaseClass_2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class ObjectBaseClass&lt;TObjectType, TIDType&gt; : IComparable, IComparable&lt;TObjectType&gt;, IObject&lt;TIDType&gt; where TObjectType : ObjectBaseClass&lt;TObjectType, TIDType&gt;, new() where TIDType : IComparable</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">TObjectType</span></td>
+        <td><p>Object type (must be the child object type)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="parametername">TIDType</span></td>
+        <td><p>ID type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2__ctor.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.%23ctor%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L37">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2__ctor_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.#ctor*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2__ctor" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.#ctor">ObjectBaseClass()</h4>
+  <div class="markdown level1 summary"><p>Constructor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected ObjectBaseClass()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_Active.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.Active%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L48">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_Active_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.Active*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_Active" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.Active">Active</h4>
+  <div class="markdown level1 summary"><p>Is the object active?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[BoolGenerator]
+public bool Active { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_DateCreated.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.DateCreated%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L54">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_DateCreated_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.DateCreated*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_DateCreated" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.DateCreated">DateCreated</h4>
+  <div class="markdown level1 summary"><p>Date object was created</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Between(&quot;1/1/1900&quot;, &quot;1/1/2100&quot;, &quot;&quot;)]
+[DateTimeGenerator(&quot;1/1/1900&quot;, &quot;1/1/2100&quot;)]
+public DateTime DateCreated { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_DateModified.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.DateModified%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L61">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_DateModified_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.DateModified*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_DateModified" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.DateModified">DateModified</h4>
+  <div class="markdown level1 summary"><p>Date last modified</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Between(&quot;1/1/1900&quot;, &quot;1/1/2100&quot;, &quot;&quot;)]
+[DateTimeGenerator(&quot;1/1/1900&quot;, &quot;1/1/2100&quot;)]
+public DateTime DateModified { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_ID.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.ID%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L68">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_ID_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.ID*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_ID" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.ID">ID</h4>
+  <div class="markdown level1 summary"><p>ID for the object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TIDType ID { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TIDType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_CompareTo_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.CompareTo(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L141">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_CompareTo_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.CompareTo*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_CompareTo_System_Object_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.CompareTo(System.Object)">CompareTo(object?)</h4>
+  <div class="markdown level1 summary"><p>Compares the object to another object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CompareTo(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>Object to compare to</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>0 if they are equal, -1 if this is smaller, 1 if it is larger</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_CompareTo__0_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.CompareTo(%600)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L151">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_CompareTo_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.CompareTo*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_CompareTo__0_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.CompareTo(`0)">CompareTo(TObjectType?)</h4>
+  <div class="markdown level1 summary"><p>Compares the object to another object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual int CompareTo(TObjectType? other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">TObjectType</span></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>Object to compare to</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>0 if they are equal, -1 if this is smaller, 1 if it is larger</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L165">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_Equals_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.Equals*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_Equals_System_Object_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.Equals(System.Object)">Equals(object?)</h4>
+  <div class="markdown level1 summary"><p>Determines if two items are equal</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The object to compare this to</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>true if they are the same, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_GetHashCode.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L174">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_GetHashCode_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.GetHashCode*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_GetHashCode" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Returns the hash of this item</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
+        <td><p>the int hash of the item</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_SetupObject.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.SetupObject%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L179">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_SetupObject_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.SetupObject*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_SetupObject" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.SetupObject">SetupObject()</h4>
+  <div class="markdown level1 summary"><p>Sets up the object for saving purposes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void SetupObject()</code></pre>
+  </div>
+  <h3 id="operators">Operators
+</h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_op_Equality_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.op_Equality(Inflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L109">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_op_Equality_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_Equality*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_op_Equality_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_Equality(Inflatable.BaseClasses.ObjectBaseClass{`0,`1},Inflatable.BaseClasses.ObjectBaseClass{`0,`1})">operator ==(ObjectBaseClass&lt;TObjectType, TIDType&gt;, ObjectBaseClass&lt;TObjectType, TIDType&gt;)</h4>
+  <div class="markdown level1 summary"><p>The == operator</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(ObjectBaseClass&lt;TObjectType, TIDType&gt; left, ObjectBaseClass&lt;TObjectType, TIDType&gt; right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">left</span></td>
+        <td><p>The left.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">right</span></td>
+        <td><p>The right.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>true if the first and second item are the same, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_op_GreaterThan_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.op_GreaterThan(Inflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L120">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_op_GreaterThan_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_GreaterThan*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_op_GreaterThan_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_GreaterThan(Inflatable.BaseClasses.ObjectBaseClass{`0,`1},Inflatable.BaseClasses.ObjectBaseClass{`0,`1})">operator &gt;(ObjectBaseClass&lt;TObjectType, TIDType&gt;, ObjectBaseClass&lt;TObjectType, TIDType&gt;)</h4>
+  <div class="markdown level1 summary"><p>The &gt; operator</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator &gt;(ObjectBaseClass&lt;TObjectType, TIDType&gt; left, ObjectBaseClass&lt;TObjectType, TIDType&gt; right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">left</span></td>
+        <td><p>The left.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">right</span></td>
+        <td><p>The right.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>True if the first item is greater than the second, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_op_GreaterThanOrEqual_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.op_GreaterThanOrEqual(Inflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L131">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_op_GreaterThanOrEqual_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_GreaterThanOrEqual*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_op_GreaterThanOrEqual_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_GreaterThanOrEqual(Inflatable.BaseClasses.ObjectBaseClass{`0,`1},Inflatable.BaseClasses.ObjectBaseClass{`0,`1})">operator &gt;=(ObjectBaseClass&lt;TObjectType, TIDType&gt;, ObjectBaseClass&lt;TObjectType, TIDType&gt;)</h4>
+  <div class="markdown level1 summary"><p>Implements the operator &gt;=.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator &gt;=(ObjectBaseClass&lt;TObjectType, TIDType&gt; left, ObjectBaseClass&lt;TObjectType, TIDType&gt; right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">left</span></td>
+        <td><p>The left.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">right</span></td>
+        <td><p>The right.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>The result of the operator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_op_Inequality_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.op_Inequality(Inflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L76">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_op_Inequality_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_Inequality*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_op_Inequality_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_Inequality(Inflatable.BaseClasses.ObjectBaseClass{`0,`1},Inflatable.BaseClasses.ObjectBaseClass{`0,`1})">operator !=(ObjectBaseClass&lt;TObjectType, TIDType&gt;, ObjectBaseClass&lt;TObjectType, TIDType&gt;)</h4>
+  <div class="markdown level1 summary"><p>!= operator</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(ObjectBaseClass&lt;TObjectType, TIDType&gt; first, ObjectBaseClass&lt;TObjectType, TIDType&gt; second)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">first</span></td>
+        <td><p>First item</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">second</span></td>
+        <td><p>Second item</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>returns true if they are not equal, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_op_LessThan_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.op_LessThan(Inflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L87">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_op_LessThan_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_LessThan*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_op_LessThan_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_LessThan(Inflatable.BaseClasses.ObjectBaseClass{`0,`1},Inflatable.BaseClasses.ObjectBaseClass{`0,`1})">operator &lt;(ObjectBaseClass&lt;TObjectType, TIDType&gt;, ObjectBaseClass&lt;TObjectType, TIDType&gt;)</h4>
+  <div class="markdown level1 summary"><p>The &lt; operator</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator &lt;(ObjectBaseClass&lt;TObjectType, TIDType&gt; left, ObjectBaseClass&lt;TObjectType, TIDType&gt; right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">left</span></td>
+        <td><p>The left.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">right</span></td>
+        <td><p>The right.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>True if the first item is less than the second, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_BaseClasses_ObjectBaseClass_2_op_LessThanOrEqual_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__.md&amp;value=---%0Auid%3A%20Inflatable.BaseClasses.ObjectBaseClass%602.op_LessThanOrEqual(Inflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D%2CInflatable.BaseClasses.ObjectBaseClass%7B%600%2C%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/BaseClasses/ObjectBaseClass.cs/#L98">View Source</a>
+  </span>
+  <a id="Inflatable_BaseClasses_ObjectBaseClass_2_op_LessThanOrEqual_" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_LessThanOrEqual*"></a>
+  <h4 id="Inflatable_BaseClasses_ObjectBaseClass_2_op_LessThanOrEqual_Inflatable_BaseClasses_ObjectBaseClass__0__1__Inflatable_BaseClasses_ObjectBaseClass__0__1__" data-uid="Inflatable.BaseClasses.ObjectBaseClass`2.op_LessThanOrEqual(Inflatable.BaseClasses.ObjectBaseClass{`0,`1},Inflatable.BaseClasses.ObjectBaseClass{`0,`1})">operator &lt;=(ObjectBaseClass&lt;TObjectType, TIDType&gt;, ObjectBaseClass&lt;TObjectType, TIDType&gt;)</h4>
+  <div class="markdown level1 summary"><p>Implements the operator &lt;=.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="declaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator &lt;=(ObjectBaseClass&lt;TObjectType, TIDType&gt; left, ObjectBaseClass&lt;TObjectType, TIDType&gt; right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">left</span></td>
+        <td><p>The left.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Inflatable.BaseClasses.ObjectBaseClass-2.html">ObjectBaseClass</a>&lt;TObjectType, TIDType&gt;</td>
+        <td><span class="parametername">right</span></td>
+        <td><p>The right.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
+        <td><p>The result of the operator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable">IComparable</a>
+  </div>
+  <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.icomparable-1">IComparable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Inflatable.Interfaces.IObject-1.html">IObject&lt;IDType&gt;</a>
+  </div>
+
+</article>
+                </div>
+
+                <div class="copyright-footer">
+                    <span>&#169; James Craig. All rights reserved.</span>
+                </div>
+            </main>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
+        <script type="text/javascript" src="../styles/url.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
+        <script type="text/javascript" src="../styles/docfx.js"></script>
+        <script type="text/javascript" src="../styles/main.js"></script>
+        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+</html>
