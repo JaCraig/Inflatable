@@ -4,6 +4,7 @@ using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
@@ -17,7 +18,8 @@ namespace Inflatable.Tests.Schema
 {
     public class ManyToManyClassManagerTests : TestingFixture
     {
-        public ManyToManyClassManagerTests()
+        public ManyToManyClassManagerTests(SetupFixture setupFixture)
+            : base(setupFixture)
         {
             Mappings = new MappingManager(new IMapping[] {
                 new AllReferencesAndIDMappingWithDatabase(),
@@ -43,7 +45,7 @@ namespace Inflatable.Tests.Schema
                     .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
-                    .ExecuteScalarAsync<int>().ConfigureAwait(false);
+                    .ExecuteScalarAsync<int>();
             }
             catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());

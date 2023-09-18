@@ -2,6 +2,7 @@
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Xunit;
 
@@ -9,7 +10,8 @@ namespace Inflatable.Tests.LinqExpression
 {
     public partial class QueryTranslatorTests : TestingFixture
     {
-        public QueryTranslatorTests()
+        public QueryTranslatorTests(SetupFixture setupFixture)
+            : base(setupFixture)
         {
             Mappings = Resolve<MappingManager>();
             QueryProviders = Resolve<QueryProviderManager>();

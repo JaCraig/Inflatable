@@ -1,4 +1,5 @@
 ﻿using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MapProperties;
 using System.Linq;
@@ -8,7 +9,8 @@ namespace Inflatable.Tests.ClassMapper
 {
     public class MapPropertiesTests : TestingFixture
     {
-        public MapPropertiesTests()
+        public MapPropertiesTests(SetupFixture setupFixture)
+            : base(setupFixture)
         {
             TestObject = new MapPropertiesMapping();
         }

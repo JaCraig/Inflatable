@@ -3,6 +3,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
@@ -14,6 +15,9 @@ namespace Inflatable.Tests.QueryProvider
 {
     public class QueryProviderManagerTests : TestingFixture
     {
+        public QueryProviderManagerTests(SetupFixture setupFixture)
+            : base(setupFixture) { }
+
         [Fact]
         public void CreateBatch()
         {

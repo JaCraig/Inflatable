@@ -3,6 +3,7 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.MultipleDataSources.Mappings;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace Inflatable.Tests.ClassMapper
 {
     public class MultipleDataSourceTests : TestingFixture
     {
+        public MultipleDataSourceTests(SetupFixture setupFixture)
+            : base(setupFixture) { }
+
         [Fact]
         public void Creation()
         {

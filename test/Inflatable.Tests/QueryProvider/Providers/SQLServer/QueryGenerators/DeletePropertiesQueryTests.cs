@@ -6,6 +6,7 @@ using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators;
 using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
@@ -21,6 +22,9 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 {
     public class DeletePropertiesQueryTests : TestingFixture
     {
+        public DeletePropertiesQueryTests(SetupFixture setupFixture)
+            : base(setupFixture) { }
+
         [Fact]
         public void Creation()
         {

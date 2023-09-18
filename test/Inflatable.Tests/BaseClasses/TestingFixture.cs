@@ -16,42 +16,23 @@ namespace Inflatable.Tests.BaseClasses
     [Collection("Test collection")]
     public abstract class TestingFixture : IDisposable
     {
-        protected TestingFixture()
+        protected TestingFixture(SetupFixture setupFixture)
         {
-            SetupFixture.InitProvider();
+            SetupFixture = setupFixture;
+            setupFixture.InitProvider();
         }
 
+        protected static readonly object TestRunLock = new object();
+        protected static string DatabaseName = "TestDatabase";
+        protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
         public IConfiguration Configuration => Resolve<IConfigurationRoot>();
         public DataModeler DataModeler => Resolve<DataModeler>();
         public SQLHelper Helper => Resolve<SQLHelper>();
         public MappingManager MappingManager => Resolve<MappingManager>();
         public ObjectPool<StringBuilder> ObjectPool => Resolve<ObjectPool<StringBuilder>>();
         public SchemaManager SchemaManager => Resolve<SchemaManager>();
+        public SetupFixture SetupFixture { get; }
         public Sherlock Sherlock => Resolve<Sherlock>();
-        protected static readonly object TestRunLock = new object();
-        protected static string DatabaseName = "TestDatabase";
-        protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
-
-        public static ILogger<T>? GetLogger<T>()
-        {
-            try
-            {
-                return Resolve<ILogger<T>>();
-            }
-            catch { }
-            return null;
-        }
-
-        public static T Resolve<T>()
-             where T : class
-        {
-            try
-            {
-                return SetupFixture.Resolve<T>();
-            }
-            catch { }
-            return default;
-        }
 
         public void Dispose()
         {
@@ -65,6 +46,27 @@ namespace Inflatable.Tests.BaseClasses
             //        .ExecuteScalarAsync<int>().ConfigureAwait(false)).GetAwaiter().GetResult();
             //}
             //catch { }
+        }
+
+        public ILogger<T>? GetLogger<T>()
+        {
+            try
+            {
+                return Resolve<ILogger<T>>();
+            }
+            catch { }
+            return null;
+        }
+
+        public T Resolve<T>()
+             where T : class
+        {
+            try
+            {
+                return SetupFixture.Resolve<T>();
+            }
+            catch { }
+            return default;
         }
     }
 }

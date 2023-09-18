@@ -1,4 +1,5 @@
 ﻿using Inflatable.Tests.BaseClasses;
+using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Xunit;
@@ -7,7 +8,8 @@ namespace Inflatable.Tests.ClassMapper
 {
     public class AllReferencesAndIDMappingTests : TestingFixture
     {
-        public AllReferencesAndIDMappingTests()
+        public AllReferencesAndIDMappingTests(SetupFixture setupFixture)
+            : base(setupFixture)
         {
             TestObject = new AllReferencesAndIDMappingNoDatabase();
         }
