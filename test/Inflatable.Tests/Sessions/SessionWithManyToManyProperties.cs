@@ -254,7 +254,7 @@ namespace Inflatable.Tests.Sessions
                 });
                 var Result = AsyncHelper.RunSync(async () => await TestObject.Save(x.ManyToManyClass).ExecuteAsync());
             }).ToArray();
-            await Assert.ThrowsAsync<SqlException>(async () => await TestObject.Save(UpdatedResults).ExecuteAsync());
+            await Assert.ThrowsAsync<SqlException>(() => TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.Equal(1, Results.Max(x => x.ManyToManyClass.Count));
@@ -310,7 +310,7 @@ namespace Inflatable.Tests.Sessions
                 CharValue = 'c',
                 DateTimeValue = new DateTime(2000, 1, 1)
             });
-            await Assert.ThrowsAsync<SqlException>(async () => await TestObject.Save(Result).ExecuteAsync());
+            await Assert.ThrowsAsync<SqlException>(() => TestObject.Save(Result).ExecuteAsync());
             var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.Single(Results);
         }

@@ -264,6 +264,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task SetupDataAsync()
         {
+            await DeleteDatabaseData();
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             _ = Resolve<ISession>();
             await Helper
