@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Inflatable.Tests.Sessions
 {
+    [Collection("Test collection")]
     public class SessionUsingBaseClasses : TestingFixture
     {
         public SessionUsingBaseClasses(SetupFixture setupFixture)
@@ -21,7 +22,7 @@ namespace Inflatable.Tests.Sessions
         public void BaseClassDelete()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             AsyncHelper.RunSync(() => TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync());
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -57,7 +58,7 @@ namespace Inflatable.Tests.Sessions
             };
             AsyncHelper.RunSync(() => TempSession.Save(TempData).ExecuteAsync());
 
-            var TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.BaseClassValue1 > 2).ToArray();
+            BaseClass1[] TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.BaseClassValue1 > 2).ToArray();
 
             var ResultCount = AsyncHelper.RunSync(() => TempSession.Delete(TestObject).ExecuteAsync());
             Assert.Equal(2, ResultCount);
@@ -71,7 +72,7 @@ namespace Inflatable.Tests.Sessions
         public async Task BaseClassInsert()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -107,7 +108,7 @@ namespace Inflatable.Tests.Sessions
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
+            BaseClass1[] TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             Assert.Equal(6, TestObject.Length);
             Assert.Equal(3, TestObject.OfType<ConcreteClass1>().Count());
             Assert.Equal(3, TestObject.OfType<ConcreteClass2>().Count());
@@ -118,7 +119,7 @@ namespace Inflatable.Tests.Sessions
         public async Task BaseClassUpdate()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<BaseClass1>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
@@ -154,7 +155,7 @@ namespace Inflatable.Tests.Sessions
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
+            BaseClass1[] TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
             TestObject.ForEach(x => x.BaseClassValue1 = 10);
             var ResultCount = await TempSession.Save(TestObject).ExecuteAsync();
             Assert.Equal(12, ResultCount);

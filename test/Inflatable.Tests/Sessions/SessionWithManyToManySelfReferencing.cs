@@ -21,6 +21,7 @@ using Xunit;
 
 namespace Inflatable.Tests.Sessions
 {
+    [Collection("Test collection")]
     public class SessionWithManyToManyPropertiesSelfReferencing : TestingFixture
     {
         public SessionWithManyToManyPropertiesSelfReferencing(SetupFixture setupFixture)
@@ -57,43 +58,43 @@ namespace Inflatable.Tests.Sessions
             _ = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Results = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().ToArray();
+            ManyToManyPropertySelfReferencing[] Results = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().ToArray();
             Assert.Equal(6, Results.Length);
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.Equal(4, Results.Count());
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabaseAndCascade()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.Equal(4, Results.Count());
         }
 
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.Equal(5, Results.Count());
         }
 
@@ -111,18 +112,18 @@ namespace Inflatable.Tests.Sessions
             }
             catch { }
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
-            var Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Result = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.Empty(Results);
         }
 
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
             var Result1 = new ManyToManyPropertySelfReferencing
@@ -150,7 +151,7 @@ namespace Inflatable.Tests.Sessions
                 BoolValue = true
             });
             await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.Equal(12, Results.Count());
             Assert.Contains(Results, x => x.ID == Result1.ID
             && !x.BoolValue
@@ -172,7 +173,7 @@ namespace Inflatable.Tests.Sessions
             _ = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Result = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().Skip(1).Take(1).First();
+            ManyToManyPropertySelfReferencing Result = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().Skip(1).Take(1).First();
             Assert.NotNull(Result.Children);
             Assert.Single(Result.Children);
         }
@@ -180,11 +181,11 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleCascadeWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            ManyToManyPropertySelfReferencing[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.Children.ForEach(y => y.BoolValue = false);
@@ -203,11 +204,11 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            ManyToManyPropertySelfReferencing[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.Children.Add(new ManyToManyPropertySelfReferencing
@@ -226,11 +227,11 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            ManyToManyPropertySelfReferencing[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.Children.Clear();
@@ -244,7 +245,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             Assert.Equal(0, await TestObject.Save<ManyToManyPropertySelfReferencing>(null).ExecuteAsync());
         }
@@ -263,7 +264,7 @@ namespace Inflatable.Tests.Sessions
             }
             catch { }
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             var Result = new ManyToManyPropertySelfReferencing
             {
                 BoolValue = false
@@ -273,14 +274,14 @@ namespace Inflatable.Tests.Sessions
                 BoolValue = true
             });
             await TestObject.Save(Result).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.Equal(2, Results.Count());
         }
 
         private async Task SetupDataAsync()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var Session = Resolve<ISession>();
+            ISession Session = Resolve<ISession>();
             await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM Parent_Child")

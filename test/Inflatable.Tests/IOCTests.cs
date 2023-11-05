@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Inflatable.Tests
 {
+    [Collection("Test collection")]
     public class IOCTests : TestingFixture
     {
         public IOCTests(SetupFixture setupFixture)
@@ -15,11 +16,11 @@ namespace Inflatable.Tests
         [Fact]
         public void RegistrationTests()
         {
-            var TempMappingManager = Resolve<MappingManager>();
+            MappingManager TempMappingManager = Resolve<MappingManager>();
             Assert.NotNull(TempMappingManager);
-            var SchemaManager = Resolve<SchemaManager>();
+            SchemaManager SchemaManager = Resolve<SchemaManager>();
             Assert.NotNull(SchemaManager);
-            var QueryManager = Resolve<QueryProviderManager>();
+            QueryProviderManager QueryManager = Resolve<QueryProviderManager>();
             Assert.NotNull(QueryManager);
         }
     }

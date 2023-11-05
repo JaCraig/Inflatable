@@ -15,6 +15,7 @@ using Xunit;
 
 namespace Inflatable.Tests.Schema
 {
+    [Collection("Test collection")]
     public class MultipleDataSourcesSchemaGeneration : TestingFixture
     {
         public MultipleDataSourcesSchemaGeneration(SetupFixture setupFixture)
@@ -50,7 +51,7 @@ namespace Inflatable.Tests.Schema
             catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             Assert.Equal(2, TestObject.Models.Count());
-            var TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase");
+            DataModel TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase");
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);

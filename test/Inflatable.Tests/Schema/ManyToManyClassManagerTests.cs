@@ -16,6 +16,7 @@ using Xunit;
 
 namespace Inflatable.Tests.Schema
 {
+    [Collection("Test collection")]
     public class ManyToManyClassManagerTests : TestingFixture
     {
         public ManyToManyClassManagerTests(SetupFixture setupFixture)
@@ -50,7 +51,7 @@ namespace Inflatable.Tests.Schema
             catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             Assert.Single(TestObject.Models);
-            var TestModel = TestObject.Models.First();
+            DataModel TestModel = TestObject.Models.First();
             Assert.Equal("TestDatabase", TestModel.SourceSpec.Name);
             Assert.NotNull(TestModel.SourceSpec);
             Assert.Empty(TestModel.SourceSpec.Functions);

@@ -20,6 +20,7 @@ using Xunit;
 
 namespace Inflatable.Tests.Sessions
 {
+    [Collection("Test collection")]
     public class SessionWithMapProperties : TestingFixture
     {
         public SessionWithMapProperties(SetupFixture setupFixture)
@@ -57,44 +58,44 @@ namespace Inflatable.Tests.Sessions
         {
             _ = Resolve<ISession>();
             await SetupDataAsync();
-            var Results = DbContext<MapProperties>.CreateQuery().ToArray();
+            MapProperties[] Results = DbContext<MapProperties>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 2 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapProperties> Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 2 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapProperties> Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             Assert.Single(Results);
-            var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<AllReferencesAndID> Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(6, Results2.Count());
         }
 
         [Fact]
         public async Task DeleteMultipleWithDataInDatabaseAndCascade()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapPropertiesWithCascade> Result = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapPropertiesWithCascade> Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
             Assert.Single(Results);
-            var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<AllReferencesAndID> Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.NotEmpty(Results2);
         }
 
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 1 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapProperties> Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 1 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapProperties> Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             Assert.Equal(2, Results.Count());
         }
 
@@ -103,17 +104,17 @@ namespace Inflatable.Tests.Sessions
         {
             await DeleteData();
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Resolve<ISession>();
-            var Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 1 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            ISession TestObject = Resolve<ISession>();
+            System.Collections.Generic.IEnumerable<MapProperties> Result = await TestObject.ExecuteAsync<MapProperties>("SELECT TOP 1 ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapProperties> Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             Assert.Empty(Results);
         }
 
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             var Result1 = new MapPropertiesWithCascade
             {
@@ -149,7 +150,7 @@ namespace Inflatable.Tests.Sessions
                 }
             };
             await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapPropertiesWithCascade> Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.Contains(Results, x => x.ID == Result1.ID
             && !x.BoolValue
@@ -173,17 +174,17 @@ namespace Inflatable.Tests.Sessions
         {
             _ = Resolve<ISession>();
             await SetupDataAsync();
-            var Result = DbContext<MapProperties>.CreateQuery().First();
+            MapProperties Result = DbContext<MapProperties>.CreateQuery().First();
             Assert.NotNull(Result.MappedClass);
         }
 
         [Fact]
         public async Task UpdateMultipleCascadeWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            System.Collections.Generic.IEnumerable<MapPropertiesWithCascade> Results = await TestObject.ExecuteAsync<MapPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithCascade_", CommandType.Text, "Default");
+            MapPropertiesWithCascade[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.MappedClass = new AllReferencesAndID
@@ -203,10 +204,10 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            System.Collections.Generic.IEnumerable<MapProperties> Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            MapProperties[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.MappedClass = new AllReferencesAndID
@@ -227,10 +228,10 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            System.Collections.Generic.IEnumerable<MapProperties> Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapProperties_", CommandType.Text, "Default");
+            MapProperties[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.MappedClass = null;
@@ -244,7 +245,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             Assert.Equal(0, await TestObject.Save<MapProperties>(null).ExecuteAsync());
         }
@@ -254,7 +255,7 @@ namespace Inflatable.Tests.Sessions
         {
             await DeleteData();
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             var Result = new MapProperties
             {
                 BoolValue = false,
@@ -267,7 +268,7 @@ namespace Inflatable.Tests.Sessions
                 }
             };
             await TestObject.Save(Result).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
+            System.Collections.Generic.IEnumerable<MapProperties> Results = await TestObject.ExecuteAsync<MapProperties>("SELECT ID_ as [ID] FROM MapProperties_", CommandType.Text, "Default");
             Assert.Single(Results);
         }
 
@@ -284,7 +285,7 @@ namespace Inflatable.Tests.Sessions
         private async Task SetupDataAsync()
         {
             var TestObject = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var Session = Resolve<ISession>();
+            ISession Session = Resolve<ISession>();
             await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM AllReferencesAndID_")

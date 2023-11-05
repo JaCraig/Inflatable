@@ -14,6 +14,7 @@ using Xunit;
 
 namespace Inflatable.Tests
 {
+    [Collection("Test collection")]
     public class DbContextTests : TestingFixture
     {
         public DbContextTests(SetupFixture setupFixture)
@@ -22,7 +23,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task BaseClassSelect()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             var TempData = new BaseClass1[] {
                 new ConcreteClass1()
                 {
@@ -57,20 +58,20 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<BaseClass1>.CreateQuery();
+            IQueryable<BaseClass1> TestObject = DbContext<BaseClass1>.CreateQuery();
             //var Result = TestObject.OrderBy(x => x.BaseClassValue1).ThenByDescending(x => x.ID).First();
             //Assert.Equal(4, Result.ID);
             TestObject = DbContext<BaseClass1>.CreateQuery();
-            var Result = TestObject.Where(x => x.ID == 6).First();
+            BaseClass1 Result = TestObject.Where(x => x.ID == 6).First();
             Assert.NotNull(Result);
         }
 
         [Fact]
         public async Task Count()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).Count();
             Assert.Equal(0, Results);
             var TempData = new AllReferencesAndID[] {
@@ -111,7 +112,7 @@ namespace Inflatable.Tests
         [Fact]
         public void CreateQuery()
         {
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Assert.NotNull(TestObject);
             Assert.NotNull(TestObject.Expression);
             Assert.IsType<DbContext<AllReferencesAndID>>(TestObject.Provider);
@@ -127,7 +128,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task CustomPropertyLoading()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
 
             var TestObject = new MapPropertiesCustomLoad
             {
@@ -142,7 +143,7 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TestObject).ExecuteAsync();
 
-            var Result = DbContext<MapPropertiesCustomLoad>.CreateQuery().Where(x => x.ID == 1).FirstOrDefault();
+            MapPropertiesCustomLoad Result = DbContext<MapPropertiesCustomLoad>.CreateQuery().Where(x => x.ID == 1).FirstOrDefault();
             Assert.NotNull(Result);
             Assert.NotNull(Result.MappedClass);
             Assert.True(Result.BoolValue);
@@ -155,9 +156,9 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Distinct()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<SimpleClassNoID>.CreateQuery().Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).ToList().ToArray()).ExecuteAsync();
-            var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
+            IQueryable<SimpleClassNoID> TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
                 {
@@ -219,7 +220,7 @@ namespace Inflatable.Tests
         public async Task First()
         {
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
                 {
@@ -249,8 +250,8 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            var Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).First();
+            IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            AllReferencesAndID Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).First();
             Assert.Equal(4, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.Where(x => x.ID == 600).First();
@@ -272,7 +273,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task ManyToOneWithNonMergeBaseClass()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             var TempData = new CompanyManyToOne[] {
                 new CompanyManyToOne()
                 {
@@ -293,7 +294,7 @@ namespace Inflatable.Tests
             };
             Assert.Equal(5, await TempSession.Save(TempData).ExecuteAsync());
 
-            var TestObject = DbContext<CompanyManyToOne>.CreateQuery();
+            IQueryable<CompanyManyToOne> TestObject = DbContext<CompanyManyToOne>.CreateQuery();
             var Results = TestObject.ToList();
             Assert.Equal(4, Results.Count);
             Assert.NotNull(Results[0].IndustryCode);
@@ -306,7 +307,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task OrderBy()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -337,7 +338,7 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).ToList();
             var OrderedIDs = Results.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Select(x => x.ID).ToArray();
             Assert.Equal(OrderedIDs[0], Results[0].ID);
@@ -360,7 +361,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Select()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -391,7 +392,7 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.Where(x => x.BoolValue).Select(x => new AllReferencesAndID { BoolValue = x.BoolValue }).ToList();
             Assert.Equal(3, Results.Count);
             Assert.True(Results.All(x => x.IntValue == 0));
@@ -407,7 +408,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task Take()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var TempData = new AllReferencesAndID[] {
                 new AllReferencesAndID()
@@ -438,7 +439,7 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<AllReferencesAndID>.CreateQuery();
+            IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             var Results = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Take(3).ToList();
             var OrderedIDs = Results.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Select(x => x.ID).ToArray();
             Assert.Equal(3, Results.Count);
@@ -452,7 +453,7 @@ namespace Inflatable.Tests
         [Fact]
         public async Task WhereStartsWith()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<SimpleClassNoID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var TempData = new SimpleClassNoID[] {
                 new SimpleClassNoID()
@@ -478,7 +479,7 @@ namespace Inflatable.Tests
             };
             await TempSession.Save(TempData).ExecuteAsync();
 
-            var TestObject = DbContext<SimpleClassNoID>.CreateQuery();
+            IQueryable<SimpleClassNoID> TestObject = DbContext<SimpleClassNoID>.CreateQuery();
             var Results = TestObject.Select(x => new SimpleClassNoID { Name = x.Name }).OrderBy(x => x.Name).Where(x => x.Name.StartsWith("Ba")).ToList();
             Assert.Equal(2, Results.Count);
             Assert.Equal("Ball", Results[0].Name);

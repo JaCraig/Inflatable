@@ -22,6 +22,7 @@ using Xunit;
 
 namespace Inflatable.Tests.Sessions
 {
+    [Collection("Test collection")]
     public class SessionWithManyToManyProperties : TestingFixture
     {
         public SessionWithManyToManyProperties(SetupFixture setupFixture)
@@ -57,10 +58,10 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task AllNoParametersWithDataInDatabase()
         {
-            var TempSession = Resolve<ISession>();
+            ISession TempSession = Resolve<ISession>();
             await TempSession.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Results = DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToArray();
+            ManyToManyPropertiesWithCascade[] Results = DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToArray();
             Assert.Equal(3, Results.Length);
             await TempSession.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
         }
@@ -68,15 +69,15 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.Single(Results);
-            var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
+            IEnumerable<AllReferencesAndID> Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(6, Results2.Count());
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
@@ -85,15 +86,15 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteMultipleWithDataInDatabaseAndCascade()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertiesWithCascade> Result = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT TOP 2 ID_ as [ID] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertiesWithCascade> Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
             Assert.Single(Results);
-            var Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
+            IEnumerable<AllReferencesAndID> Results2 = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(4, Results2.Count());
             await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
@@ -102,13 +103,13 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.Equal(2, Results.Count());
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
@@ -117,12 +118,12 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task DeleteWithNoDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
-            var Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Result = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             await TestObject.Delete(Result.ToArray()).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.Empty(Results);
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
@@ -131,7 +132,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task InsertMultipleObjectsWithCascade()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
@@ -169,7 +170,7 @@ namespace Inflatable.Tests.Sessions
                 DateTimeValue = new DateTime(2000, 1, 1)
             });
             await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyPropertiesWithCascade> Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.Contains(Results, x => x.ID == Result1.ID
             && !x.BoolValue
@@ -196,11 +197,11 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task LoadMapPropertyWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Result = DbContext<ManyToManyProperties>.CreateQuery().First();
+            ManyToManyProperties Result = DbContext<ManyToManyProperties>.CreateQuery().First();
             Assert.NotNull(Result.ManyToManyClass);
             Assert.Single(Result.ManyToManyClass);
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
@@ -210,12 +211,12 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleCascadeWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            IEnumerable<ManyToManyPropertiesWithCascade> Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
+            ManyToManyPropertiesWithCascade[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToManyClass.Add(new AllReferencesAndID
@@ -237,12 +238,12 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            ManyToManyProperties[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToManyClass.Add(new AllReferencesAndID
@@ -263,12 +264,12 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateMultipleWithDataInDatabaseToNull()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
-            var UpdatedResults = Results.ForEach(x =>
+            IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            ManyToManyProperties[] UpdatedResults = Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToManyClass.Clear();
@@ -284,7 +285,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateNullWithDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
@@ -296,7 +297,7 @@ namespace Inflatable.Tests.Sessions
         [Fact]
         public async Task UpdateWithNoDataInDatabase()
         {
-            var TestObject = Resolve<ISession>();
+            ISession TestObject = Resolve<ISession>();
             await TestObject.Delete(DbContext<ManyToManyProperties>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             var Result = new ManyToManyProperties
@@ -311,14 +312,14 @@ namespace Inflatable.Tests.Sessions
                 DateTimeValue = new DateTime(2000, 1, 1)
             });
             await Assert.ThrowsAsync<SqlException>(() => TestObject.Save(Result).ExecuteAsync());
-            var Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
+            IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.Single(Results);
         }
 
         private async Task SetupDataAsync()
         {
             var TestObject = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
-            var Session = Resolve<ISession>();
+            ISession Session = Resolve<ISession>();
             await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM ManyToManyProperties_")
