@@ -1,122 +1,143 @@
 ﻿<!DOCTYPE html>
-<!--[if IE]><![endif]-->
 <html>
-
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="utf-8">
       <title>Class SimpleColumnInfo&lt;TClassType, TDataType&gt;
  | Inflatable API Reference </title>
-      <meta name="viewport" content="width=device-width">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class SimpleColumnInfo&lt;TClassType, TDataType&gt;
  | Inflatable API Reference ">
-      <meta name="generator" content="docfx ">
-  
-      <link rel="shortcut icon" href="../favicon.ico">
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
-      <link rel="stylesheet" href="../styles/config.css">
-      <link rel="stylesheet" href="../styles/discord.css">
-      <link rel="stylesheet" href="../styles/singulink.css">
-      <link rel="stylesheet" href="../styles/main.css">
-      <meta property="docfx:navrel" content="../toc.json">
-      <meta property="docfx:tocrel" content="toc.json">
-  
-  <meta property="docfx:rel" content="../">
-  <meta property="docfx:newtab" content="true">
-    </head>
-    <body>
-        <div class="top-navbar">
-            <a class="burger-icon" onclick="toggleMenu()">
-                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
-            </a>
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
 
 
-            <a class="brand" href="../index.html">
-              <img src="../images/icon.png" alt="Inflatable" class="logomark">
-              <span class="brand-title">Inflatable</span>
-            </a>        </div>
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.png" alt="Inflatable">
+            Inflatable
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-        <div class="body-content">
-            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
-            <nav id="sidebar" role="navigation">
-                <div class="sidebar">
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
-                    <div>
-                      <div class="mobile-hide">
+          <nav id="breadcrumb"></nav>
+        </div>
 
-                        <a class="brand" href="../index.html">
-                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
-                          <span class="brand-title">Inflatable</span>
-                        </a>                      </div>
-
-                      <div class="sidesearch">
-                        <form id="search" role="search" class="search">
-                            <i class="bi bi-search search-icon"></i>
-                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
-                        </form>
-                      </div>
-
-                      <div id="navbar">
-                      </div>
-                    </div>                    <div class="sidebar-item-separator"></div>
-
-                        <div id="sidetoggle">
-                          <div id="sidetoc"></div>
-                        </div>
-                </div>
-                <div class="footer">
-  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
-  
-                </div>            </nav>
-
-            <main class="main-panel">
-
-                <div id="search-results" style="display: none;">
-                  <h1 class="search-list">Search Results for <span></span></h1>
-                  <div class="sr-items">
-                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
-                  </div>
-                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
-                </div>
- 
-
-                <div role="main" class="hide-when-search">
-
-                        <div class="subnav navbar navbar-default">
-                          <div class="container hide-when-search" id="breadcrumb">
-                            <ul class="breadcrumb">
-                              <li></li>
-                            </ul>
-                          </div>
-                        </div>
-
-                         <div id="contribution">
-                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
-                         </div>
-
-                    <article class="content wrap" id="_content" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2">
+        <article data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2">
 
 
 
-  <h1 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2" class="text-break">Class SimpleColumnInfo&lt;TClassType, TDataType&gt;
-</h1>
-  <div class="markdown level0 summary"><p>Column information</p>
+  <h1 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2" class="text-break">
+    Class SimpleColumnInfo&lt;TClassType, TDataType&gt;
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.ClassMapper.html">ClassMapper</a>.<a class="xref" href="Inflatable.ClassMapper.Column.html">Column</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Inflatable.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Column information</p>
 </div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-    <div class="level1"><span class="xref">SimpleColumnInfo&lt;TClassType, TDataType&gt;</span></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SimpleColumnInfo&lt;TClassType, TDataType&gt; : IQueryColumnInfo where TClassType : class</code></pre>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TClassType</code></dt>
+    <dd><p>The type of the class type.</p>
+</dd>
+    <dt><code>TDataType</code></dt>
+    <dd><p>The type of the data type.</p>
+</dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">SimpleColumnInfo&lt;TClassType, TDataType&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
@@ -138,1096 +159,867 @@
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.ClassMapper.html">ClassMapper</a>.<a class="xref" href="Inflatable.ClassMapper.Column.html">Column</a></h6>
-  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SimpleColumnInfo&lt;TClassType, TDataType&gt; : IQueryColumnInfo where TClassType : class</code></pre>
-  </div>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TClassType</span></td>
-        <td><p>The type of the class type.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TDataType</span></td>
-        <td><p>The type of the data type.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="constructors">Constructors
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2__ctor_System_String_System_Func__0__1__System_Func__1__System_Boolean_System_Boolean_System_String_System_Type_System_String_System_Action__0__1__System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.%23ctor(System.String%2CSystem.Func%7B%600%2C%601%7D%2CSystem.Func%7B%601%7D%2CSystem.Boolean%2CSystem.Boolean%2CSystem.String%2CSystem.Type%2CSystem.String%2CSystem.Action%7B%600%2C%601%7D%2CSystem.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L49">View Source</a>
-  </span>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2__ctor_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.#ctor*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2__ctor_System_String_System_Func__0__1__System_Func__1__System_Boolean_System_Boolean_System_String_System_Type_System_String_System_Action__0__1__System_String_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.#ctor(System.String,System.Func{`0,`1},System.Func{`1},System.Boolean,System.Boolean,System.String,System.Type,System.String,System.Action{`0,`1},System.String)">SimpleColumnInfo(string, Func&lt;TClassType, TDataType&gt;, Func&lt;TDataType&gt;, bool, bool, string, Type, string, Action&lt;TClassType, TDataType&gt;, string)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2__ctor_System_String_System_Func__0__1__System_Func__1__System_Boolean_System_Boolean_System_String_System_Type_System_String_System_Action__0__1__System_String_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.#ctor(System.String,System.Func{`0,`1},System.Func{`1},System.Boolean,System.Boolean,System.String,System.Type,System.String,System.Action{`0,`1},System.String)">
+  SimpleColumnInfo(string, Func&lt;TClassType, TDataType&gt;, Func&lt;TDataType&gt;, bool, bool, string, Type, string, Action&lt;TClassType, TDataType&gt;, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Inflatable.ClassMapper.Column.SimpleColumnInfo-2.html">SimpleColumnInfo&lt;TClassType, TDataType&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public SimpleColumnInfo(string columnName, Func&lt;TClassType, TDataType&gt; compiledExpression, Func&lt;TDataType&gt; defaultValue, bool isForeign, bool isNullable, string propertyName, Type propertyType, string schemaName, Action&lt;TClassType, TDataType&gt; setAction, string tableName)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">columnName</span></td>
-        <td><p>Name of the column.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;</td>
-        <td><span class="parametername">compiledExpression</span></td>
-        <td><p>The compiled expression.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TDataType&gt;</td>
-        <td><span class="parametername">defaultValue</span></td>
-        <td><p>The default value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isForeign</span></td>
-        <td><p>if set to <code>true</code> [is foreign].</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><span class="parametername">isNullable</span></td>
-        <td><p>if set to <code>true</code> [is nullable].</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td><p>Name of the property.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">propertyType</span></td>
-        <td><p>Type of the property.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">schemaName</span></td>
-        <td><p>Name of the schema.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;TClassType, TDataType&gt;</td>
-        <td><span class="parametername">setAction</span></td>
-        <td><p>The set action.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">tableName</span></td>
-        <td><p>Name of the table.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2__ctor_System_String_System_Func__0__1__System_Func__1__System_Boolean_System_Boolean_System_String_System_Type_System_String_System_Action__0__1__System_String__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <h3 id="properties">Properties
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_ColumnName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.ColumnName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L77">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>columnName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the column.</p>
+</dd>
+    <dt><code>compiledExpression</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;</dt>
+    <dd><p>The compiled expression.</p>
+</dd>
+    <dt><code>defaultValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TDataType&gt;</dt>
+    <dd><p>The default value.</p>
+</dd>
+    <dt><code>isForeign</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [is foreign].</p>
+</dd>
+    <dt><code>isNullable</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [is nullable].</p>
+</dd>
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the property.</p>
+</dd>
+    <dt><code>propertyType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>Type of the property.</p>
+</dd>
+    <dt><code>schemaName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the schema.</p>
+</dd>
+    <dt><code>setAction</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;TClassType, TDataType&gt;</dt>
+    <dd><p>The set action.</p>
+</dd>
+    <dt><code>tableName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_ColumnName_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.ColumnName*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_ColumnName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.ColumnName">ColumnName</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_ColumnName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.ColumnName">
+  ColumnName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name of the column.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string ColumnName { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name of the column.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_ColumnName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CompiledExpression.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.CompiledExpression%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L82">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the column.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CompiledExpression_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.CompiledExpression*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CompiledExpression" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.CompiledExpression">CompiledExpression</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CompiledExpression" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.CompiledExpression">
+  CompiledExpression
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>The compiled expression</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Func&lt;TClassType, TDataType&gt; CompiledExpression { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CompiledExpression_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_DefaultValue.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.DefaultValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L87">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;TClassType, TDataType&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_DefaultValue_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.DefaultValue*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_DefaultValue" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.DefaultValue">DefaultValue</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_DefaultValue" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.DefaultValue">
+  DefaultValue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the default value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Func&lt;TDataType&gt; DefaultValue { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TDataType&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_DefaultValue_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsForeign.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.IsForeign%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L93">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TDataType&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsForeign_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsForeign*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsForeign" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsForeign">IsForeign</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsForeign" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsForeign">
+  IsForeign
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L93"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is foreign.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsForeign { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if this instance is foreign; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsForeign_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsNullable.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.IsNullable%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L99">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is foreign; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsNullable_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsNullable*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsNullable" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsNullable">IsNullable</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsNullable" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsNullable">
+  IsNullable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets or sets a value indicating whether this instance is nullable.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsNullable { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if this instance is nullable; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsNullable_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.PropertyName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L105">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is nullable; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyName_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.PropertyName*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.PropertyName">PropertyName</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.PropertyName">
+  PropertyName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string PropertyName { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyType.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.PropertyType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L110">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyType_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.PropertyType*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyType" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.PropertyType">PropertyType</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyType" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.PropertyType">
+  PropertyType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Property type</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Type PropertyType { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_PropertyType_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SchemaName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.SchemaName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L116">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SchemaName_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SchemaName*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SchemaName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SchemaName">SchemaName</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SchemaName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SchemaName">
+  SchemaName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the schema name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string SchemaName { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The schema name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SchemaName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetAction.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.SetAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L122">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The schema name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetAction_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetAction*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetAction" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetAction">SetAction</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetAction" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetAction">
+  SetAction
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets or sets the expression used to set the value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Action&lt;TClassType, TDataType&gt; SetAction { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;TClassType, TDataType&gt;</td>
-        <td><p>The set expression.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetAction_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_TableName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.TableName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L128">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;TClassType, TDataType&gt;</dt>
+    <dd><p>The set expression.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_TableName_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.TableName*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_TableName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.TableName">TableName</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_TableName" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.TableName">
+  TableName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the table name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string TableName { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The table name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_TableName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <h3 id="methods">Methods
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CreateCopy.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.CreateCopy%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L134">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The table name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CreateCopy_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.CreateCopy*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CreateCopy" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.CreateCopy">CreateCopy()</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CreateCopy" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.CreateCopy">
+  CreateCopy()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Creates a copy.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IQueryColumnInfo CreateCopy()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></td>
-        <td><p>The resulting copy.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_CreateCopy_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_BigBook_Dynamo_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.GetAsParameter(BigBook.Dynamo)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L176">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></dt>
+    <dd><p>The resulting copy.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_BigBook_Dynamo_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter(BigBook.Dynamo)">GetAsParameter(Dynamo?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_BigBook_Dynamo_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter(BigBook.Dynamo)">
+  GetAsParameter(Dynamo?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L176"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets as parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IParameter? GetAsParameter(Dynamo? objectValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Dynamo.cs">Dynamo</a></td>
-        <td><span class="parametername">objectValue</span></td>
-        <td><p>The object value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a></td>
-        <td><p>The value as a parameter</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_BigBook_Dynamo__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.GetAsParameter(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L155">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectValue</code> <a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Dynamo.cs">Dynamo</a></dt>
+    <dd><p>The object value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a></dt>
+    <dd><p>The value as a parameter</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter(System.Object)">GetAsParameter(object?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter(System.Object)">
+  GetAsParameter(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the property as an IParameter (for classes, this will return the ID of the property)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IParameter? GetAsParameter(object? objectValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">objectValue</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a></td>
-        <td><p>The parameter version of the property</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.GetAsParameter(System.Object%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L198">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a></dt>
+    <dd><p>The parameter version of the property</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter(System.Object,System.Object)">GetAsParameter(object?, object?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetAsParameter(System.Object,System.Object)">
+  GetAsParameter(object?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets as parameter.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IParameter? GetAsParameter(object? objectValue, object? paramValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">objectValue</span></td>
-        <td><p>The object value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">paramValue</span></td>
-        <td><p>The parameter value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a></td>
-        <td><p>The object value as a parameter.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetAsParameter_System_Object_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_BigBook_Dynamo_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.GetValue(BigBook.Dynamo)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L205">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object value.</p>
+</dd>
+    <dt><code>paramValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The parameter value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a></dt>
+    <dd><p>The object value as a parameter.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_BigBook_Dynamo_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue(BigBook.Dynamo)">GetValue(Dynamo?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_BigBook_Dynamo_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue(BigBook.Dynamo)">
+  GetValue(Dynamo?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L205"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the value of the item</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public object? GetValue(Dynamo? @object)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Dynamo.cs">Dynamo</a></td>
-        <td><span class="parametername">object</span></td>
-        <td><p>Object</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><p>The value specified</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_BigBook_Dynamo__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.GetValue(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L212">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>object</code> <a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Dynamo.cs">Dynamo</a></dt>
+    <dd><p>Object</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The value specified</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue(System.Object)">GetValue(object?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue(System.Object)">
+  GetValue(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L212"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the value of the item</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public object? GetValue(object? @object)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">object</span></td>
-        <td><p>Object</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><p>The value specified</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.GetValue(System.Object%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L220">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>object</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Object</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The value specified</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue(System.Object,System.Object)">GetValue(object?, object?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.GetValue(System.Object,System.Object)">
+  GetValue(object?, object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L220"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public object? GetValue(object? @object, object? paramValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">object</span></td>
-        <td><p>The object.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">paramValue</span></td>
-        <td><p>The parameter value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><p>The resulting value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_GetValue_System_Object_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.IsDefault(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L227">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>object</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object.</p>
+</dd>
+    <dt><code>paramValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The parameter value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The resulting value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsDefault*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsDefault(System.Object)">IsDefault(object)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsDefault(System.Object)">
+  IsDefault(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Is this a default value?</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsDefault(object @object)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">object</span></td>
-        <td><p>Object</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if it is, false otherwise.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.IsDefault(System.Object%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L235">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>object</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Object</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if it is, false otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsDefault*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsDefault(System.Object,System.Object)">IsDefault(object, object)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.IsDefault(System.Object,System.Object)">
+  IsDefault(object, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L235"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether the specified object is default.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsDefault(object @object, object paramValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">object</span></td>
-        <td><p>The object.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">paramValue</span></td>
-        <td><p>The parameter value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if the specified object is default; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_IsDefault_System_Object_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.SetValue(System.Object%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L242">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>object</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object.</p>
+</dd>
+    <dt><code>paramValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The parameter value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified object is default; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetValue*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetValue(System.Object,System.Object)">SetValue(object, object)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetValue(System.Object,System.Object)">
+  SetValue(object, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L242"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the property's value for the object sent in.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void SetValue(object objectToSet, object propertyValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">objectToSet</span></td>
-        <td><p>The object to set.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">propertyValue</span></td>
-        <td><p>The property value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.Column.SimpleColumnInfo%602.SetValue(System.Object%2CSystem.Object%2CSystem.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L260">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectToSet</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object to set.</p>
+</dd>
+    <dt><code>propertyValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The property value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetValue*"></a>
-  <h4 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetValue(System.Object,System.Object,System.Object)">SetValue(object, object, object)</h4>
+
+  <h3 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_System_Object_" data-uid="Inflatable.ClassMapper.Column.SimpleColumnInfo`2.SetValue(System.Object,System.Object,System.Object)">
+  SetValue(object, object, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L260"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void SetValue(object objectToSet, object paramValue, object propertyValue)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">objectToSet</span></td>
-        <td><p>The object to set.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">paramValue</span></td>
-        <td><p>The parameter value.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">propertyValue</span></td>
-        <td><p>The property value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_Column_SimpleColumnInfo_2_SetValue_System_Object_System_Object_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
-  </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a>
-  </div>
-  <h3 id="seealso">See Also</h3>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>objectToSet</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The object to set.</p>
+</dd>
+    <dt><code>paramValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The parameter value.</p>
+</dd>
+    <dt><code>propertyValue</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The property value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 id="seealso">See Also</h2>
   <div class="seealso">
       <div><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a></div>
   </div>
 
 </article>
-                </div>
 
-                <div class="copyright-footer">
-                    <span>&#169; James Craig. All rights reserved.</span>
-                </div>
-            </main>
+        <div class="contribution d-print-none">
+          <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/PropertyInfo/SimpleColumnInfo.cs/#L33" class="edit-link">Edit this page</a>
         </div>
 
 
-        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
-        <script type="text/javascript" src="../styles/url.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
-        <script type="text/javascript" src="../styles/docfx.js"></script>
-        <script type="text/javascript" src="../styles/main.js"></script>
-        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

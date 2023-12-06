@@ -1,127 +1,156 @@
 ﻿<!DOCTYPE html>
-<!--[if IE]><![endif]-->
 <html>
-
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="utf-8">
       <title>Class PropertyBase&lt;ClassType, DataType, ReturnType&gt;
  | Inflatable API Reference </title>
-      <meta name="viewport" content="width=device-width">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class PropertyBase&lt;ClassType, DataType, ReturnType&gt;
  | Inflatable API Reference ">
-      <meta name="generator" content="docfx ">
-  
-      <link rel="shortcut icon" href="../favicon.ico">
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
-      <link rel="stylesheet" href="../styles/config.css">
-      <link rel="stylesheet" href="../styles/discord.css">
-      <link rel="stylesheet" href="../styles/singulink.css">
-      <link rel="stylesheet" href="../styles/main.css">
-      <meta property="docfx:navrel" content="../toc.json">
-      <meta property="docfx:tocrel" content="toc.json">
-  
-  <meta property="docfx:rel" content="../">
-  <meta property="docfx:newtab" content="true">
-    </head>
-    <body>
-        <div class="top-navbar">
-            <a class="burger-icon" onclick="toggleMenu()">
-                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
-            </a>
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
 
 
-            <a class="brand" href="../index.html">
-              <img src="../images/icon.png" alt="Inflatable" class="logomark">
-              <span class="brand-title">Inflatable</span>
-            </a>        </div>
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.png" alt="Inflatable">
+            Inflatable
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-        <div class="body-content">
-            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
-            <nav id="sidebar" role="navigation">
-                <div class="sidebar">
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
-                    <div>
-                      <div class="mobile-hide">
+          <nav id="breadcrumb"></nav>
+        </div>
 
-                        <a class="brand" href="../index.html">
-                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
-                          <span class="brand-title">Inflatable</span>
-                        </a>                      </div>
-
-                      <div class="sidesearch">
-                        <form id="search" role="search" class="search">
-                            <i class="bi bi-search search-icon"></i>
-                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
-                        </form>
-                      </div>
-
-                      <div id="navbar">
-                      </div>
-                    </div>                    <div class="sidebar-item-separator"></div>
-
-                        <div id="sidetoggle">
-                          <div id="sidetoc"></div>
-                        </div>
-                </div>
-                <div class="footer">
-  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
-  
-                </div>            </nav>
-
-            <main class="main-panel">
-
-                <div id="search-results" style="display: none;">
-                  <h1 class="search-list">Search Results for <span></span></h1>
-                  <div class="sr-items">
-                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
-                  </div>
-                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
-                </div>
- 
-
-                <div role="main" class="hide-when-search">
-
-                        <div class="subnav navbar navbar-default">
-                          <div class="container hide-when-search" id="breadcrumb">
-                            <ul class="breadcrumb">
-                              <li></li>
-                            </ul>
-                          </div>
-                        </div>
-
-                         <div id="contribution">
-                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
-                         </div>
-
-                    <article class="content wrap" id="_content" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3">
+        <article data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3">
 
 
 
-  <h1 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3" class="text-break">Class PropertyBase&lt;ClassType, DataType, ReturnType&gt;
-</h1>
-  <div class="markdown level0 summary"><p>Property base class</p>
+  <h1 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3" class="text-break">
+    Class PropertyBase&lt;ClassType, DataType, ReturnType&gt;
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L41"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.ClassMapper.html">ClassMapper</a>.<a class="xref" href="Inflatable.ClassMapper.BaseClasses.html">BaseClasses</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Inflatable.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Property base class</p>
 </div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-    <div class="level1"><span class="xref">PropertyBase&lt;ClassType, DataType, ReturnType&gt;</span></div>
-      <div class="level2"><a class="xref" href="Inflatable.ClassMapper.Default.Reference-2.html">Reference&lt;ClassType, DataType&gt;</a></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class PropertyBase&lt;ClassType, DataType, ReturnType&gt; : IProperty&lt;ClassType, DataType, ReturnType&gt;, IFluentInterface, IProperty&lt;ClassType, DataType&gt;, IProperty, IPropertyColumns where ClassType : class where ReturnType : IProperty&lt;ClassType, DataType, ReturnType&gt;</code></pre>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-    <div><a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Patterns/IFluentInterface.cs">IFluentInterface</a></div>
-    <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-    <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></div>
-    <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IPropertyColumns.html">IPropertyColumns</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ClassType</code></dt>
+    <dd><p>The type of the class type.</p>
+</dd>
+    <dt><code>DataType</code></dt>
+    <dd><p>The type of the data type.</p>
+</dd>
+    <dt><code>ReturnType</code></dt>
+    <dd><p>The type of the return type.</p>
+</dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">PropertyBase&lt;ClassType, DataType, ReturnType&gt;</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
+      <div><a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Patterns/IFluentInterface.cs">IFluentInterface</a></div>
+      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
+      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></div>
+      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IPropertyColumns.html">IPropertyColumns</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Inflatable.ClassMapper.Default.Reference-2.html">Reference&lt;ClassType, DataType&gt;</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
     </div>
@@ -134,1860 +163,1494 @@
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
     </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.ClassMapper.html">ClassMapper</a>.<a class="xref" href="Inflatable.ClassMapper.BaseClasses.html">BaseClasses</a></h6>
-  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class PropertyBase&lt;ClassType, DataType, ReturnType&gt; : IProperty&lt;ClassType, DataType, ReturnType&gt;, IFluentInterface, IProperty&lt;ClassType, DataType&gt;, IProperty, IPropertyColumns where ClassType : class where ReturnType : IProperty&lt;ClassType, DataType, ReturnType&gt;</code></pre>
-  </div>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">ClassType</span></td>
-        <td><p>The type of the class type.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">DataType</span></td>
-        <td><p>The type of the data type.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">ReturnType</span></td>
-        <td><p>The type of the return type.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="constructors">Constructors
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3__ctor_System_Linq_Expressions_Expression_System_Func__0__1___Inflatable_Interfaces_IMapping_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.%23ctor(System.Linq.Expressions.Expression%7BSystem.Func%7B%600%2C%601%7D%7D%2CInflatable.Interfaces.IMapping)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L50">View Source</a>
-  </span>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3__ctor_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.#ctor*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3__ctor_System_Linq_Expressions_Expression_System_Func__0__1___Inflatable_Interfaces_IMapping_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.#ctor(System.Linq.Expressions.Expression{System.Func{`0,`1}},Inflatable.Interfaces.IMapping)">PropertyBase(Expression&lt;Func&lt;ClassType, DataType&gt;&gt;, IMapping)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3__ctor_System_Linq_Expressions_Expression_System_Func__0__1___Inflatable_Interfaces_IMapping_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.#ctor(System.Linq.Expressions.Expression{System.Func{`0,`1}},Inflatable.Interfaces.IMapping)">
+  PropertyBase(Expression&lt;Func&lt;ClassType, DataType&gt;&gt;, IMapping)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Constructor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected PropertyBase(Expression&lt;Func&lt;ClassType, DataType&gt;&gt; expression, IMapping mapping)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;ClassType, DataType&gt;&gt;</td>
-        <td><span class="parametername">expression</span></td>
-        <td><p>Expression used to point to the property</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
-        <td><span class="parametername">mapping</span></td>
-        <td><p>Mapping the StringID is added to</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3__ctor_System_Linq_Expressions_Expression_System_Func__0__1___Inflatable_Interfaces_IMapping__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <h3 id="properties">Properties
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ColumnName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.ColumnName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L104">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>expression</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;ClassType, DataType&gt;&gt;</dt>
+    <dd><p>Expression used to point to the property</p>
+</dd>
+    <dt><code>mapping</code> <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></dt>
+    <dd><p>Mapping the StringID is added to</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ColumnName_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ColumnName*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ColumnName" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ColumnName">ColumnName</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ColumnName" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ColumnName">
+  ColumnName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name of the column.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string ColumnName { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name of the column.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ColumnName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Columns.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Columns%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L110">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the column.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Columns_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Columns*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Columns" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Columns">Columns</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Columns" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Columns">
+  Columns
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the columns associated with this property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IQueryColumnInfo[]? Columns { get; protected set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a>[]</td>
-        <td><p>The columns associated with this property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Columns_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_CompiledExpression.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.CompiledExpression%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L115">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a>[]</dt>
+    <dd><p>The columns associated with this property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_CompiledExpression_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.CompiledExpression*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_CompiledExpression" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.CompiledExpression">CompiledExpression</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_CompiledExpression" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.CompiledExpression">
+  CompiledExpression
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Compiled version of the expression</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Func&lt;ClassType, DataType&gt; CompiledExpression { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;ClassType, DataType&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_CompiledExpression_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ComputedColumnSpecification.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.ComputedColumnSpecification%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L121">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;ClassType, DataType&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ComputedColumnSpecification_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ComputedColumnSpecification*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ComputedColumnSpecification" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ComputedColumnSpecification">ComputedColumnSpecification</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ComputedColumnSpecification" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ComputedColumnSpecification">
+  ComputedColumnSpecification
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L121"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the computed column specification.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string ComputedColumnSpecification { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The computed column specification.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ComputedColumnSpecification_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Constraints.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Constraints%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L127">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The computed column specification.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Constraints_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Constraints*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Constraints" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Constraints">Constraints</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Constraints" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Constraints">
+  Constraints
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L127"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the constraints if the data source supports them.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IList&lt;string&gt; Constraints { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</td>
-        <td><p>The constraints if the data source supports them.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Constraints_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_DefaultValue.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.DefaultValue%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L132">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The constraints if the data source supports them.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_DefaultValue_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.DefaultValue*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_DefaultValue" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.DefaultValue">DefaultValue</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_DefaultValue" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.DefaultValue">
+  DefaultValue
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Default value for this property</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Func&lt;DataType&gt; DefaultValue { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;DataType&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_DefaultValue_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Expression.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Expression%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L137">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;DataType&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Expression_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Expression*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Expression" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Expression">Expression</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Expression" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Expression">
+  Expression
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Expression pointing to the property</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Expression&lt;Func&lt;ClassType, DataType&gt;&gt; Expression { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;ClassType, DataType&gt;&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Expression_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Index.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Index%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L143">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.linq.expressions.expression-1">Expression</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;ClassType, DataType&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Index_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Index*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Index" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Index">Index</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Index" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Index">
+  Index
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L143"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets a value indicating whether this <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a> is indexed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Index { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if index; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Index_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_InternalFieldName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.InternalFieldName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L149">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if index; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_InternalFieldName_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.InternalFieldName*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_InternalFieldName" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.InternalFieldName">InternalFieldName</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_InternalFieldName" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.InternalFieldName">
+  InternalFieldName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name of the internal field.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string InternalFieldName { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name of the internal field.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_InternalFieldName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_MaxLength.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.MaxLength%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L155">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the internal field.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_MaxLength_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.MaxLength*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_MaxLength" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.MaxLength">MaxLength</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_MaxLength" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.MaxLength">
+  MaxLength
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L155"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the maximum length.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public int MaxLength { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>The maximum length.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_MaxLength_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Name.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Name%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L161">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum length.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Name_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Name*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Name" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Name">Name</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Name" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Name_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Nullable.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Nullable%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L167">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Nullable_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Nullable*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Nullable" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Nullable">Nullable</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Nullable" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Nullable">
+  Nullable
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets a value indicating whether this <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a> is nullable.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Nullable { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if nullable; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Nullable_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ParentMapping.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.ParentMapping%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L173">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if nullable; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ParentMapping_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ParentMapping*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ParentMapping" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ParentMapping">ParentMapping</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ParentMapping" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ParentMapping">
+  ParentMapping
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the parent mapping.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IMapping ParentMapping { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
-        <td><p>The parent mapping.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ParentMapping_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_PropertyType.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.PropertyType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L179">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></dt>
+    <dd><p>The parent mapping.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_PropertyType_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.PropertyType*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_PropertyType" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.PropertyType">PropertyType</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_PropertyType" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.PropertyType">
+  PropertyType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the type of the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Type PropertyType { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><p>The type of the property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_PropertyType_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ReadOnly.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.ReadOnly%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L185">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type of the property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ReadOnly_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ReadOnly*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ReadOnly" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ReadOnly">ReadOnly</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ReadOnly" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ReadOnly">
+  ReadOnly
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets a value indicating whether [read only].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool ReadOnly { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if [read only]; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ReadOnly_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetAction.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.SetAction%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L203">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [read only]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetAction_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.SetAction*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetAction" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.SetAction">SetAction</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetAction" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.SetAction">
+  SetAction
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L203"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets or sets the expression used to set the value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected Action&lt;ClassType, DataType&gt; SetAction { get; set; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;ClassType, DataType&gt;</td>
-        <td><p>The set expression.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetAction_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_TypeName.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.TypeName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L191">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;ClassType, DataType&gt;</dt>
+    <dd><p>The set expression.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_TypeName_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.TypeName*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_TypeName" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.TypeName">TypeName</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_TypeName" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.TypeName">
+  TypeName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name of the type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public string TypeName { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name of the type.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_TypeName_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Unique.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Unique%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L197">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the type.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Unique_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Unique*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Unique" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Unique">Unique</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Unique" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Unique">
+  Unique
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L197"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets a value indicating whether this <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a> is unique.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Unique { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if unique; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Unique_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <h3 id="methods">Methods
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_AddToTable_Data_Modeler_Providers_Interfaces_ITable_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.AddToTable(Data.Modeler.Providers.Interfaces.ITable)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L253">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if unique; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_AddToTable_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.AddToTable*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_AddToTable_Data_Modeler_Providers_Interfaces_ITable_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.AddToTable(Data.Modeler.Providers.Interfaces.ITable)">AddToTable(ITable)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_AddToTable_Data_Modeler_Providers_Interfaces_ITable_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.AddToTable(Data.Modeler.Providers.Interfaces.ITable)">
+  AddToTable(ITable)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L253"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Adds to table.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void AddToTable(ITable table)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/Data.Modeler/blob/master/src/Data.Modeler/Providers/Interfaces/ITable.cs">ITable</a></td>
-        <td><span class="parametername">table</span></td>
-        <td><p>The table.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_AddToTable_Data_Modeler_Providers_Interfaces_ITable__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Convert__1_Inflatable_Interfaces_IMapping_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Convert%60%601(Inflatable.Interfaces.IMapping)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L275">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>table</code> <a class="xref" href="https://github.com/JaCraig/Data.Modeler/blob/master/src/Data.Modeler/Providers/Interfaces/ITable.cs">ITable</a></dt>
+    <dd><p>The table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Convert_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Convert*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Convert__1_Inflatable_Interfaces_IMapping_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Convert``1(Inflatable.Interfaces.IMapping)">Convert&lt;TResult&gt;(IMapping)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Convert__1_Inflatable_Interfaces_IMapping_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Convert``1(Inflatable.Interfaces.IMapping)">
+  Convert&lt;TResult&gt;(IMapping)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L275"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Converts this instance to the class specified</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract IProperty Convert&lt;TResult&gt;(IMapping mapping) where TResult : class</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
-        <td><span class="parametername">mapping</span></td>
-        <td><p>The mapping.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></td>
-        <td><p>The resulting property</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TResult</span></td>
-        <td><p>The type of the result.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Convert__1_Inflatable_Interfaces_IMapping__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Equals(System.Object)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L283">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mapping</code> <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></dt>
+    <dd><p>The mapping.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></dt>
+    <dd><p>The resulting property</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TResult</code></dt>
+    <dd><p>The type of the result.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Equals_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Equals*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Equals_System_Object_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Equals(System.Object)">Equals(object)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Equals_System_Object_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Equals(System.Object)">
+  Equals(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L283"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines if the two objects are equal and returns true if they are, false otherwise</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></td>
-        <td><span class="parametername">obj</span></td>
-        <td><p>Object to compare to</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if they are equal, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a></div>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Equals_System_Object__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetColumnInfo.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.GetColumnInfo%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L292">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>obj</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Object to compare to</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if they are equal, false otherwise</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetColumnInfo_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.GetColumnInfo*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetColumnInfo" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.GetColumnInfo">GetColumnInfo()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetColumnInfo" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.GetColumnInfo">
+  GetColumnInfo()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L292"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the column information.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IQueryColumnInfo[] GetColumnInfo()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a>[]</td>
-        <td><p>The column information.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetColumnInfo_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetHashCode.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.GetHashCode%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L306">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html">IQueryColumnInfo</a>[]</dt>
+    <dd><p>The column information.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetHashCode_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.GetHashCode*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetHashCode" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.GetHashCode">GetHashCode()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetHashCode" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.GetHashCode">
+  GetHashCode()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L306"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Returns the hash code for the property</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>The hash code for the property</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a></div>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_GetHashCode_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsIndexed.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.IsIndexed%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L312">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The hash code for the property</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsIndexed_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsIndexed*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsIndexed" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsIndexed">IsIndexed()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsIndexed" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsIndexed">
+  IsIndexed()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L312"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether this instance is indexed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType IsIndexed()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsIndexed_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsReadOnly.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.IsReadOnly%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L322">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsReadOnly_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsReadOnly*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsReadOnly" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsReadOnly">IsReadOnly()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsReadOnly" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsReadOnly">
+  IsReadOnly()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether [is read only].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType IsReadOnly()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsReadOnly_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsUnique.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.IsUnique%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L332">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsUnique_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsUnique*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsUnique" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsUnique">IsUnique()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsUnique" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.IsUnique">
+  IsUnique()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L332"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether this instance is unique.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType IsUnique()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_IsUnique_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetColumnInfo_Inflatable_ClassMapper_IMappingSource_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.SetColumnInfo(Inflatable.ClassMapper.IMappingSource)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L342">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetColumnInfo_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.SetColumnInfo*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetColumnInfo_Inflatable_ClassMapper_IMappingSource_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.SetColumnInfo(Inflatable.ClassMapper.IMappingSource)">SetColumnInfo(IMappingSource?)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetColumnInfo_Inflatable_ClassMapper_IMappingSource_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.SetColumnInfo(Inflatable.ClassMapper.IMappingSource)">
+  SetColumnInfo(IMappingSource?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L342"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the column information.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract void SetColumnInfo(IMappingSource? mappings)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.IMappingSource.html">IMappingSource</a></td>
-        <td><span class="parametername">mappings</span></td>
-        <td><p>The mappings.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_SetColumnInfo_Inflatable_ClassMapper_IMappingSource__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Setup.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Setup%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L347">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mappings</code> <a class="xref" href="Inflatable.ClassMapper.IMappingSource.html">IMappingSource</a></dt>
+    <dd><p>The mappings.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Setup_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Setup*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Setup" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Setup">Setup()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Setup" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Setup">
+  Setup()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L347"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets up the property (used internally)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract void Setup()</code></pre>
   </div>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Setup_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Similar_Inflatable_ClassMapper_Interfaces_IProperty_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.Similar(Inflatable.ClassMapper.Interfaces.IProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L354">View Source</a>
-  </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Similar_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Similar*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Similar_Inflatable_ClassMapper_Interfaces_IProperty_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Similar(Inflatable.ClassMapper.Interfaces.IProperty)">Similar(IProperty)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Similar_Inflatable_ClassMapper_Interfaces_IProperty_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.Similar(Inflatable.ClassMapper.Interfaces.IProperty)">
+  Similar(IProperty)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L354"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Checks if the properties are similar to one another</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Similar(IProperty secondProperty)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></td>
-        <td><span class="parametername">secondProperty</span></td>
-        <td><p>The second property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if they are similar, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_Similar_Inflatable_ClassMapper_Interfaces_IProperty__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ToString.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.ToString%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L364">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>secondProperty</code> <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></dt>
+    <dd><p>The second property.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if they are similar, false otherwise</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ToString_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ToString*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ToString" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ToString">ToString()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ToString" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L364"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the property as a string</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The string representation of the property</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a></div>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_ToString_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithColumnName_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.WithColumnName(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L371">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The string representation of the property</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithColumnName_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithColumnName*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithColumnName_System_String_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithColumnName(System.String)">WithColumnName(string)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithColumnName_System_String_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithColumnName(System.String)">
+  WithColumnName(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L371"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the name of the field in the database.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType WithColumnName(string columnName)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">columnName</span></td>
-        <td><p>Name of the field.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithColumnName_System_String__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithComputedColumnSpecification_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.WithComputedColumnSpecification(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L382">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>columnName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the field.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithComputedColumnSpecification_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithComputedColumnSpecification*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithComputedColumnSpecification_System_String_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithComputedColumnSpecification(System.String)">WithComputedColumnSpecification(string)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithComputedColumnSpecification_System_String_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithComputedColumnSpecification(System.String)">
+  WithComputedColumnSpecification(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L382"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the computed column specification if the source allows it.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType WithComputedColumnSpecification(string computedColumnSpecification)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">computedColumnSpecification</span></td>
-        <td><p>The computed column specification.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithComputedColumnSpecification_System_String__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithConstraint_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.WithConstraint(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L393">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>computedColumnSpecification</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The computed column specification.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithConstraint_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithConstraint*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithConstraint_System_String_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithConstraint(System.String)">WithConstraint(string)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithConstraint_System_String_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithConstraint(System.String)">
+  WithConstraint(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L393"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets a constraint on the field if the source allows it.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType WithConstraint(string constraint)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">constraint</span></td>
-        <td><p>The constraint.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithConstraint_System_String__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithDefaultValue_System_Func__1__.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.WithDefaultValue(System.Func%7B%601%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L404">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>constraint</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The constraint.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithDefaultValue_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithDefaultValue*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithDefaultValue_System_Func__1__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithDefaultValue(System.Func{`1})">WithDefaultValue(Func&lt;DataType&gt;)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithDefaultValue_System_Func__1__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithDefaultValue(System.Func{`1})">
+  WithDefaultValue(Func&lt;DataType&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L404"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the default value of the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType WithDefaultValue(Func&lt;DataType&gt; value)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;DataType&gt;</td>
-        <td><span class="parametername">value</span></td>
-        <td><p>The value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithDefaultValue_System_Func__1___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.WithMaxLength%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L425">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;DataType&gt;</dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithMaxLength*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithMaxLength">WithMaxLength()</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithMaxLength">
+  WithMaxLength()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L425"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the length for the property to MAX.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType WithMaxLength()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>this.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_System_Int32_.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.WithMaxLength(System.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L415">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>this.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithMaxLength*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_System_Int32_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithMaxLength(System.Int32)">WithMaxLength(int)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_System_Int32_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.WithMaxLength(System.Int32)">
+  WithMaxLength(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L415"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the max length.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ReturnType WithMaxLength(int maxLength)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><span class="parametername">maxLength</span></td>
-        <td><p>The maximum length.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReturnType</span></td>
-        <td><p>This</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_WithMaxLength_System_Int32__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <h3 id="operators">Operators
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Equality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.op_Equality(Inflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D%2CInflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L233">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>maxLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum length.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">ReturnType</span></dt>
+    <dd><p>This</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Equality_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_Equality*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Equality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_Equality(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">operator ==(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Equality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_Equality(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">
+  operator ==(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L233"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>The == operator</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static bool operator ==(PropertyBase&lt;ClassType, DataType, ReturnType&gt; first, PropertyBase&lt;ClassType, DataType, ReturnType&gt; second)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">first</span></td>
-        <td><p>First item</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">second</span></td>
-        <td><p>Second item</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>true if the first and second item are the same, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Equality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_GreaterThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.op_GreaterThan(Inflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D%2CInflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L244">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>first</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>First item</p>
+</dd>
+    <dt><code>second</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>Second item</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>true if the first and second item are the same, false otherwise</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_GreaterThan_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_GreaterThan*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_GreaterThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_GreaterThan(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">operator &gt;(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_GreaterThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_GreaterThan(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">
+  operator &gt;(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>The &gt; operator</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static bool operator &gt;(PropertyBase&lt;ClassType, DataType, ReturnType&gt; first, PropertyBase&lt;ClassType, DataType, ReturnType&gt; second)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">first</span></td>
-        <td><p>First item</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">second</span></td>
-        <td><p>Second item</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if the first item is greater than the second, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_GreaterThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Inequality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.op_Inequality(Inflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D%2CInflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L211">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>first</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>First item</p>
+</dd>
+    <dt><code>second</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>Second item</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the first item is greater than the second, false otherwise</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Inequality_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_Inequality*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Inequality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_Inequality(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">operator !=(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Inequality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_Inequality(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">
+  operator !=(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>!= operator</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static bool operator !=(PropertyBase&lt;ClassType, DataType, ReturnType&gt; first, PropertyBase&lt;ClassType, DataType, ReturnType&gt; second)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">first</span></td>
-        <td><p>First item</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">second</span></td>
-        <td><p>Second item</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>returns true if they are not equal, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_Inequality_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_LessThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__.md&amp;value=---%0Auid%3A%20Inflatable.ClassMapper.BaseClasses.PropertyBase%603.op_LessThan(Inflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D%2CInflatable.ClassMapper.BaseClasses.PropertyBase%7B%600%2C%601%2C%602%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L222">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>first</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>First item</p>
+</dd>
+    <dt><code>second</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>Second item</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>returns true if they are not equal, false otherwise</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_LessThan_" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_LessThan*"></a>
-  <h4 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_LessThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_LessThan(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">operator &lt;(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)</h4>
+
+  <h3 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_LessThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__" data-uid="Inflatable.ClassMapper.BaseClasses.PropertyBase`3.op_LessThan(Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2},Inflatable.ClassMapper.BaseClasses.PropertyBase{`0,`1,`2})">
+  operator &lt;(PropertyBase&lt;ClassType, DataType, ReturnType&gt;, PropertyBase&lt;ClassType, DataType, ReturnType&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>The &lt; operator</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static bool operator &lt;(PropertyBase&lt;ClassType, DataType, ReturnType&gt; first, PropertyBase&lt;ClassType, DataType, ReturnType&gt; second)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">first</span></td>
-        <td><p>First item</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</td>
-        <td><span class="parametername">second</span></td>
-        <td><p>Second item</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if the first item is less than the second, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_ClassMapper_BaseClasses_PropertyBase_3_op_LessThan_Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2__Inflatable_ClassMapper_BaseClasses_PropertyBase__0__1__2___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
-      <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
-  </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty&lt;ClassType, DataType, ReturnType&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="https://github.com/JaCraig/BigBookOfDataTypes/blob/master/src/BigBook/Patterns/IFluentInterface.cs">IFluentInterface</a>
-  </div>
-  <div>
-      <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty&lt;ClassType, DataType&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a>
-  </div>
-  <div>
-      <a class="xref" href="Inflatable.ClassMapper.Interfaces.IPropertyColumns.html">IPropertyColumns</a>
-  </div>
-  <h3 id="seealso">See Also</h3>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>first</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>First item</p>
+</dd>
+    <dt><code>second</code> <a class="xref" href="Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html">PropertyBase</a>&lt;ClassType, DataType, ReturnType&gt;</dt>
+    <dd><p>Second item</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if the first item is less than the second, false otherwise</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 id="seealso">See Also</h2>
   <div class="seealso">
       <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-3.html">IProperty</a>&lt;ClassType, DataType, ReturnType&gt;</div>
       <div><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty-2.html">IProperty</a>&lt;ClassType, DataType&gt;</div>
   </div>
 
 </article>
-                </div>
 
-                <div class="copyright-footer">
-                    <span>&#169; James Craig. All rights reserved.</span>
-                </div>
-            </main>
+        <div class="contribution d-print-none">
+          <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/PropertyBase.cs/#L41" class="edit-link">Edit this page</a>
         </div>
 
 
-        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
-        <script type="text/javascript" src="../styles/url.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
-        <script type="text/javascript" src="../styles/docfx.js"></script>
-        <script type="text/javascript" src="../styles/main.js"></script>
-        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

@@ -1,1099 +1,1097 @@
 ﻿<!DOCTYPE html>
-<!--[if IE]><![endif]-->
 <html>
-
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="utf-8">
       <title>Interface IMapping
  | Inflatable API Reference </title>
-      <meta name="viewport" content="width=device-width">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Interface IMapping
  | Inflatable API Reference ">
-      <meta name="generator" content="docfx ">
-  
-      <link rel="shortcut icon" href="../favicon.ico">
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
-      <link rel="stylesheet" href="../styles/config.css">
-      <link rel="stylesheet" href="../styles/discord.css">
-      <link rel="stylesheet" href="../styles/singulink.css">
-      <link rel="stylesheet" href="../styles/main.css">
-      <meta property="docfx:navrel" content="../toc.json">
-      <meta property="docfx:tocrel" content="toc.json">
-  
-  <meta property="docfx:rel" content="../">
-  <meta property="docfx:newtab" content="true">
-    </head>
-    <body>
-        <div class="top-navbar">
-            <a class="burger-icon" onclick="toggleMenu()">
-                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
-            </a>
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
 
 
-            <a class="brand" href="../index.html">
-              <img src="../images/icon.png" alt="Inflatable" class="logomark">
-              <span class="brand-title">Inflatable</span>
-            </a>        </div>
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.png" alt="Inflatable">
+            Inflatable
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-        <div class="body-content">
-            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
-            <nav id="sidebar" role="navigation">
-                <div class="sidebar">
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
-                    <div>
-                      <div class="mobile-hide">
+          <nav id="breadcrumb"></nav>
+        </div>
 
-                        <a class="brand" href="../index.html">
-                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
-                          <span class="brand-title">Inflatable</span>
-                        </a>                      </div>
-
-                      <div class="sidesearch">
-                        <form id="search" role="search" class="search">
-                            <i class="bi bi-search search-icon"></i>
-                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
-                        </form>
-                      </div>
-
-                      <div id="navbar">
-                      </div>
-                    </div>                    <div class="sidebar-item-separator"></div>
-
-                        <div id="sidetoggle">
-                          <div id="sidetoc"></div>
-                        </div>
-                </div>
-                <div class="footer">
-  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
-  
-                </div>            </nav>
-
-            <main class="main-panel">
-
-                <div id="search-results" style="display: none;">
-                  <h1 class="search-list">Search Results for <span></span></h1>
-                  <div class="sr-items">
-                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
-                  </div>
-                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
-                </div>
- 
-
-                <div role="main" class="hide-when-search">
-
-                        <div class="subnav navbar navbar-default">
-                          <div class="container hide-when-search" id="breadcrumb">
-                            <ul class="breadcrumb">
-                              <li></li>
-                            </ul>
-                          </div>
-                        </div>
-
-                         <div id="contribution">
-                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
-                         </div>
-
-                    <article class="content wrap" id="_content" data-uid="Inflatable.Interfaces.IMapping">
+        <article data-uid="Inflatable.Interfaces.IMapping">
 
 
 
-  <h1 id="Inflatable_Interfaces_IMapping" data-uid="Inflatable.Interfaces.IMapping" class="text-break">Interface IMapping
-</h1>
-  <div class="markdown level0 summary"><p>Mapping interface</p>
+  <h1 id="Inflatable_Interfaces_IMapping" data-uid="Inflatable.Interfaces.IMapping" class="text-break">
+    Interface IMapping
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.Interfaces.html">Interfaces</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Inflatable.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Mapping interface</p>
 </div>
-  <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.Interfaces.html">Interfaces</a></h6>
-  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
-  <h5 id="Inflatable_Interfaces_IMapping_syntax">Syntax</h5>
+  <div class="markdown conceptual"></div>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IMapping</code></pre>
   </div>
-  <h3 id="properties">Properties
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_AutoIDProperties.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.AutoIDProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L100">View Source</a>
-  </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
   <a id="Inflatable_Interfaces_IMapping_AutoIDProperties_" data-uid="Inflatable.Interfaces.IMapping.AutoIDProperties*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_AutoIDProperties" data-uid="Inflatable.Interfaces.IMapping.AutoIDProperties">AutoIDProperties</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_AutoIDProperties" data-uid="Inflatable.Interfaces.IMapping.AutoIDProperties">
+  AutoIDProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L100"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the automatic identifier properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">List&lt;IAutoIDProperty&gt; AutoIDProperties { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IAutoIDProperty.html">IAutoIDProperty</a>&gt;</td>
-        <td><p>The automatic identifier properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_DatabaseConfigType.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.DatabaseConfigType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L106">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IAutoIDProperty.html">IAutoIDProperty</a>&gt;</dt>
+    <dd><p>The automatic identifier properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_DatabaseConfigType_" data-uid="Inflatable.Interfaces.IMapping.DatabaseConfigType*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_DatabaseConfigType" data-uid="Inflatable.Interfaces.IMapping.DatabaseConfigType">DatabaseConfigType</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_DatabaseConfigType" data-uid="Inflatable.Interfaces.IMapping.DatabaseConfigType">
+  DatabaseConfigType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the type of the database configuration.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">Type DatabaseConfigType { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><p>The type of the database configuration.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_IDProperties.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.IDProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L112">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type of the database configuration.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_IDProperties_" data-uid="Inflatable.Interfaces.IMapping.IDProperties*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_IDProperties" data-uid="Inflatable.Interfaces.IMapping.IDProperties">IDProperties</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_IDProperties" data-uid="Inflatable.Interfaces.IMapping.IDProperties">
+  IDProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>ID properties</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">List&lt;IIDProperty&gt; IDProperties { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IIDProperty.html">IIDProperty</a>&gt;</td>
-        <td><p>The identifier properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_ManyToManyProperties.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.ManyToManyProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L118">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IIDProperty.html">IIDProperty</a>&gt;</dt>
+    <dd><p>The identifier properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_ManyToManyProperties_" data-uid="Inflatable.Interfaces.IMapping.ManyToManyProperties*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_ManyToManyProperties" data-uid="Inflatable.Interfaces.IMapping.ManyToManyProperties">ManyToManyProperties</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_ManyToManyProperties" data-uid="Inflatable.Interfaces.IMapping.ManyToManyProperties">
+  ManyToManyProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L118"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the many to many properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">List&lt;IManyToManyProperty&gt; ManyToManyProperties { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html">IManyToManyProperty</a>&gt;</td>
-        <td><p>The many to many properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_ManyToOneProperties.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.ManyToOneProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L124">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html">IManyToManyProperty</a>&gt;</dt>
+    <dd><p>The many to many properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_ManyToOneProperties_" data-uid="Inflatable.Interfaces.IMapping.ManyToOneProperties*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_ManyToOneProperties" data-uid="Inflatable.Interfaces.IMapping.ManyToOneProperties">ManyToOneProperties</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_ManyToOneProperties" data-uid="Inflatable.Interfaces.IMapping.ManyToOneProperties">
+  ManyToOneProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the many to many properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">List&lt;IManyToOneProperty&gt; ManyToOneProperties { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html">IManyToOneProperty</a>&gt;</td>
-        <td><p>The many to many properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_MapProperties.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.MapProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L130">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html">IManyToOneProperty</a>&gt;</dt>
+    <dd><p>The many to many properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_MapProperties_" data-uid="Inflatable.Interfaces.IMapping.MapProperties*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_MapProperties" data-uid="Inflatable.Interfaces.IMapping.MapProperties">MapProperties</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_MapProperties" data-uid="Inflatable.Interfaces.IMapping.MapProperties">
+  MapProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the map properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">List&lt;IMapProperty&gt; MapProperties { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IMapProperty.html">IMapProperty</a>&gt;</td>
-        <td><p>The map properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Merge.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Merge%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L136">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IMapProperty.html">IMapProperty</a>&gt;</dt>
+    <dd><p>The map properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Merge_" data-uid="Inflatable.Interfaces.IMapping.Merge*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Merge" data-uid="Inflatable.Interfaces.IMapping.Merge">Merge</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Merge" data-uid="Inflatable.Interfaces.IMapping.Merge">
+  Merge
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets a value indicating whether this <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a> should be merged.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">bool Merge { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if merge this instance; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_ObjectType.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.ObjectType%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L142">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if merge this instance; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_ObjectType_" data-uid="Inflatable.Interfaces.IMapping.ObjectType*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_ObjectType" data-uid="Inflatable.Interfaces.IMapping.ObjectType">ObjectType</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_ObjectType" data-uid="Inflatable.Interfaces.IMapping.ObjectType">
+  ObjectType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L142"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>The object type associated with the mapping</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">Type ObjectType { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><p>The type of the object.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Order.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Order%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L148">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>The type of the object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Order_" data-uid="Inflatable.Interfaces.IMapping.Order*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Order" data-uid="Inflatable.Interfaces.IMapping.Order">Order</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Order" data-uid="Inflatable.Interfaces.IMapping.Order">
+  Order
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Order that the mappings are initialized</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">int Order { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>The order.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Prefix.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Prefix%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L154">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The order.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Prefix_" data-uid="Inflatable.Interfaces.IMapping.Prefix*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Prefix" data-uid="Inflatable.Interfaces.IMapping.Prefix">Prefix</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Prefix" data-uid="Inflatable.Interfaces.IMapping.Prefix">
+  Prefix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Prefix used for defining properties/table name</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">string Prefix { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The prefix.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Queries.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Queries%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L160">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The prefix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Queries_" data-uid="Inflatable.Interfaces.IMapping.Queries*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Queries" data-uid="Inflatable.Interfaces.IMapping.Queries">Queries</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Queries" data-uid="Inflatable.Interfaces.IMapping.Queries">
+  Queries
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the queries.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">IQueries Queries { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></td>
-        <td><p>The queries.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_ReferenceProperties.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.ReferenceProperties%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L166">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></dt>
+    <dd><p>The queries.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_ReferenceProperties_" data-uid="Inflatable.Interfaces.IMapping.ReferenceProperties*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_ReferenceProperties" data-uid="Inflatable.Interfaces.IMapping.ReferenceProperties">ReferenceProperties</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_ReferenceProperties" data-uid="Inflatable.Interfaces.IMapping.ReferenceProperties">
+  ReferenceProperties
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Reference Properties list</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">List&lt;IProperty&gt; ReferenceProperties { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a>&gt;</td>
-        <td><p>The reference properties.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_SchemaName.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.SchemaName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L172">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a>&gt;</dt>
+    <dd><p>The reference properties.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_SchemaName_" data-uid="Inflatable.Interfaces.IMapping.SchemaName*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_SchemaName" data-uid="Inflatable.Interfaces.IMapping.SchemaName">SchemaName</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_SchemaName" data-uid="Inflatable.Interfaces.IMapping.SchemaName">
+  SchemaName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L172"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name of the schema.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">string SchemaName { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name of the schema.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Suffix.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Suffix%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L178">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the schema.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Suffix_" data-uid="Inflatable.Interfaces.IMapping.Suffix*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Suffix" data-uid="Inflatable.Interfaces.IMapping.Suffix">Suffix</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Suffix" data-uid="Inflatable.Interfaces.IMapping.Suffix">
+  Suffix
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Suffix used for defining properties/table name</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">string Suffix { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The suffix.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_TableName.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.TableName%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L184">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The suffix.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_TableName_" data-uid="Inflatable.Interfaces.IMapping.TableName*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_TableName" data-uid="Inflatable.Interfaces.IMapping.TableName">TableName</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_TableName" data-uid="Inflatable.Interfaces.IMapping.TableName">
+  TableName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Table name</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">string TableName { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The name of the table.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_AddAutoKey.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.AddAutoKey%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L189">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The name of the table.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
   <a id="Inflatable_Interfaces_IMapping_AddAutoKey_" data-uid="Inflatable.Interfaces.IMapping.AddAutoKey*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_AddAutoKey" data-uid="Inflatable.Interfaces.IMapping.AddAutoKey">AddAutoKey()</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_AddAutoKey" data-uid="Inflatable.Interfaces.IMapping.AddAutoKey">
+  AddAutoKey()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Adds an automatic key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void AddAutoKey()</code></pre>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_ContainsProperty_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.ContainsProperty(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L196">View Source</a>
-  </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_ContainsProperty_" data-uid="Inflatable.Interfaces.IMapping.ContainsProperty*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_ContainsProperty_System_String_" data-uid="Inflatable.Interfaces.IMapping.ContainsProperty(System.String)">ContainsProperty(string)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_ContainsProperty_System_String_" data-uid="Inflatable.Interfaces.IMapping.ContainsProperty(System.String)">
+  ContainsProperty(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether the mapping contains a property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">bool ContainsProperty(string propertyName)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td><p>Name of the property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if the mapping contains the specified property; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Copy_Inflatable_Interfaces_IMapping_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Copy(Inflatable.Interfaces.IMapping)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L202">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the property.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the mapping contains the specified property; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Copy_" data-uid="Inflatable.Interfaces.IMapping.Copy*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Copy_Inflatable_Interfaces_IMapping_" data-uid="Inflatable.Interfaces.IMapping.Copy(Inflatable.Interfaces.IMapping)">Copy(IMapping)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Copy_Inflatable_Interfaces_IMapping_" data-uid="Inflatable.Interfaces.IMapping.Copy(Inflatable.Interfaces.IMapping)">
+  Copy(IMapping)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L202"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies the specified mapping.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void Copy(IMapping mapping)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
-        <td><span class="parametername">mapping</span></td>
-        <td><p>The mapping.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IIDProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L208">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mapping</code> <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></dt>
+    <dd><p>The mapping.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_CopyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IIDProperty)">CopyProperty(IIDProperty)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IIDProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IIDProperty)">
+  CopyProperty(IIDProperty)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L208"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void CopyProperty(IIDProperty prop)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IIDProperty.html">IIDProperty</a></td>
-        <td><span class="parametername">prop</span></td>
-        <td><p>The property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToManyProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L232">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prop</code> <a class="xref" href="Inflatable.ClassMapper.Interfaces.IIDProperty.html">IIDProperty</a></dt>
+    <dd><p>The property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_CopyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToManyProperty)">CopyProperty(IManyToManyProperty)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToManyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToManyProperty)">
+  CopyProperty(IManyToManyProperty)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void CopyProperty(IManyToManyProperty prop)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html">IManyToManyProperty</a></td>
-        <td><span class="parametername">prop</span></td>
-        <td><p>The property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToOneProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L226">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prop</code> <a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html">IManyToManyProperty</a></dt>
+    <dd><p>The property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_CopyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToOneProperty)">CopyProperty(IManyToOneProperty)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IManyToOneProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IManyToOneProperty)">
+  CopyProperty(IManyToOneProperty)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void CopyProperty(IManyToOneProperty prop)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html">IManyToOneProperty</a></td>
-        <td><span class="parametername">prop</span></td>
-        <td><p>The property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IMapProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L220">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prop</code> <a class="xref" href="Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html">IManyToOneProperty</a></dt>
+    <dd><p>The property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_CopyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IMapProperty)">CopyProperty(IMapProperty)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IMapProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IMapProperty)">
+  CopyProperty(IMapProperty)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L220"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void CopyProperty(IMapProperty prop)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IMapProperty.html">IMapProperty</a></td>
-        <td><span class="parametername">prop</span></td>
-        <td><p>The property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IProperty)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L214">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prop</code> <a class="xref" href="Inflatable.ClassMapper.Interfaces.IMapProperty.html">IMapProperty</a></dt>
+    <dd><p>The property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_CopyProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IProperty)">CopyProperty(IProperty)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_CopyProperty_Inflatable_ClassMapper_Interfaces_IProperty_" data-uid="Inflatable.Interfaces.IMapping.CopyProperty(Inflatable.ClassMapper.Interfaces.IProperty)">
+  CopyProperty(IProperty)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L214"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies the property.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void CopyProperty(IProperty prop)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></td>
-        <td><span class="parametername">prop</span></td>
-        <td><p>The property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_GetColumnName_System_String_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.GetColumnName(System.String)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L239">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prop</code> <a class="xref" href="Inflatable.ClassMapper.Interfaces.IProperty.html">IProperty</a></dt>
+    <dd><p>The property.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_GetColumnName_" data-uid="Inflatable.Interfaces.IMapping.GetColumnName*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_GetColumnName_System_String_" data-uid="Inflatable.Interfaces.IMapping.GetColumnName(System.String)">GetColumnName(string)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_GetColumnName_System_String_" data-uid="Inflatable.Interfaces.IMapping.GetColumnName(System.String)">
+  GetColumnName(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L239"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the name of the column based on property name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">string GetColumnName(string propertyName)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">propertyName</span></td>
-        <td><p>Name of the property.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><p>The column name.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Reduce(Inflatable.Interfaces.IMapping%2CMicrosoft.Extensions.Logging.ILogger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L252">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>propertyName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the property.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The column name.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Reduce_" data-uid="Inflatable.Interfaces.IMapping.Reduce*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger_" data-uid="Inflatable.Interfaces.IMapping.Reduce(Inflatable.Interfaces.IMapping,Microsoft.Extensions.Logging.ILogger)">Reduce(IMapping, ILogger)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Reduce_Inflatable_Interfaces_IMapping_Microsoft_Extensions_Logging_ILogger_" data-uid="Inflatable.Interfaces.IMapping.Reduce(Inflatable.Interfaces.IMapping,Microsoft.Extensions.Logging.ILogger)">
+  Reduce(IMapping, ILogger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L252"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Reduces this instance based on parent mapping properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void Reduce(IMapping parentMapping, ILogger logger)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
-        <td><span class="parametername">parentMapping</span></td>
-        <td><p>The parent mapping.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></td>
-        <td><span class="parametername">logger</span></td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Reduce_Microsoft_Extensions_Logging_ILogger_.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Reduce(Microsoft.Extensions.Logging.ILogger)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L245">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>parentMapping</code> <a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></dt>
+    <dd><p>The parent mapping.</p>
+</dd>
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></dt>
+    <dd><p>The logger.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Reduce_" data-uid="Inflatable.Interfaces.IMapping.Reduce*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Reduce_Microsoft_Extensions_Logging_ILogger_" data-uid="Inflatable.Interfaces.IMapping.Reduce(Microsoft.Extensions.Logging.ILogger)">Reduce(ILogger)</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Reduce_Microsoft_Extensions_Logging_ILogger_" data-uid="Inflatable.Interfaces.IMapping.Reduce(Microsoft.Extensions.Logging.ILogger)">
+  Reduce(ILogger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L245"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Reduces this instance and removes duplicate properties</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void Reduce(ILogger logger)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></td>
-        <td><span class="parametername">logger</span></td>
-        <td><p>The logger.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter___.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.SetQuery(Inflatable.QueryProvider.Enums.QueryType%2CSystem.String%2CSystem.Data.CommandType%2CSQLHelperDB.HelperClasses.Interfaces.IParameter%5B%5D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L262">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></dt>
+    <dd><p>The logger.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_SetQuery_" data-uid="Inflatable.Interfaces.IMapping.SetQuery*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter___" data-uid="Inflatable.Interfaces.IMapping.SetQuery(Inflatable.QueryProvider.Enums.QueryType,System.String,System.Data.CommandType,SQLHelperDB.HelperClasses.Interfaces.IParameter[])">SetQuery(QueryType, string, CommandType, params IParameter[])</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_SetQuery_Inflatable_QueryProvider_Enums_QueryType_System_String_System_Data_CommandType_SQLHelperDB_HelperClasses_Interfaces_IParameter___" data-uid="Inflatable.Interfaces.IMapping.SetQuery(Inflatable.QueryProvider.Enums.QueryType,System.String,System.Data.CommandType,SQLHelperDB.HelperClasses.Interfaces.IParameter[])">
+  SetQuery(QueryType, string, CommandType, params IParameter[])
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L262"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets the default query based on query type</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">IMapping SetQuery(QueryType queryType, string queryString, CommandType databaseCommandType, params IParameter[] parameters)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
-        <td><span class="parametername">queryType</span></td>
-        <td><p>Type of the query.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></td>
-        <td><span class="parametername">queryString</span></td>
-        <td><p>The query string.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.commandtype">CommandType</a></td>
-        <td><span class="parametername">databaseCommandType</span></td>
-        <td><p>Type of the database command.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a>[]</td>
-        <td><span class="parametername">parameters</span></td>
-        <td><p>The parameters.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></td>
-        <td><p>This</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_Interfaces_IMapping_Setup.md&amp;value=---%0Auid%3A%20Inflatable.Interfaces.IMapping.Setup%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L267">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>queryType</code> <a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></dt>
+    <dd><p>Type of the query.</p>
+</dd>
+    <dt><code>queryString</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The query string.</p>
+</dd>
+    <dt><code>databaseCommandType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.data.commandtype">CommandType</a></dt>
+    <dd><p>Type of the database command.</p>
+</dd>
+    <dt><code>parameters</code> <a class="xref" href="https://github.com/JaCraig/SQLHelper/blob/master/src/SQLHelper.DB/HelperClasses/Interfaces/IParameter.cs">IParameter</a>[]</dt>
+    <dd><p>The parameters.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.Interfaces.IMapping.html">IMapping</a></dt>
+    <dd><p>This</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_Interfaces_IMapping_Setup_" data-uid="Inflatable.Interfaces.IMapping.Setup*"></a>
-  <h4 id="Inflatable_Interfaces_IMapping_Setup" data-uid="Inflatable.Interfaces.IMapping.Setup">Setup()</h4>
+
+  <h3 id="Inflatable_Interfaces_IMapping_Setup" data-uid="Inflatable.Interfaces.IMapping.Setup">
+  Setup()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L267"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Sets up the mapping</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">void Setup()</code></pre>
   </div>
 
-</article>
-                </div>
 
-                <div class="copyright-footer">
-                    <span>&#169; James Craig. All rights reserved.</span>
-                </div>
-            </main>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L94" class="edit-link">Edit this page</a>
         </div>
 
 
-        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
-        <script type="text/javascript" src="../styles/url.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
-        <script type="text/javascript" src="../styles/docfx.js"></script>
-        <script type="text/javascript" src="../styles/main.js"></script>
-        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

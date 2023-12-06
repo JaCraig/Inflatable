@@ -1,126 +1,138 @@
 ﻿<!DOCTYPE html>
-<!--[if IE]><![endif]-->
 <html>
-
-    <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="utf-8">
       <title>Class Queries
  | Inflatable API Reference </title>
-      <meta name="viewport" content="width=device-width">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class Queries
  | Inflatable API Reference ">
-      <meta name="generator" content="docfx ">
-  
-      <link rel="shortcut icon" href="../favicon.ico">
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/night-owl.min.css">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" integrity="sha384-EvBWSlnoFgZlXJvpzS+MAUEjvN7+gcCwH+qh7GRFOGgZO0PuwOFro7qPOJnLfe7l" crossorigin="anonymous">
-      <link rel="stylesheet" href="../styles/config.css">
-      <link rel="stylesheet" href="../styles/discord.css">
-      <link rel="stylesheet" href="../styles/singulink.css">
-      <link rel="stylesheet" href="../styles/main.css">
-      <meta property="docfx:navrel" content="../toc.json">
-      <meta property="docfx:tocrel" content="toc.json">
-  
-  <meta property="docfx:rel" content="../">
-  <meta property="docfx:newtab" content="true">
-    </head>
-    <body>
-        <div class="top-navbar">
-            <a class="burger-icon" onclick="toggleMenu()">
-                <svg name="Hamburger" style="vertical-align: middle;" width="34" height="34" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M20 6H4V9H20V6ZM4 10.999H20V13.999H4V10.999ZM4 15.999H20V18.999H4V15.999Z"></path></svg>
-            </a>
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
 
 
-            <a class="brand" href="../index.html">
-              <img src="../images/icon.png" alt="Inflatable" class="logomark">
-              <span class="brand-title">Inflatable</span>
-            </a>        </div>
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/icon.png" alt="Inflatable">
+            Inflatable
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-        <div class="body-content">
-            <div id="blackout" class="blackout" onclick="toggleMenu()"></div>
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
 
-            <nav id="sidebar" role="navigation">
-                <div class="sidebar">
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
 
-                    <div>
-                      <div class="mobile-hide">
+          <nav id="breadcrumb"></nav>
+        </div>
 
-                        <a class="brand" href="../index.html">
-                          <img src="../images/icon.png" alt="Inflatable" class="logomark">
-                          <span class="brand-title">Inflatable</span>
-                        </a>                      </div>
-
-                      <div class="sidesearch">
-                        <form id="search" role="search" class="search">
-                            <i class="bi bi-search search-icon"></i>
-                            <input type="text" id="search-query" placeholder="Search" autocomplete="off">
-                        </form>
-                      </div>
-
-                      <div id="navbar">
-                      </div>
-                    </div>                    <div class="sidebar-item-separator"></div>
-
-                        <div id="sidetoggle">
-                          <div id="sidetoc"></div>
-                        </div>
-                </div>
-                <div class="footer">
-  <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
-  
-                </div>            </nav>
-
-            <main class="main-panel">
-
-                <div id="search-results" style="display: none;">
-                  <h1 class="search-list">Search Results for <span></span></h1>
-                  <div class="sr-items">
-                    <p><i class="bi bi-hourglass-split index-loading"></i></p>
-                  </div>
-                  <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
-                </div>
- 
-
-                <div role="main" class="hide-when-search">
-
-                        <div class="subnav navbar navbar-default">
-                          <div class="container hide-when-search" id="breadcrumb">
-                            <ul class="breadcrumb">
-                              <li></li>
-                            </ul>
-                          </div>
-                        </div>
-
-                         <div id="contribution">
-                               <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Edit this page</a>
-                         </div>
-
-                    <article class="content wrap" id="_content" data-uid="Inflatable.QueryProvider.Queries">
+        <article data-uid="Inflatable.QueryProvider.Queries">
 
 
 
-  <h1 id="Inflatable_QueryProvider_Queries" data-uid="Inflatable.QueryProvider.Queries" class="text-break">Class Queries
-</h1>
-  <div class="markdown level0 summary"><p>Query holder</p>
+  <h1 id="Inflatable_QueryProvider_Queries" data-uid="Inflatable.QueryProvider.Queries" class="text-break">
+    Class Queries
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.QueryProvider.html">QueryProvider</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Inflatable.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Query holder</p>
 </div>
-  <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-    <div class="level1"><span class="xref">Queries</span></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Queries : IQueries, IDictionary&lt;QueryType, IQuery?&gt;, ICollection&lt;KeyValuePair&lt;QueryType, IQuery?&gt;&gt;, IEnumerable&lt;KeyValuePair&lt;QueryType, IQuery?&gt;&gt;, IEnumerable</code></pre>
   </div>
-  <div class="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;&gt;</div>
-    <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Queries</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
     </div>
@@ -142,713 +154,582 @@
     <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
     </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Inflatable.html">Inflatable</a>.<a class="xref" href="Inflatable.QueryProvider.html">QueryProvider</a></h6>
-  <h6><strong>Assembly</strong>: Inflatable.dll</h6>
-  <h5 id="Inflatable_QueryProvider_Queries_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Queries : IQueries, IDictionary&lt;QueryType, IQuery?&gt;, ICollection&lt;KeyValuePair&lt;QueryType, IQuery?&gt;&gt;, IEnumerable&lt;KeyValuePair&lt;QueryType, IQuery?&gt;&gt;, IEnumerable</code></pre>
-  </div>
-  <h3 id="properties">Properties
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Count.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Count%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L37">View Source</a>
-  </span>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
   <a id="Inflatable_QueryProvider_Queries_Count_" data-uid="Inflatable.QueryProvider.Queries.Count*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Count" data-uid="Inflatable.QueryProvider.Queries.Count">Count</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Count" data-uid="Inflatable.QueryProvider.Queries.Count">
+  Count
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the count.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><p>The count.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Count_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_IsReadOnly.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.IsReadOnly%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L43">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The count.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_IsReadOnly_" data-uid="Inflatable.QueryProvider.Queries.IsReadOnly*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_IsReadOnly" data-uid="Inflatable.QueryProvider.Queries.IsReadOnly">IsReadOnly</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_IsReadOnly" data-uid="Inflatable.QueryProvider.Queries.IsReadOnly">
+  IsReadOnly
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance is read only.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if this instance is read only; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_IsReadOnly_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Item_Inflatable_QueryProvider_Enums_QueryType_.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Item(Inflatable.QueryProvider.Enums.QueryType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L69">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if this instance is read only; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Item_" data-uid="Inflatable.QueryProvider.Queries.Item*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Item_Inflatable_QueryProvider_Enums_QueryType_" data-uid="Inflatable.QueryProvider.Queries.Item(Inflatable.QueryProvider.Enums.QueryType)">this[QueryType]</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Item_Inflatable_QueryProvider_Enums_QueryType_" data-uid="Inflatable.QueryProvider.Queries.Item(Inflatable.QueryProvider.Enums.QueryType)">
+  this[QueryType]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a> with the specified key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IQuery? this[QueryType key] { get; set; }</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
-        <td><span class="parametername">key</span></td>
-        <td><p>The key.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a></td>
-        <td><p>The <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Item_Inflatable_QueryProvider_Enums_QueryType__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Keys.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Keys%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L49">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></dt>
+    <dd><p>The key.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a></dt>
+    <dd><p>The <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Keys_" data-uid="Inflatable.QueryProvider.Queries.Keys*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Keys" data-uid="Inflatable.QueryProvider.Queries.Keys">Keys</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Keys" data-uid="Inflatable.QueryProvider.Queries.Keys">
+  Keys
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the keys.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ICollection&lt;QueryType&gt; Keys { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>&gt;</td>
-        <td><p>The keys.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Keys_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Values.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Values%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L55">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>&gt;</dt>
+    <dd><p>The keys.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Values_" data-uid="Inflatable.QueryProvider.Queries.Values*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Values" data-uid="Inflatable.QueryProvider.Queries.Values">Values</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Values" data-uid="Inflatable.QueryProvider.Queries.Values">
+  Values
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public ICollection&lt;IQuery?&gt; Values { get; }</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</td>
-        <td><p>The values.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Values_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <h3 id="methods">Methods
-</h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Add_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery_.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Add(Inflatable.QueryProvider.Enums.QueryType%2CInflatable.QueryProvider.Interfaces.IQuery)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L87">View Source</a>
-  </span>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</dt>
+    <dd><p>The values.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
   <a id="Inflatable_QueryProvider_Queries_Add_" data-uid="Inflatable.QueryProvider.Queries.Add*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Add_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery_" data-uid="Inflatable.QueryProvider.Queries.Add(Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery)">Add(QueryType, IQuery?)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Add_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery_" data-uid="Inflatable.QueryProvider.Queries.Add(Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery)">
+  Add(QueryType, IQuery?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Adds the specified key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Add(QueryType key, IQuery? value)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
-        <td><span class="parametername">key</span></td>
-        <td><p>The key.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>The value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Add_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Add_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Add(System.Collections.Generic.KeyValuePair%7BInflatable.QueryProvider.Enums.QueryType%2CInflatable.QueryProvider.Interfaces.IQuery%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L80">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></dt>
+    <dd><p>The key.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Add_" data-uid="Inflatable.QueryProvider.Queries.Add*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Add_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.Add(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery})">Add(KeyValuePair&lt;QueryType, IQuery?&gt;)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Add_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.Add(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery})">
+  Add(KeyValuePair&lt;QueryType, IQuery?&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Adds the specified item.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Add(KeyValuePair&lt;QueryType, IQuery?&gt; item)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</td>
-        <td><span class="parametername">item</span></td>
-        <td><p>The item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Add_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Clear.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Clear%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L92">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</dt>
+    <dd><p>The item.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Clear_" data-uid="Inflatable.QueryProvider.Queries.Clear*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Clear" data-uid="Inflatable.QueryProvider.Queries.Clear">Clear()</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Clear" data-uid="Inflatable.QueryProvider.Queries.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Clears this instance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
   </div>
-  <h5 id="Inflatable_QueryProvider_Queries_Clear_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Contains_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Contains(System.Collections.Generic.KeyValuePair%7BInflatable.QueryProvider.Enums.QueryType%2CInflatable.QueryProvider.Interfaces.IQuery%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L99">View Source</a>
-  </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Contains_" data-uid="Inflatable.QueryProvider.Queries.Contains*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Contains_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.Contains(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery})">Contains(KeyValuePair&lt;QueryType, IQuery?&gt;)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Contains_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.Contains(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery})">
+  Contains(KeyValuePair&lt;QueryType, IQuery?&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether [contains] [the specified item].</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Contains(KeyValuePair&lt;QueryType, IQuery?&gt; item)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</td>
-        <td><span class="parametername">item</span></td>
-        <td><p>The item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if [contains] [the specified item]; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Contains_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_ContainsKey_Inflatable_QueryProvider_Enums_QueryType_.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.ContainsKey(Inflatable.QueryProvider.Enums.QueryType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L106">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</dt>
+    <dd><p>The item.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if [contains] [the specified item]; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_ContainsKey_" data-uid="Inflatable.QueryProvider.Queries.ContainsKey*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_ContainsKey_Inflatable_QueryProvider_Enums_QueryType_" data-uid="Inflatable.QueryProvider.Queries.ContainsKey(Inflatable.QueryProvider.Enums.QueryType)">ContainsKey(QueryType)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_ContainsKey_Inflatable_QueryProvider_Enums_QueryType_" data-uid="Inflatable.QueryProvider.Queries.ContainsKey(Inflatable.QueryProvider.Enums.QueryType)">
+  ContainsKey(QueryType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Determines whether the specified key contains key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool ContainsKey(QueryType key)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
-        <td><span class="parametername">key</span></td>
-        <td><p>The key.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p><code>true</code> if the specified key contains key; otherwise, <code>false</code>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_ContainsKey_Inflatable_QueryProvider_Enums_QueryType__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_CopyTo_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery____System_Int32_.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.CopyTo(System.Collections.Generic.KeyValuePair%7BInflatable.QueryProvider.Enums.QueryType%2CInflatable.QueryProvider.Interfaces.IQuery%7D%5B%5D%2CSystem.Int32)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L113">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></dt>
+    <dd><p>The key.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><code>true</code> if the specified key contains key; otherwise, <code>false</code>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_CopyTo_" data-uid="Inflatable.QueryProvider.Queries.CopyTo*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_CopyTo_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery____System_Int32_" data-uid="Inflatable.QueryProvider.Queries.CopyTo(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery}[],System.Int32)">CopyTo(KeyValuePair&lt;QueryType, IQuery?&gt;[], int)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_CopyTo_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery____System_Int32_" data-uid="Inflatable.QueryProvider.Queries.CopyTo(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery}[],System.Int32)">
+  CopyTo(KeyValuePair&lt;QueryType, IQuery?&gt;[], int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Copies to.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void CopyTo(KeyValuePair&lt;QueryType, IQuery?&gt;[] array, int arrayIndex)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;[]</td>
-        <td><span class="parametername">array</span></td>
-        <td><p>The array.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></td>
-        <td><span class="parametername">arrayIndex</span></td>
-        <td><p>Index of the array.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_CopyTo_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery____System_Int32__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_GetEnumerator.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.GetEnumerator%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L132">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;[]</dt>
+    <dd><p>The array.</p>
+</dd>
+    <dt><code>arrayIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Index of the array.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_GetEnumerator_" data-uid="Inflatable.QueryProvider.Queries.GetEnumerator*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_GetEnumerator" data-uid="Inflatable.QueryProvider.Queries.GetEnumerator">GetEnumerator()</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_GetEnumerator" data-uid="Inflatable.QueryProvider.Queries.GetEnumerator">
+  GetEnumerator()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L132"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Gets the enumerator.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator&lt;KeyValuePair&lt;QueryType, IQuery?&gt;&gt;? GetEnumerator()</code></pre>
   </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;&gt;</td>
-        <td><p>The enumerator</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_GetEnumerator_seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Remove_Inflatable_QueryProvider_Enums_QueryType_.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Remove(Inflatable.QueryProvider.Enums.QueryType)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L152">View Source</a>
-  </span>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;&gt;</dt>
+    <dd><p>The enumerator</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Remove_" data-uid="Inflatable.QueryProvider.Queries.Remove*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Remove_Inflatable_QueryProvider_Enums_QueryType_" data-uid="Inflatable.QueryProvider.Queries.Remove(Inflatable.QueryProvider.Enums.QueryType)">Remove(QueryType)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Remove_Inflatable_QueryProvider_Enums_QueryType_" data-uid="Inflatable.QueryProvider.Queries.Remove(Inflatable.QueryProvider.Enums.QueryType)">
+  Remove(QueryType)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L152"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Removes the specified key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Remove(QueryType key)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
-        <td><span class="parametername">key</span></td>
-        <td><p>The key.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if it is removed, false otherwise.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Remove_Inflatable_QueryProvider_Enums_QueryType__seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_Remove_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.Remove(System.Collections.Generic.KeyValuePair%7BInflatable.QueryProvider.Enums.QueryType%2CInflatable.QueryProvider.Interfaces.IQuery%7D)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L145">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></dt>
+    <dd><p>The key.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if it is removed, false otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_Remove_" data-uid="Inflatable.QueryProvider.Queries.Remove*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_Remove_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.Remove(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery})">Remove(KeyValuePair&lt;QueryType, IQuery?&gt;)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_Remove_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.Remove(System.Collections.Generic.KeyValuePair{Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery})">
+  Remove(KeyValuePair&lt;QueryType, IQuery?&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Removes the specified item.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool Remove(KeyValuePair&lt;QueryType, IQuery?&gt; item)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</td>
-        <td><span class="parametername">item</span></td>
-        <td><p>The item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if it is removed, false otherwise.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_Remove_System_Collections_Generic_KeyValuePair_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/JaCraig/Inflatable/new/master/apiSpec/new?filename=Inflatable_QueryProvider_Queries_TryGetValue_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__.md&amp;value=---%0Auid%3A%20Inflatable.QueryProvider.Queries.TryGetValue(Inflatable.QueryProvider.Enums.QueryType%2CInflatable.QueryProvider.Interfaces.IQuery%40)%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Edit this page</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L160">View Source</a>
-  </span>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a>, <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a>&gt;</dt>
+    <dd><p>The item.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if it is removed, false otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
   <a id="Inflatable_QueryProvider_Queries_TryGetValue_" data-uid="Inflatable.QueryProvider.Queries.TryGetValue*"></a>
-  <h4 id="Inflatable_QueryProvider_Queries_TryGetValue_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.TryGetValue(Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery@)">TryGetValue(QueryType, out IQuery?)</h4>
+
+  <h3 id="Inflatable_QueryProvider_Queries_TryGetValue_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery__" data-uid="Inflatable.QueryProvider.Queries.TryGetValue(Inflatable.QueryProvider.Enums.QueryType,Inflatable.QueryProvider.Interfaces.IQuery@)">
+  TryGetValue(QueryType, out IQuery?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
   <div class="markdown level1 summary"><p>Tries the get value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
-  <h5 class="declaration">Declaration</h5>
+
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool TryGetValue(QueryType key, out IQuery? value)</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></td>
-        <td><span class="parametername">key</span></td>
-        <td><p>The key.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>The value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></td>
-        <td><p>True if it is found, false otherwise.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Inflatable_QueryProvider_Queries_TryGetValue_Inflatable_QueryProvider_Enums_QueryType_Inflatable_QueryProvider_Interfaces_IQuery___seealso">See Also</h5>
-  <div class="seealso">
-      <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
-  </div>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a>
-  </div>
-  <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary&lt;TKey, TValue&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection&lt;T&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a>
-  </div>
-  <h3 id="seealso">See Also</h3>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="Inflatable.QueryProvider.Enums.QueryType.html">QueryType</a></dt>
+    <dd><p>The key.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="Inflatable.QueryProvider.Interfaces.IQuery.html">IQuery</a></dt>
+    <dd><p>The value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>True if it is found, false otherwise.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 id="seealso">See Also</h2>
   <div class="seealso">
       <div><a class="xref" href="Inflatable.QueryProvider.Interfaces.IQueries.html">IQueries</a></div>
   </div>
 
 </article>
-                </div>
 
-                <div class="copyright-footer">
-                    <span>&#169; James Craig. All rights reserved.</span>
-                </div>
-            </main>
+        <div class="contribution d-print-none">
+          <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Queries.cs/#L31" class="edit-link">Edit this page</a>
         </div>
 
 
-        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-        <script type="text/javascript" src="../styles/jquery.twbsPagination.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mark.js@8.11.1/dist/jquery.mark.min.js"></script>
-        <script type="text/javascript" src="../styles/url.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/anchor-js@5.0.0/anchor.min.js"></script>
-        <script type="text/javascript" src="../styles/docfx.js"></script>
-        <script type="text/javascript" src="../styles/main.js"></script>
-        <script type="text/javascript" src="../styles/singulink.js"></script>    </body>
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <strong><a href='https://github.com/JaCraig/Inflatable'>Open in Github</a></strong>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
