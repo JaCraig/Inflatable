@@ -3,7 +3,6 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.MultipleDataSources.Mappings;
 using System.Linq;
@@ -11,6 +10,7 @@ using Xunit;
 
 namespace Inflatable.Tests.ClassMapper
 {
+    [Collection("Test collection")]
     public class MultipleDataSourceTests : TestingFixture
     {
         public MultipleDataSourceTests(SetupFixture setupFixture)
@@ -32,16 +32,16 @@ namespace Inflatable.Tests.ClassMapper
             GetLogger<MappingManager>());
 
             Assert.Equal(2, TestObject.Sources.Count());
-            var Source1 = TestObject.Sources.First(x => x.Source.GetType() == typeof(MockDatabaseMapping));
-            var Source2 = TestObject.Sources.First(x => x.Source.GetType() == typeof(SecondMockDatabaseMapping));
-            Assert.Single(Source1.Mappings);
-            Assert.Single(Source2.Mappings);
-            var Source1Mapping = Source1.Mappings.First().Value;
-            var Source2Mapping = Source2.Mappings.First().Value;
-            Assert.Single(Source1Mapping.IDProperties);
-            Assert.Single(Source2Mapping.IDProperties);
-            Assert.Single(Source1Mapping.ReferenceProperties);
-            Assert.Single(Source2Mapping.ReferenceProperties);
+            IMappingSource Source1 = TestObject.Sources.First(x => x.Source.GetType() == typeof(MockDatabaseMapping));
+            IMappingSource Source2 = TestObject.Sources.First(x => x.Source.GetType() == typeof(SecondMockDatabaseMapping));
+            _ = Assert.Single(Source1.Mappings);
+            _ = Assert.Single(Source2.Mappings);
+            IMapping Source1Mapping = Source1.Mappings.First().Value;
+            IMapping Source2Mapping = Source2.Mappings.First().Value;
+            _ = Assert.Single(Source1Mapping.IDProperties);
+            _ = Assert.Single(Source2Mapping.IDProperties);
+            _ = Assert.Single(Source1Mapping.ReferenceProperties);
+            _ = Assert.Single(Source2Mapping.ReferenceProperties);
         }
     }
 }

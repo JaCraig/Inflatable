@@ -6,7 +6,6 @@ using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators;
 using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
@@ -20,6 +19,7 @@ using Xunit;
 
 namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 {
+    [Collection("Test collection")]
     public class DeletePropertiesQueryTests : TestingFixture
     {
         public DeletePropertiesQueryTests(SetupFixture setupFixture)
@@ -62,7 +62,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeletePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateDeclarations();
+            Inflatable.QueryProvider.Interfaces.IQuery[] Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
             Assert.Empty(Result[0].Parameters);
             Assert.Equal("", Result[0].QueryString);
@@ -85,7 +85,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeletePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
+            Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Empty(Result.Parameters);
             Assert.Equal("", Result.QueryString);
@@ -103,16 +103,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            var ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
+            Inflatable.ClassMapper.Interfaces.IManyToManyProperty ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
             var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DeletePropertiesQuery<ManyToManyProperties>(Mappings, ObjectPool);
             var TempManyToMany = new ManyToManyProperties { ID = 10, BoolValue = true };
             TempManyToMany.ManyToManyClass.Add(new TestDatabases.SimpleTest.AllReferencesAndID { ID = 1 });
             TempManyToMany.ManyToManyClass.Add(new TestDatabases.SimpleTest.AllReferencesAndID { ID = 2 });
-            var Result = TestObject.GenerateQueries(TempManyToMany, ManyToManyProperty)[0];
+            Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(TempManyToMany, ManyToManyProperty)[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
-            Assert.Single(Result.Parameters);
+            _ = Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ManyToManyProperties_ID_", Result.Parameters[0].ID);
             Assert.Equal("DELETE FROM [dbo].[AllReferencesAndID_ManyToManyProperties] WHERE ([dbo].[AllReferencesAndID_ManyToManyProperties].[ManyToManyProperties_ID_] = @ManyToManyProperties_ID_);", Result.QueryString);
@@ -130,14 +130,14 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
+            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
             var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToOneProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DeletePropertiesQuery<ManyToOneManyProperties>(Mappings, ObjectPool);
             var TempManyToOne = new ManyToOneManyProperties { ID = 10, BoolValue = true };
             TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 1 });
             TempManyToOne.ManyToOneClass.Add(new ManyToOneOneProperties { ID = 2 });
-            var Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
+            Inflatable.QueryProvider.Interfaces.IQuery[] Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
             Assert.Empty(Result);
         }
 
@@ -152,13 +152,17 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                    new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            var ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();
+            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();
             var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToOneProperty.Setup(Mappings, TempDataModel.SourceSpec);
             var TestObject = new DeletePropertiesQuery<ManyToOneOneProperties>(Mappings, ObjectPool);
-            var TempManyToOne = new ManyToOneOneProperties { ID = 10, BoolValue = true };
-            TempManyToOne.ManyToOneClass = new ManyToOneManyProperties { ID = 1 };
-            var Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
+            var TempManyToOne = new ManyToOneOneProperties
+            {
+                ID = 10,
+                BoolValue = true,
+                ManyToOneClass = new ManyToOneManyProperties { ID = 1 }
+            };
+            Inflatable.QueryProvider.Interfaces.IQuery[] Result = TestObject.GenerateQueries(TempManyToOne, ManyToOneProperty);
             Assert.Empty(Result);
         }
     }

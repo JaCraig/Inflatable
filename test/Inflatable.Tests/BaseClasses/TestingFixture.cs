@@ -2,7 +2,6 @@
 using Holmes;
 using Inflatable.ClassMapper;
 using Inflatable.Schema;
-using Inflatable.Tests.Fixtures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ObjectPool;
@@ -22,9 +21,6 @@ namespace Inflatable.Tests.BaseClasses
             setupFixture.InitProvider();
         }
 
-        protected static readonly object TestRunLock = new object();
-        protected static string DatabaseName = "TestDatabase";
-        protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
         public IConfiguration Configuration => Resolve<IConfigurationRoot>();
         public DataModeler DataModeler => Resolve<DataModeler>();
         public SQLHelper Helper => Resolve<SQLHelper>();
@@ -33,6 +29,9 @@ namespace Inflatable.Tests.BaseClasses
         public SchemaManager SchemaManager => Resolve<SchemaManager>();
         public SetupFixture SetupFixture { get; }
         public Sherlock Sherlock => Resolve<Sherlock>();
+        protected static readonly object TestRunLock = new();
+        protected static string DatabaseName = "TestDatabase";
+        protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
 
         public void Dispose()
         {
@@ -48,7 +47,7 @@ namespace Inflatable.Tests.BaseClasses
             //catch { }
         }
 
-        public ILogger<T>? GetLogger<T>()
+        public ILogger<T> GetLogger<T>()
         {
             try
             {

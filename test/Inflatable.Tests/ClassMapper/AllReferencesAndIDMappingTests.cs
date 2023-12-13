@@ -1,11 +1,11 @@
 ﻿using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Xunit;
 
 namespace Inflatable.Tests.ClassMapper
 {
+    [Collection("Test collection")]
     public class AllReferencesAndIDMappingTests : TestingFixture
     {
         public AllReferencesAndIDMappingTests(SetupFixture setupFixture)
@@ -21,7 +21,7 @@ namespace Inflatable.Tests.ClassMapper
         {
             Assert.NotNull(TestObject);
             Assert.Equal(typeof(MockDatabaseMapping), TestObject.DatabaseConfigType);
-            Assert.Single(TestObject.IDProperties);
+            _ = Assert.Single(TestObject.IDProperties);
             Assert.Equal("ID_", TestObject.IDProperties[0].ColumnName);
             Assert.Equal(36, TestObject.ReferenceProperties.Count);
             Assert.Equal(typeof(AllReferencesAndID), TestObject.ObjectType);

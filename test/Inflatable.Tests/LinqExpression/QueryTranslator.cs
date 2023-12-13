@@ -2,12 +2,12 @@
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Xunit;
 
 namespace Inflatable.Tests.LinqExpression
 {
+    [Collection("Test collection")]
     public partial class QueryTranslatorTests : TestingFixture
     {
         public QueryTranslatorTests(SetupFixture setupFixture)

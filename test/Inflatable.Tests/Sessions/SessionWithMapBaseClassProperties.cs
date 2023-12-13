@@ -7,7 +7,6 @@ using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.MapProperties.Mappings;
@@ -70,9 +69,9 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 2 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
+            _ = await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            Assert.Single(Results);
+            _ = Assert.Single(Results);
             System.Collections.Generic.IEnumerable<IMapPropertyInterface> Results2 = await TestObject.ExecuteAsync<IMapPropertyInterface>("SELECT ID_ as [ID] FROM IMapPropertyInterface_", CommandType.Text, "Default");
             Assert.NotEmpty(Results2);
         }
@@ -84,7 +83,7 @@ namespace Inflatable.Tests.Sessions
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ISession TestObject = Resolve<ISession>();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Result = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT TOP 1 ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
+            _ = await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.Empty(Results);
         }
@@ -121,7 +120,7 @@ namespace Inflatable.Tests.Sessions
                     ChildValue1 = 3
                 }
             };
-            await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
+            _ = await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.Contains(Results, x => x.ID == Result1.ID
@@ -163,7 +162,7 @@ namespace Inflatable.Tests.Sessions
                     BaseValue1 = 10
                 };
             }).ToArray();
-            await TestObject.Save(UpdatedResults).ExecuteAsync();
+            _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.True(Results.All(x => x.MappedClass.ID > 3));
@@ -189,7 +188,7 @@ namespace Inflatable.Tests.Sessions
 
         private async Task DeleteData()
         {
-            await Helper
+            _ = await Helper
                             .CreateBatch()
                             .AddQuery(CommandType.Text, "DELETE FROM MapPropertiesWithBaseClasses_")
                             .AddQuery(CommandType.Text, "DELETE FROM MapProperty1_")
@@ -200,15 +199,14 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ISession Session = Resolve<ISession>();
-            await Helper
+            _ = await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM MapPropertiesWithBaseClasses_")
                 .AddQuery(CommandType.Text, "DELETE FROM MapProperty1_")
                 .ExecuteScalarAsync<int>().ConfigureAwait(false);
             var InitialData = new MapPropertiesWithBaseClasses[]
             {
-                new MapPropertiesWithBaseClasses
-                {
+                new() {
                     BoolValue=true,
                     MappedClass = new MapProperty1
                     {
@@ -216,8 +214,7 @@ namespace Inflatable.Tests.Sessions
                     ChildValue1=2
                     }
                 },
-                new MapPropertiesWithBaseClasses
-                {
+                new() {
                     BoolValue=false,
                     MappedClass = new MapProperty1
                     {
@@ -225,8 +222,7 @@ namespace Inflatable.Tests.Sessions
                     ChildValue1=2
                     }
                 },
-                new MapPropertiesWithBaseClasses
-                {
+                new() {
                     BoolValue=true,
                     MappedClass = new MapProperty1
                     {
@@ -236,8 +232,8 @@ namespace Inflatable.Tests.Sessions
                 },
             };
 
-            await Session.Save(InitialData.Select(x => x.MappedClass).ToArray()).ExecuteAsync().ConfigureAwait(false);
-            await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
+            _ = await Session.Save(InitialData.Select(x => x.MappedClass).ToArray()).ExecuteAsync().ConfigureAwait(false);
+            _ = await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

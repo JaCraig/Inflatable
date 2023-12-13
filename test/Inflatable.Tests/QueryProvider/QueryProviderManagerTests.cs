@@ -3,7 +3,6 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
@@ -13,6 +12,7 @@ using Xunit;
 
 namespace Inflatable.Tests.QueryProvider
 {
+    [Collection("Test collection")]
     public class QueryProviderManagerTests : TestingFixture
     {
         public QueryProviderManagerTests(SetupFixture setupFixture)
@@ -23,7 +23,7 @@ namespace Inflatable.Tests.QueryProvider
         {
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
-            var Result = TestObject.CreateBatch(new MockDatabaseMapping());
+            SQLHelperDB.SQLHelper Result = TestObject.CreateBatch(new MockDatabaseMapping());
             Assert.NotNull(Result);
         }
 
@@ -44,7 +44,7 @@ namespace Inflatable.Tests.QueryProvider
                ObjectPool);
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
             var TestObject = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
-            var Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
+            Inflatable.QueryProvider.Interfaces.IGenerator<ConcreteClass1> Result = TestObject.CreateGenerator<ConcreteClass1>(Mappings);
             Assert.NotNull(Result);
             Assert.Equal(typeof(ConcreteClass1), Result.AssociatedType);
         }

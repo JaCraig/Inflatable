@@ -5,7 +5,6 @@ using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
@@ -18,6 +17,7 @@ using Xunit;
 
 namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
 {
+    [Collection("Test collection")]
     public class UpdateQueryTests : TestingFixture
     {
         public UpdateQueryTests(SetupFixture setupFixture)
@@ -60,7 +60,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new UpdateQuery<ConcreteClass1>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateDeclarations();
+            Inflatable.QueryProvider.Interfaces.IQuery[] Result = TestObject.GenerateDeclarations();
             Assert.Equal(CommandType.Text, Result[0].DatabaseCommandType);
             Assert.Empty(Result[0].Parameters);
             Assert.Equal("", Result[0].QueryString);
@@ -83,7 +83,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new UpdateQuery<ConcreteClass1>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
+            Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(new ConcreteClass1 { ID = 10, BaseClassValue1 = 1, Value1 = 2 })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(3, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
@@ -110,7 +110,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().SetColumnInfo(Mappings);
             var TestObject = new UpdateQuery<MapProperties>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
+            Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
@@ -135,7 +135,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
             Mappings.Mappings[typeof(MapProperties)].MapProperties.First().SetColumnInfo(Mappings);
             var TestObject = new UpdateQuery<MapProperties>(Mappings, ObjectPool);
-            var Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
+            Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
             Assert.Equal(2, Result.Parameters.Length);
             Assert.Equal(10, Result.Parameters[0].InternalValue);

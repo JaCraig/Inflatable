@@ -7,7 +7,6 @@ using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
 using Inflatable.Sessions;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties.Mappings;
@@ -67,9 +66,9 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             IEnumerable<ManyToOneManyProperties> Result = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
+            _ = await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             IEnumerable<ManyToOneManyProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            Assert.Single(Results);
+            _ = Assert.Single(Results);
             IEnumerable<ManyToOneOneProperties> Results2 = await TestObject.ExecuteAsync<ManyToOneOneProperties>("SELECT ID_ as [ID] FROM ManyToOneOneProperties_", CommandType.Text, "Default");
             Assert.Equal(15, Results2.Count());
         }
@@ -80,9 +79,9 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             IEnumerable<ManyToOneManyCascadeProperties> Result = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT TOP 2 ID_ as [ID] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
-            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
+            _ = await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             IEnumerable<ManyToOneManyCascadeProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
-            Assert.Single(Results);
+            _ = Assert.Single(Results);
             IEnumerable<ManyToOneOneProperties> Results2 = await TestObject.ExecuteAsync<ManyToOneOneProperties>("SELECT ID_ as [ID] FROM ManyToOneOneProperties_", CommandType.Text, "Default");
             Assert.NotEmpty(Results2);
         }
@@ -93,7 +92,7 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             IEnumerable<ManyToOneManyProperties> Result = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
+            _ = await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             IEnumerable<ManyToOneManyProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
             Assert.Equal(2, Results.Count());
         }
@@ -105,7 +104,7 @@ namespace Inflatable.Tests.Sessions
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ISession TestObject = Resolve<ISession>();
             IEnumerable<ManyToOneManyProperties> Result = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT TOP 1 ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            await TestObject.Delete(Result.ToArray()).ExecuteAsync();
+            _ = await TestObject.Delete(Result.ToArray()).ExecuteAsync();
             IEnumerable<ManyToOneManyProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
             Assert.Empty(Results);
         }
@@ -125,9 +124,9 @@ namespace Inflatable.Tests.Sessions
                 {
                     BoolValue = true
                 });
-                TestObject.Save(Result1);
+                _ = TestObject.Save(Result1);
             }
-            await TestObject.ExecuteAsync();
+            _ = await TestObject.ExecuteAsync();
             IEnumerable<ManyToOneManyCascadeProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
             Assert.Equal(2003, Results.Count());
         }
@@ -161,7 +160,7 @@ namespace Inflatable.Tests.Sessions
             {
                 BoolValue = true
             });
-            await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
+            _ = await TestObject.Save(Result1, Result2, Result3).ExecuteAsync();
             IEnumerable<ManyToOneManyCascadeProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID], BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
             Assert.Equal(6, Results.Count());
             Assert.Contains(Results, x => x.ID == Result1.ID
@@ -185,7 +184,7 @@ namespace Inflatable.Tests.Sessions
             await SetupDataAsync();
             ManyToOneManyProperties Result = DbContext<ManyToOneManyProperties>.CreateQuery().First();
             Assert.NotNull(Result.ManyToOneClass);
-            Assert.Single(Result.ManyToOneClass);
+            _ = Assert.Single(Result.ManyToOneClass);
         }
 
         [Fact]
@@ -202,7 +201,7 @@ namespace Inflatable.Tests.Sessions
                     BoolValue = true
                 });
             }).ToArray();
-            await TestObject.Save(UpdatedResults).ExecuteAsync();
+            _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.Equal(2, Results.Max(x => x.ManyToOneClass.Count));
@@ -223,7 +222,7 @@ namespace Inflatable.Tests.Sessions
                 });
                 var Result = AsyncHelper.RunSync(async () => await TestObject.Save(x.ManyToOneClass.ToArray()).ExecuteAsync());
             }).ToArray();
-            await TestObject.Save(UpdatedResults).ExecuteAsync();
+            _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
             Assert.Equal(2, Results.Max(x => x.ManyToOneClass.Count()));
@@ -269,14 +268,14 @@ namespace Inflatable.Tests.Sessions
             {
                 BoolValue = true
             });
-            await TestObject.Save(Result).ExecuteAsync();
+            _ = await TestObject.Save(Result).ExecuteAsync();
             IEnumerable<ManyToOneManyProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            Assert.Single(Results);
+            _ = Assert.Single(Results);
         }
 
         private async Task DeleteData()
         {
-            await Helper
+            _ = await Helper
                             .CreateBatch()
                             .AddQuery(CommandType.Text, "DELETE FROM ManyToOneManyProperties_")
                             .AddQuery(CommandType.Text, "DELETE FROM ManyToOneManyCascadeProperties_")
@@ -287,42 +286,36 @@ namespace Inflatable.Tests.Sessions
         {
             var TestObject = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ISession Session = Resolve<ISession>();
-            await Helper
+            _ = await Helper
                 .CreateBatch()
                 .AddQuery(CommandType.Text, "DELETE FROM ManyToOneManyProperties_")
                 .AddQuery(CommandType.Text, "DELETE FROM ManyToOneManyCascadeProperties_")
                 .ExecuteScalarAsync<int>().ConfigureAwait(false);
             var InitialData = new ManyToOneManyCascadeProperties[]
             {
-                new ManyToOneManyCascadeProperties
-                {
+                new() {
                     BoolValue=true,
                     ManyToOneClass =new List<ManyToOneOneProperties>
                     {
-                        new ManyToOneOneProperties
-                        {
+                        new() {
                             BoolValue=true
                         }
                     }
                 },
-                new ManyToOneManyCascadeProperties
-                {
+                new() {
                     BoolValue=true,
                     ManyToOneClass =new List<ManyToOneOneProperties>
                     {
-                        new ManyToOneOneProperties
-                        {
+                        new() {
                             BoolValue=true
                         }
                     }
                 },
-                new ManyToOneManyCascadeProperties
-                {
+                new() {
                     BoolValue=true,
                     ManyToOneClass =new List<ManyToOneOneProperties>
                     {
-                        new ManyToOneOneProperties
-                        {
+                        new() {
                             BoolValue=true
                         }
                     }
@@ -330,44 +323,38 @@ namespace Inflatable.Tests.Sessions
             };
             var InitialData2 = new ManyToOneManyProperties[]
             {
-                new ManyToOneManyProperties
-                {
+                new() {
                     BoolValue=true,
                     ManyToOneClass =new List<ManyToOneOneProperties>
                     {
-                        new ManyToOneOneProperties
-                        {
+                        new() {
                             BoolValue=true
                         }
                     }
                 },
-                new ManyToOneManyProperties
-                {
+                new() {
                     BoolValue=true,
                     ManyToOneClass =new List<ManyToOneOneProperties>
                     {
-                        new ManyToOneOneProperties
-                        {
+                        new() {
                             BoolValue=true
                         }
                     }
                 },
-                new ManyToOneManyProperties
-                {
+                new() {
                     BoolValue=true,
                     ManyToOneClass =new List<ManyToOneOneProperties>
                     {
-                        new ManyToOneOneProperties
-                        {
+                        new() {
                             BoolValue=true
                         }
                     }
                 },
             };
 
-            await Session.Save(InitialData2.SelectMany(x => x.ManyToOneClass).ToArray()).ExecuteAsync().ConfigureAwait(false);
-            await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
-            await Session.Save(InitialData2).ExecuteAsync().ConfigureAwait(false);
+            _ = await Session.Save(InitialData2.SelectMany(x => x.ManyToOneClass).ToArray()).ExecuteAsync().ConfigureAwait(false);
+            _ = await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);
+            _ = await Session.Save(InitialData2).ExecuteAsync().ConfigureAwait(false);
         }
     }
 }

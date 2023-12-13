@@ -1,12 +1,12 @@
 ﻿using Inflatable.ClassMapper.Default;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Xunit;
 
 namespace Inflatable.Tests.ClassMapper.Default
 {
+    [Collection("Test collection")]
     public class IDTests : TestingFixture
     {
         public IDTests(SetupFixture setupFixture)
@@ -73,7 +73,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsAutoIncremented()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.IsAutoIncremented();
+            _ = TestObject.IsAutoIncremented();
             Assert.NotNull(TestObject);
             Assert.True(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -97,7 +97,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsIndexed()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.IsIndexed();
+            _ = TestObject.IsIndexed();
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -121,7 +121,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsReadOnly()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.IsReadOnly();
+            _ = TestObject.IsReadOnly();
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -145,7 +145,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsUnique()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.IsUnique();
+            _ = TestObject.IsUnique();
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -193,7 +193,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithColumnName()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.WithColumnName("IDColumn_Name");
+            _ = TestObject.WithColumnName("IDColumn_Name");
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("IDColumn_Name", TestObject.ColumnName);
@@ -217,7 +217,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithComputedColumnSpecification()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.WithComputedColumnSpecification("ASDFGF");
+            _ = TestObject.WithComputedColumnSpecification("ASDFGF");
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -241,7 +241,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithConstraint()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.WithConstraint("Constraint1");
+            _ = TestObject.WithConstraint("Constraint1");
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -265,7 +265,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithDefaultValue()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.WithDefaultValue(() => 1);
+            _ = TestObject.WithDefaultValue(() => 1);
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -289,7 +289,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithMaxLength()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.WithMaxLength(100);
+            _ = TestObject.WithMaxLength(100);
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);
@@ -313,7 +313,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithMAXMaxLength()
         {
             var TestObject = new ID<AllReferencesAndID, int>(x => x.ID, MappingObject);
-            TestObject.WithMaxLength(-1);
+            _ = TestObject.WithMaxLength(-1);
             Assert.NotNull(TestObject);
             Assert.False(TestObject.AutoIncrement);
             Assert.Equal("ID_", TestObject.ColumnName);

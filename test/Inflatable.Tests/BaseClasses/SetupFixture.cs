@@ -9,7 +9,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Inflatable.Tests.Fixtures
+namespace Inflatable.Tests.BaseClasses
 {
     /// <summary>
     /// Setup collection
@@ -32,16 +32,16 @@ namespace Inflatable.Tests.Fixtures
             _ = SchemaManager;
         }
 
-        private readonly object LockObject = new();
         public SQLHelper Helper => Resolve<SQLHelper>();
         public ServiceProvider Provider { get; set; }
         public SchemaManager SchemaManager => Resolve<SchemaManager>();
+        private readonly object LockObject = new();
 
         public void Dispose()
         {
             try
             {
-                Task.Run(async () => await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True")
+                _ = Task.Run(async () => await Helper.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True")
                     .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase")
                     .AddQuery(CommandType.Text, "ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2")
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase")
@@ -60,10 +60,10 @@ namespace Inflatable.Tests.Fixtures
                     if (Provider is null)
                     {
                         var Services = new ServiceCollection();
-                        Services.AddLogging(builder => builder.AddSerilog())
+                        _ = Services.AddLogging(builder => builder.AddSerilog())
                             .AddCanisterModules();
                         Provider = Services.BuildServiceProvider();
-                        Resolve<ISession>();
+                        _ = Resolve<ISession>();
                     }
                 }
             }

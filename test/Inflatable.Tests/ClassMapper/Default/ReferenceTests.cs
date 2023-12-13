@@ -1,6 +1,5 @@
 ﻿using Inflatable.ClassMapper.Default;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using System;
@@ -8,6 +7,7 @@ using Xunit;
 
 namespace Inflatable.Tests.ClassMapper.Default
 {
+    [Collection("Test collection")]
     public class ReferenceTests : TestingFixture
     {
         public ReferenceTests(SetupFixture setupFixture)
@@ -72,7 +72,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsIndexed()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.IsIndexed();
+            _ = TestObject.IsIndexed();
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -95,7 +95,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsReadOnly()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.IsReadOnly();
+            _ = TestObject.IsReadOnly();
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -118,7 +118,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void IsUnique()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.IsUnique();
+            _ = TestObject.IsUnique();
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -164,7 +164,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithColumnName()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.WithColumnName("IDColumn_Name");
+            _ = TestObject.WithColumnName("IDColumn_Name");
             Assert.NotNull(TestObject);
             Assert.Equal("IDColumn_Name", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -187,7 +187,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithComputedColumnSpecification()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.WithComputedColumnSpecification("ASDFGF");
+            _ = TestObject.WithComputedColumnSpecification("ASDFGF");
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -210,7 +210,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithConstraint()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.WithConstraint("Constraint1");
+            _ = TestObject.WithConstraint("Constraint1");
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -233,7 +233,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithDefaultValue()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.WithDefaultValue(() => new DateTime(2000, 1, 1));
+            _ = TestObject.WithDefaultValue(() => new DateTime(2000, 1, 1));
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -256,7 +256,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithMaxLength()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.WithMaxLength(100);
+            _ = TestObject.WithMaxLength(100);
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);
@@ -279,7 +279,7 @@ namespace Inflatable.Tests.ClassMapper.Default
         public void WithMAXMaxLength()
         {
             var TestObject = new Reference<AllReferencesAndID, DateTime>(x => x.DateTimeValue, MappingObject);
-            TestObject.WithMaxLength(-1);
+            _ = TestObject.WithMaxLength(-1);
             Assert.NotNull(TestObject);
             Assert.Equal("DateTimeValue_", TestObject.ColumnName);
             Assert.NotNull(TestObject.CompiledExpression);

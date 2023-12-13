@@ -1,5 +1,4 @@
 ﻿using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MapProperties;
 using System.Linq;
@@ -7,6 +6,7 @@ using Xunit;
 
 namespace Inflatable.Tests.ClassMapper
 {
+    [Collection("Test collection")]
     public class MapPropertiesTests : TestingFixture
     {
         public MapPropertiesTests(SetupFixture setupFixture)
@@ -22,9 +22,9 @@ namespace Inflatable.Tests.ClassMapper
         {
             Assert.NotNull(TestObject);
             Assert.Equal(typeof(TestDatabaseMapping), TestObject.DatabaseConfigType);
-            Assert.Single(TestObject.IDProperties);
+            _ = Assert.Single(TestObject.IDProperties);
             Assert.Equal("ID_", TestObject.IDProperties.First().ColumnName);
-            Assert.Single(TestObject.ReferenceProperties);
+            _ = Assert.Single(TestObject.ReferenceProperties);
             Assert.Equal(typeof(MapProperties), TestObject.ObjectType);
             Assert.Equal(10, TestObject.Order);
             Assert.Equal("", TestObject.Prefix);
@@ -32,7 +32,7 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal("_", TestObject.Suffix);
             Assert.Equal("MapProperties_", TestObject.TableName);
             Assert.Empty(TestObject.AutoIDProperties);
-            Assert.Single(TestObject.MapProperties);
+            _ = Assert.Single(TestObject.MapProperties);
         }
     }
 }

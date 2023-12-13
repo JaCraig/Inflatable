@@ -3,7 +3,6 @@ using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
-using Inflatable.Tests.Fixtures;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph;
 using Inflatable.Tests.TestDatabases.ComplexGraph.BaseClasses;
@@ -14,6 +13,7 @@ using Xunit;
 
 namespace Inflatable.Tests.ClassMapper
 {
+    [Collection("Test collection")]
     public class ComplexGraphTests : TestingFixture
     {
         public ComplexGraphTests(SetupFixture setupFixture)
@@ -22,7 +22,7 @@ namespace Inflatable.Tests.ClassMapper
         [Fact]
         public void Creation()
         {
-            var TestObject = new MappingManager(new IMapping[] {
+            IMappingSource TestObject = new MappingManager(new IMapping[] {
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
@@ -49,26 +49,26 @@ namespace Inflatable.Tests.ClassMapper
             Assert.Equal(typeof(ConcreteClass2), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Data);
             Assert.Equal(typeof(ConcreteClass3), TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Data);
 
-            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes);
+            _ = Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes);
             Assert.Equal(typeof(BaseClass1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Data);
-            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes);
+            _ = Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass1)].Root.Nodes[0].Nodes[0].Data);
 
-            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes);
+            _ = Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes);
             Assert.Equal(typeof(BaseClass1), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Data);
-            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes);
+            _ = Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass2)].Root.Nodes[0].Nodes[0].Data);
 
-            Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Nodes);
+            _ = Assert.Single(TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Nodes);
             Assert.Equal(typeof(IInterface1), TestObject.TypeGraphs[typeof(ConcreteClass3)].Root.Nodes[0].Data);
 
             Assert.Equal(6, TestObject.ChildTypes.Count);
             Assert.Equal(2, TestObject.ChildTypes[typeof(BaseClass1)].Count());
-            Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass1)]);
-            Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass2)]);
-            Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass3)]);
+            _ = Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass1)]);
+            _ = Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass2)]);
+            _ = Assert.Single(TestObject.ChildTypes[typeof(ConcreteClass3)]);
             Assert.Equal(3, TestObject.ChildTypes[typeof(IInterface1)].Count());
-            Assert.Single(TestObject.ChildTypes[typeof(IInterface2)]);
+            _ = Assert.Single(TestObject.ChildTypes[typeof(IInterface2)]);
             Assert.Equal(3, TestObject.ParentTypes.Count);
             Assert.Equal(3, TestObject.ParentTypes[typeof(ConcreteClass1)].Count());
             Assert.Equal(3, TestObject.ParentTypes[typeof(ConcreteClass2)].Count());
@@ -78,7 +78,7 @@ namespace Inflatable.Tests.ClassMapper
         [Fact]
         public void DuplicateEntriesReduction()
         {
-            var TestObject = new MappingManager(new IMapping[] {
+            IMappingSource TestObject = new MappingManager(new IMapping[] {
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
@@ -94,9 +94,9 @@ namespace Inflatable.Tests.ClassMapper
             GetLogger<MappingManager>())
             .Sources
             .First();
-            Assert.Single(TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties);
-            Assert.Single(TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties);
-            Assert.Single(TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties);
+            _ = Assert.Single(TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties);
+            _ = Assert.Single(TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties);
+            _ = Assert.Single(TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties);
         }
     }
 }
