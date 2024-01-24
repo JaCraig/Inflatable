@@ -74,7 +74,7 @@
     <PackageReference Include="Data.Modeler" Version="4.0.113" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="4.0.43" />
-    <PackageReference Include="Mirage" Version="4.0.58" />
+    <PackageReference Include="Mirage" Version="4.0.59" />
   </ItemGroup>
 	<Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
 		<Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
