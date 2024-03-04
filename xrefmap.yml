@@ -696,6 +696,25 @@ references:
   isSpec: "True"
   fullName: Inflatable.Aspect.StartMethod.IDStartMethod.Setup
   nameWithType: IDStartMethod.Setup
+- uid: Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod
+  name: IManyToOneSingleStartMethod
+  href: api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.html
+  commentId: T:Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod
+  fullName: Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod
+  nameWithType: IManyToOneSingleStartMethod
+- uid: Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.Setup(System.Reflection.MethodInfo,Inflatable.Interfaces.IMapping,System.Text.StringBuilder)
+  name: Setup(MethodInfo, IMapping, StringBuilder)
+  href: api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.html#Inflatable_Aspect_StartMethod_IManyToOneSingleStartMethod_Setup_System_Reflection_MethodInfo_Inflatable_Interfaces_IMapping_System_Text_StringBuilder_
+  commentId: M:Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.Setup(System.Reflection.MethodInfo,Inflatable.Interfaces.IMapping,System.Text.StringBuilder)
+  fullName: Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.Setup(System.Reflection.MethodInfo, Inflatable.Interfaces.IMapping, System.Text.StringBuilder)
+  nameWithType: IManyToOneSingleStartMethod.Setup(MethodInfo, IMapping, StringBuilder)
+- uid: Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.Setup*
+  name: Setup
+  href: api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.html#Inflatable_Aspect_StartMethod_IManyToOneSingleStartMethod_Setup_
+  commentId: Overload:Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.Setup
+  isSpec: "True"
+  fullName: Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.Setup
+  nameWithType: IManyToOneSingleStartMethod.Setup
 - uid: Inflatable.Aspect.StartMethod.MapStartMethod
   name: MapStartMethod
   href: api/Inflatable.Aspect.StartMethod.MapStartMethod.html

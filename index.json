@@ -84,6 +84,11 @@
     "title": "Class IDStartMethod | Inflatable API Reference",
     "keywords": "Class IDStartMethod Namespace Inflatable.Aspect.StartMethod Assembly Inflatable.dll ID start method helper public class IDStartMethod : IStartMethodHelper Inheritance object IDStartMethod Implements IStartMethodHelper Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods Setup(MethodInfo, IMapping, StringBuilder) Sets up the specified method. public void Setup(MethodInfo method, IMapping mapping, StringBuilder builder) Parameters method MethodInfo The method. mapping IMapping The mapping. builder StringBuilder The builder. See Also IStartMethodHelper"
   },
+  "api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.html": {
+    "href": "api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.html",
+    "title": "Class IManyToOneSingleStartMethod | Inflatable API Reference",
+    "keywords": "Class IManyToOneSingleStartMethod Namespace Inflatable.Aspect.StartMethod Assembly Inflatable.dll Many to one single property start method public class IManyToOneSingleStartMethod : IStartMethodHelper Inheritance object IManyToOneSingleStartMethod Implements IStartMethodHelper Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods Setup(MethodInfo, IMapping, StringBuilder) Sets up the specified method. public void Setup(MethodInfo method, IMapping mapping, StringBuilder builder) Parameters method MethodInfo The method. mapping IMapping The mapping. builder StringBuilder The builder. See Also IStartMethodHelper"
+  },
   "api/Inflatable.Aspect.StartMethod.MapStartMethod.html": {
     "href": "api/Inflatable.Aspect.StartMethod.MapStartMethod.html",
     "title": "Class MapStartMethod | Inflatable API Reference",
@@ -97,7 +102,7 @@
   "api/Inflatable.Aspect.StartMethod.html": {
     "href": "api/Inflatable.Aspect.StartMethod.html",
     "title": "Namespace Inflatable.Aspect.StartMethod | Inflatable API Reference",
-    "keywords": "Namespace Inflatable.Aspect.StartMethod Classes IDStartMethod ID start method helper MapStartMethod Map start method ReferenceStartMethod Reference start method"
+    "keywords": "Namespace Inflatable.Aspect.StartMethod Classes IDStartMethod ID start method helper IManyToOneSingleStartMethod Many to one single property start method MapStartMethod Map start method ReferenceStartMethod Reference start method"
   },
   "api/Inflatable.Aspect.html": {
     "href": "api/Inflatable.Aspect.html",
