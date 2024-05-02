@@ -1,4 +1,5 @@
 ﻿using Mirage.Generators;
+using Mirage.Generators.ContactInfo;
 using Mirage.Generators.Default;
 using Mirage.Generators.Default.Nullable;
 using Mirage.Generators.Nullable;
