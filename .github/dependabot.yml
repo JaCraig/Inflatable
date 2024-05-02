@@ -41,6 +41,28 @@ updates:
       - dependency-name: "xunit"
       - dependency-name: "xunit.runner.visualstudio"
 
+  - package-ecosystem: "nuget" # See documentation for possible values
+    directory: "/Inflatable.Benchmarks/" # Location of package manifests
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+    groups:
+      dependencies:
+        patterns: 
+          - "*"
+
+  - package-ecosystem: "nuget" # See documentation for possible values
+    directory: "/TestApp/" # Location of package manifests
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+    groups:
+      dependencies:
+        patterns: 
+          - "*"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
