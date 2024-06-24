@@ -3,6 +3,7 @@ using Mirage.Generators.ContactInfo;
 using Mirage.Generators.Default;
 using Mirage.Generators.Default.Nullable;
 using Mirage.Generators.Nullable;
+using Mirage.Generators.String;
 using System;
 
 namespace Inflatable.Benchmarks.Models
@@ -13,7 +14,7 @@ namespace Inflatable.Benchmarks.Models
         public bool BoolValue { get; set; }
 
         [ByteArrayGenerator]
-        public byte[] ByteArrayValue { get; set; }
+        public byte[]? ByteArrayValue { get; set; }
 
         [CharGenerator]
         public char CharValue { get; set; }
@@ -88,10 +89,10 @@ namespace Inflatable.Benchmarks.Models
         public short ShortValue { get; set; }
 
         [StringGenerator]
-        public string StringValue1 { get; set; }
+        public string? StringValue1 { get; set; }
 
         [StringGenerator]
-        public string StringValue2 { get; set; }
+        public string? StringValue2 { get; set; }
 
         [TimeSpanGenerator]
         public TimeSpan TimeSpanValue { get; set; }
@@ -103,7 +104,7 @@ namespace Inflatable.Benchmarks.Models
         public ulong ULongValue { get; set; }
 
         [DomainName]
-        public Uri UriValue { get; set; }
+        public Uri? UriValue { get; set; }
 
         [UShortGenerator]
         public ushort UShortValue { get; set; }

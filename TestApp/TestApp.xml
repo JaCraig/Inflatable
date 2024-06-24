@@ -4,6 +4,176 @@
         <name>TestApp</name>
     </assembly>
     <members>
+        <member name="T:TestApp.Models.SimpleClass">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.BoolValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.ByteArrayValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.CharValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.DateTimeValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.DecimalValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.DoubleValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.FloatValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.GuidValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.ID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.IntValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.LongValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableBoolValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableCharValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableDateTimeValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableDecimalValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableDoubleValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableFloatValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableGuidValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableIntValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableLongValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableShortValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableTimeSpanValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableUIntValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableULongValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.NullableUShortValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.ShortValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.StringValue1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.StringValue2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.TimeSpanValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.UIntValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.ULongValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.UriValue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.SimpleClass.UShortValue">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:TestApp.Program">
             <summary>
             Example program to show how to use the ORM

@@ -1,6 +1,5 @@
 ﻿using BigBook;
 using Inflatable;
-using Inflatable.Benchmarks.Models;
 using Inflatable.Sessions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;

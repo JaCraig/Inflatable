@@ -3,6 +3,7 @@ using Mirage.Generators.ContactInfo;
 using Mirage.Generators.Default;
 using Mirage.Generators.Default.Nullable;
 using Mirage.Generators.Nullable;
+using Mirage.Generators.String;
 using System;
 
 namespace Inflatable.Tests.TestDatabases.SimpleTest

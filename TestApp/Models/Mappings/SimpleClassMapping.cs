@@ -1,5 +1,6 @@
 ﻿using Inflatable.BaseClasses;
 using Inflatable.Benchmarks.Models.Database;
+using TestApp.Models;
 
 namespace Inflatable.Benchmarks.Models.Mappings
 {
