@@ -10,7 +10,7 @@
     <Description>Inflatable is a simple ORM.</Description>
     <AssemblyTitle>Inflatable ORM</AssemblyTitle>
     <Authors>James Craig</Authors>
-	  <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+	  <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Inflatable</AssemblyName>
     <PackageId>Inflatable</PackageId>
@@ -21,7 +21,7 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>4.0.$(BuildNumber)</Version>
+    <Version>5.0.$(BuildNumber)</Version>
     <Nullable>enable</Nullable>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -64,17 +64,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DragonHoard.InMemory" Version="2.0.39" />
-    <PackageReference Include="Holmes" Version="4.0.202" />
+    <PackageReference Include="DragonHoard.InMemory" Version="2.0.45" />
+    <PackageReference Include="Holmes" Version="4.0.270" />
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Data.Modeler" Version="4.0.201" />
+    <PackageReference Include="Data.Modeler" Version="4.0.268" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
-    <PackageReference Include="Valkyrie" Version="4.0.94" />
-    <PackageReference Include="Mirage" Version="4.1.12" />
+    <PackageReference Include="Valkyrie" Version="4.0.102" />
+    <PackageReference Include="Mirage" Version="4.1.13" />
   </ItemGroup>
 	<Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
 		<Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
