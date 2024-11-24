@@ -30,7 +30,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Valkyrie;
+using Valkyrie.ExtensionMethods;
 
 namespace Inflatable.Sessions.Commands
 {

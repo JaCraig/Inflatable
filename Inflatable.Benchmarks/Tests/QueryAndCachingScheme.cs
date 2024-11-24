@@ -2,13 +2,14 @@
 using BigBook;
 using Inflatable;
 using Inflatable.Benchmarks.Models;
+using Inflatable.Registration;
 using Inflatable.Sessions;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
 using System;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 

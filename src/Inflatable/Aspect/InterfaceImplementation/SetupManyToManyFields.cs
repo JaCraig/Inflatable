@@ -49,34 +49,36 @@ namespace Inflatable.Aspect.InterfaceImplementation
                 return string.Empty;
             aspect.ManyToManyFields.Clear();
             aspect.ManyToOneFields.Clear();
-            var Builder = objectPool.Get();
-            foreach (var Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
+            StringBuilder Builder = objectPool.Get();
+            foreach (ClassMapper.IMappingSource? Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
             {
-                var Mapping = Source.Mappings[type];
-                foreach (var ParentType in Source.ParentTypes[type])
+                Inflatable.Interfaces.IMapping Mapping = Source.Mappings[type];
+                foreach (Type ParentType in Source.ParentTypes[type])
                 {
                     Mapping = Source.Mappings[ParentType];
-                    foreach (var Property in Mapping.ManyToManyProperties
-                                                          .Where(x => !aspect.ManyToManyFields.Any(y => y.Name == x.Name)))
+                    foreach (IManyToManyProperty Property in Mapping.ManyToManyProperties)
                     {
+                        if (aspect.ManyToManyFields.Any(y => y.Name == Property.Name))
+                            continue;
                         aspect.ManyToManyFields.Add(Property);
-                        Builder.Append("private IList<").Append(Property.TypeName).Append("> ").Append(Property.InternalFieldName).AppendLine(";")
+                        _ = Builder.Append("private IList<").Append(Property.TypeName).Append("> ").Append(Property.InternalFieldName).AppendLine(";")
                             .Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
-                    foreach (var Property in Mapping.ManyToOneProperties
-                                                          .Where(x => !aspect.ManyToOneFields.Any(y => y.Name == x.Name)))
+                    foreach (IManyToOneProperty? Property in Mapping.ManyToOneProperties)
                     {
+                        if (aspect.ManyToOneFields.Any(y => y.Name == Property.Name))
+                            continue;
                         aspect.ManyToOneFields.Add(Property);
                         if (Property is IManyToOneListProperty)
                         {
-                            Builder.Append("private IList<").Append(Property.TypeName).Append("> ").Append(Property.InternalFieldName).AppendLine(";");
+                            _ = Builder.Append("private IList<").Append(Property.TypeName).Append("> ").Append(Property.InternalFieldName).AppendLine(";");
                         }
                         else
                         {
-                            Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";");
+                            _ = Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";");
                         }
 
-                        Builder.Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
+                        _ = Builder.Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
                 }
             }

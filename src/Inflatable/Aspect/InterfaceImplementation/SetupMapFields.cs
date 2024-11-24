@@ -47,18 +47,19 @@ namespace Inflatable.Aspect.InterfaceImplementation
             if (aspect is null || objectPool is null)
                 return string.Empty;
             aspect.MapFields.Clear();
-            var Builder = objectPool.Get();
-            foreach (var Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
+            StringBuilder Builder = objectPool.Get();
+            foreach (ClassMapper.IMappingSource? Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
             {
-                var Mapping = Source.Mappings[type];
-                foreach (var ParentType in Source.ParentTypes[type])
+                Inflatable.Interfaces.IMapping Mapping = Source.Mappings[type];
+                foreach (Type ParentType in Source.ParentTypes[type])
                 {
                     Mapping = Source.Mappings[ParentType];
-                    foreach (var Property in Mapping.MapProperties
-                                                          .Where(x => !aspect.MapFields.Any(y => y.Name == x.Name)))
+                    foreach (ClassMapper.Interfaces.IMapProperty Property in Mapping.MapProperties)
                     {
+                        if (aspect.MapFields.Any(y => y.Name == Property.Name))
+                            continue;
                         aspect.MapFields.Add(Property);
-                        Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";")
+                        _ = Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";")
                             .Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
                 }

@@ -1,15 +1,16 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BigBook;
 using Inflatable.Benchmarks.Models;
+using Inflatable.Registration;
 using Inflatable.Sessions;
 using InflatableBenchmarks.Benchmarks;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SQLHelperDB;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace Inflatable.Benchmarks.Tests

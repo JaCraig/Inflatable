@@ -14,7 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook.Registration;
 using Canister.Interfaces;
+using Data.Modeler.Registration;
+using Inflatable;
+using Inflatable.Aspect.Interfaces;
+using Inflatable.ClassMapper;
+using Inflatable.Interfaces;
+using Inflatable.LinqExpression;
+using Inflatable.QueryProvider;
+using Inflatable.Schema;
+using Inflatable.Sessions;
+using Inflatable.Utils;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -36,6 +47,37 @@ namespace Microsoft.Extensions.DependencyInjection
                                ?.RegisterBigBookOfDataTypes()
                                ?.RegisterHolmes()
                                ?.RegisterInMemoryHoard();
+        }
+
+        /// <summary>
+        /// Registers the Inflatable library with the specified service collection.
+        /// </summary>
+        /// <param name="services">The service collection to register the library with.</param>
+        /// <returns>The updated service collection.</returns>
+        public static IServiceCollection? RegisterInflatable(this IServiceCollection services)
+        {
+            if (services.Exists<MappingManager>())
+                return services;
+
+            Services.ServiceCollection = services;
+            return services?.AddAllTransient<IMapping>()
+                ?.AddAllTransient<IDatabase>()
+                ?.AddAllTransient<Inflatable.QueryProvider.Interfaces.IQueryProvider>()
+                ?.AddSingleton<MappingManager>()
+                ?.AddSingleton<SchemaManager>()
+                ?.AddSingleton<QueryProviderManager>()
+                ?.AddTransient<Session>()
+                ?.AddTransient<ISession, Session>()
+                ?.AddAllSingleton<IStartMethodHelper>()
+                ?.AddAllSingleton<IInterfaceImplementationHelper>()
+                ?.AddAllSingleton<IEndMethodHelper>()
+                ?.AddTransient(typeof(QueryTranslator<>))
+                ?.AddTransient<DbContext>()
+                ?.RegisterSQLHelper()
+                ?.RegisterDataModeler()
+                ?.RegisterBigBookOfDataTypes()
+                ?.RegisterHolmes()
+                ?.AddInMemoryHoard();
         }
     }
 }

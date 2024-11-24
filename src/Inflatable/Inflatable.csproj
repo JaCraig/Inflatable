@@ -10,7 +10,7 @@
     <Description>Inflatable is a simple ORM.</Description>
     <AssemblyTitle>Inflatable ORM</AssemblyTitle>
     <Authors>James Craig</Authors>
-	  <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+	  <TargetFrameworks>net8.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Inflatable</AssemblyName>
     <PackageId>Inflatable</PackageId>
@@ -64,14 +64,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DragonHoard.InMemory" Version="2.0.45" />
-    <PackageReference Include="Holmes" Version="4.0.270" />
+    <PackageReference Include="DragonHoard.InMemory" Version="2.1.0" />
+    <PackageReference Include="Holmes" Version="5.0.7" />
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Data.Modeler" Version="4.0.268" />
+    <PackageReference Include="Data.Modeler" Version="5.0.2" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="5.0.0" />
     <PackageReference Include="Mirage" Version="4.1.13" />

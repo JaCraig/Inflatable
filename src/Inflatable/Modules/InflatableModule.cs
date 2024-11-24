@@ -15,14 +15,7 @@ limitations under the License.
 */
 
 using Canister.Interfaces;
-using Inflatable.Aspect.Interfaces;
-using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
-using Inflatable.LinqExpression;
-using Inflatable.QueryProvider;
-using Inflatable.Schema;
-using Inflatable.Sessions;
-using Inflatable.Utils;
+using Inflatable.Registration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Inflatable.Modules
@@ -42,22 +35,6 @@ namespace Inflatable.Modules
         /// Loads the module using the bootstrapper
         /// </summary>
         /// <param name="bootstrapper">The bootstrapper.</param>
-        public void Load(IServiceCollection bootstrapper)
-        {
-            Services.ServiceCollection = bootstrapper;
-            bootstrapper?.AddAllTransient<IMapping>()
-                ?.AddAllTransient<IDatabase>()
-                ?.AddAllTransient<QueryProvider.Interfaces.IQueryProvider>()
-                ?.AddSingleton<MappingManager>()
-                ?.AddSingleton<SchemaManager>()
-                ?.AddSingleton<QueryProviderManager>()
-                ?.AddTransient<Session>()
-                ?.AddTransient<ISession, Session>()
-                ?.AddAllSingleton<IStartMethodHelper>()
-                ?.AddAllSingleton<IInterfaceImplementationHelper>()
-                ?.AddAllSingleton<IEndMethodHelper>()
-                ?.AddTransient(typeof(QueryTranslator<>))
-                ?.AddTransient<DbContext>();
-        }
+        public void Load(IServiceCollection bootstrapper) => bootstrapper?.RegisterInflatable();
     }
 }
