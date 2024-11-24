@@ -17257,6 +17257,12 @@ references:
   fullName.vb: Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable(Canister.Interfaces.ICanisterConfiguration)
   nameWithType: Registration.RegisterInflatable(ICanisterConfiguration?)
   nameWithType.vb: Registration.RegisterInflatable(ICanisterConfiguration)
+- uid: Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: RegisterInflatable(IServiceCollection)
+  href: api/Microsoft.Extensions.DependencyInjection.Registration.html#Microsoft_Extensions_DependencyInjection_Registration_RegisterInflatable_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  commentId: M:Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  fullName: Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  nameWithType: Registration.RegisterInflatable(IServiceCollection)
 - uid: Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable*
   name: RegisterInflatable
   href: api/Microsoft.Extensions.DependencyInjection.Registration.html#Microsoft_Extensions_DependencyInjection_Registration_RegisterInflatable_

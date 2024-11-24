@@ -89,7 +89,7 @@
 
 
   <h1 id="Microsoft_Extensions_DependencyInjection_Registration" data-uid="Microsoft.Extensions.DependencyInjection.Registration" class="text-break">
-Class Registration  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L24"><i class="bi bi-code-slash"></i></a>
+Class Registration  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L35"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -157,7 +157,7 @@ Class Registration  <a class="header-action link-secondary" title="View source" 
 
   <h3 id="Microsoft_Extensions_DependencyInjection_Registration_RegisterInflatable_Canister_Interfaces_ICanisterConfiguration_" data-uid="Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable(Canister.Interfaces.ICanisterConfiguration)">
   RegisterInflatable(ICanisterConfiguration?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Registers the library with the bootstrapper.</p>
@@ -170,15 +170,54 @@ Class Registration  <a class="header-action link-secondary" title="View source" 
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>bootstrapper</code> <a class="xref" href="https://github.com/JaCraig/Canister/blob/master/src/Canister.IoC/Interfaces/ICanisterConfiguration.cs">ICanisterConfiguration</a></dt>
+    <dt><code>bootstrapper</code> <a class="xref" href="https://github.com/JaCraig/Canister/blob/master/Canister.IoC/Interfaces/ICanisterConfiguration.cs">ICanisterConfiguration</a></dt>
     <dd><p>The bootstrapper.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://github.com/JaCraig/Canister/blob/master/src/Canister.IoC/Interfaces/ICanisterConfiguration.cs">ICanisterConfiguration</a></dt>
+    <dt><a class="xref" href="https://github.com/JaCraig/Canister/blob/master/Canister.IoC/Interfaces/ICanisterConfiguration.cs">ICanisterConfiguration</a></dt>
     <dd><p>The bootstrapper</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Microsoft_Extensions_DependencyInjection_Registration_RegisterInflatable_" data-uid="Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable*"></a>
+
+  <h3 id="Microsoft_Extensions_DependencyInjection_Registration_RegisterInflatable_Microsoft_Extensions_DependencyInjection_IServiceCollection_" data-uid="Microsoft.Extensions.DependencyInjection.Registration.RegisterInflatable(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+  RegisterInflatable(IServiceCollection)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Registers the Inflatable library with the specified service collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection? RegisterInflatable(this IServiceCollection services)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The service collection to register the library with.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd><p>The updated service collection.</p>
 </dd>
   </dl>
 
@@ -196,7 +235,7 @@ Class Registration  <a class="header-action link-secondary" title="View source" 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L24" class="edit-link">Edit this page</a>
+          <a href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Registration/Register.cs/#L35" class="edit-link">Edit this page</a>
         </div>
 
 
