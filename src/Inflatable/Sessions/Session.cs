@@ -50,12 +50,14 @@ namespace Inflatable.Sessions
         /// <summary>
         /// Initializes a new instance of the <see cref="Session"/> class.
         /// </summary>
+        /// <param name="aspectus"></param>
         /// <param name="dataMapper">The data mapper.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <param name="schemaManager">The schema manager.</param>
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cacheManager">The cache manager.</param>
         /// <param name="options">The options.</param>
+        /// <param name="serviceProvider"></param>
         /// <param name="logger">The Logger?.</param>
         /// <exception cref="ArgumentNullException">
         /// mappingManager or queryProviderManager or logger
@@ -72,13 +74,23 @@ namespace Inflatable.Sessions
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
-            Commands = new List<Commands.Interfaces.ICommand>();
+            Commands = [];
             Logger = logger;
             Options = options.FirstOrDefault()?.Value ?? InflatableOptions.Default;
             Cache = cacheManager?.GetOrAddCache(new InMemoryCacheOptions { MaxCacheSize = Options.MaxCacheSize, CompactionPercentage = .2, ScanFrequency = Options.ScanFrequency }, "Inflatable");
             Aspectus = aspectus;
             Services.ServiceProvider = serviceProvider;
         }
+
+        /// <summary>
+        /// The mapping manager
+        /// </summary>
+        private readonly MappingManager MappingManager;
+
+        /// <summary>
+        /// The query provider manager
+        /// </summary>
+        private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
         /// Gets the aspectus.
@@ -109,16 +121,6 @@ namespace Inflatable.Sessions
         /// </summary>
         /// <value>The options.</value>
         private InflatableOptions Options { get; }
-
-        /// <summary>
-        /// The mapping manager
-        /// </summary>
-        private readonly MappingManager MappingManager;
-
-        /// <summary>
-        /// The query provider manager
-        /// </summary>
-        private readonly QueryProviderManager QueryProviderManager;
 
         /// <summary>
         /// Clears the cache.
@@ -208,7 +210,7 @@ namespace Inflatable.Sessions
             IEnumerable<IIDProperty> IDProperties = Source.GetParentMapping(typeof(TObject)).SelectMany(x => x.IDProperties);
             var ReturnValue = new List<Dynamo>();
             SQLHelperDB.SQLHelper Batch = QueryProviderManager.CreateBatch(Source.Source);
-            Batch.AddQuery(type, command, Parameters.ToArray());
+            _ = Batch.AddQuery(type, command, Parameters.ToArray());
             Type ObjectType = Source.GetChildMappings(typeof(TObject)).First().ObjectType;
             try
             {
@@ -242,11 +244,11 @@ namespace Inflatable.Sessions
             where TObject : class
         {
             var KeyName = queries.Values.ToString(x => x + "_" + x.Source.Source.Name, "\n");
-            (queries?.Values
+            _ = ((queries?.Values
                 ?.SelectMany(x => x.Parameters)
                 ?.Distinct()
                 ?? Array.Empty<IParameter>())
-                ?.ForEach(x => KeyName = x.AddParameter(KeyName));
+                ?.ForEach(x => KeyName = x.AddParameter(KeyName)));
             if (QueryResults.TryGetCached(KeyName, Cache, out List<QueryResults>? CachedResults))
             {
                 return CachedResults.SelectMany(x => x.ConvertValues<TObject>()) ?? Array.Empty<TObject>();
@@ -317,7 +319,7 @@ namespace Inflatable.Sessions
             }
 
             SQLHelperDB.SQLHelper Batch = QueryProviderManager.CreateBatch(Source.Source);
-            Batch.AddQuery(type, command, Parameters.ToArray());
+            _ = Batch.AddQuery(type, command, Parameters.ToArray());
             try
             {
                 return (await Batch.ExecuteAsync().ConfigureAwait(false))[0];
@@ -352,7 +354,7 @@ namespace Inflatable.Sessions
             var ReturnValue = new List<Dynamo>();
             SQLHelperDB.SQLHelper Batch = QueryProviderManager.CreateBatch(Source.Source);
 
-            Batch.AddQuery(type, command, Parameters.ToArray());
+            _ = Batch.AddQuery(type, command, Parameters.ToArray());
             try
             {
                 return Batch.ExecuteScalarAsync<TObject>();
@@ -387,13 +389,13 @@ namespace Inflatable.Sessions
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
                     QueryProvider.Interfaces.IQuery TempQuery = Queries[x];
-                    Batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
+                    _ = Batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
                 }
                 List<List<dynamic>>? ResultLists = null;
 
                 try
                 {
-                    ResultLists = Task.Run(async () => await Batch.ExecuteAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
+                    ResultLists = Task.Run(Batch.ExecuteAsync).GetAwaiter().GetResult();
                 }
                 catch
                 {
@@ -443,7 +445,7 @@ namespace Inflatable.Sessions
                 for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
                 {
                     QueryProvider.Interfaces.IQuery TempQuery = Queries[x];
-                    Batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
+                    _ = Batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
                 }
 
                 List<List<dynamic>>? ResultLists = null;
@@ -585,7 +587,7 @@ namespace Inflatable.Sessions
             for (int x = 0, ResultingQueriesLength = ResultingQueries.Length; x < ResultingQueriesLength; x++)
             {
                 QueryProvider.Interfaces.IQuery ResultingQuery = ResultingQueries[x];
-                Batch.AddQuery(ResultingQuery.DatabaseCommandType, ResultingQuery.QueryString, ResultingQuery.Parameters!);
+                _ = Batch.AddQuery(ResultingQuery.DatabaseCommandType, ResultingQuery.QueryString, ResultingQuery.Parameters!);
             }
 
             List<List<dynamic>>? Result = null;
