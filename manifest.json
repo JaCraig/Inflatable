@@ -18,7 +18,11 @@
           "relative_path": "api/Inflatable.Aspect.EndMethod.IListProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.EndMethod.IListProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.EndMethod.IListProperty.yml\" sourcestartlinenumber=\"1\">List property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -28,7 +32,11 @@
           "relative_path": "api/Inflatable.Aspect.EndMethod.IManyToOnePropertyLazyLoad.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.EndMethod.IManyToOnePropertyLazyLoad",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.EndMethod.IManyToOnePropertyLazyLoad.yml\" sourcestartlinenumber=\"1\">Many to one lazy loading setup.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -38,7 +46,11 @@
           "relative_path": "api/Inflatable.Aspect.EndMethod.SingleProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.EndMethod.SingleProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.EndMethod.SingleProperty.yml\" sourcestartlinenumber=\"1\">Single mapped property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -48,7 +60,11 @@
           "relative_path": "api/Inflatable.Aspect.EndMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.EndMethod",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -58,7 +74,11 @@
           "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupIORMInitializationMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.InterfaceImplementation.SetupIORMInitializationMethod",
+      "Summary": ""
     },
     {
       "type": "ManagedReference",
@@ -68,7 +88,11 @@
           "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupIORMObjectProperties.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.InterfaceImplementation.SetupIORMObjectProperties",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.InterfaceImplementation.SetupIORMObjectProperties.yml\" sourcestartlinenumber=\"1\">Sets up the IORM Object properties</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -78,7 +102,11 @@
           "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupManyToManyFields.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.InterfaceImplementation.SetupManyToManyFields",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.InterfaceImplementation.SetupManyToManyFields.yml\" sourcestartlinenumber=\"1\">Sets up many to many fields.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -88,7 +116,11 @@
           "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupMapFields.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.InterfaceImplementation.SetupMapFields",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.InterfaceImplementation.SetupMapFields.yml\" sourcestartlinenumber=\"1\">Sets up the map fields</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -98,7 +130,11 @@
           "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.SetupReferenceFields.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.InterfaceImplementation.SetupReferenceFields",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.InterfaceImplementation.SetupReferenceFields.yml\" sourcestartlinenumber=\"1\">Sets up the reference fields</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -108,7 +144,11 @@
           "relative_path": "api/Inflatable.Aspect.InterfaceImplementation.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.InterfaceImplementation",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -118,7 +158,11 @@
           "relative_path": "api/Inflatable.Aspect.Interfaces.IEndMethodHelper.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.Interfaces.IEndMethodHelper",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.Interfaces.IEndMethodHelper.yml\" sourcestartlinenumber=\"1\">End method helper</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -128,7 +172,11 @@
           "relative_path": "api/Inflatable.Aspect.Interfaces.IInterfaceImplementationHelper.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.Interfaces.IInterfaceImplementationHelper",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.Interfaces.IInterfaceImplementationHelper.yml\" sourcestartlinenumber=\"1\">Interface implementation helper</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -138,7 +186,11 @@
           "relative_path": "api/Inflatable.Aspect.Interfaces.IORMObject.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.Interfaces.IORMObject",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.Interfaces.IORMObject.yml\" sourcestartlinenumber=\"1\">ORM object interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -148,7 +200,11 @@
           "relative_path": "api/Inflatable.Aspect.Interfaces.IStartMethodHelper.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.Interfaces.IStartMethodHelper",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.Interfaces.IStartMethodHelper.yml\" sourcestartlinenumber=\"1\">Start of method helper interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -158,7 +214,11 @@
           "relative_path": "api/Inflatable.Aspect.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -168,7 +228,11 @@
           "relative_path": "api/Inflatable.Aspect.ORMAspect.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.ORMAspect",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.ORMAspect.yml\" sourcestartlinenumber=\"1\">ORM Aspect</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -178,7 +242,11 @@
           "relative_path": "api/Inflatable.Aspect.StartMethod.IDStartMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.StartMethod.IDStartMethod",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.StartMethod.IDStartMethod.yml\" sourcestartlinenumber=\"1\">ID start method helper</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -188,7 +256,11 @@
           "relative_path": "api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.StartMethod.IManyToOneSingleStartMethod.yml\" sourcestartlinenumber=\"1\">Many to one single property start method</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -198,7 +270,11 @@
           "relative_path": "api/Inflatable.Aspect.StartMethod.MapStartMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.StartMethod.MapStartMethod",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.StartMethod.MapStartMethod.yml\" sourcestartlinenumber=\"1\">Map start method</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -208,7 +284,11 @@
           "relative_path": "api/Inflatable.Aspect.StartMethod.ReferenceStartMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.StartMethod.ReferenceStartMethod",
+      "Summary": "<p sourcefile=\"api/Inflatable.Aspect.StartMethod.ReferenceStartMethod.yml\" sourcestartlinenumber=\"1\">Reference start method</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -218,7 +298,11 @@
           "relative_path": "api/Inflatable.Aspect.StartMethod.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect.StartMethod",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -228,7 +312,11 @@
           "relative_path": "api/Inflatable.Aspect.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Aspect",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -238,7 +326,11 @@
           "relative_path": "api/Inflatable.BaseClasses.MappingBaseClass-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.BaseClasses.MappingBaseClass<TClassType, TDatabaseType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.BaseClasses.MappingBaseClass-2.yml\" sourcestartlinenumber=\"1\">Mapping base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -248,7 +340,11 @@
           "relative_path": "api/Inflatable.BaseClasses.ObjectBaseClass-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.BaseClasses.ObjectBaseClass<TObjectType, TIDType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.BaseClasses.ObjectBaseClass-2.yml\" sourcestartlinenumber=\"1\">Object base class helper. This is not required but automatically sets up basic functions and\nproperties to simplify things a bit.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -258,7 +354,11 @@
           "relative_path": "api/Inflatable.BaseClasses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.BaseClasses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -268,7 +368,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.IDPropertyBase-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses.IDPropertyBase<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.IDPropertyBase-3.yml\" sourcestartlinenumber=\"1\">ID property base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -278,7 +382,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyClassPropertyBase-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses.ManyClassPropertyBase<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.ManyClassPropertyBase-3.yml\" sourcestartlinenumber=\"1\">Many class property base.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -288,7 +396,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase-3.yml\" sourcestartlinenumber=\"1\">Many to one single property base</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -298,7 +410,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.ManyToOneOnePropertyBase-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses.ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.ManyToOneOnePropertyBase-3.yml\" sourcestartlinenumber=\"1\">Many to one single property base</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -308,7 +424,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.PropertyBase-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses.PropertyBase<ClassType, DataType, ReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.PropertyBase-3.yml\" sourcestartlinenumber=\"1\">Property base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -318,7 +438,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.SingleClassPropertyBase-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses.SingleClassPropertyBase<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.SingleClassPropertyBase-3.yml\" sourcestartlinenumber=\"1\">Property base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -328,7 +452,11 @@
           "relative_path": "api/Inflatable.ClassMapper.BaseClasses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.BaseClasses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -338,7 +466,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Column.ComplexColumnInfo-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Column.ComplexColumnInfo<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Column.ComplexColumnInfo-2.yml\" sourcestartlinenumber=\"1\">Column information</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -348,7 +480,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Column.ComplexListColumnInfo-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Column.ComplexListColumnInfo<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Column.ComplexListColumnInfo-2.yml\" sourcestartlinenumber=\"1\">Column information</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -358,7 +494,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Column.Interfaces.IQueryColumnInfo.yml\" sourcestartlinenumber=\"1\">IQuery column info</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -368,7 +508,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Column.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Column.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -378,7 +522,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Column.SimpleColumnInfo-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Column.SimpleColumnInfo<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Column.SimpleColumnInfo-2.yml\" sourcestartlinenumber=\"1\">Column information</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -388,7 +536,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Column.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Column",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -398,7 +550,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.AutoID.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.AutoID",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.AutoID.yml\" sourcestartlinenumber=\"1\">Auto ID</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -408,7 +564,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.ID-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.ID<ClassType, DataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.ID-2.yml\" sourcestartlinenumber=\"1\">ID property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -418,7 +578,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.ManyToMany-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.ManyToMany<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.ManyToMany-2.yml\" sourcestartlinenumber=\"1\">Many to many mapping type.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -428,7 +592,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.ManyToOneMany-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.ManyToOneMany<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.ManyToOneMany-2.yml\" sourcestartlinenumber=\"1\">Many to one Many side</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -438,7 +606,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.ManyToOneSingle-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.ManyToOneSingle<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.ManyToOneSingle-2.yml\" sourcestartlinenumber=\"1\">Many to one single side</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -448,7 +620,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.Map-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.Map<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.Map-2.yml\" sourcestartlinenumber=\"1\">Map property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -458,7 +634,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.Reference-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default.Reference<ClassType, DataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.Reference-2.yml\" sourcestartlinenumber=\"1\">Reference property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -468,7 +648,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Default.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Default",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -478,7 +662,11 @@
           "relative_path": "api/Inflatable.ClassMapper.IMappingSource.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.IMappingSource",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.IMappingSource.yml\" sourcestartlinenumber=\"1\">Mapping source interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -488,7 +676,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IAutoIDProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IAutoIDProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IAutoIDProperty.yml\" sourcestartlinenumber=\"1\">Auto ID property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -498,7 +690,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IClassProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IClassProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IClassProperty.yml\" sourcestartlinenumber=\"1\">Single class property data holder</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -508,7 +704,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IIDProperty<ClassType, DataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IIDProperty-2.yml\" sourcestartlinenumber=\"1\">Property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -518,7 +718,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IIDProperty<ClassType, DataType, ReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IIDProperty-3.yml\" sourcestartlinenumber=\"1\">Property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -528,7 +732,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IIDProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IIDProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IIDProperty.yml\" sourcestartlinenumber=\"1\">ID property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -538,7 +746,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToManyProperty<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-2.yml\" sourcestartlinenumber=\"1\">Many to many property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -548,7 +760,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToManyProperty<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty-3.yml\" sourcestartlinenumber=\"1\">Many to many property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -558,7 +774,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToManyProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToManyProperty.yml\" sourcestartlinenumber=\"1\">Many to many property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -568,7 +788,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneListProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToOneListProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToOneListProperty.yml\" sourcestartlinenumber=\"1\">Many to one list property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -578,7 +802,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToOneProperty<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-2.yml\" sourcestartlinenumber=\"1\">Many to many property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -588,7 +816,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToOneProperty<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty-3.yml\" sourcestartlinenumber=\"1\">Many to one property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -598,7 +830,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IManyToOneProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IManyToOneProperty.yml\" sourcestartlinenumber=\"1\">Many to many property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -608,7 +844,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IMapProperty<TClassType, TDataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IMapProperty-2.yml\" sourcestartlinenumber=\"1\">Map property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -618,7 +858,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IMapProperty<TClassType, TDataType, TReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IMapProperty-3.yml\" sourcestartlinenumber=\"1\">Map property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -628,7 +872,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IMapProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IMapProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IMapProperty.yml\" sourcestartlinenumber=\"1\">Map property</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -638,7 +886,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IProperty<ClassType, DataType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IProperty-2.yml\" sourcestartlinenumber=\"1\">Property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -648,7 +900,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty-3.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IProperty<ClassType, DataType, ReturnType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IProperty-3.yml\" sourcestartlinenumber=\"1\">Property interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -658,7 +914,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IProperty.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IProperty",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IProperty.yml\" sourcestartlinenumber=\"1\">Property data holder interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -668,7 +928,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.IPropertyColumns.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces.IPropertyColumns",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Interfaces.IPropertyColumns.yml\" sourcestartlinenumber=\"1\">Interface holding column information</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -678,7 +942,11 @@
           "relative_path": "api/Inflatable.ClassMapper.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -688,7 +956,11 @@
           "relative_path": "api/Inflatable.ClassMapper.MappingManager.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.MappingManager",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.MappingManager.yml\" sourcestartlinenumber=\"1\">Mapping manager</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -698,7 +970,11 @@
           "relative_path": "api/Inflatable.ClassMapper.MappingSource.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.MappingSource",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.MappingSource.yml\" sourcestartlinenumber=\"1\">Mapping source</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -708,7 +984,11 @@
           "relative_path": "api/Inflatable.ClassMapper.TypeGraph.DiscoverConcreteTypes.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.TypeGraph.DiscoverConcreteTypes",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.TypeGraph.DiscoverConcreteTypes.yml\" sourcestartlinenumber=\"1\">Discovers concrete types</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -718,7 +998,11 @@
           "relative_path": "api/Inflatable.ClassMapper.TypeGraph.Generator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.TypeGraph.Generator",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.TypeGraph.Generator.yml\" sourcestartlinenumber=\"1\">Type graph generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -728,7 +1012,11 @@
           "relative_path": "api/Inflatable.ClassMapper.TypeGraph.MergeMapping.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.TypeGraph.MergeMapping",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.TypeGraph.MergeMapping.yml\" sourcestartlinenumber=\"1\">Merge mappings as needed</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -738,7 +1026,11 @@
           "relative_path": "api/Inflatable.ClassMapper.TypeGraph.ReduceMapping.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.TypeGraph.ReduceMapping",
+      "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.TypeGraph.ReduceMapping.yml\" sourcestartlinenumber=\"1\">Reduces mappings and removes redundant items</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -748,7 +1040,11 @@
           "relative_path": "api/Inflatable.ClassMapper.TypeGraph.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper.TypeGraph",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -758,7 +1054,11 @@
           "relative_path": "api/Inflatable.ClassMapper.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.ClassMapper",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -768,7 +1068,11 @@
           "relative_path": "api/Inflatable.DataSource.Options.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.DataSource.Options",
+      "Summary": "<p sourcefile=\"api/Inflatable.DataSource.Options.yml\" sourcestartlinenumber=\"1\">Data source options</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -778,7 +1082,11 @@
           "relative_path": "api/Inflatable.DataSource.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.DataSource",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -788,7 +1096,11 @@
           "relative_path": "api/Inflatable.DbContext-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.DbContext<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.DbContext-1.yml\" sourcestartlinenumber=\"1\">Db context</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -798,7 +1110,11 @@
           "relative_path": "api/Inflatable.DbContext.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.DbContext",
+      "Summary": "<p sourcefile=\"api/Inflatable.DbContext.yml\" sourcestartlinenumber=\"1\">Db Context</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -808,7 +1124,11 @@
           "relative_path": "api/Inflatable.Enums.SchemaAnalysis.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Enums.SchemaAnalysis",
+      "Summary": "<p sourcefile=\"api/Inflatable.Enums.SchemaAnalysis.yml\" sourcestartlinenumber=\"1\">Schema analysis enum</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -818,7 +1138,11 @@
           "relative_path": "api/Inflatable.Enums.SchemaGeneration.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Enums.SchemaGeneration",
+      "Summary": "<p sourcefile=\"api/Inflatable.Enums.SchemaGeneration.yml\" sourcestartlinenumber=\"1\">Schema generation enum</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -828,7 +1152,11 @@
           "relative_path": "api/Inflatable.Enums.SourceAccess.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Enums.SourceAccess",
+      "Summary": "<p sourcefile=\"api/Inflatable.Enums.SourceAccess.yml\" sourcestartlinenumber=\"1\">Source access</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -838,7 +1166,11 @@
           "relative_path": "api/Inflatable.Enums.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Enums",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -848,7 +1180,11 @@
           "relative_path": "api/Inflatable.Interfaces.IDatabase.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Interfaces.IDatabase",
+      "Summary": "<p sourcefile=\"api/Inflatable.Interfaces.IDatabase.yml\" sourcestartlinenumber=\"1\">Database configuration interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -858,7 +1194,11 @@
           "relative_path": "api/Inflatable.Interfaces.IMapping-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Interfaces.IMapping<TClassType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.Interfaces.IMapping-1.yml\" sourcestartlinenumber=\"1\">Class mapping interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -868,7 +1208,11 @@
           "relative_path": "api/Inflatable.Interfaces.IMapping.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Interfaces.IMapping",
+      "Summary": "<p sourcefile=\"api/Inflatable.Interfaces.IMapping.yml\" sourcestartlinenumber=\"1\">Mapping interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -878,7 +1222,11 @@
           "relative_path": "api/Inflatable.Interfaces.IObject-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Interfaces.IObject<IDType>",
+      "Summary": "<p sourcefile=\"api/Inflatable.Interfaces.IObject-1.yml\" sourcestartlinenumber=\"1\">Object interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -888,7 +1236,11 @@
           "relative_path": "api/Inflatable.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -898,7 +1250,11 @@
           "relative_path": "api/Inflatable.LinqExpression.HelperClasses.Evaluator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.HelperClasses.Evaluator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.HelperClasses.Evaluator.yml\" sourcestartlinenumber=\"1\">Evaluator static class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -908,7 +1264,11 @@
           "relative_path": "api/Inflatable.LinqExpression.HelperClasses.Nominator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.HelperClasses.Nominator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.HelperClasses.Nominator.yml\" sourcestartlinenumber=\"1\">Nominator expression visitor</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -918,7 +1278,11 @@
           "relative_path": "api/Inflatable.LinqExpression.HelperClasses.SubtreeEvaluator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.HelperClasses.SubtreeEvaluator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.HelperClasses.SubtreeEvaluator.yml\" sourcestartlinenumber=\"1\">Subtree evaluator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -928,7 +1292,11 @@
           "relative_path": "api/Inflatable.LinqExpression.HelperClasses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.HelperClasses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -938,7 +1306,11 @@
           "relative_path": "api/Inflatable.LinqExpression.Interfaces.IQueryData.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.Interfaces.IQueryData",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.Interfaces.IQueryData.yml\" sourcestartlinenumber=\"1\">Query data interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -948,7 +1320,11 @@
           "relative_path": "api/Inflatable.LinqExpression.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -958,7 +1334,11 @@
           "relative_path": "api/Inflatable.LinqExpression.OrderBy.Enums.Direction.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.OrderBy.Enums.Direction",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.OrderBy.Enums.Direction.yml\" sourcestartlinenumber=\"1\">Direction of the ordering</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -968,7 +1348,11 @@
           "relative_path": "api/Inflatable.LinqExpression.OrderBy.Enums.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.OrderBy.Enums",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -978,7 +1362,11 @@
           "relative_path": "api/Inflatable.LinqExpression.OrderBy.OrderByClause.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.OrderBy.OrderByClause",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.OrderBy.OrderByClause.yml\" sourcestartlinenumber=\"1\">Order by clause</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -988,7 +1376,11 @@
           "relative_path": "api/Inflatable.LinqExpression.OrderBy.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.OrderBy",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -998,7 +1390,11 @@
           "relative_path": "api/Inflatable.LinqExpression.QueryData-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.QueryData<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.QueryData-1.yml\" sourcestartlinenumber=\"1\">Query data holder</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1008,7 +1404,11 @@
           "relative_path": "api/Inflatable.LinqExpression.QueryTranslator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.QueryTranslator<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.QueryTranslator-1.yml\" sourcestartlinenumber=\"1\">Query translator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1018,7 +1418,11 @@
           "relative_path": "api/Inflatable.LinqExpression.Select.ColumnProjector.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.Select.ColumnProjector",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.Select.ColumnProjector.yml\" sourcestartlinenumber=\"1\">Finds properties from a select statement.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1028,7 +1432,11 @@
           "relative_path": "api/Inflatable.LinqExpression.Select.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.Select",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1038,7 +1446,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.BinaryOperator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.BinaryOperator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.BinaryOperator.yml\" sourcestartlinenumber=\"1\">Binary operator class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1048,7 +1460,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Constant.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.Constant",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.Constant.yml\" sourcestartlinenumber=\"1\">Constant operator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1058,7 +1474,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.EmptyClause.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.EmptyClause",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.EmptyClause.yml\" sourcestartlinenumber=\"1\">Empty clause</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1068,7 +1488,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.Interfaces.IOperator.yml\" sourcestartlinenumber=\"1\">Operator interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1078,7 +1502,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1088,7 +1516,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.LikeOperator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.LikeOperator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.LikeOperator.yml\" sourcestartlinenumber=\"1\">Like operator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1098,7 +1530,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.Property-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.Property<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.Property-1.yml\" sourcestartlinenumber=\"1\">Property operator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1108,7 +1544,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.UnaryOperator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.UnaryOperator",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.UnaryOperator.yml\" sourcestartlinenumber=\"1\">Unary operator class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1118,7 +1558,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.WhereClause-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.WhereClause<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.WhereClause-1.yml\" sourcestartlinenumber=\"1\">Where operator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1128,7 +1572,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.WhereVisitor-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses.WhereVisitor<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.LinqExpression.WhereClauses.WhereVisitor-1.yml\" sourcestartlinenumber=\"1\">Where visitor</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1138,7 +1586,11 @@
           "relative_path": "api/Inflatable.LinqExpression.WhereClauses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression.WhereClauses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1148,7 +1600,11 @@
           "relative_path": "api/Inflatable.LinqExpression.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.LinqExpression",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1158,7 +1614,11 @@
           "relative_path": "api/Inflatable.Modules.AOPModule.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Modules.AOPModule",
+      "Summary": "<p sourcefile=\"api/Inflatable.Modules.AOPModule.yml\" sourcestartlinenumber=\"1\">AOP Module</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1168,7 +1628,11 @@
           "relative_path": "api/Inflatable.Modules.InflatableModule.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Modules.InflatableModule",
+      "Summary": "<p sourcefile=\"api/Inflatable.Modules.InflatableModule.yml\" sourcestartlinenumber=\"1\">Inflatable module</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1178,7 +1642,11 @@
           "relative_path": "api/Inflatable.Modules.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Modules",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1188,7 +1656,11 @@
           "relative_path": "api/Inflatable.QueryProvider.BaseClasses.GeneratorBaseClass-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.BaseClasses.GeneratorBaseClass<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.BaseClasses.GeneratorBaseClass-1.yml\" sourcestartlinenumber=\"1\">Generator base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1198,7 +1670,11 @@
           "relative_path": "api/Inflatable.QueryProvider.BaseClasses.LinqQueryGeneratorBaseClass-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.BaseClasses.LinqQueryGeneratorBaseClass<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.BaseClasses.LinqQueryGeneratorBaseClass-1.yml\" sourcestartlinenumber=\"1\">Linq query generator base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1208,7 +1684,11 @@
           "relative_path": "api/Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.BaseClasses.PropertyQueryGeneratorBaseClass-1.yml\" sourcestartlinenumber=\"1\">Property query generator base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1218,7 +1698,11 @@
           "relative_path": "api/Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.yml\" sourcestartlinenumber=\"1\">Generator base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1228,7 +1712,11 @@
           "relative_path": "api/Inflatable.QueryProvider.BaseClasses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.BaseClasses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1238,7 +1726,11 @@
           "relative_path": "api/Inflatable.QueryProvider.CachedResult.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.CachedResult",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.CachedResult.yml\" sourcestartlinenumber=\"1\">Cached result</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1248,7 +1740,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Enums.QueryType.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Enums.QueryType",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Enums.QueryType.yml\" sourcestartlinenumber=\"1\">Query type enum</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1258,7 +1754,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Enums.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Enums",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1268,7 +1768,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IDataQueryGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IDataQueryGenerator<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IDataQueryGenerator-1.yml\" sourcestartlinenumber=\"1\">Data query generator interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1278,7 +1782,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IGenerator<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IGenerator-1.yml\" sourcestartlinenumber=\"1\">Generator interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1288,7 +1796,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IGenerator.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IGenerator",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IGenerator.yml\" sourcestartlinenumber=\"1\">Generator interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1298,7 +1810,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.ILinqQueryGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.ILinqQueryGenerator<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.ILinqQueryGenerator-1.yml\" sourcestartlinenumber=\"1\">Linq query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1308,7 +1824,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IPropertyQueryGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IPropertyQueryGenerator<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IPropertyQueryGenerator-1.yml\" sourcestartlinenumber=\"1\">Property query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1318,7 +1838,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueries.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IQueries",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IQueries.yml\" sourcestartlinenumber=\"1\">Holds the default commands for an individual mapping</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1328,7 +1852,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQuery.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IQuery",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IQuery.yml\" sourcestartlinenumber=\"1\">Holds an individual query's information.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1338,7 +1866,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueryGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IQueryGenerator<TObject>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IQueryGenerator-1.yml\" sourcestartlinenumber=\"1\">Query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1348,7 +1880,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.IQueryProvider.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces.IQueryProvider",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Interfaces.IQueryProvider.yml\" sourcestartlinenumber=\"1\">Query provider interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1358,7 +1894,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1368,7 +1908,11 @@
           "relative_path": "api/Inflatable.QueryProvider.MappingData.IQueryMapping.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.MappingData.IQueryMapping",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.MappingData.IQueryMapping.yml\" sourcestartlinenumber=\"1\">Query mapping interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1378,7 +1922,11 @@
           "relative_path": "api/Inflatable.QueryProvider.MappingData.IQueryPropertyMapping.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.MappingData.IQueryPropertyMapping",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.MappingData.IQueryPropertyMapping.yml\" sourcestartlinenumber=\"1\">Query property mapping information</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1388,7 +1936,11 @@
           "relative_path": "api/Inflatable.QueryProvider.MappingData.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.MappingData",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1398,7 +1950,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DataLoadQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DataLoadQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DataLoadQuery-1.yml\" sourcestartlinenumber=\"1\">Data load query</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1408,7 +1964,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeletePropertiesQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeletePropertiesQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeletePropertiesQuery-1.yml\" sourcestartlinenumber=\"1\">Delete properties query</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1418,7 +1978,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeleteQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeleteQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.DeleteQuery-1.yml\" sourcestartlinenumber=\"1\">Delete query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1428,7 +1992,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.QueryGeneratorData.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.QueryGeneratorData",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.QueryGeneratorData.yml\" sourcestartlinenumber=\"1\">Generator query data</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1438,7 +2006,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.HelperClasses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1448,7 +2020,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.InsertQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.InsertQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.InsertQuery-1.yml\" sourcestartlinenumber=\"1\">Insert query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1458,7 +2034,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator-1.yml\" sourcestartlinenumber=\"1\">SQL Server Linq query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1468,7 +2048,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LoadPropertiesQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LoadPropertiesQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LoadPropertiesQuery-1.yml\" sourcestartlinenumber=\"1\">Load properties query</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1478,7 +2062,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.SavePropertiesQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.SavePropertiesQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.SavePropertiesQuery-1.yml\" sourcestartlinenumber=\"1\">Save properties query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1488,7 +2076,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.UpdateQuery-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.UpdateQuery<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.UpdateQuery-1.yml\" sourcestartlinenumber=\"1\">Update query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1498,7 +2090,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1508,7 +2104,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerGenerator-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.SQLServerGenerator<TMappedClass>",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerGenerator-1.yml\" sourcestartlinenumber=\"1\">SQL Server query generator</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1518,7 +2118,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerQueryProvider.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer.SQLServerQueryProvider",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Providers.SQLServer.SQLServerQueryProvider.yml\" sourcestartlinenumber=\"1\">SQL Server query provider</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1528,7 +2132,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Providers.SQLServer.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Providers.SQLServer",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1538,7 +2146,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Queries.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Queries",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Queries.yml\" sourcestartlinenumber=\"1\">Query holder</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1548,7 +2160,11 @@
           "relative_path": "api/Inflatable.QueryProvider.Query.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.Query",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.Query.yml\" sourcestartlinenumber=\"1\">Query holder</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1558,7 +2174,11 @@
           "relative_path": "api/Inflatable.QueryProvider.QueryProviderManager.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.QueryProviderManager",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.QueryProviderManager.yml\" sourcestartlinenumber=\"1\">Query provider manager</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1568,7 +2188,11 @@
           "relative_path": "api/Inflatable.QueryProvider.QueryResults.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider.QueryResults",
+      "Summary": "<p sourcefile=\"api/Inflatable.QueryProvider.QueryResults.yml\" sourcestartlinenumber=\"1\">Query results</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1578,7 +2202,11 @@
           "relative_path": "api/Inflatable.QueryProvider.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.QueryProvider",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1588,7 +2216,11 @@
           "relative_path": "api/Inflatable.Registration.InflatableOptions.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Registration.InflatableOptions",
+      "Summary": "<p sourcefile=\"api/Inflatable.Registration.InflatableOptions.yml\" sourcestartlinenumber=\"1\">Inflatable options</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1598,7 +2230,11 @@
           "relative_path": "api/Inflatable.Registration.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Registration",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1608,7 +2244,11 @@
           "relative_path": "api/Inflatable.Schema.DataModel.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Schema.DataModel",
+      "Summary": "<p sourcefile=\"api/Inflatable.Schema.DataModel.yml\" sourcestartlinenumber=\"1\">Data model class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1618,7 +2258,11 @@
           "relative_path": "api/Inflatable.Schema.SchemaManager.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Schema.SchemaManager",
+      "Summary": "<p sourcefile=\"api/Inflatable.Schema.SchemaManager.yml\" sourcestartlinenumber=\"1\">Model manager</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1628,7 +2272,11 @@
           "relative_path": "api/Inflatable.Schema.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Schema",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1638,7 +2286,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.yml\" sourcestartlinenumber=\"1\">Command base class</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1648,7 +2300,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.BaseClasses.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.BaseClasses",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1658,7 +2314,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.DeleteCommand.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.DeleteCommand",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.Commands.DeleteCommand.yml\" sourcestartlinenumber=\"1\">Delete command</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1668,7 +2328,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.Enums.CommandType.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.Enums.CommandType",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.Commands.Enums.CommandType.yml\" sourcestartlinenumber=\"1\">Command types</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1678,7 +2342,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.Enums.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.Enums",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1688,7 +2356,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.Interfaces.ICommand.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.Interfaces.ICommand",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.Commands.Interfaces.ICommand.yml\" sourcestartlinenumber=\"1\">Command interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1698,7 +2370,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.Interfaces.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.Interfaces",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1708,7 +2384,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.SaveCommand.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands.SaveCommand",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.Commands.SaveCommand.yml\" sourcestartlinenumber=\"1\">Save command</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1718,7 +2398,11 @@
           "relative_path": "api/Inflatable.Sessions.Commands.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Commands",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1728,7 +2412,11 @@
           "relative_path": "api/Inflatable.Sessions.ISession.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.ISession",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.ISession.yml\" sourcestartlinenumber=\"1\">Session interface</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1738,7 +2426,11 @@
           "relative_path": "api/Inflatable.Sessions.Session.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.Session",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.Session.yml\" sourcestartlinenumber=\"1\">Class for an individual session</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1748,7 +2440,11 @@
           "relative_path": "api/Inflatable.Sessions.SessionQueryInfo.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions.SessionQueryInfo",
+      "Summary": "<p sourcefile=\"api/Inflatable.Sessions.SessionQueryInfo.yml\" sourcestartlinenumber=\"1\">Session query info</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1758,7 +2454,11 @@
           "relative_path": "api/Inflatable.Sessions.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Sessions",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1768,7 +2468,11 @@
           "relative_path": "api/Inflatable.Utils.ExpressionTypeConverter-2.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Utils.ExpressionTypeConverter<TData, TReturn>",
+      "Summary": "<p sourcefile=\"api/Inflatable.Utils.ExpressionTypeConverter-2.yml\" sourcestartlinenumber=\"1\">Expression type converter</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1778,7 +2482,11 @@
           "relative_path": "api/Inflatable.Utils.Tree-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Utils.Tree<TData>",
+      "Summary": "<p sourcefile=\"api/Inflatable.Utils.Tree-1.yml\" sourcestartlinenumber=\"1\">Tree holding data.</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1788,7 +2496,11 @@
           "relative_path": "api/Inflatable.Utils.TreeNode-1.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Utils.TreeNode<TData>",
+      "Summary": "<p sourcefile=\"api/Inflatable.Utils.TreeNode-1.yml\" sourcestartlinenumber=\"1\">Tree node</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1798,7 +2510,11 @@
           "relative_path": "api/Inflatable.Utils.Visitor.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Utils.Visitor",
+      "Summary": "<p sourcefile=\"api/Inflatable.Utils.Visitor.yml\" sourcestartlinenumber=\"1\">Visitor expression visitor</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1808,7 +2524,11 @@
           "relative_path": "api/Inflatable.Utils.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable.Utils",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1818,7 +2538,11 @@
           "relative_path": "api/Inflatable.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Inflatable",
+      "Summary": null
     },
     {
       "type": "ManagedReference",
@@ -1828,7 +2552,11 @@
           "relative_path": "api/Microsoft.Extensions.DependencyInjection.Registration.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Microsoft.Extensions.DependencyInjection.Registration",
+      "Summary": "<p sourcefile=\"api/Microsoft.Extensions.DependencyInjection.Registration.yml\" sourcestartlinenumber=\"1\">Registration extension methods</p>\n"
     },
     {
       "type": "ManagedReference",
@@ -1838,7 +2566,11 @@
           "relative_path": "api/Microsoft.Extensions.DependencyInjection.html"
         }
       },
-      "version": ""
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Microsoft.Extensions.DependencyInjection",
+      "Summary": null
     },
     {
       "type": "Conceptual",
