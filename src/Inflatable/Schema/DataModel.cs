@@ -57,8 +57,8 @@ namespace Inflatable.Schema
             var sourceConnection = new Connection(config, source.Source.Provider, source.Source.Name);
             ISource? sourceSpec = DataModeler.CreateSource(sourceConnection.DatabaseName ?? string.Empty);
             SourceSpec = sourceSpec;
-            GeneratedSchemaChanges = Task.Run(async () => await GenerateSchemaAsync(source, logger, dataModeler, sourceConnection, sourceSpec).ConfigureAwait(false)).GetAwaiter().GetResult();
-            Task.Run(async () => await AnalyzeSchemaAsync(sherlock, logger, source, sourceConnection, batch).ConfigureAwait(false)).GetAwaiter().GetResult();
+            GeneratedSchemaChanges = AsyncHelper.RunSync(() => GenerateSchemaAsync(source, logger, dataModeler, sourceConnection, sourceSpec));
+            AsyncHelper.RunSync(() => AnalyzeSchemaAsync(sherlock, logger, source, sourceConnection, batch));
         }
 
         /// <summary>

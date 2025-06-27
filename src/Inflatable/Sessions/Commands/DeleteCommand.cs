@@ -71,7 +71,7 @@ namespace Inflatable.Sessions.Commands
                 return 0;
             }
 
-            return Task.Run(async () => await Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>().ConfigureAwait(false)).GetAwaiter().GetResult();
+            return AsyncHelper.RunSync(() => Batch.RemoveDuplicateCommands().ExecuteScalarAsync<int>());
         }
 
         /// <summary>

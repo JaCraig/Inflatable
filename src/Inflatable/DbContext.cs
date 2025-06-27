@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+using BigBook;
 using BigBook.Queryable;
 using BigBook.Queryable.BaseClasses;
 using Inflatable.ClassMapper;
@@ -66,7 +67,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query</returns>
-        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteDynamicAsync(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<dynamic>)Array.Empty<dynamic>());
+        public static Task<IEnumerable<dynamic>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteDynamicAsync(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<dynamic>)[]);
 
         /// <summary>
         /// Adds a delete command.
@@ -123,7 +124,7 @@ namespace Inflatable
         /// <param name="connection">The connection.</param>
         /// <param name="parameters">The parameters.</param>
         /// <returns>The list of objects returned by the query.</returns>
-        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteAsync<TObject>(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<TObject>)Array.Empty<TObject>());
+        public static Task<IEnumerable<TObject>> ExecuteAsync(string command, CommandType type, string connection, params object[] parameters) => Services.ServiceProvider?.GetService<ISession>()?.ExecuteAsync<TObject>(command, type, connection, parameters) ?? Task.FromResult((IEnumerable<TObject>)[]);
 
         /// <summary>
         /// Executes the query getting a scalar asynchronously.
@@ -147,8 +148,8 @@ namespace Inflatable
             if (TempSession is null)
                 return null;
             if (Results.Values.Any(x => x?.Count ?? false))
-                return Task.Run(async () => await TempSession.ExecuteCountAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult();
-            IEnumerable<dynamic> DatabaseValues = Task.Run(async () => await TempSession.ExecuteAsync(Results).ConfigureAwait(false)).GetAwaiter().GetResult() ?? Array.Empty<dynamic>();
+                return AsyncHelper.RunSync(() => TempSession.ExecuteCountAsync(Results));
+            IEnumerable<dynamic> DatabaseValues = AsyncHelper.RunSync(() => TempSession.ExecuteAsync(Results)) ?? [];
             return Results.Values.Any(x => (x?.Top ?? 0) == 1) ? DatabaseValues.FirstOrDefault() : DatabaseValues;
         }
 

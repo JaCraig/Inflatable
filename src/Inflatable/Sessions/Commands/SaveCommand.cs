@@ -65,7 +65,7 @@ namespace Inflatable.Sessions.Commands
         /// <returns>The number of rows that are modified.</returns>
         public override int Execute(IMappingSource source)
         {
-            return Task.Run(async () => await ExecuteAsync(source).ConfigureAwait(false)).GetAwaiter().GetResult();
+            return AsyncHelper.RunSync(() => ExecuteAsync(source));
         }
 
         /// <summary>

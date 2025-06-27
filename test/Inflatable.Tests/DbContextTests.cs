@@ -61,8 +61,10 @@ namespace Inflatable.Tests
             //var Result = TestObject.OrderBy(x => x.BaseClassValue1).ThenByDescending(x => x.ID).First();
             //Assert.Equal(4, Result.ID);
             TestObject = DbContext<BaseClass1>.CreateQuery();
-            BaseClass1 Result = TestObject.Where(x => x.ID == 6).First();
+            BaseClass1 Result = TestObject.Where(x => x.ID == TempData[5].ID).First();
             Assert.NotNull(Result);
+
+            await TempSession.Delete(TempData).ExecuteAsync();
         }
 
         [Fact]
@@ -150,6 +152,7 @@ namespace Inflatable.Tests
             Assert.Equal(0, Result.MappedClass.IntValue);
             Assert.Equal('q', Result.MappedClass.CharValue);
             Assert.Equal(new System.Uri("http://www.google.com"), Result.MappedClass.UriValue);
+            _ = await TempSession.Delete(TestObject).ExecuteAsync();
         }
 
         [Fact]
@@ -251,22 +254,24 @@ namespace Inflatable.Tests
 
             IQueryable<AllReferencesAndID> TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             AllReferencesAndID Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).First();
-            Assert.Equal(4, Result.ID);
+            Assert.Equal(TempData[3].ID, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.Where(x => x.ID == 600).First();
             Assert.Null(Result);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).FirstOrDefault();
-            Assert.Equal(4, Result.ID);
+            Assert.Equal(TempData[3].ID, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.Where(x => x.ID == 600).FirstOrDefault();
             Assert.Null(Result);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.OrderBy(x => x.IntValue).ThenBy(x => x.ID).Single();
-            Assert.Equal(4, Result.ID);
+            Assert.Equal(TempData[3].ID, Result.ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
             Result = TestObject.Where(x => x.ID == 600).SingleOrDefault();
             Assert.Null(Result);
+
+            await TempSession.Delete(TempData).ExecuteAsync();
         }
 
         [Fact]
@@ -301,6 +306,8 @@ namespace Inflatable.Tests
             Assert.NotNull(Results[2].IndustryCode);
             Assert.NotNull(Results[3].IndustryCode);
             Assert.NotNull(Results[0].IndustryCode.Companies[0]);
+
+            await TempSession.Delete(TempData).ExecuteAsync();
         }
 
         [Fact]

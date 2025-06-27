@@ -395,7 +395,7 @@ namespace Inflatable.Sessions
 
                 try
                 {
-                    ResultLists = Task.Run(Batch.ExecuteAsync).GetAwaiter().GetResult();
+                    ResultLists = AsyncHelper.RunSync(() => Batch.ExecuteAsync());
                 }
                 catch
                 {
