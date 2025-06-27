@@ -150,7 +150,7 @@ namespace TestApp
 
             // And now let's save the changes
             Console.WriteLine(&quot;Resaving values&quot;);
-            new DbContext().Save(Results.ToArray()).ExecuteAsync().GetAwaiter().GetResult();
+            await new DbContext().Save(Results.ToArray()).ExecuteAsync();
             Console.WriteLine(&quot;Done&quot;);
             Console.WriteLine();
         }
@@ -163,9 +163,9 @@ namespace TestApp
             SQLHelper Helper = Services.GetService&lt;SQLHelper&gt;();
             try
             {
-                Task.Run(async () =&gt; await Helper.CreateBatch(SqlClientFactory.Instance, &quot;Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false&quot;)
+                AsyncHelper.RunSync(() =&gt; Helper.CreateBatch(SqlClientFactory.Instance, &quot;Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false&quot;)
                     .AddQuery(CommandType.Text, &quot;ALTER DATABASE InflatableTestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE InflatableTestDatabase SET ONLINE\r\nDROP DATABASE InflatableTestDatabase&quot;)
-                    .ExecuteScalarAsync&lt;int&gt;().ConfigureAwait(false)).GetAwaiter().GetResult();
+                    .ExecuteScalarAsync&lt;int&gt;());
             }
             catch { }
         }
@@ -210,7 +210,7 @@ namespace TestApp
 
             // Save the objects to the database
             Console.WriteLine(&quot;Saving values&quot;);
-            new DbContext().Save(Values).ExecuteAsync().GetAwaiter().GetResult();
+            await new DbContext().Save(Values).ExecuteAsync();
 
             // Now let's query the database and get back the values we saved
             Console.WriteLine(&quot;Querying values&quot;);
