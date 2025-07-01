@@ -72,10 +72,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// original expression.
         /// </returns>
         /// <exception cref="NotSupportedException"></exception>
-        protected override Expression? VisitBinary(BinaryExpression node)
+        protected override Expression VisitBinary(BinaryExpression node)
         {
             if (node is null)
-                return node;
+                return node!;
             Visit(node.Left);
             var LeftSide = CurrentClause;
             Visit(node.Right);
@@ -88,14 +88,14 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns>The expression</returns>
-        protected override Expression? VisitConstant(ConstantExpression node)
+        protected override Expression VisitConstant(ConstantExpression node)
         {
             if (node is null || node.Value is IQueryable)
             {
-                return node;
+                return node!;
             }
 
-            CurrentClause = new Constant(node.Value, Count);
+            CurrentClause = new Constant(node.Value!, Count);
             ++Count;
             return node;
         }
@@ -105,10 +105,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// </summary>
         /// <param name="node">The node.</param>
         /// <returns>The node</returns>
-        protected override Expression? VisitMember(MemberExpression node)
+        protected override Expression VisitMember(MemberExpression node)
         {
             if (node is null)
-                return node;
+                return node!;
             var TempProperty = node.Member as PropertyInfo;
             if (node.Expression?.NodeType == ExpressionType.Parameter && TempProperty != null)
             {
@@ -127,10 +127,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        protected override Expression? VisitMethodCall(MethodCallExpression node)
+        protected override Expression VisitMethodCall(MethodCallExpression node)
         {
             if (node is null)
-                return node;
+                return node!;
             Visit(node.Object);
             var TempProperty = CurrentClause;
             Visit(node.Arguments);
@@ -155,10 +155,10 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// original expression.
         /// </returns>
         /// <exception cref="NotSupportedException"></exception>
-        protected override Expression? VisitUnary(UnaryExpression node)
+        protected override Expression VisitUnary(UnaryExpression node)
         {
             if (node is null)
-                return node;
+                return node!;
             Visit(node.Operand);
             CurrentClause = new UnaryOperator(CurrentClause, node.NodeType, node.Type);
             return node;

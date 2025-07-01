@@ -31,7 +31,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// <param name="candidates">The candidates.</param>
         public SubtreeEvaluator(HashSet<Expression> candidates)
         {
-            Candidates = candidates ?? new HashSet<Expression>();
+            Candidates = candidates ?? [];
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Inflatable.LinqExpression.HelperClasses
         /// The modified expression, if it or any subexpression was modified; otherwise, returns the
         /// original expression.
         /// </returns>
-        public override Expression Visit(Expression node)
+        public override Expression Visit(Expression? node)
         {
             if (node is null)
             {

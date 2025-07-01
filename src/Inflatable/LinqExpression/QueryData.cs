@@ -41,10 +41,10 @@ namespace Inflatable.LinqExpression
         public QueryData(IMappingSource source)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
-            SelectValues = new List<PropertyInfo>();
-            Parameters = new List<IParameter>();
+            SelectValues = [];
+            Parameters = [];
             WhereClause = new WhereClause<TObject>(null);
-            OrderByValues = new List<OrderByClause>();
+            OrderByValues = [];
         }
 
         /// <summary>

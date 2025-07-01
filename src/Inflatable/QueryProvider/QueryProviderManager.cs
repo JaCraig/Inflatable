@@ -39,64 +39,62 @@ namespace Inflatable.QueryProvider
         /// <param name="providers">The providers.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">providers</exception>
-        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger<QueryProviderManager> logger = null)
+        public QueryProviderManager(IEnumerable<Interfaces.IQueryProvider> providers, ILogger<QueryProviderManager>? logger = null)
         {
             Logger = logger;
             IsDebug = Logger?.IsEnabled(LogLevel.Debug) ?? false;
-            providers ??= Array.Empty<Interfaces.IQueryProvider>();
+            providers ??= [];
             foreach (var QueryProvider in providers.Where(x => x.GetType().Assembly != typeof(QueryProviderManager).Assembly))
             {
                 foreach (var Provider in QueryProvider.Providers)
                 {
-                    if (!Providers.ContainsKey(Provider))
-                        Providers.Add(Provider, QueryProvider);
+                    Providers.TryAdd(Provider, QueryProvider);
                 }
             }
             foreach (var QueryProvider in providers.Where(x => x.GetType().Assembly == typeof(QueryProviderManager).Assembly))
             {
                 foreach (var Provider in QueryProvider.Providers)
                 {
-                    if (!Providers.ContainsKey(Provider))
-                        Providers.Add(Provider, QueryProvider);
+                    Providers.TryAdd(Provider, QueryProvider);
                 }
             }
-            CreateGeneratorMethod = typeof(QueryProviderManager).GetMethod("CreateGenerator", new Type[] { typeof(IMappingSource) });
+            CreateGeneratorMethod = typeof(QueryProviderManager).GetMethod("CreateGenerator", [typeof(IMappingSource)]);
         }
+
+        /// <summary>
+        /// The lock object
+        /// </summary>
+        private readonly object _LockObject = new();
 
         /// <summary>
         /// Gets the logger.
         /// </summary>
         /// <value>The logger.</value>
-        public ILogger Logger { get; }
+        public ILogger? Logger { get; }
 
         /// <summary>
         /// Gets the providers.
         /// </summary>
         /// <value>The providers.</value>
-        public Dictionary<DbProviderFactory, Interfaces.IQueryProvider> Providers { get; } = new Dictionary<DbProviderFactory, Interfaces.IQueryProvider>();
+        public Dictionary<DbProviderFactory, Interfaces.IQueryProvider> Providers { get; } = [];
 
         /// <summary>
         /// Gets the create generator method.
         /// </summary>
         /// <value>The create generator method.</value>
-        private MethodInfo CreateGeneratorMethod { get; }
+        private MethodInfo? CreateGeneratorMethod { get; }
 
         /// <summary>
         /// Gets the generic create generator methods.
         /// </summary>
         /// <value>The generic create generator methods.</value>
-        private Dictionary<int, MethodInfo> GenericCreateGeneratorMethods { get; } = new Dictionary<int, MethodInfo>();
+        private Dictionary<int, MethodInfo> GenericCreateGeneratorMethods { get; } = [];
 
         /// <summary>
         /// Gets a value indicating whether debug level logging is turned on.
         /// </summary>
         /// <value><c>true</c> if debug level logging is turned on; otherwise, <c>false</c>.</value>
         private bool IsDebug { get; }
-
-        /// <summary>
-        /// The lock object
-        /// </summary>
-        private readonly object LockObject = new object();
 
         /// <summary>
         /// Creates a batch.
@@ -119,7 +117,7 @@ namespace Inflatable.QueryProvider
 
             if (IsDebug)
             {
-                Logger.LogDebug("Creating batch for data source {0}", source.Name);
+                Logger?.LogDebug("Creating batch for data source {sourceName}", source.Name);
             }
 
             return QueryProvider.Batch(source);
@@ -139,15 +137,15 @@ namespace Inflatable.QueryProvider
             if (mappingInfo?.GetChildMappings<TMappedClass>().Any() != true)
                 return null;
 
-            var provider = mappingInfo.Source.Provider;
-            if (!Providers.TryGetValue(provider, out var QueryProvider))
+            var Provider = mappingInfo.Source.Provider;
+            if (!Providers.TryGetValue(Provider, out var QueryProvider))
             {
-                throw new ArgumentException("Provider not found: " + provider);
+                throw new ArgumentException("Provider not found: " + Provider);
             }
 
             if (IsDebug)
             {
-                Logger.LogDebug("Creating generator for type {0} in {1}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
+                Logger?.LogDebug("Creating generator for type {typeName} in {sourceName}", typeof(TMappedClass).GetName(), mappingInfo.Source.Name);
             }
 
             return QueryProvider.CreateGenerator<TMappedClass>(mappingInfo);
@@ -159,9 +157,9 @@ namespace Inflatable.QueryProvider
         /// <param name="type">The type of the mapped class..</param>
         /// <param name="mappingInfo">The mapping information.</param>
         /// <returns>The requested query generator.</returns>
-        public IGenerator? CreateGenerator(Type type, IMappingSource mappingInfo)
+        public IGenerator? CreateGenerator(Type? type, IMappingSource mappingInfo)
         {
-            if (type?.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal) ?? false)
+            if (type?.Namespace?.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal) ?? false)
             {
                 type = type.BaseType;
             }
@@ -170,17 +168,18 @@ namespace Inflatable.QueryProvider
             var HashCode = type.GetHashCode();
             if (!GenericCreateGeneratorMethods.TryGetValue(HashCode, out var Method))
             {
-                lock (LockObject)
+                lock (_LockObject)
                 {
                     if (!GenericCreateGeneratorMethods.TryGetValue(HashCode, out Method))
                     {
-                        Method = CreateGeneratorMethod.MakeGenericMethod(type);
-                        GenericCreateGeneratorMethods.Add(HashCode, Method);
+                        Method = CreateGeneratorMethod?.MakeGenericMethod(type);
+                        if (Method is not null)
+                            GenericCreateGeneratorMethods.Add(HashCode, Method);
                     }
                 }
             }
 
-            return (IGenerator)Method.Invoke(this, new object[] { mappingInfo });
+            return (IGenerator?)Method?.Invoke(this, [mappingInfo]);
         }
     }
 }

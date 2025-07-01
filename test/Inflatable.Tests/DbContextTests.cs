@@ -353,8 +353,8 @@ namespace Inflatable.Tests
             Assert.Equal(OrderedIDs[3], Results[3].ID);
             Assert.Equal(OrderedIDs[4], Results[4].ID);
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            Results = TestObject.OrderByDescending(x => x.IntValue).ThenByDescending(x => x.ID).ToList();
-            OrderedIDs = Results.OrderByDescending(x => x.IntValue).ThenByDescending(x => x.ID).Select(x => x.ID).ToArray();
+            Results = [.. TestObject.OrderByDescending(x => x.IntValue).ThenByDescending(x => x.ID)];
+            OrderedIDs = [.. Results.OrderByDescending(x => x.IntValue).ThenByDescending(x => x.ID).Select(x => x.ID)];
             Assert.Equal(OrderedIDs[0], Results[0].ID);
             Assert.Equal(OrderedIDs[1], Results[1].ID);
             Assert.Equal(OrderedIDs[2], Results[2].ID);
@@ -403,7 +403,7 @@ namespace Inflatable.Tests
             Assert.Equal(3, Results.Count);
             Assert.True(Results.All(x => x.IntValue == 0));
             TestObject = DbContext<AllReferencesAndID>.CreateQuery();
-            Results = TestObject.Select(x => new AllReferencesAndID { BoolValue = x.BoolValue, IntValue = x.IntValue }).ToList();
+            Results = [.. TestObject.Select(x => new AllReferencesAndID { BoolValue = x.BoolValue, IntValue = x.IntValue })];
             Assert.Equal(5, Results.Count);
             Assert.True(Results.All(x => x.IntValue == 10));
             Assert.Equal(3, Results.Count(x => x.BoolValue));

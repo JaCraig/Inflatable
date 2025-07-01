@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
@@ -22,22 +21,21 @@ namespace Inflatable.Tests.ClassMapper
         [Fact]
         public void Creation()
         {
-            IMappingSource TestObject = new MappingManager(new IMapping[] {
+            IMappingSource TestObject = new MappingManager([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new MockDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>())
-            .Sources
-            .First();
+            .Sources[0];
             Assert.Equal(5, TestObject.Mappings.Count);
             Assert.Contains(typeof(BaseClass1), TestObject.Mappings.Keys);
             Assert.Contains(typeof(ConcreteClass1), TestObject.Mappings.Keys);
@@ -78,22 +76,21 @@ namespace Inflatable.Tests.ClassMapper
         [Fact]
         public void DuplicateEntriesReduction()
         {
-            IMappingSource TestObject = new MappingManager(new IMapping[] {
+            IMappingSource TestObject = new MappingManager([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new MockDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>())
-            .Sources
-            .First();
+            .Sources[0];
             _ = Assert.Single(TestObject.Mappings[typeof(ConcreteClass1)].ReferenceProperties);
             _ = Assert.Single(TestObject.Mappings[typeof(ConcreteClass2)].ReferenceProperties);
             _ = Assert.Single(TestObject.Mappings[typeof(ConcreteClass3)].ReferenceProperties);

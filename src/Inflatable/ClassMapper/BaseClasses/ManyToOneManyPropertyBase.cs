@@ -46,7 +46,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected ManyToOneManyPropertyBase(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
+        protected ManyToOneManyPropertyBase(Expression<Func<TClassType, IList<TDataType>?>> expression, IMapping mapping)
         {
             if (expression is null)
             {
@@ -60,8 +60,8 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
             PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
-            ColumnName = string.Empty;
-            ForeignMapping = new List<IMapping>();
+            ColumnName = "";
+            ForeignMapping = [];
         }
 
         /// <summary>
@@ -86,13 +86,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, IList<TDataType>> CompiledExpression { get; }
+        public Func<TClassType, IList<TDataType>?> CompiledExpression { get; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        public Expression<Func<TClassType, IList<TDataType>>> Expression { get; }
+        public Expression<Func<TClassType, IList<TDataType>?>> Expression { get; }
 
         /// <summary>
         /// Gets the foreign mapping.
@@ -161,7 +161,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
+            return ReferenceEquals(first, second) || (first is not null && second is not null && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator >(ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !ReferenceEquals(first, second)
-                && !(first is null)
-                && !(second is null)
+                && first is not null
+                && second is not null
                 && first.GetHashCode() > second.GetHashCode();
         }
 
@@ -213,13 +213,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj) => (obj is ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
+        public override bool Equals(object? obj) => (obj is ManyToOneManyPropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
         /// </summary>
         /// <returns>The column information.</returns>
-        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? Array.Empty<IQueryColumnInfo>();
+        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? [];
 
         /// <summary>
         /// Returns the hash code for the property
@@ -230,9 +230,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
-        /// <param name="Object">Object to get the value from</param>
+        /// <param name="modelObject">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        public object? GetValue(object Object) => !(Object is TClassType TempObject) ? null : CompiledExpression(TempObject);
+        public object? GetValue(object modelObject) => modelObject is not TClassType TempObject ? null : CompiledExpression(TempObject);
 
         /// <summary>
         /// Loads the property using the query specified.

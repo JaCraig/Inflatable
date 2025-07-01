@@ -42,12 +42,17 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <param name="stringBuilderPool">The string builder pool.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">configuration</exception>
-        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, ILogger<SQLHelper> logger = null)
+        public SQLServerQueryProvider(IConfiguration configuration, ObjectPool<StringBuilder>? stringBuilderPool, ILogger<SQLHelper>? logger = null)
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             StringBuilderPool = stringBuilderPool;
             Logger = logger;
         }
+
+        /// <summary>
+        /// The lock object
+        /// </summary>
+        private readonly object _LockObject = new();
 
         /// <summary>
         /// Gets the configuration.
@@ -58,19 +63,19 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         /// <summary>
         /// Provider name associated with the query provider
         /// </summary>
-        public DbProviderFactory[] Providers => new DbProviderFactory[] { SqlClientFactory.Instance, System.Data.SqlClient.SqlClientFactory.Instance };
+        public DbProviderFactory[] Providers => [SqlClientFactory.Instance, System.Data.SqlClient.SqlClientFactory.Instance];
 
         /// <summary>
         /// Gets or sets the dictionary.
         /// </summary>
         /// <value>The dictionary.</value>
-        private Dictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; } = new Dictionary<Tuple<Type, IMappingSource>, IGenerator>();
+        private Dictionary<Tuple<Type, IMappingSource>, IGenerator> CachedResults { get; } = [];
 
         /// <summary>
         /// Gets the logger.
         /// </summary>
         /// <value>The logger.</value>
-        private ILogger<SQLHelper> Logger { get; }
+        private ILogger<SQLHelper>? Logger { get; }
 
         /// <summary>
         /// Gets the string builder pool.
@@ -79,16 +84,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
         private ObjectPool<StringBuilder>? StringBuilderPool { get; }
 
         /// <summary>
-        /// The lock object
-        /// </summary>
-        private readonly object LockObject = new object();
-
-        /// <summary>
         /// Creates a batch for running commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns>A batch object</returns>
-        public SQLHelper Batch(IDatabase source) => new SQLHelper(StringBuilderPool!, Configuration, Logger).CreateBatch(source.Provider, source?.Name ?? string.Empty);
+        public SQLHelper Batch(IDatabase source) => new SQLHelper(StringBuilderPool!, Configuration, Logger).CreateBatch(source.Provider, source?.Name ?? "");
 
         /// <summary>
         /// Creates a generator object
@@ -102,7 +102,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer
             var Key = new Tuple<Type, IMappingSource>(typeof(TMappedClass), mappingInformation);
             if (CachedResults.TryGetValue(Key, out var ReturnValue))
                 return (IGenerator<TMappedClass>)ReturnValue;
-            lock (LockObject)
+            lock (_LockObject)
             {
                 if (CachedResults.TryGetValue(Key, out ReturnValue))
                     return (IGenerator<TMappedClass>)ReturnValue;

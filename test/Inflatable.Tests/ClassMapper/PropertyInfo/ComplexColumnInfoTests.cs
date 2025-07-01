@@ -8,7 +8,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 {
     public class ComplexColumnInfoTests
     {
-        public static TheoryData<MapProperties, object> ParameterData = new TheoryData<MapProperties, object>
+        public static TheoryData<MapProperties, object> ParameterData = new()
         {
             { new MapProperties{MappedClass=new AllReferencesAndID() },null },
             { new MapProperties(), null },
@@ -16,7 +16,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { null, null }
         };
 
-        public static TheoryData<MapProperties, long, object> SetValueData = new TheoryData<MapProperties, long, object>
+        public static TheoryData<MapProperties, long, object> SetValueData = new()
         {
             { new MapProperties{MappedClass=new AllReferencesAndID() },10L, 10L },
             { new MapProperties{ID=2,MappedClass=new AllReferencesAndID{ID=1 } },10L, 10L },
@@ -24,7 +24,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { new MapProperties(),10L,null },
         };
 
-        public static TheoryData<MapProperties, object> ValueData = new TheoryData<MapProperties, object>
+        public static TheoryData<MapProperties, object> ValueData = new()
         {
             { new MapProperties{MappedClass=new AllReferencesAndID() }, 0L },
             { new MapProperties{ID=2,MappedClass=new AllReferencesAndID{ID=1 } }, 1L },
@@ -32,7 +32,7 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
             { new MapProperties(),null },
         };
 
-        private readonly ComplexColumnInfo<MapProperties, AllReferencesAndID> TestObject = new ComplexColumnInfo<MapProperties, AllReferencesAndID>(
+        private readonly ComplexColumnInfo<MapProperties, AllReferencesAndID> _TestObject = new(
             new SimpleColumnInfo<AllReferencesAndID, long>(
                 "ID_",
                 x => x.ID,
@@ -54,19 +54,19 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
         [Fact]
         public void Creation()
         {
-            Assert.NotNull(TestObject);
-            Assert.Equal("MappedClass_ID_", TestObject.ColumnName);
-            Assert.Equal("ID", TestObject.PropertyName);
-            Assert.Equal(typeof(long), TestObject.PropertyType);
-            Assert.Equal("dbo", TestObject.SchemaName);
-            Assert.Equal("MapProperties_", TestObject.TableName);
+            Assert.NotNull(_TestObject);
+            Assert.Equal("MappedClass_ID_", _TestObject.ColumnName);
+            Assert.Equal("ID", _TestObject.PropertyName);
+            Assert.Equal(typeof(long), _TestObject.PropertyType);
+            Assert.Equal("dbo", _TestObject.SchemaName);
+            Assert.Equal("MapProperties_", _TestObject.TableName);
         }
 
         [Theory]
         [MemberData(nameof(ParameterData))]
         public void GetAsParameter(MapProperties inputObject, object expectedResult)
         {
-            var Result = TestObject.GetAsParameter(inputObject);
+            var Result = _TestObject.GetAsParameter(inputObject);
             Assert.Equal(DbType.Int64, Result.DatabaseType);
             Assert.Equal(ParameterDirection.Input, Result.Direction);
             Assert.Equal("MappedClass_ID_", Result.ID);
@@ -76,23 +76,23 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 
         [Theory]
         [MemberData(nameof(ValueData))]
-        public void GetValue(MapProperties inputObject, object expectedResult) => Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
+        public void GetValue(MapProperties inputObject, object expectedResult) => Assert.Equal(expectedResult, _TestObject.GetValue(inputObject));
 
         [Fact]
         public void IsDefault()
         {
-            Assert.True(TestObject.IsDefault(new MapProperties { MappedClass = new AllReferencesAndID() }));
-            Assert.False(TestObject.IsDefault(new MapProperties { MappedClass = new AllReferencesAndID { ID = 1 } }));
-            Assert.True(TestObject.IsDefault(null));
-            Assert.True(TestObject.IsDefault(new MapProperties()));
+            Assert.True(_TestObject.IsDefault(new MapProperties { MappedClass = new AllReferencesAndID() }));
+            Assert.False(_TestObject.IsDefault(new MapProperties { MappedClass = new AllReferencesAndID { ID = 1 } }));
+            Assert.True(_TestObject.IsDefault(null));
+            Assert.True(_TestObject.IsDefault(new MapProperties()));
         }
 
         [Theory]
         [MemberData(nameof(SetValueData))]
         public void SetValue(MapProperties inputObject, long newValue, object expectedResult)
         {
-            TestObject.SetValue(inputObject, newValue);
-            Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
+            _TestObject.SetValue(inputObject, newValue);
+            Assert.Equal(expectedResult, _TestObject.GetValue(inputObject));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -20,16 +19,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void Creation()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
@@ -40,16 +39,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
         [Fact]
         public void GenerateDefaultQueriesConcreteClass1()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
@@ -93,16 +92,16 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
         [Fact]
         public void GenerateDefaultQueriesConcreteClass2()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings, ObjectPool);
@@ -146,16 +145,16 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
         [Fact]
         public void GenerateDefaultQueriesConcreteClass3()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings, ObjectPool);

@@ -33,21 +33,21 @@ namespace Inflatable.ClassMapper.BaseClasses
     /// <summary>
     /// Property base class
     /// </summary>
-    /// <typeparam name="ClassType">The type of the class type.</typeparam>
-    /// <typeparam name="DataType">The type of the data type.</typeparam>
-    /// <typeparam name="ReturnType">The type of the return type.</typeparam>
+    /// <typeparam name="TClassType">The type of the class type.</typeparam>
+    /// <typeparam name="TDataType">The type of the data type.</typeparam>
+    /// <typeparam name="TReturnType">The type of the return type.</typeparam>
     /// <seealso cref="IProperty{ClassType, DataType, ReturnType}"/>
     /// <seealso cref="IProperty{ClassType, DataType}"/>
-    public abstract class PropertyBase<ClassType, DataType, ReturnType> : IProperty<ClassType, DataType, ReturnType>, IProperty<ClassType, DataType>
-        where ClassType : class
-        where ReturnType : IProperty<ClassType, DataType, ReturnType>
+    public abstract class PropertyBase<TClassType, TDataType, TReturnType> : IProperty<TClassType, TDataType, TReturnType>, IProperty<TClassType, TDataType>
+        where TClassType : class
+        where TReturnType : IProperty<TClassType, TDataType, TReturnType>
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        protected PropertyBase(Expression<Func<ClassType, DataType>> expression, IMapping mapping)
+        protected PropertyBase(Expression<Func<TClassType, TDataType>> expression, IMapping mapping)
         {
             if (expression is null)
             {
@@ -59,42 +59,42 @@ namespace Inflatable.ClassMapper.BaseClasses
                 throw new ArgumentNullException(nameof(mapping));
             }
 
-            var DataTypeInfo = typeof(DataType);
+            var DataTypeInfo = typeof(TDataType);
 
             Name = expression.PropertyName();
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
             CompiledExpression = expression.Compile();
-            Constraints = new List<string>();
+            Constraints = [];
             DefaultValue = () => default!;
             Expression = expression;
-            SetAction = Expression.PropertySetter<ClassType, DataType>()?.Compile() ?? new Action<ClassType, DataType>((_, __) => { });
+            SetAction = Expression.PropertySetter<TClassType, TDataType>()?.Compile() ?? new Action<TClassType, TDataType>((_, __) => { });
             InternalFieldName = "_" + Name + "Derived";
-            var PropertyInfo = typeof(ClassType).GetProperty<ClassType>(Name);
+            var PropertyInfo = typeof(TClassType).GetProperty<TClassType>(Name);
 
-            var Attributes = PropertyInfo.GetCustomAttributes();
-            var StringLengthAttribute = (Attributes.FirstOrDefault(x => x is StringLengthAttribute) as StringLengthAttribute);
+            var Attributes = PropertyInfo?.GetCustomAttributes();
+            var StringLengthAttribute = (Attributes?.FirstOrDefault(x => x is StringLengthAttribute) as StringLengthAttribute);
 
-            if (Attributes.FirstOrDefault(x => x is MaxLengthAttribute) is MaxLengthAttribute maxLength)
-                MaxLength = maxLength.Length;
-            else if (!(StringLengthAttribute is null))
-                MaxLength = StringLengthAttribute.MaximumLength;
+            if (Attributes?.FirstOrDefault(x => x is MaxLengthAttribute) is MaxLengthAttribute MaxLength)
+                this.MaxLength = MaxLength.Length;
+            else if (StringLengthAttribute is not null)
+                this.MaxLength = StringLengthAttribute.MaximumLength;
             else
-                MaxLength = typeof(DataType) == typeof(string) || typeof(DataType) == typeof(Uri) ? 100 : 0;
+                this.MaxLength = typeof(TDataType) == typeof(string) || typeof(TDataType) == typeof(Uri) ? 100 : 0;
 
-            var MinLength = (Attributes.FirstOrDefault(x => x is MinLengthAttribute) as MinLengthAttribute)?.Length > 0
+            var MinLength = Attributes?.FirstOrDefault(x => x is MinLengthAttribute) is MinLengthAttribute { Length: > 0 }
                 || StringLengthAttribute?.MinimumLength > 0;
 
-            Nullable = ((typeof(DataType) == typeof(string)
-                    || typeof(DataType) == typeof(Uri)
-                    || typeof(DataType) == typeof(byte[]))
-                        && !Attributes.Any(x => x is RequiredAttribute)
+            Nullable = ((typeof(TDataType) == typeof(string)
+                    || typeof(TDataType) == typeof(Uri)
+                    || typeof(TDataType) == typeof(byte[]))
+                        && Attributes?.Any(x => x is RequiredAttribute) == false
                         && !MinLength)
                 || (DataTypeInfo.IsGenericType && DataTypeInfo.GetGenericTypeDefinition() == typeof(Nullable<>));
 
             ParentMapping = mapping;
-            PropertyType = typeof(DataType);
+            PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
-            ComputedColumnSpecification = string.Empty;
+            ComputedColumnSpecification = "";
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Compiled version of the expression
         /// </summary>
-        public Func<ClassType, DataType> CompiledExpression { get; }
+        public Func<TClassType, TDataType> CompiledExpression { get; }
 
         /// <summary>
         /// Gets the computed column specification.
@@ -129,12 +129,12 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Default value for this property
         /// </summary>
-        public Func<DataType> DefaultValue { get; private set; }
+        public Func<TDataType> DefaultValue { get; private set; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
-        public Expression<Func<ClassType, DataType>> Expression { get; }
+        public Expression<Func<TClassType, TDataType>> Expression { get; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="IProperty"/> is indexed.
@@ -200,7 +200,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Gets or sets the expression used to set the value.
         /// </summary>
         /// <value>The set expression.</value>
-        protected Action<ClassType, DataType> SetAction { get; set; }
+        protected Action<TClassType, TDataType> SetAction { get; set; }
 
         /// <summary>
         /// != operator
@@ -208,7 +208,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>returns true if they are not equal, false otherwise</returns>
-        public static bool operator !=(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator !=(PropertyBase<TClassType, TDataType, TReturnType> first, PropertyBase<TClassType, TDataType, TReturnType> second)
         {
             return !(first == second);
         }
@@ -219,9 +219,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>True if the first item is less than the second, false otherwise</returns>
-        public static bool operator <(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator <(PropertyBase<TClassType, TDataType, TReturnType> first, PropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -230,9 +230,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>true if the first and second item are the same, false otherwise</returns>
-        public static bool operator ==(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator ==(PropertyBase<TClassType, TDataType, TReturnType> first, PropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
+            return ReferenceEquals(first, second) || (first is not null && second is not null && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -241,9 +241,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="first">First item</param>
         /// <param name="second">Second item</param>
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
-        public static bool operator >(PropertyBase<ClassType, DataType, ReturnType> first, PropertyBase<ClassType, DataType, ReturnType> second)
+        public static bool operator >(PropertyBase<TClassType, TDataType, TReturnType> first, PropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() > second.GetHashCode();
         }
 
         /// <summary>
@@ -280,10 +280,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj)
-        {
-            return (obj is PropertyBase<ClassType, DataType, ReturnType> SecondObj) && this == SecondObj;
-        }
+        public override bool Equals(object? obj) => (obj is PropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
@@ -296,7 +293,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 SetColumnInfo(null);
             }
 
-            return Columns ?? Array.Empty<IQueryColumnInfo>();
+            return Columns ?? [];
         }
 
         /// <summary>
@@ -309,30 +306,30 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// Determines whether this instance is indexed.
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsIndexed()
+        public TReturnType IsIndexed()
         {
             Index = true;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Determines whether [is read only].
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsReadOnly()
+        public TReturnType IsReadOnly()
         {
             ReadOnly = true;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Determines whether this instance is unique.
         /// </summary>
         /// <returns>this</returns>
-        public ReturnType IsUnique()
+        public TReturnType IsUnique()
         {
             Unique = true;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -368,10 +365,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="columnName">Name of the field.</param>
         /// <returns>this</returns>
-        public ReturnType WithColumnName(string columnName)
+        public TReturnType WithColumnName(string columnName)
         {
             ColumnName = columnName;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -379,10 +376,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="computedColumnSpecification">The computed column specification.</param>
         /// <returns>this</returns>
-        public ReturnType WithComputedColumnSpecification(string computedColumnSpecification)
+        public TReturnType WithComputedColumnSpecification(string computedColumnSpecification)
         {
             ComputedColumnSpecification = computedColumnSpecification;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -390,10 +387,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="constraint">The constraint.</param>
         /// <returns>this</returns>
-        public ReturnType WithConstraint(string constraint)
+        public TReturnType WithConstraint(string constraint)
         {
             Constraints.Add(constraint);
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -401,10 +398,10 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>this</returns>
-        public ReturnType WithDefaultValue(Func<DataType> value)
+        public TReturnType WithDefaultValue(Func<TDataType> value)
         {
             DefaultValue = value;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
@@ -412,16 +409,16 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="maxLength">The maximum length.</param>
         /// <returns>This</returns>
-        public ReturnType WithMaxLength(int maxLength)
+        public TReturnType WithMaxLength(int maxLength)
         {
             MaxLength = maxLength;
-            return (ReturnType)(IProperty<ClassType, DataType, ReturnType>)this;
+            return (TReturnType)(IProperty<TClassType, TDataType, TReturnType>)this;
         }
 
         /// <summary>
         /// Sets the length for the property to MAX.
         /// </summary>
         /// <returns>this.</returns>
-        public ReturnType WithMaxLength() => WithMaxLength(-1);
+        public TReturnType WithMaxLength() => WithMaxLength(-1);
     }
 }

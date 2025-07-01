@@ -45,7 +45,7 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ManyToOneMany(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
+        public ManyToOneMany(Expression<Func<TClassType, IList<TDataType>?>> expression, IMapping mapping)
             : base(expression, mapping)
         {
         }
@@ -58,7 +58,7 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToOneProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType>>(Expression).Convert<TResult>();
+            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType>?>(Expression).Convert<TResult>();
             var ReturnObject = new ManyToOneMany<TResult, TDataType>(Result, mapping);
             if (Cascade)
             {
@@ -88,23 +88,23 @@ namespace Inflatable.ClassMapper.Default
                 return;
             var ActualParent = mappings.GetChildMappings<TClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(tempMapping =>
             {
-                return ActualParent.IDProperties.ForEach(x =>
+                return ActualParent?.IDProperties.ForEach(x =>
                 {
                     return new ComplexColumnInfo<TClassType, TClassType>(
                         x.GetColumnInfo()[0],
                         ColumnName + x.ParentMapping.TableName + x.ColumnName,
                         y => y,
                         true,
-                        TempMapping?.SchemaName ?? string.Empty,
-                        TempMapping?.TableName ?? string.Empty
+                        tempMapping?.SchemaName ?? "",
+                        tempMapping?.TableName ?? ""
                     );
-                });
+                }) ?? [];
             }));
-            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(tempMapping =>
             {
-                return TempMapping?.IDProperties.ForEach(x =>
+                return tempMapping?.IDProperties.ForEach(x =>
                 {
                     return new ComplexListColumnInfo<TClassType, TDataType>(
                         x.GetColumnInfo()[0],
@@ -114,9 +114,9 @@ namespace Inflatable.ClassMapper.Default
                         x.ParentMapping.SchemaName,
                         x.ParentMapping.TableName
                     );
-                });
+                }) ?? [];
             }));
-            Columns = TempColumns.ToArray();
+            Columns = [.. TempColumns];
         }
 
         /// <summary>
@@ -129,11 +129,10 @@ namespace Inflatable.ClassMapper.Default
         {
             if (sourceSpec is null || mappings is null)
                 return;
-            ForeignMapping = mappings.GetChildMappings<TDataType>()
+            ForeignMapping = [.. mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
-                                     .Distinct()
-                                     .ToList();
+                                     .Distinct()];
             if (ForeignMapping is null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(TClassType).Name}.{Name}");
@@ -147,12 +146,12 @@ namespace Inflatable.ClassMapper.Default
                 var SetNullOnDelete = !ParentMappings.Contains(TempMapping);
                 foreach (var IDMapping in ParentIDs)
                 {
-                    if (ForeignTable.Columns.Any(x => x.Name == ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName))
+                    if (ForeignTable?.Columns.Any(x => x.Name == ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName) == true)
                     {
                         continue;
                     }
 
-                    ForeignTable.AddColumn<object>(ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName,
+                    ForeignTable?.AddColumn<object>(ColumnName + IDMapping.ParentMapping.TableName + IDMapping.ColumnName,
                                     IDMapping.PropertyType.To<DbType>(),
                                     IDMapping.MaxLength,
                                     true,

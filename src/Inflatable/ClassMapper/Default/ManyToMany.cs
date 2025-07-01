@@ -45,7 +45,7 @@ namespace Inflatable.ClassMapper.Default
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ManyToMany(Expression<Func<TClassType, IList<TDataType>>> expression, IMapping mapping)
+        public ManyToMany(Expression<Func<TClassType, IList<TDataType>?>> expression, IMapping mapping)
             : base(expression, mapping)
         {
         }
@@ -58,7 +58,7 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IManyToManyProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType>>(Expression).Convert<TResult>();
+            var Result = new ExpressionTypeConverter<TClassType, IList<TDataType>?>(Expression).Convert<TResult>();
             var ReturnObject = new ManyToMany<TResult, TDataType>(Result, mapping);
             if (Cascade)
             {
@@ -86,11 +86,11 @@ namespace Inflatable.ClassMapper.Default
         {
             if (mappings is null)
                 return;
-            var Prefix = string.Empty;
+            var Prefix = "";
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            if (ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
+            if (ForeignMapping.Any(tempMapping => ParentWithID == tempMapping))
             {
                 Prefix = "Parent_";
             }
@@ -104,12 +104,12 @@ namespace Inflatable.ClassMapper.Default
                     y => y,
                     false,
                     ParentMapping.SchemaName,
-                    TableName ?? string.Empty
+                    TableName ?? ""
                 );
             }));
-            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(tempMapping =>
             {
-                return TempMapping.IDProperties.ForEach(x =>
+                return tempMapping.IDProperties.ForEach(x =>
                 {
                     return new ComplexListColumnInfo<TClassType, TDataType>(
                         x.GetColumnInfo()[0],
@@ -117,11 +117,11 @@ namespace Inflatable.ClassMapper.Default
                         CompiledExpression,
                         true,
                         ParentMapping.SchemaName,
-                        TableName ?? string.Empty
+                        TableName ?? ""
                     );
                 });
             }));
-            Columns = TempColumns.ToArray();
+            Columns = [.. TempColumns];
         }
 
         /// <summary>
@@ -134,11 +134,10 @@ namespace Inflatable.ClassMapper.Default
         {
             if (mappings is null || sourceSpec is null)
                 return;
-            ForeignMapping = mappings.GetChildMappings<TDataType>()
+            ForeignMapping = [.. mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
-                                     .Distinct()
-                                     .ToList();
+                                     .Distinct()];
             if (ForeignMapping is null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(TClassType).Name}.{Name}");
@@ -149,8 +148,8 @@ namespace Inflatable.ClassMapper.Default
 
             if (string.IsNullOrEmpty(TableName))
             {
-                var Class1 = ParentWithID.ObjectType.Name;
-                var Class2 = ForeignMapping.OrderBy(x => x.ObjectType.Name).FirstOrDefault()?.ObjectType.Name ?? string.Empty;
+                var Class1 = ParentWithID?.ObjectType.Name;
+                var Class2 = ForeignMapping.OrderBy(x => x.ObjectType.Name).FirstOrDefault()?.ObjectType.Name ?? "";
                 if (string.CompareOrdinal(Class1, Class2) < 0)
                 {
                     SetTableName(Class1 + "_" + Class2);
@@ -165,12 +164,12 @@ namespace Inflatable.ClassMapper.Default
                 return;
             }
 
-            var JoinTable = sourceSpec.AddTable(TableName ?? string.Empty, ParentMapping.SchemaName);
+            var JoinTable = sourceSpec.AddTable(TableName ?? "", ParentMapping.SchemaName);
             JoinTable.AddColumn<long>("ID_", DbType.UInt64, 0, false, true, false, true, false);
             var ParentIDMappings = ParentMappings.SelectMany(x => x.IDProperties);
-            DatabaseJoinsCascade = ForeignMapping.Any(TempMapping => !ParentMappings.Contains(TempMapping));
-            var Prefix = string.Empty;
-            if (ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
+            DatabaseJoinsCascade = ForeignMapping.Any(tempMapping => !ParentMappings.Contains(tempMapping));
+            var Prefix = "";
+            if (ForeignMapping.Any(tempMapping => ParentWithID == tempMapping))
             {
                 Prefix = "Parent_";
             }

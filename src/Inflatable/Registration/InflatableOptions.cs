@@ -13,7 +13,7 @@ namespace Inflatable.Registration
         /// Gets the default.
         /// </summary>
         /// <value>The default.</value>
-        public static InflatableOptions Default => new InflatableOptions
+        public static InflatableOptions Default => new()
         {
             ScanFrequency = TimeSpan.FromMinutes(1),
             MaxCacheSize = 1024,

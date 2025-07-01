@@ -32,7 +32,7 @@ namespace Inflatable.Tests.Modules
                                             .MinimumLevel
                                             .Debug()
                                             .CreateLogger();
-            bootstrapper.AddSingleton<ILogger>(Log.Logger);
+            bootstrapper.AddSingleton(Log.Logger);
         }
     }
 }

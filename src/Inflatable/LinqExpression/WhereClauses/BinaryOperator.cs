@@ -20,6 +20,7 @@ using Inflatable.LinqExpression.WhereClauses.Interfaces;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Inflatable.LinqExpression.WhereClauses
@@ -48,8 +49,59 @@ namespace Inflatable.LinqExpression.WhereClauses
             Right = right ?? throw new ArgumentNullException(nameof(right));
             Left.Parent = this;
             Right.Parent = this;
-            TypeCode = TypeCodeConverter[operatorType](this);
+            TypeCode = _TypeCodeConverter[operatorType](this);
         }
+
+        /// <summary>
+        /// The converter
+        /// </summary>
+        private static readonly Dictionary<ExpressionType, string> _Converter = new()
+        {
+            [ExpressionType.And] = " AND ",
+            [ExpressionType.Or] = " OR ",
+            [ExpressionType.Equal] = " = ",
+            [ExpressionType.NotEqual] = " <> ",
+            [ExpressionType.LessThan] = " < ",
+            [ExpressionType.LessThanOrEqual] = " <= ",
+            [ExpressionType.GreaterThan] = " > ",
+            [ExpressionType.GreaterThanOrEqual] = " >= ",
+            [ExpressionType.OrElse] = " OR ",
+            [ExpressionType.AndAlso] = " AND "
+        };
+
+        /// <summary>
+        /// The negation converter
+        /// </summary>
+        private static readonly Dictionary<ExpressionType, ExpressionType> _NegationConverter = new()
+        {
+            [ExpressionType.And] = ExpressionType.Or,
+            [ExpressionType.Or] = ExpressionType.And,
+            [ExpressionType.Equal] = ExpressionType.NotEqual,
+            [ExpressionType.NotEqual] = ExpressionType.Equal,
+            [ExpressionType.LessThan] = ExpressionType.GreaterThanOrEqual,
+            [ExpressionType.LessThanOrEqual] = ExpressionType.GreaterThan,
+            [ExpressionType.GreaterThan] = ExpressionType.LessThanOrEqual,
+            [ExpressionType.GreaterThanOrEqual] = ExpressionType.LessThan,
+            [ExpressionType.OrElse] = ExpressionType.AndAlso,
+            [ExpressionType.AndAlso] = ExpressionType.OrElse
+        };
+
+        /// <summary>
+        /// The type code converter
+        /// </summary>
+        private static readonly Dictionary<ExpressionType, Func<BinaryOperator, Type>> _TypeCodeConverter = new()
+        {
+            [ExpressionType.And] = _ => typeof(bool),
+            [ExpressionType.Or] = _ => typeof(bool),
+            [ExpressionType.Equal] = _ => typeof(bool),
+            [ExpressionType.NotEqual] = _ => typeof(bool),
+            [ExpressionType.LessThan] = _ => typeof(bool),
+            [ExpressionType.LessThanOrEqual] = _ => typeof(bool),
+            [ExpressionType.GreaterThan] = _ => typeof(bool),
+            [ExpressionType.GreaterThanOrEqual] = _ => typeof(bool),
+            [ExpressionType.OrElse] = _ => typeof(bool),
+            [ExpressionType.AndAlso] = _ => typeof(bool)
+        };
 
         /// <summary>
         /// Gets a value indicating whether this instance is null.
@@ -88,57 +140,6 @@ namespace Inflatable.LinqExpression.WhereClauses
         public Type TypeCode { get; }
 
         /// <summary>
-        /// The converter
-        /// </summary>
-        private static readonly IDictionary<ExpressionType, string> Converter = new Dictionary<ExpressionType, string>
-        {
-            [ExpressionType.And] = " AND ",
-            [ExpressionType.Or] = " OR ",
-            [ExpressionType.Equal] = " = ",
-            [ExpressionType.NotEqual] = " <> ",
-            [ExpressionType.LessThan] = " < ",
-            [ExpressionType.LessThanOrEqual] = " <= ",
-            [ExpressionType.GreaterThan] = " > ",
-            [ExpressionType.GreaterThanOrEqual] = " >= ",
-            [ExpressionType.OrElse] = " OR ",
-            [ExpressionType.AndAlso] = " AND "
-        };
-
-        /// <summary>
-        /// The negation converter
-        /// </summary>
-        private static readonly IDictionary<ExpressionType, ExpressionType> NegationConverter = new Dictionary<ExpressionType, ExpressionType>
-        {
-            [ExpressionType.And] = ExpressionType.Or,
-            [ExpressionType.Or] = ExpressionType.And,
-            [ExpressionType.Equal] = ExpressionType.NotEqual,
-            [ExpressionType.NotEqual] = ExpressionType.Equal,
-            [ExpressionType.LessThan] = ExpressionType.GreaterThanOrEqual,
-            [ExpressionType.LessThanOrEqual] = ExpressionType.GreaterThan,
-            [ExpressionType.GreaterThan] = ExpressionType.LessThanOrEqual,
-            [ExpressionType.GreaterThanOrEqual] = ExpressionType.LessThan,
-            [ExpressionType.OrElse] = ExpressionType.AndAlso,
-            [ExpressionType.AndAlso] = ExpressionType.OrElse
-        };
-
-        /// <summary>
-        /// The type code converter
-        /// </summary>
-        private static readonly IDictionary<ExpressionType, Func<BinaryOperator, Type>> TypeCodeConverter = new Dictionary<ExpressionType, Func<BinaryOperator, Type>>
-        {
-            [ExpressionType.And] = _ => typeof(bool),
-            [ExpressionType.Or] = _ => typeof(bool),
-            [ExpressionType.Equal] = _ => typeof(bool),
-            [ExpressionType.NotEqual] = _ => typeof(bool),
-            [ExpressionType.LessThan] = _ => typeof(bool),
-            [ExpressionType.LessThanOrEqual] = _ => typeof(bool),
-            [ExpressionType.GreaterThan] = _ => typeof(bool),
-            [ExpressionType.GreaterThanOrEqual] = _ => typeof(bool),
-            [ExpressionType.OrElse] = _ => typeof(bool),
-            [ExpressionType.AndAlso] = _ => typeof(bool)
-        };
-
-        /// <summary>
         /// Copies this instance.
         /// </summary>
         /// <returns>A copy of this instance.</returns>
@@ -162,7 +163,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <returns>The resulting operator.</returns>
         public IOperator LogicallyNegate()
         {
-            Operator = NegationConverter[Operator];
+            Operator = _NegationConverter[Operator];
             Left = Left.LogicallyNegate();
             Right = Right.LogicallyNegate();
             return this;
@@ -221,7 +222,7 @@ namespace Inflatable.LinqExpression.WhereClauses
                 return "(" + Left + " IS " + Right + ")";
             if (Operator == ExpressionType.NotEqual && Right.IsNull)
                 return "(" + Left + " IS NOT " + Right + ")";
-            return "(" + Left + Converter[Operator] + Right + ")";
+            return "(" + Left + _Converter[Operator] + Right + ")";
         }
     }
 }

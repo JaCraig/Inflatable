@@ -33,16 +33,16 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <param name="typeGraph">The type graph.</param>
         /// <param name="mappings">The mappings.</param>
         /// <param name="logger">The logger.</param>
-        public static void Reduce(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger logger)
+        public static void Reduce(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger? logger)
         {
             if (typeGraph is null || mappings is null)
                 return;
             var Mapping = mappings[typeGraph.Root.Data];
             Mapping.Reduce(logger);
             var GraphList = typeGraph.ToList();
-            for (int x = 0, maxCount = GraphList.Count; x < maxCount; x++)
+            for (int X = 0, MaxCount = GraphList.Count; X < MaxCount; X++)
             {
-                var ParentMapping = mappings[GraphList[x]];
+                var ParentMapping = mappings[GraphList[X]];
                 if (Mapping != ParentMapping)
                 {
                     Mapping.Reduce(ParentMapping, logger);

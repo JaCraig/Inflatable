@@ -32,12 +32,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public DataLoadQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation, objectPool)
         {
-            IDProperties = MappingInformation.GetChildMappings(MappedClassType)
+            IDProperties = [.. MappingInformation.GetChildMappings(MappedClassType)
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                              .Distinct()
-                                             .SelectMany(x => x.IDProperties)
-                                             .ToArray();
-            IDColumnInfo = IDProperties.Select(x => x.GetColumnInfo()[0]).ToArray();
+                                             .SelectMany(x => x.IDProperties)];
+            IDColumnInfo = [.. IDProperties.Select(x => x.GetColumnInfo()[0])];
         }
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => Array.Empty<IQuery>();
+        public override IQuery[] GenerateDeclarations() => [];
 
         /// <summary>
         /// Generates the query.
@@ -77,7 +76,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <returns>The resulting query</returns>
         public override IQuery[] GenerateQueries(TMappedClass queryObject)
         {
-            return GenerateQueries(Array.Empty<Dynamo>());
+            return GenerateQueries([]);
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public IQuery[] GenerateQueries(Dynamo[] ids)
         {
             if (ids is null || ids.Length == 0)
-                return Array.Empty<IQuery>();
+                return [];
             var ReturnValue = new List<IQuery>();
             var ItemSize = ids.FirstOrDefault()?.Count ?? 1;
             foreach (var ChildMapping in MappingInformation.GetChildMappings(MappedClassType))
@@ -96,10 +95,37 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
                 foreach (var Split in SplitList(ids, 1000 / ItemSize))
                 {
-                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, Split), QueryType, GetParameters(Split, IDColumnInfo)));
+                    ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, Split), QueryType, DataLoadQuery<TMappedClass>.GetParameters(Split, IDColumnInfo)));
                 }
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
+        }
+
+        /// <summary>
+        /// Gets the parameters.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <param name="idProperties">The identifier properties.</param>
+        /// <returns>The parameters</returns>
+        private static IParameter?[] GetParameters(Memory<Dynamo> ids, IQueryColumnInfo[] idProperties)
+        {
+            IParameter?[] ReturnValues = new IParameter?[ids.Length * idProperties.Length];
+            var IDSpan = ids.Span;
+            int CurrentSpot = 0;
+            for (int X = 0; X < IDSpan.Length; ++X)
+            {
+                var Value = IDSpan[X];
+                for (int Y = 0; Y < idProperties.Length; ++Y)
+                {
+                    var TempParam = idProperties[Y].GetAsParameter(Value);
+                    if (TempParam is null)
+                        continue;
+                    TempParam.ID += X;
+                    ReturnValues[CurrentSpot] = TempParam;
+                    ++CurrentSpot;
+                }
+            }
+            return ReturnValues;
         }
 
         /// <summary>
@@ -112,9 +138,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private static IEnumerable<Memory<T>> SplitList<T>(T[] values, int nSize = 1000)
         {
             var ValueSpan = new Memory<T>(values);
-            for (int i = 0; i < values.Length; i += nSize)
+            for (int I = 0; I < values.Length; I += nSize)
             {
-                yield return ValueSpan.Slice(i, Math.Min(nSize, values.Length - i));
+                yield return ValueSpan.Slice(I, Math.Min(nSize, values.Length - I));
             }
         }
 
@@ -127,12 +153,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+            for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
             {
-                var ParentNode = node.Nodes[x];
+                var ParentNode = node.Nodes[X];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var IDProperties = ObjectPool.Get();
-                var Separator = string.Empty;
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
@@ -163,10 +189,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            var Separator = string.Empty;
-            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+            var Separator = "";
+            for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
             {
-                var ParentNode = node.Nodes[x];
+                var ParentNode = node.Nodes[X];
                 var ParentResult = GenerateParameterList(ParentNode);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
@@ -199,7 +225,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateSelectQuery(Utils.TreeNode<Type>? node, Memory<Dynamo> ids)
         {
             if (node is null)
-                return string.Empty;
+                return "";
             var Builder = ObjectPool.Get();
             var ParameterList = ObjectPool.Get();
             var FromClause = ObjectPool.Get();
@@ -246,50 +272,25 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateWhereClause(Memory<Dynamo> ids)
         {
             var Result = ObjectPool.Get();
-            var Separator2 = string.Empty;
-            for (int x = 0; x < ids.Length; ++x)
+            var Separator2 = "";
+            for (int X = 0; X < ids.Length; ++X)
             {
-                var Separator = string.Empty;
+                var Separator = "";
                 Result.AppendFormat("{0}(", Separator2);
                 foreach (var IDMapping in IDProperties)
                 {
                     Result.AppendFormat("{0}{1}={2}",
                         Separator,
                         "[" + IDMapping.ParentMapping?.SchemaName + "].[" + IDMapping.ParentMapping?.TableName + "].[" + IDMapping.ColumnName + "]",
-                        GetParameterName(IDMapping) + x);
+                        GetParameterName(IDMapping) + X);
                     Separator = "\r\nAND ";
                 }
-                Result.Append(")");
+                Result.Append(')');
                 Separator2 = "\r\nOR ";
             }
             var ReturnValue = Result.ToString();
             ObjectPool.Return(Result);
             return ReturnValue;
-        }
-
-        /// <summary>
-        /// Gets the parameters.
-        /// </summary>
-        /// <param name="ids">The ids.</param>
-        /// <param name="idProperties">The identifier properties.</param>
-        /// <returns>The parameters</returns>
-        private IParameter?[] GetParameters(Memory<Dynamo> ids, IQueryColumnInfo[] idProperties)
-        {
-            IParameter?[] ReturnValues = new IParameter?[ids.Length * idProperties.Length];
-            var IDSpan = ids.Span;
-            int CurrentSpot = 0;
-            for (int x = 0; x < IDSpan.Length; ++x)
-            {
-                var Value = IDSpan[x];
-                for (int y = 0; y < idProperties.Length; ++y)
-                {
-                    var TempParam = idProperties[y].GetAsParameter(Value);
-                    TempParam.ID += x;
-                    ReturnValues[CurrentSpot] = TempParam;
-                    ++CurrentSpot;
-                }
-            }
-            return ReturnValues;
         }
     }
 }

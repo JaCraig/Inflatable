@@ -1,7 +1,6 @@
 ﻿using BigBook;
 using DragonHoard.Core;
 using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -24,24 +23,24 @@ namespace Inflatable.Tests.Sessions
         public SessionWithMapBaseClassProperties(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            InternalMappingManager = new MappingManager(new IMapping[] {
+            InternalMappingManager = new MappingManager([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new MapPropertiesWithBaseClassesMapping(),
                 new MapProperty2Mapping(),
                 new MapProperty1Mapping(),
                 new MapPropertyBaseClassMapping(),
                 new IMapPropertyInterfaceMapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
             InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
 
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
+            InternalQueryProviderManager = new QueryProviderManager([TempQueryProvider], GetLogger<QueryProviderManager>());
 
             CacheManager = Resolve<Cache>();
             CacheManager.GetOrAddCache("Inflatable").Compact(1);
@@ -59,7 +58,7 @@ namespace Inflatable.Tests.Sessions
         {
             _ = Resolve<ISession>();
             await SetupDataAsync();
-            MapPropertiesWithBaseClasses[] Results = DbContext<MapPropertiesWithBaseClasses>.CreateQuery().ToArray();
+            MapPropertiesWithBaseClasses[] Results = [.. DbContext<MapPropertiesWithBaseClasses>.CreateQuery()];
             Assert.Equal(3, Results.Length);
         }
 
@@ -153,7 +152,7 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            MapPropertiesWithBaseClasses[] UpdatedResults = Results.ForEach(x =>
+            MapPropertiesWithBaseClasses[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.MappedClass = new MapProperty1
@@ -161,7 +160,7 @@ namespace Inflatable.Tests.Sessions
                     ChildValue1 = 11,
                     BaseValue1 = 10
                 };
-            }).ToArray();
+            })];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -175,11 +174,11 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             System.Collections.Generic.IEnumerable<MapPropertiesWithBaseClasses> Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
-            MapPropertiesWithBaseClasses[] UpdatedResults = Results.ForEach(x =>
+            MapPropertiesWithBaseClasses[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.MappedClass = null;
-            }).ToArray();
+            })];
             Assert.Equal(6, await TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<MapPropertiesWithBaseClasses>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM MapPropertiesWithBaseClasses_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));

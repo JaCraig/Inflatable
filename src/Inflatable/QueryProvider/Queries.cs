@@ -58,20 +58,7 @@ namespace Inflatable.QueryProvider
         /// Gets or sets the internal dictionary.
         /// </summary>
         /// <value>The internal dictionary.</value>
-        private Dictionary<QueryType, IQuery?> InternalDictionary { get; } = new Dictionary<QueryType, IQuery?>();
-
-        /// <summary>
-        /// Gets or sets the <see cref="IQuery"/> with the specified key.
-        /// </summary>
-        /// <value>The <see cref="IQuery"/>.</value>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public IQuery? this[QueryType key]
-        {
-            get => InternalDictionary.GetValue(key);
-
-            set => InternalDictionary.SetValue(key, value);
-        }
+        private Dictionary<QueryType, IQuery?> InternalDictionary { get; } = [];
 
         /// <summary>
         /// Adds the specified item.
@@ -114,14 +101,14 @@ namespace Inflatable.QueryProvider
         {
             if (array is null)
                 return;
-            foreach (var item in InternalDictionary)
+            foreach (var Item in InternalDictionary)
             {
                 if (array.Length <= arrayIndex)
                 {
                     return;
                 }
 
-                array[arrayIndex] = item;
+                array[arrayIndex] = Item;
             }
         }
 
@@ -129,7 +116,7 @@ namespace Inflatable.QueryProvider
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator</returns>
-        public IEnumerator<KeyValuePair<QueryType, IQuery?>>? GetEnumerator() => InternalDictionary.GetEnumerator();
+        public IEnumerator<KeyValuePair<QueryType, IQuery?>> GetEnumerator() => InternalDictionary.GetEnumerator();
 
         /// <summary>
         /// Gets the enumerator.
@@ -158,5 +145,18 @@ namespace Inflatable.QueryProvider
         /// <param name="value">The value.</param>
         /// <returns>True if it is found, false otherwise.</returns>
         public bool TryGetValue(QueryType key, out IQuery? value) => InternalDictionary.TryGetValue(key, out value);
+
+        /// <summary>
+        /// Gets or sets the <see cref="IQuery"/> with the specified key.
+        /// </summary>
+        /// <value>The <see cref="IQuery"/>.</value>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        public IQuery? this[QueryType key]
+        {
+            get => InternalDictionary.GetValue(key);
+
+            set => InternalDictionary.SetValue(key, value);
+        }
     }
 }

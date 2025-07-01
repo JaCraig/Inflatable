@@ -44,6 +44,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Initializes a new instance of the <see cref="LinqQueryGenerator{TMappedClass}"/> class.
         /// </summary>
         /// <param name="mappingInformation">The mapping information.</param>
+        /// <param name="objectPool">The object pool.</param>
         /// <exception cref="ArgumentNullException">mappingInformation</exception>
         public LinqQueryGenerator(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation, objectPool)
@@ -60,7 +61,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, "", QueryType) };
+        public override IQuery[] GenerateDeclarations() => [new Query(AssociatedType, CommandType.Text, "", QueryType)];
 
         /// <summary>
         /// Generates the query.
@@ -70,14 +71,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateQueries(QueryData<TMappedClass> data)
         {
             if (data is null)
-                return Array.Empty<IQuery>();
+                return [];
             var ReturnValue = new List<IQuery>();
             foreach (var ChildMapping in MappingInformation.GetChildMappings(typeof(TMappedClass)))
             {
                 var TypeGraph = MappingInformation.TypeGraphs[ChildMapping.ObjectType];
-                ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, data), QueryType, data.Parameters.ToArray()));
+                ReturnValue.Add(new Query(ChildMapping.ObjectType, CommandType.Text, GenerateSelectQuery(TypeGraph?.Root, data), QueryType, [.. data.Parameters]));
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
         }
 
         /// <summary>
@@ -89,12 +90,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+            for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
             {
-                var ParentNode = node.Nodes[x];
+                var ParentNode = node.Nodes[X];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var IDProperties = ObjectPool.Get();
-                var Separator = string.Empty;
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     IDProperties.AppendFormat(CultureInfo.InvariantCulture, "{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
@@ -125,14 +126,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateOrderByClause(Utils.TreeNode<Type> node, QueryData<TMappedClass> data)
         {
             var Builder = ObjectPool.Get();
-            var Splitter = string.Empty;
-            string ReturnValue = string.Empty;
+            var Splitter = "";
+            string ReturnValue = "";
             if (data.OrderByValues.Count == 0)
             {
                 var Mapping = MappingInformation.Mappings[node.Data];
-                for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+                for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
                 {
-                    var ParentNode = node.Nodes[x];
+                    var ParentNode = node.Nodes[X];
                     var ParentResult = GenerateOrderByClause(ParentNode, data);
                     if (!string.IsNullOrEmpty(ParentResult))
                         return ParentResult;
@@ -170,10 +171,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            var Separator = string.Empty;
-            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+            var Separator = "";
+            for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
             {
-                var ParentNode = node.Nodes[x];
+                var ParentNode = node.Nodes[X];
                 var ParentResult = GenerateParameterList(ParentNode, data);
                 if (!string.IsNullOrEmpty(ParentResult))
                 {
@@ -207,7 +208,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateSelectQuery(Utils.TreeNode<Type>? node, QueryData<TMappedClass> data)
         {
             if (node is null)
-                return string.Empty;
+                return "";
             var Builder = ObjectPool.Get();
             var ParameterList = ObjectPool.Get();
             var FromClause = ObjectPool.Get();

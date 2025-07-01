@@ -1,7 +1,7 @@
 ﻿using Inflatable.DataSource;
 using Inflatable.Interfaces;
-using System.Data.Common;
 using Microsoft.Data.SqlClient;
+using System.Data.Common;
 
 namespace Inflatable.Tests.TestDatabases.Databases
 {
@@ -13,7 +13,7 @@ namespace Inflatable.Tests.TestDatabases.Databases
 
         public DbProviderFactory Provider => SqlClientFactory.Instance;
 
-        public Options SourceOptions => new Options()
+        public Options SourceOptions => new()
         {
             Optimize = true,
             Access = Enums.SourceAccess.Read | Enums.SourceAccess.Write,

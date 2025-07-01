@@ -7,7 +7,7 @@ namespace Inflatable.Tests.TestDatabases.ManyToOneProperties
     {
         public ManyToOneManyCascadeProperties()
         {
-            ManyToOneClass = new List<ManyToOneOneProperties>();
+            ManyToOneClass = [];
         }
 
         [BoolGenerator]

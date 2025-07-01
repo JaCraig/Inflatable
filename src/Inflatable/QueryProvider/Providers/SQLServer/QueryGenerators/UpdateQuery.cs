@@ -76,7 +76,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateDeclarations() => [new Query(AssociatedType, CommandType.Text, "", QueryType)];
 
         /// <summary>
         /// Generates the query.
@@ -86,7 +86,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateQueries(TMappedClass queryObject)
         {
             var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
-            return new[] { new Query(AssociatedType, CommandType.Text, GenerateUpdateQuery(TypeGraph?.Root, queryObject), QueryType, GenerateParameters(queryObject)) };
+            return [new Query(AssociatedType, CommandType.Text, GenerateUpdateQuery(TypeGraph?.Root, queryObject), QueryType, GenerateParameters(queryObject))];
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var ParentNode = node.Nodes[x];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var TempIDProperties = ObjectPool.Get();
-                var Separator = string.Empty;
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
@@ -135,7 +135,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ORMObject = queryObject as IORMObject;
             var Parameters = IDProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
             Parameters.AddRange(ReferenceProperties.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)));
-            return Parameters.ToArray();
+            return [.. Parameters];
         }
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateUpdateQuery(Utils.TreeNode<Type>? node, TMappedClass queryObject)
         {
             if (node is null)
-                return string.Empty;
+                return "";
             var Builder = ObjectPool.Get();
-            var Splitter = string.Empty;
+            var Splitter = "";
 
             //Generate parent queries
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
@@ -178,7 +178,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //Adding reference properties
             foreach (var ReferenceProperty in Mapping.ReferenceProperties)
             {
-                ParameterList.Append(Splitter).Append(GetColumnName(ReferenceProperty)).Append("=").Append(GetParameterName(ReferenceProperty));
+                ParameterList.Append(Splitter).Append(GetColumnName(ReferenceProperty)).Append('=').Append(GetParameterName(ReferenceProperty));
                 Splitter = ",";
             }
 
@@ -212,7 +212,7 @@ FROM {2}WHERE {3};", GetTableName(Mapping), ParameterList, FromClause, WhereClau
         {
             var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            var Separator = string.Empty;
+            var Separator = "";
             for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
             {
                 var ParentNode = node.Nodes[x];

@@ -1,7 +1,6 @@
 ﻿using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MapProperties;
-using System.Linq;
 using Xunit;
 
 namespace Inflatable.Tests.ClassMapper
@@ -23,7 +22,7 @@ namespace Inflatable.Tests.ClassMapper
             Assert.NotNull(TestObject);
             Assert.Equal(typeof(TestDatabaseMapping), TestObject.DatabaseConfigType);
             _ = Assert.Single(TestObject.IDProperties);
-            Assert.Equal("ID_", TestObject.IDProperties.First().ColumnName);
+            Assert.Equal("ID_", TestObject.IDProperties[0].ColumnName);
             _ = Assert.Single(TestObject.ReferenceProperties);
             Assert.Equal(typeof(MapProperties), TestObject.ObjectType);
             Assert.Equal(10, TestObject.Order);

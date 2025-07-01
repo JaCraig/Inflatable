@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BigBook;
 using Inflatable.Benchmarks.Models;
-using Inflatable.Registration;
 using Inflatable.Sessions;
 using InflatableBenchmarks.Benchmarks;
 using Microsoft.Data.SqlClient;
@@ -18,18 +17,18 @@ namespace Inflatable.Benchmarks.Tests
     [MemoryDiagnoser, HtmlExporter]
     public class BatchVsSingleSave
     {
+        private static IServiceProvider? _ServiceProvider;
+
         [Params(10, 50, 100, 1000)]
         public int Count { get; set; }
-
-        private static IServiceProvider ServiceProvider;
 
         [Benchmark]
         public async Task BatchSaveAsync()
         {
             var Context = new DbContext();
-            for (var x = 0; x < Count; ++x)
+            for (var X = 0; X < Count; ++X)
             {
-                Context.Save(new SimpleClass() { BoolValue = x % 2 == 0 });
+                Context.Save(new SimpleClass() { BoolValue = X % 2 == 0 });
             }
 
             await Context.ExecuteAsync().ConfigureAwait(false);
@@ -40,8 +39,8 @@ namespace Inflatable.Benchmarks.Tests
         {
             try
             {
-                IConfiguration? Configuration = ServiceProvider.GetService<IConfiguration>();
-                SQLHelper? Batch = ServiceProvider.GetService<SQLHelper>();
+                IConfiguration? Configuration = _ServiceProvider?.GetService<IConfiguration>();
+                SQLHelper? Batch = _ServiceProvider?.GetService<SQLHelper>();
                 if (Batch is null || Configuration is null)
                     return;
                 await Batch.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
@@ -54,20 +53,20 @@ namespace Inflatable.Benchmarks.Tests
         [GlobalSetup]
         public void Setup()
         {
-            ServiceProvider = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
+            _ServiceProvider = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
                 ?.RegisterMirage()).BuildServiceProvider();
             Console.WriteLine("Setting up session");
-            ServiceProvider.GetService<Session>();
+            _ServiceProvider.GetService<Session>();
         }
 
         [Benchmark]
         public async Task SingleSaveAsync()
         {
             var Tasks = new List<Task>();
-            for (var x = 0; x < Count; ++x)
+            for (var X = 0; X < Count; ++X)
             {
-                Tasks.Add(new DbContext().Save(new SimpleClass() { BoolValue = x % 2 == 0 }).ExecuteAsync());
+                Tasks.Add(new DbContext().Save(new SimpleClass() { BoolValue = X % 2 == 0 }).ExecuteAsync());
             }
             await Task.WhenAll(Tasks).ConfigureAwait(false);
         }
@@ -75,9 +74,9 @@ namespace Inflatable.Benchmarks.Tests
         [Benchmark(Baseline = true)]
         public void SingleSaveSync()
         {
-            for (var x = 0; x < Count; ++x)
+            for (var X = 0; X < Count; ++X)
             {
-                AsyncHelper.RunSync(() => new DbContext().Save(new SimpleClass() { BoolValue = x % 2 == 0 }).ExecuteAsync());
+                AsyncHelper.RunSync(() => new DbContext().Save(new SimpleClass() { BoolValue = X % 2 == 0 }).ExecuteAsync());
             }
         }
     }

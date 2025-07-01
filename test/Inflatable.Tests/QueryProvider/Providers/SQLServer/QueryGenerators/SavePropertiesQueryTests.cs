@@ -31,16 +31,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void Creation()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -52,16 +52,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateDeclarations()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -75,16 +75,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQuery()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new SavePropertiesQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -98,17 +98,17 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithManyToManyProperties()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new ManyToManyPropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
-            Inflatable.ClassMapper.Interfaces.IManyToManyProperty ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties.First();
-            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
+            Inflatable.ClassMapper.Interfaces.IManyToManyProperty ManyToManyProperty = Mappings.Mappings[typeof(ManyToManyProperties)].ManyToManyProperties[0];
+            var TempDataModel = new DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
 
             var TestObject = new SavePropertiesQuery<ManyToManyProperties>(Mappings, ObjectPool);
@@ -130,18 +130,18 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithManyToOneManyFromComplexGraphProperties()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new ManyToOneManyFromComplexClassMapping(),
                 new IManyToOneManyMapping(),
                 new AllReferencesAndIDMappingWithDatabase()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
-            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyFromComplexClass)].ManyToOneProperties.First();
-            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
+            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyFromComplexClass)].ManyToOneProperties[0];
+            var TempDataModel = new DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToOneManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
             ManyToOneManyProperty.SetColumnInfo(Mappings);
 
@@ -164,17 +164,17 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithManyToOneManyProperties()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new ManyToOneManyPropertiesMapping(),
                 new ManyToOneOnePropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
-            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties.First();
-            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
+            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneManyProperties)].ManyToOneProperties[0];
+            var TempDataModel = new DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToOneManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
             ManyToOneManyProperty.SetColumnInfo(Mappings);
 
@@ -206,18 +206,18 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithManyToOneOneFromComplexGraphProperties()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new ManyToOneOneFromComplexClassMapping(),
                 new IManyToOneOneMapping(),
                 new AllReferencesAndIDMappingWithDatabase()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
-            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneOneFromComplexClass)].ManyToOneProperties.First();
-            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
+            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneManyProperty = Mappings.Mappings[typeof(ManyToOneOneFromComplexClass)].ManyToOneProperties[0];
+            var TempDataModel = new DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToOneManyProperty.Setup(Mappings, TempDataModel.SourceSpec);
             ManyToOneManyProperty.SetColumnInfo(Mappings);
 
@@ -243,17 +243,17 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithManyToOneSingleProperties()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new ManyToOneOnePropertiesMapping(),
                 new ManyToOneManyPropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
 
-            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties.First();
-            var TempDataModel = new Inflatable.Schema.DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
+            Inflatable.ClassMapper.Interfaces.IManyToOneProperty ManyToOneOneProperty = Mappings.Mappings[typeof(ManyToOneOneProperties)].ManyToOneProperties[0];
+            var TempDataModel = new DataModel(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
             ManyToOneOneProperty.Setup(Mappings, TempDataModel.SourceSpec);
 
             var TestObject = new SavePropertiesQuery<ManyToOneOneProperties>(Mappings, ObjectPool);
@@ -278,16 +278,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapPropertiesComplex()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new MapPropertiesFromComplexClassMapping(),
                 new IMapPropertiesInterfaceMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapPropertiesFromComplexClass)].MapProperties.First();
+            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapPropertiesFromComplexClass)].MapProperties[0];
             MapProperty.Setup(Mappings);
             MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapPropertiesFromComplexClass>(Mappings, ObjectPool);
@@ -305,15 +305,15 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapPropertiesNullValue()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new MapPropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
+            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties[0];
             MapProperty.Setup(Mappings);
             MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapProperties>(Mappings, ObjectPool);
@@ -331,15 +331,15 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapPropertiesWithValue()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new MapPropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties.First();
+            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapProperties)].MapProperties[0];
             MapProperty.Setup(Mappings);
             MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapProperties>(Mappings, ObjectPool);
@@ -357,15 +357,15 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapToSelf()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new MapPropertyReferencesSelfMapping(),
                 new IMapPropertiesInterfaceMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapPropertyReferencesSelf)].MapProperties.First();
+            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(MapPropertyReferencesSelf)].MapProperties[0];
             MapProperty.Setup(Mappings);
             MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapPropertyReferencesSelf>(Mappings, ObjectPool);
@@ -383,15 +383,15 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapToSelfOnInterface()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new MapPropertiesWithMapOnInterfaceMapping(),
                 new IMapPropertiesInterfaceWithMapMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties.First();
+            Inflatable.ClassMapper.Interfaces.IMapProperty MapProperty = Mappings.Mappings[typeof(IMapPropertiesInterfaceWithMap)].MapProperties[0];
             MapProperty.Setup(Mappings);
             MapProperty.SetColumnInfo(Mappings);
             var TestObject = new SavePropertiesQuery<MapPropertiesWithMapOnInterface>(Mappings, ObjectPool);

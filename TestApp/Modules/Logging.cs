@@ -7,7 +7,7 @@ namespace InflatableBenchmarks.Benchmarks.Modules
     /// <summary>
     /// Logging module
     /// </summary>
-    /// <seealso cref="Canister.Interfaces.IModule"/>
+    /// <seealso cref="IModule"/>
     public class LoggingModule : IModule
     {
         /// <summary>
@@ -29,7 +29,7 @@ namespace InflatableBenchmarks.Benchmarks.Modules
                                             .MinimumLevel
                                             .Debug()
                                             .CreateLogger();
-            bootstrapper.AddSingleton<ILogger>(Log.Logger);
+            bootstrapper.AddSingleton(Log.Logger);
         }
     }
 }

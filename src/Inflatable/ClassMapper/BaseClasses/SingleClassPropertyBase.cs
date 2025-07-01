@@ -67,7 +67,7 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping;
             PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
-            ForeignMapping = new List<IMapping>();
+            ForeignMapping = [];
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
+            return ReferenceEquals(first, second) || (first is not null && second is not null && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(SingleClassPropertyBase<TClassType, TDataType, TReturnType> first, SingleClassPropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() > second.GetHashCode();
         }
 
         /// <summary>
@@ -210,9 +210,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <param name="table">The table.</param>
         public void AddToTable(ITable table)
         {
-            ForeignMapping.ForEach(TempMapping => TempMapping.IDProperties.ForEach(x =>
+            ForeignMapping.ForEach(tempMapping => tempMapping.IDProperties.ForEach(x =>
              {
-                 table.AddColumn<object>(TempMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
+                 table.AddColumn<object>(tempMapping.TableName + ParentMapping.Prefix + Name + ParentMapping.Suffix + x.ColumnName,
                                  x.PropertyType.To<DbType>(),
                                  x.MaxLength,
                                  true,
@@ -220,7 +220,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                                  false,
                                  false,
                                  Unique,
-                                 TempMapping.TableName,
+                                 tempMapping.TableName,
                                  x.ColumnName,
                                  null!,
                                  "",
@@ -254,13 +254,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj) => (obj is SingleClassPropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
+        public override bool Equals(object? obj) => (obj is SingleClassPropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
         /// </summary>
         /// <returns>The column information.</returns>
-        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? Array.Empty<IQueryColumnInfo>();
+        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? [];
 
         /// <summary>
         /// Returns the hash code for the property
@@ -271,9 +271,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
-        /// <param name="Object">Object to get the value from</param>
+        /// <param name="modelObject">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        public object? GetValue(object Object) => !(Object is TClassType TempObject) ? null : CompiledExpression(TempObject);
+        public object? GetValue(object modelObject) => modelObject is not TClassType TempObject ? null : CompiledExpression(TempObject);
 
         /// <summary>
         /// Determines whether this instance is unique.

@@ -9,24 +9,24 @@ namespace InflatableBenchmarks.Benchmarks.Modules
     {
         public int Order => 1;
 
-        protected string ConnectionString => "Data Source=localhost;Initial Catalog=SpeedTestDatabase;Integrated Security=SSPI;Pooling=false";
+        protected static string ConnectionString => "Data Source=localhost;Initial Catalog=SpeedTestDatabase;Integrated Security=SSPI;Pooling=false";
 
-        protected string ConnectionStringAlt => "Data Source=localhost;Initial Catalog=SpeedTestDatabaseAlt;Integrated Security=SSPI;Pooling=false";
+        protected static string ConnectionStringAlt => "Data Source=localhost;Initial Catalog=SpeedTestDatabaseAlt;Integrated Security=SSPI;Pooling=false";
 
         public void Load(IServiceCollection bootstrapper)
         {
             if (bootstrapper is null)
                 return;
-            var dict = new Dictionary<string, string>
+            var Dict = new Dictionary<string, string?>
                 {
                     { "ConnectionStrings:Default", ConnectionString },
                     { "ConnectionStrings:DefaultAlt", ConnectionStringAlt },
                 };
             IConfigurationRoot Configuration = new ConfigurationBuilder()
-                             .AddInMemoryCollection(dict)
+                             .AddInMemoryCollection(Dict)
                              .Build();
             bootstrapper.AddSingleton<IConfiguration>(Configuration);
-            bootstrapper.AddSingleton<IConfigurationRoot>(Configuration);
+            bootstrapper.AddSingleton(Configuration);
         }
     }
 }

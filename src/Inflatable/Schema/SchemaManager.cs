@@ -36,12 +36,12 @@ namespace Inflatable.Schema
         /// </summary>
         /// <param name="mappings">The mappings.</param>
         /// <param name="config">The configuration.</param>
-        /// <param name="logger">The logger.</param>
         /// <param name="dataModeler">The data modeler.</param>
         /// <param name="sherlock">The sherlock analyzer.</param>
         /// <param name="sQLHelper">The s ql helper.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">logger</exception>
-        public SchemaManager(MappingManager mappings, IConfiguration config, DataModeler dataModeler, Sherlock sherlock, SQLHelper sQLHelper, ILogger<SchemaManager> logger = null)
+        public SchemaManager(MappingManager mappings, IConfiguration config, DataModeler dataModeler, Sherlock sherlock, SQLHelper sQLHelper, ILogger<SchemaManager>? logger = null)
         {
             Models = mappings.Sources.ToList(x => new DataModel(x, config, dataModeler, sherlock, sQLHelper, logger));
         }

@@ -33,9 +33,9 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <param name="typeGraph">The type graph.</param>
         /// <param name="mappings">The mappings.</param>
         /// <param name="logger">The logger.</param>
-        public static void Merge(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger logger)
+        public static void Merge(Tree<Type>? typeGraph, Dictionary<Type, IMapping> mappings, ILogger? logger)
         {
-            if (typeGraph is null || mappings is null || logger is null)
+            if (typeGraph is null || mappings is null)
                 return;
             var CurrentNode = typeGraph.Root;
             if (CurrentNode.Nodes.Count == 0)
@@ -43,12 +43,12 @@ namespace Inflatable.ClassMapper.TypeGraph
                 return;
             }
 
-            for (var x = 0; x < CurrentNode.Nodes.Count; ++x)
+            for (var X = 0; X < CurrentNode.Nodes.Count; ++X)
             {
-                if (MergeNode(CurrentNode.Nodes[x], mappings, logger))
+                if (MergeNode(CurrentNode.Nodes[X], mappings, logger))
                 {
-                    CurrentNode.Nodes[x].Remove();
-                    --x;
+                    CurrentNode.Nodes[X].Remove();
+                    --X;
                 }
             }
         }
@@ -60,14 +60,14 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// <param name="mappings">The mappings.</param>
         /// <param name="logger">The logger.</param>
         /// <returns>True if it is merged, false otherwise.</returns>
-        private static bool MergeNode(TreeNode<Type> node, Dictionary<Type, IMapping> mappings, ILogger logger)
+        private static bool MergeNode(TreeNode<Type> node, Dictionary<Type, IMapping> mappings, ILogger? logger)
         {
-            for (var x = 0; x < node.Nodes.Count; ++x)
+            for (var X = 0; X < node.Nodes.Count; ++X)
             {
-                if (MergeNode(node.Nodes[x], mappings, logger))
+                if (MergeNode(node.Nodes[X], mappings, logger))
                 {
-                    node.Nodes[x].Remove();
-                    --x;
+                    node.Nodes[X].Remove();
+                    --X;
                 }
             }
             var Mapping = mappings[node.Data];
@@ -75,7 +75,7 @@ namespace Inflatable.ClassMapper.TypeGraph
             {
                 var MappingParent = mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
-                logger.LogDebug("Merging {0} into {1}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                logger?.LogDebug("Merging {objectTypeName} into {parentObjectTypeName}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
             if (node.Parent != null && Mapping.Merge)
@@ -83,7 +83,7 @@ namespace Inflatable.ClassMapper.TypeGraph
                 var MappingParent = mappings[node.Parent.Data];
                 MappingParent.Copy(Mapping);
                 node.Parent.Nodes.AddRange(node.Nodes);
-                logger.LogDebug("Merging {0} into {1}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
+                logger?.LogDebug("Merging {objectTypeName} into {parentObjectTypeName}", Mapping.ObjectType.Name, MappingParent.ObjectType.Name);
                 return true;
             }
             return false;

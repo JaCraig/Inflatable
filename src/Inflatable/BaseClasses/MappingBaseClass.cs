@@ -54,21 +54,31 @@ namespace Inflatable.BaseClasses
             int order = 10, bool merge = false)
         {
             SchemaName = schemaName;
-            AutoIDProperties = new List<IAutoIDProperty>();
-            IDProperties = new List<IIDProperty>();
+            AutoIDProperties = [];
+            IDProperties = [];
             Order = order;
-            Prefix = prefix ?? string.Empty;
+            Prefix = prefix ?? "";
             Queries = new Queries();
-            ReferenceProperties = new List<IProperty>();
-            Suffix = suffix ?? string.Empty;
+            ReferenceProperties = [];
+            Suffix = suffix ?? "";
             TableName = string.IsNullOrEmpty(tableName) ? Prefix + ObjectType.Name + Suffix : tableName;
             Merge = merge;
-            MapProperties = new List<IMapProperty>();
-            ManyToManyProperties = new List<IManyToManyProperty>();
-            ManyToOneProperties = new List<IManyToOneProperty>();
+            MapProperties = [];
+            ManyToManyProperties = [];
+            ManyToOneProperties = [];
             _HashCode = TableName.GetHashCode(StringComparison.InvariantCulture) * DatabaseConfigType.GetHashCode() % int.MaxValue;
             _ToString = ObjectType.Name;
         }
+
+        /// <summary>
+        /// The hash code
+        /// </summary>
+        private readonly int _HashCode;
+
+        /// <summary>
+        /// To string
+        /// </summary>
+        private readonly string _ToString;
 
         /// <summary>
         /// Gets the automatic identifier properties.
@@ -162,35 +172,25 @@ namespace Inflatable.BaseClasses
         public string TableName { get; }
 
         /// <summary>
-        /// The hash code
-        /// </summary>
-        private readonly int _HashCode;
-
-        /// <summary>
-        /// To string
-        /// </summary>
-        private readonly string _ToString;
-
-        /// <summary>
         /// Determines if the two items are not equal
         /// </summary>
-        /// <param name="Item1">Item 1</param>
-        /// <param name="Item2">Item 2</param>
+        /// <param name="item1">Item 1</param>
+        /// <param name="item2">Item 2</param>
         /// <returns>True if they are not equal, false otherwise</returns>
-        public static bool operator !=(MappingBaseClass<TClassType, TDatabaseType>? Item1, MappingBaseClass<TClassType, TDatabaseType>? Item2)
+        public static bool operator !=(MappingBaseClass<TClassType, TDatabaseType>? item1, MappingBaseClass<TClassType, TDatabaseType>? item2)
         {
-            return !(Item1 == Item2);
+            return !(item1 == item2);
         }
 
         /// <summary>
         /// Determines if the two items are equal
         /// </summary>
-        /// <param name="Item1">Item 1</param>
-        /// <param name="Item2">Item 2</param>
+        /// <param name="item1">Item 1</param>
+        /// <param name="item2">Item 2</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public static bool operator ==(MappingBaseClass<TClassType, TDatabaseType>? Item1, MappingBaseClass<TClassType, TDatabaseType>? Item2)
+        public static bool operator ==(MappingBaseClass<TClassType, TDatabaseType>? item1, MappingBaseClass<TClassType, TDatabaseType>? item2)
         {
-            return Item1?.Equals(Item2) ?? Item2 is null;
+            return item1?.Equals(item2) ?? item2 is null;
         }
 
         /// <summary>
@@ -220,25 +220,25 @@ namespace Inflatable.BaseClasses
         {
             if (mapping is null)
                 return;
-            foreach (var prop in mapping.IDProperties.Where(x => !IDProperties.Any(y => y.Name == x.Name)))
+            foreach (var Prop in mapping.IDProperties.Where(x => !IDProperties.Any(y => y.Name == x.Name)))
             {
-                CopyProperty(prop);
+                CopyProperty(Prop);
             }
-            foreach (var prop in mapping.ReferenceProperties.Where(x => !ReferenceProperties.Any(y => y.Name == x.Name)))
+            foreach (var Prop in mapping.ReferenceProperties.Where(x => !ReferenceProperties.Any(y => y.Name == x.Name)))
             {
-                CopyProperty(prop);
+                CopyProperty(Prop);
             }
-            foreach (var prop in mapping.MapProperties.Where(x => !MapProperties.Any(y => y.Name == x.Name)))
+            foreach (var Prop in mapping.MapProperties.Where(x => !MapProperties.Any(y => y.Name == x.Name)))
             {
-                CopyProperty(prop);
+                CopyProperty(Prop);
             }
-            foreach (var prop in mapping.ManyToManyProperties.Where(x => !ManyToManyProperties.Any(y => y.Name == x.Name)))
+            foreach (var Prop in mapping.ManyToManyProperties.Where(x => !ManyToManyProperties.Any(y => y.Name == x.Name)))
             {
-                CopyProperty(prop);
+                CopyProperty(Prop);
             }
-            foreach (var prop in mapping.ManyToOneProperties.Where(x => !ManyToOneProperties.Any(y => y.Name == x.Name)))
+            foreach (var Prop in mapping.ManyToOneProperties.Where(x => !ManyToOneProperties.Any(y => y.Name == x.Name)))
             {
-                CopyProperty(prop);
+                CopyProperty(Prop);
             }
         }
 
@@ -248,7 +248,8 @@ namespace Inflatable.BaseClasses
         /// <param name="prop">The property.</param>
         public void CopyProperty(IIDProperty prop)
         {
-            if (prop is null) return;
+            if (prop is null)
+                return;
             IDProperties.Add(prop.Convert<TClassType>(this));
         }
 
@@ -258,7 +259,8 @@ namespace Inflatable.BaseClasses
         /// <param name="prop">The property.</param>
         public void CopyProperty(IProperty prop)
         {
-            if (prop is null) return;
+            if (prop is null)
+                return;
             ReferenceProperties.Add(prop.Convert<TClassType>(this));
         }
 
@@ -268,7 +270,8 @@ namespace Inflatable.BaseClasses
         /// <param name="prop">The property.</param>
         public void CopyProperty(IMapProperty prop)
         {
-            if (prop is null) return;
+            if (prop is null)
+                return;
             MapProperties.Add(prop.Convert<TClassType>(this));
         }
 
@@ -278,7 +281,8 @@ namespace Inflatable.BaseClasses
         /// <param name="prop">The property.</param>
         public void CopyProperty(IManyToOneProperty prop)
         {
-            if (prop is null) return;
+            if (prop is null)
+                return;
             ManyToOneProperties.Add(prop.Convert<TClassType>(this));
         }
 
@@ -288,7 +292,8 @@ namespace Inflatable.BaseClasses
         /// <param name="prop">The property.</param>
         public void CopyProperty(IManyToManyProperty prop)
         {
-            if (prop is null) return;
+            if (prop is null)
+                return;
             ManyToManyProperties.Add(prop.Convert<TClassType>(this));
         }
 
@@ -312,18 +317,18 @@ namespace Inflatable.BaseClasses
         public string GetColumnName(string propertyName)
         {
             var IDProperty = IDProperties.Find(x => x.Name == propertyName);
-            if (!(IDProperty is null))
+            if (IDProperty is not null)
             {
                 return "[" + SchemaName + "].[" + TableName + "].[" + IDProperty.ColumnName + "]";
             }
 
             var ReferenceProperty = ReferenceProperties.Find(x => x.Name == propertyName);
-            if (!(ReferenceProperty is null))
+            if (ReferenceProperty is not null)
             {
                 return "[" + SchemaName + "].[" + TableName + "].[" + ReferenceProperty.ColumnName + "]";
             }
 
-            return string.Empty;
+            return "";
         }
 
         /// <summary>
@@ -339,12 +344,12 @@ namespace Inflatable.BaseClasses
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the ID object</returns>
         /// <exception cref="ArgumentNullException">expression</exception>
-        public ID<TClassType, TDataType> ID<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
+        public ID<TClassType, TDataType?> ID<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType?>> expression)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            var ReturnValue = new ID<TClassType, TDataType>(expression, this);
+            var ReturnValue = new ID<TClassType, TDataType?>(expression, this);
             IDProperties.Add(ReturnValue);
             return ReturnValue;
         }
@@ -355,7 +360,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
+        public ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>?>> expression)
             where TDataType : class
         {
             if (expression is null)
@@ -372,7 +377,7 @@ namespace Inflatable.BaseClasses
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>>> expression)
+        public ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, IList<TDataType>?>> expression)
             where TDataType : class
         {
             if (expression is null)
@@ -422,82 +427,82 @@ namespace Inflatable.BaseClasses
         /// Reduces this instance and removes duplicate properties
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public void Reduce(ILogger logger)
+        public void Reduce(ILogger? logger)
         {
             var IsDebug = logger?.IsEnabled(LogLevel.Debug) ?? false;
-            for (var x = 0; x < IDProperties.Count; ++x)
+            for (var X = 0; X < IDProperties.Count; ++X)
             {
-                var IDProperty1 = IDProperties[x];
-                for (var y = x + 1; y < IDProperties.Count; ++y)
+                var IDProperty1 = IDProperties[X];
+                for (var Y = X + 1; Y < IDProperties.Count; ++Y)
                 {
-                    var IDProperty2 = IDProperties[y];
+                    var IDProperty2 = IDProperties[Y];
                     if (IDProperty1 == IDProperty2)
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate ID and removing {0} from mapping {1}", IDProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate ID and removing {propertyName} from mapping {objectTypeName}", IDProperty2.Name, ObjectType.Name);
                         IDProperties.Remove(IDProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
-            for (var x = 0; x < ReferenceProperties.Count; ++x)
+            for (var X = 0; X < ReferenceProperties.Count; ++X)
             {
-                var ReferenceProperty1 = ReferenceProperties[x];
-                for (var y = x + 1; y < ReferenceProperties.Count; ++y)
+                var ReferenceProperty1 = ReferenceProperties[X];
+                for (var Y = X + 1; Y < ReferenceProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = ReferenceProperties[y];
+                    var ReferenceProperty2 = ReferenceProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate reference and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate reference and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
-            for (var x = 0; x < MapProperties.Count; ++x)
+            for (var X = 0; X < MapProperties.Count; ++X)
             {
-                var ReferenceProperty1 = MapProperties[x];
-                for (var y = x + 1; y < MapProperties.Count; ++y)
+                var ReferenceProperty1 = MapProperties[X];
+                for (var Y = X + 1; Y < MapProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = MapProperties[y];
+                    var ReferenceProperty2 = MapProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate map and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate map and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
-            for (var x = 0; x < ManyToManyProperties.Count; ++x)
+            for (var X = 0; X < ManyToManyProperties.Count; ++X)
             {
-                var ReferenceProperty1 = ManyToManyProperties[x];
-                for (var y = x + 1; y < ManyToManyProperties.Count; ++y)
+                var ReferenceProperty1 = ManyToManyProperties[X];
+                for (var Y = X + 1; Y < ManyToManyProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = ManyToManyProperties[y];
+                    var ReferenceProperty2 = ManyToManyProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate many to many and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to many and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
 
-            for (var x = 0; x < ManyToOneProperties.Count; ++x)
+            for (var X = 0; X < ManyToOneProperties.Count; ++X)
             {
-                var ReferenceProperty1 = ManyToOneProperties[x];
-                for (var y = x + 1; y < ManyToOneProperties.Count; ++y)
+                var ReferenceProperty1 = ManyToOneProperties[X];
+                for (var Y = X + 1; Y < ManyToOneProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = ManyToOneProperties[y];
+                    var ReferenceProperty2 = ManyToOneProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate many to one and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to one and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
@@ -508,69 +513,69 @@ namespace Inflatable.BaseClasses
         /// </summary>
         /// <param name="parentMapping">The parent mapping.</param>
         /// <param name="logger">The logger.</param>
-        public void Reduce(IMapping parentMapping, ILogger logger)
+        public void Reduce(IMapping parentMapping, ILogger? logger)
         {
             if (parentMapping is null)
                 return;
             var IsDebug = logger?.IsEnabled(LogLevel.Debug) ?? false;
-            for (var x = 0; x < parentMapping.ReferenceProperties.Count; ++x)
+            for (var X = 0; X < parentMapping.ReferenceProperties.Count; ++X)
             {
-                var ReferenceProperty1 = parentMapping.ReferenceProperties[x];
-                for (var y = 0; y < ReferenceProperties.Count; ++y)
+                var ReferenceProperty1 = parentMapping.ReferenceProperties[X];
+                for (var Y = 0; Y < ReferenceProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = ReferenceProperties[y];
+                    var ReferenceProperty2 = ReferenceProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate reference and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate reference and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         ReferenceProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
-            for (var x = 0; x < parentMapping.MapProperties.Count; ++x)
+            for (var X = 0; X < parentMapping.MapProperties.Count; ++X)
             {
-                var ReferenceProperty1 = parentMapping.MapProperties[x];
-                for (var y = x + 1; y < MapProperties.Count; ++y)
+                var ReferenceProperty1 = parentMapping.MapProperties[X];
+                for (var Y = X + 1; Y < MapProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = MapProperties[y];
+                    var ReferenceProperty2 = MapProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate map and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate map and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         MapProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
-            for (var x = 0; x < parentMapping.ManyToManyProperties.Count; ++x)
+            for (var X = 0; X < parentMapping.ManyToManyProperties.Count; ++X)
             {
-                var ReferenceProperty1 = parentMapping.ManyToManyProperties[x];
-                for (var y = x + 1; y < ManyToManyProperties.Count; ++y)
+                var ReferenceProperty1 = parentMapping.ManyToManyProperties[X];
+                for (var Y = X + 1; Y < ManyToManyProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = ManyToManyProperties[y];
+                    var ReferenceProperty2 = ManyToManyProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate many to many and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to many and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToManyProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
 
-            for (var x = 0; x < parentMapping.ManyToOneProperties.Count; ++x)
+            for (var X = 0; X < parentMapping.ManyToOneProperties.Count; ++X)
             {
-                var ReferenceProperty1 = parentMapping.ManyToOneProperties[x];
-                for (var y = x + 1; y < ManyToOneProperties.Count; ++y)
+                var ReferenceProperty1 = parentMapping.ManyToOneProperties[X];
+                for (var Y = X + 1; Y < ManyToOneProperties.Count; ++Y)
                 {
-                    var ReferenceProperty2 = ManyToOneProperties[y];
+                    var ReferenceProperty2 = ManyToOneProperties[Y];
                     if (ReferenceProperty1.Similar(ReferenceProperty2))
                     {
                         if (IsDebug)
-                            logger?.LogDebug("Found duplicate many to one and removing {0} from mapping {1}", ReferenceProperty2.Name, ObjectType.Name);
+                            logger?.LogDebug("Found duplicate many to one and removing {propertyName} from mapping {objectTypeName}", ReferenceProperty2.Name, ObjectType.Name);
                         ManyToOneProperties.Remove(ReferenceProperty2);
-                        --y;
+                        --Y;
                     }
                 }
             }
@@ -583,12 +588,12 @@ namespace Inflatable.BaseClasses
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the reference object</returns>
         /// <exception cref="ArgumentNullException">expression</exception>
-        public Reference<TClassType, TDataType> Reference<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType>> expression)
+        public Reference<TClassType, TDataType?> Reference<TDataType>(System.Linq.Expressions.Expression<Func<TClassType, TDataType?>> expression)
         {
             if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            var ReturnValue = new Reference<TClassType, TDataType>(expression, this);
+            var ReturnValue = new Reference<TClassType, TDataType?>(expression, this);
             ReferenceProperties.Add(ReturnValue);
             return ReturnValue;
         }

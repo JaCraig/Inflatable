@@ -86,7 +86,7 @@ namespace Inflatable.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return !ReferenceEquals(left, right) && !(left is null) && !(right is null) && left.CompareTo(right) < 0;
+            return !ReferenceEquals(left, right) && left is not null && right is not null && left.CompareTo(right) < 0;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Inflatable.BaseClasses
         /// <returns>The result of the operator.</returns>
         public static bool operator <=(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return ReferenceEquals(left, right) || (!(left is null) && !(right is null) && left.CompareTo(right) <= 0);
+            return ReferenceEquals(left, right) || (left is not null && right is not null && left.CompareTo(right) <= 0);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Inflatable.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return ReferenceEquals(left, right) || (!(left is null) && !(right is null) && left.CompareTo(right) == 0);
+            return ReferenceEquals(left, right) || (left is not null && right is not null && left.CompareTo(right) == 0);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace Inflatable.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return !ReferenceEquals(left, right) && !(left is null) && !(right is null) && left.CompareTo(right) > 0;
+            return !ReferenceEquals(left, right) && left is not null && right is not null && left.CompareTo(right) > 0;
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Inflatable.BaseClasses
         /// <returns>The result of the operator.</returns>
         public static bool operator >=(ObjectBaseClass<TObjectType, TIDType> left, ObjectBaseClass<TObjectType, TIDType> right)
         {
-            return ReferenceEquals(left, right) || (!(left is null) && !(right is null) && left.CompareTo(right) >= 0);
+            return ReferenceEquals(left, right) || (left is not null && right is not null && left.CompareTo(right) >= 0);
         }
 
         /// <summary>

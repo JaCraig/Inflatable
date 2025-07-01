@@ -71,7 +71,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateDeclarations() => [new Query(AssociatedType, CommandType.Text, "", QueryType)];
 
         /// <summary>
         /// Generates the query.
@@ -79,9 +79,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
+        public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty? property)
         {
-            return property is IManyToManyProperty Property ? ManyToManyProperty(Property, queryObject) : Array.Empty<IQuery>();
+            return property is IManyToManyProperty Property ? ManyToManyProperty(Property, queryObject) : [];
         }
 
         /// <summary>
@@ -97,13 +97,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ParametersList = ObjectPool.Get();
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var Prefix = string.Empty;
-            if (property.ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
+            var Prefix = "";
+            if (property.ForeignMapping.Any(tempMapping => ParentWithID == tempMapping))
             {
                 Prefix = "Parent_";
             }
 
-            var Splitter2 = string.Empty;
+            var Splitter2 = "";
             foreach (var IDProperty in IDProperties)
             {
                 ParametersList.Append(Splitter2).Append("([").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
@@ -111,10 +111,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 {
                     ParametersList.Append(Splitter2).Append(" OR [").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("] = @").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
                 }
-                ParametersList.Append(")");
+                ParametersList.Append(')');
                 Splitter2 = " AND ";
             }
-            Builder.Append("DELETE FROM ").Append(GetTableName(property)).Append(" WHERE ").Append(ParametersList).Append(";");
+            Builder.Append("DELETE FROM ").Append(GetTableName(property)).Append(" WHERE ").Append(ParametersList).Append(';');
             var Result = Builder.ToString();
             ObjectPool.Return(Builder);
             ObjectPool.Return(PropertyNames);
@@ -136,8 +136,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var ReturnValues = new List<IParameter>();
             var ParentMappings = MappingInformation.GetChildMappings(property.ParentMapping.ObjectType).SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType)).Distinct();
             var ParentWithID = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var Prefix = string.Empty;
-            if (property.ForeignMapping.Any(TempMapping => ParentWithID == TempMapping))
+            var Prefix = "";
+            if (property.ForeignMapping.Any(tempMapping => ParentWithID == tempMapping))
             {
                 Prefix = "Parent_";
             }
@@ -157,7 +157,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     x.PropertyType.To<SqlDbType>(),
                     Value);
             }));
-            return ReturnValues.ToArray();
+            return [.. ReturnValues];
         }
 
         /// <summary>
@@ -175,14 +175,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                             .Distinct()
                                             .SelectMany(x => x.IDProperties);
 
-            return new IQuery[]
-            {
+            return
+            [
                 new Query(property.PropertyType,
                     CommandType.Text,
                     GenerateJoinDeleteQuery(property),
                     QueryType,
                     GenerateParameters(queryObject, property, ItemList!))
-            };
+            ];
         }
     }
 

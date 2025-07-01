@@ -2,7 +2,6 @@
 using BigBook;
 using Inflatable;
 using Inflatable.Benchmarks.Models;
-using Inflatable.Registration;
 using Inflatable.Sessions;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -18,15 +17,15 @@ namespace InflatableBenchmarks.Benchmarks.Tests
     [MemoryDiagnoser, HtmlExporter]
     public class QueryAndCachingSchemeReferencesOnly
     {
-        private IServiceProvider ServiceProvider;
+        private IServiceProvider? _ServiceProvider;
 
         [GlobalCleanup]
         public async Task Cleanup()
         {
             try
             {
-                IConfiguration? Configuration = ServiceProvider.GetService<IConfiguration>();
-                SQLHelper? Batch = ServiceProvider.GetService<SQLHelper>();
+                IConfiguration? Configuration = _ServiceProvider?.GetService<IConfiguration>();
+                SQLHelper? Batch = _ServiceProvider?.GetService<SQLHelper>();
                 if (Batch is null || Configuration is null)
                     return;
                 await Batch.CreateBatch(SqlClientFactory.Instance, "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false")
@@ -40,19 +39,19 @@ namespace InflatableBenchmarks.Benchmarks.Tests
         public void NoQuery() => _ = 2500.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
 
         [Benchmark(Baseline = true)]
-        public void OriginalQuery() => DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList();
+        public void OriginalQuery() => _ = DbContext<SimpleClass>.CreateQuery().Where(x => x.BoolValue).ToList();
 
         [GlobalSetup]
         public void Setup()
         {
-            ServiceProvider = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
+            _ServiceProvider = new ServiceCollection().AddCanisterModules(x => x.AddAssembly(typeof(Program).Assembly)
                 .RegisterInflatable()
                 ?.RegisterMirage()).BuildServiceProvider();
             Console.WriteLine("Setting up session");
-            ServiceProvider.GetService<Session>();
+            _ServiceProvider.GetService<Session>();
 
             Console.WriteLine("Setting up values");
-            SimpleClass[] Values = 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 }).ToArray();
+            SimpleClass[] Values = [.. 5000.Times(x => new SimpleClass() { BoolValue = x % 2 == 0 })];
 
             Console.WriteLine("Saving values");
             AsyncHelper.RunSync(() => new DbContext().Save(Values).ExecuteAsync());

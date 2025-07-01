@@ -1,7 +1,6 @@
 ﻿using BigBook;
 using DragonHoard.Core;
 using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -24,21 +23,21 @@ namespace Inflatable.Tests.Sessions
         public SessionWithManyToOneProperties(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            InternalMappingManager = new MappingManager(new IMapping[] {
+            InternalMappingManager = new MappingManager([
                 new ManyToOneManyPropertiesMapping(),
                 new ManyToOneOnePropertiesMapping(),
                 new ManyToOneManyCascadePropertiesMapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
             InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
 
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
+            InternalQueryProviderManager = new QueryProviderManager([TempQueryProvider], GetLogger<QueryProviderManager>());
 
             CacheManager = Resolve<Cache>();
             CacheManager.GetOrAddCache("Inflatable").Compact(1);
@@ -56,7 +55,7 @@ namespace Inflatable.Tests.Sessions
         {
             _ = Resolve<ISession>();
             await SetupDataAsync();
-            ManyToOneManyCascadeProperties[] Results = DbContext<ManyToOneManyCascadeProperties>.CreateQuery().ToArray();
+            ManyToOneManyCascadeProperties[] Results = [.. DbContext<ManyToOneManyCascadeProperties>.CreateQuery()];
             Assert.Equal(3, Results.Length);
         }
 
@@ -114,7 +113,7 @@ namespace Inflatable.Tests.Sessions
         {
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
-            for (var x = 0; x < 2000; ++x)
+            for (var X = 0; X < 2000; ++X)
             {
                 var Result1 = new ManyToOneManyCascadeProperties
                 {
@@ -193,14 +192,14 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             IEnumerable<ManyToOneManyCascadeProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
-            ManyToOneManyCascadeProperties[] UpdatedResults = Results.ForEach(x =>
+            ManyToOneManyCascadeProperties[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToOneClass.Add(new ManyToOneOneProperties
                 {
                     BoolValue = true
                 });
-            }).ToArray();
+            })];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToOneManyCascadeProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyCascadeProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -213,7 +212,7 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
             await SetupDataAsync();
             IEnumerable<ManyToOneManyProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            ManyToOneManyProperties[] UpdatedResults = Results.ForEach(x =>
+            ManyToOneManyProperties[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToOneClass.Add(new ManyToOneOneProperties
@@ -221,11 +220,11 @@ namespace Inflatable.Tests.Sessions
                     BoolValue = true
                 });
                 var Result = AsyncHelper.RunSync(async () => await TestObject.Save(x.ManyToOneClass.ToArray()).ExecuteAsync());
-            }).ToArray();
+            })];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
-            Assert.Equal(2, Results.Max(x => x.ManyToOneClass.Count()));
+            Assert.Equal(2, Results.Max(x => x.ManyToOneClass.Count));
         }
 
         [Fact]
@@ -235,11 +234,11 @@ namespace Inflatable.Tests.Sessions
 
             await SetupDataAsync();
             IEnumerable<ManyToOneManyProperties> Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
-            ManyToOneManyProperties[] UpdatedResults = Results.ForEach(x =>
+            ManyToOneManyProperties[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToOneClass.Clear();
-            }).ToArray();
+            })];
             Assert.Equal(3, await TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<ManyToOneManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToOneManyProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -295,60 +294,60 @@ namespace Inflatable.Tests.Sessions
             {
                 new() {
                     BoolValue=true,
-                    ManyToOneClass =new List<ManyToOneOneProperties>
-                    {
+                    ManyToOneClass =
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToOneClass =new List<ManyToOneOneProperties>
-                    {
+                    ManyToOneClass =
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToOneClass =new List<ManyToOneOneProperties>
-                    {
+                    ManyToOneClass =
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
             };
             var InitialData2 = new ManyToOneManyProperties[]
             {
                 new() {
                     BoolValue=true,
-                    ManyToOneClass =new List<ManyToOneOneProperties>
-                    {
+                    ManyToOneClass =
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToOneClass =new List<ManyToOneOneProperties>
-                    {
+                    ManyToOneClass =
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToOneClass =new List<ManyToOneOneProperties>
-                    {
+                    ManyToOneClass =
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
             };
 

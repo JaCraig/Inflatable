@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -22,16 +21,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void Creation()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
             ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -43,16 +42,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateDeclarations()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -66,16 +65,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQuery()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new DeleteQuery<ConcreteClass1>(Mappings, ObjectPool);

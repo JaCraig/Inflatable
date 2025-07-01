@@ -108,12 +108,12 @@ namespace Inflatable.Tests.Sessions
             ISession TestObject = Resolve<ISession>();
 
             await SetupDataAsync();
-            for (var x = 0; x < 1000; ++x)
+            for (var X = 0; X < 1000; ++X)
             {
                 var Result1 = new AllReferencesAndID
                 {
                     BoolValue = false,
-                    ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                    ByteArrayValue = [1, 2, 3, 4],
                     ByteValue = 34,
                     CharValue = 'a',
                     DateTimeValue = new DateTime(2000, 1, 1)
@@ -134,7 +134,7 @@ namespace Inflatable.Tests.Sessions
             var Result1 = new AllReferencesAndID
             {
                 BoolValue = false,
-                ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                ByteArrayValue = [1, 2, 3, 4],
                 ByteValue = 34,
                 CharValue = 'a',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -142,7 +142,7 @@ namespace Inflatable.Tests.Sessions
             var Result2 = new AllReferencesAndID
             {
                 BoolValue = false,
-                ByteArrayValue = new byte[] { 5, 6, 7, 8 },
+                ByteArrayValue = [5, 6, 7, 8],
                 ByteValue = 34,
                 CharValue = 'b',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -150,7 +150,7 @@ namespace Inflatable.Tests.Sessions
             var Result3 = new AllReferencesAndID
             {
                 BoolValue = false,
-                ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                ByteArrayValue = [9, 10, 11, 12],
                 ByteValue = 34,
                 CharValue = 'c',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -184,7 +184,7 @@ namespace Inflatable.Tests.Sessions
             var Result = new AllReferencesAndID
             {
                 BoolValue = false,
-                ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                ByteArrayValue = [1, 2, 3, 4],
                 ByteValue = 34,
                 CharValue = 'a',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -206,7 +206,7 @@ namespace Inflatable.Tests.Sessions
 
             await SetupDataAsync();
             System.Collections.Generic.IEnumerable<AllReferencesAndID> Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
-            AllReferencesAndID[] UpdatedResults = Results.ForEach<AllReferencesAndID>(x => x.CharValue = 'p').ToArray();
+            AllReferencesAndID[] UpdatedResults = [.. Results.ForEach<AllReferencesAndID>(x => x.CharValue = 'p')];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<AllReferencesAndID>("SELECT ID_ as [ID],CharValue_ as [CharValue] FROM AllReferencesAndID_", CommandType.Text, "Default");
             Assert.Equal(3, Results.Count());

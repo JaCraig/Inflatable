@@ -47,7 +47,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        public SaveCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
+        public SaveCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache? cache, object[] objects)
             : base(mappingManager, queryProviderManager, cache, objects)
         {
         }
@@ -104,12 +104,14 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="generator">The generator.</param>
         /// <param name="declarationBatch">The declaration batch.</param>
-        private static void SetupInsertDeclarations(IGenerator generator, SQLHelper declarationBatch)
+        private static void SetupInsertDeclarations(IGenerator? generator, SQLHelper declarationBatch)
         {
-            var DeclarationQuery = generator.GenerateDeclarations(QueryType.Insert);
-            for (int x = 0, DeclarationQueryLength = DeclarationQuery.Length; x < DeclarationQueryLength; ++x)
+            var DeclarationQuery = generator?.GenerateDeclarations(QueryType.Insert);
+            if (DeclarationQuery is null || DeclarationQuery.Length == 0)
+                return;
+            for (int X = 0, DeclarationQueryLength = DeclarationQuery.Length; X < DeclarationQueryLength; ++X)
             {
-                var CurrentDeclarationQuery = DeclarationQuery[x];
+                var CurrentDeclarationQuery = DeclarationQuery[X];
                 declarationBatch.AddHeader(CurrentDeclarationQuery.DatabaseCommandType, CurrentDeclarationQuery.QueryString, CurrentDeclarationQuery.Parameters!);
             }
         }
@@ -117,12 +119,12 @@ namespace Inflatable.Sessions.Commands
         /// <summary>
         /// Validates the objects.
         /// </summary>
-        /// <param name="ObjectsSeen">The objects seen.</param>
-        private static void ValidateObjects(List<object> ObjectsSeen)
+        /// <param name="objectsSeen">The objects seen.</param>
+        private static void ValidateObjects(List<object> objectsSeen)
         {
-            for (int x = 0, ObjectsSeenLength = ObjectsSeen.Count; x < ObjectsSeenLength; ++x)
+            for (int X = 0, ObjectsSeenLength = objectsSeen.Count; X < ObjectsSeenLength; ++X)
             {
-                ObjectsSeen[x].Validate();
+                objectsSeen[X].Validate();
             }
         }
 
@@ -147,7 +149,7 @@ namespace Inflatable.Sessions.Commands
                                                              .Where(x => x.Cascade
                                                                       && (ORMObject?.PropertiesChanged0.Contains(x.Name) != false)))
             {
-                if (!(ManyToManyProperty.GetValue(@object) is IEnumerable ManyToManyValue))
+                if (ManyToManyProperty.GetValue(@object) is not IEnumerable ManyToManyValue)
                 {
                     continue;
                 }
@@ -186,7 +188,7 @@ namespace Inflatable.Sessions.Commands
                     continue;
                 }
 
-                if (!(ManyToOneValue is IEnumerable ManyToOneListValue))
+                if (ManyToOneValue is not IEnumerable ManyToOneListValue)
                 {
                     Save(ManyToOneValue, source, batch, declarationBatch, objectsSeen);
                 }
@@ -208,16 +210,16 @@ namespace Inflatable.Sessions.Commands
         /// <param name="batch">The batch.</param>
         /// <param name="declarationBatch">The declaration batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        /// <param name="ParentMappings">The parent mappings.</param>
+        /// <param name="parentMappings">The parent mappings.</param>
         private void CascadeMapProperties(object @object,
             IMappingSource source,
             SQLHelper batch,
             SQLHelper declarationBatch,
             IList<object> objectsSeen,
-            IEnumerable<IMapping> ParentMappings)
+            IEnumerable<IMapping> parentMappings)
         {
             var ORMObject = @object as IORMObject;
-            foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties)
+            foreach (var MapProperty in parentMappings.SelectMany(x => x.MapProperties)
                                                               .Where(x => x.Cascade
                                                                        && (ORMObject?.PropertiesChanged0.Contains(x.Name) != false)))
             {
@@ -230,17 +232,17 @@ namespace Inflatable.Sessions.Commands
         /// Creates the batch.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="Batch">The batch.</param>
-        /// <param name="DeclarationBatch">The declaration batch.</param>
-        /// <param name="ObjectsSeen">The objects seen.</param>
-        private void CreateBatch(IMappingSource source, out SQLHelper Batch, out SQLHelper DeclarationBatch, out List<object> ObjectsSeen)
+        /// <param name="batch">The batch.</param>
+        /// <param name="declarationBatch">The declaration batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        private void CreateBatch(IMappingSource source, out SQLHelper batch, out SQLHelper declarationBatch, out List<object> objectsSeen)
         {
-            Batch = QueryProviderManager.CreateBatch(source.Source);
-            DeclarationBatch = QueryProviderManager.CreateBatch(source.Source);
-            ObjectsSeen = new List<object>();
-            for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
+            batch = QueryProviderManager.CreateBatch(source.Source);
+            declarationBatch = QueryProviderManager.CreateBatch(source.Source);
+            objectsSeen = [];
+            for (int X = 0, ObjectsLength = Objects.Length; X < ObjectsLength; ++X)
             {
-                Save(Objects[x], source, Batch, DeclarationBatch, ObjectsSeen);
+                Save(Objects[X], source, batch, declarationBatch, objectsSeen);
             }
         }
 
@@ -256,16 +258,18 @@ namespace Inflatable.Sessions.Commands
         {
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
             SetupInsertDeclarations(Generator, declarationBatch);
+            if (Generator is null)
+                return;
             var ObjectQueries = Generator.GenerateQueries(QueryType.Insert, @object);
-            for (int x = 0, ObjectQueriesLength = ObjectQueries.Length; x < ObjectQueriesLength; ++x)
+            for (int X = 0, ObjectQueriesLength = ObjectQueries.Length; X < ObjectQueriesLength; ++X)
             {
-                var ObjectQuery = ObjectQueries[x];
+                var ObjectQuery = ObjectQueries[X];
                 var IDProperty = idProperties.FirstOrDefault(y => y.AutoIncrement);
-                var ReturnedID = batch.AddQuery((_, ResultList, InsertObject) =>
+                var ReturnedID = batch.AddQuery((_, resultList, insertObject) =>
                 {
                     if (IDProperty?.AutoIncrement == true)
                     {
-                        IDProperty.GetColumnInfo()[0].SetValue(InsertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)ResultList[0])!);
+                        IDProperty.GetColumnInfo()[0].SetValue(insertObject, IDProperty.GetColumnInfo()[0].GetValue((Dynamo)resultList[0])!);
                     }
                 },
                                                 @object,
@@ -327,12 +331,13 @@ namespace Inflatable.Sessions.Commands
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
+        /// <param name="deleteBatch">The delete batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        private void SaveJoins(IMappingSource source, SQLHelper batch, SQLHelper deleteBatch, IList<object> objectsSeen)
+        private void SaveJoins(IMappingSource source, SQLHelper batch, SQLHelper deleteBatch, List<object> objectsSeen)
         {
-            for (int i = 0, objectsSeenCount = objectsSeen.Count; i < objectsSeenCount; i++)
+            for (int I = 0, ObjectsSeenCount = objectsSeen.Count; I < ObjectsSeenCount; I++)
             {
-                var TempObject = objectsSeen[i];
+                var TempObject = objectsSeen[I];
                 var ParentMappings = source.GetParentMapping(TempObject.GetType());
                 foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties))
                 {
@@ -363,17 +368,19 @@ namespace Inflatable.Sessions.Commands
             if (!(ORMObject?.PropertiesChanged0.Contains(property.Name) ?? true))
                 return;
             var LinksGenerator = QueryProviderManager.CreateGenerator(property.ParentMapping.ObjectType, source);
-            var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, property);
-            for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
+            if (LinksGenerator is null)
+                return;
+            var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, property) ?? [];
+            for (int X = 0, TempQueriesLength = TempQueries.Length; X < TempQueriesLength; X++)
             {
-                var TempQuery = TempQueries[x];
+                var TempQuery = TempQueries[X];
                 deleteBatch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
 
-            TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, property);
-            for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; x++)
+            TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsSave, @object, property) ?? [];
+            for (int X = 0, TempQueriesLength = TempQueries.Length; X < TempQueriesLength; X++)
             {
-                var TempQuery = TempQueries[x];
+                var TempQuery = TempQueries[X];
                 batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
         }
@@ -387,10 +394,10 @@ namespace Inflatable.Sessions.Commands
         private void Update(object updateObject, IMappingSource source, SQLHelper batch)
         {
             var Generator = QueryProviderManager.CreateGenerator(updateObject.GetType(), source);
-            var Queries = Generator.GenerateQueries(QueryType.Update, updateObject);
-            for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
+            var Queries = Generator?.GenerateQueries(QueryType.Update, updateObject) ?? [];
+            for (int X = 0, QueriesLength = Queries.Length; X < QueriesLength; X++)
             {
-                var TempQuery = Queries[x];
+                var TempQuery = Queries[X];
                 batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
         }

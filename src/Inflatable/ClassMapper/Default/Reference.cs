@@ -95,8 +95,8 @@ namespace Inflatable.ClassMapper.Default
                 return;
             }
 
-            Columns = new Column.SimpleColumnInfo<ClassType, DataType>[]
-            {
+            Columns =
+            [
                 new Column.SimpleColumnInfo<ClassType,DataType>(
                     ColumnName,
                     CompiledExpression,
@@ -109,7 +109,7 @@ namespace Inflatable.ClassMapper.Default
                     SetAction,
                     ParentMapping.TableName
                 )
-            };
+            ];
         }
     }
 }

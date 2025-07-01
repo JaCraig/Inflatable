@@ -41,7 +41,7 @@ namespace Inflatable.Interfaces
         /// <typeparam name="TDataType">Data type</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the ID object</returns>
-        ID<TClassType, TDataType> ID<TDataType>(Expression<Func<TClassType, TDataType>> expression);
+        ID<TClassType, TDataType?> ID<TDataType>(Expression<Func<TClassType, TDataType?>> expression);
 
         /// <summary>
         /// Sets a property as a many to many type.
@@ -49,7 +49,7 @@ namespace Inflatable.Interfaces
         /// <typeparam name="TDataType">The type of the ata type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(Expression<Func<TClassType, IList<TDataType>>> expression)
+        ManyToMany<TClassType, TDataType> ManyToMany<TDataType>(Expression<Func<TClassType, IList<TDataType>?>> expression)
             where TDataType : class;
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Inflatable.Interfaces
         /// <typeparam name="TDataType">The type of the data type.</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>The many to many object</returns>
-        ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(Expression<Func<TClassType, IList<TDataType>>> expression)
+        ManyToOneMany<TClassType, TDataType> ManyToOne<TDataType>(Expression<Func<TClassType, IList<TDataType>?>> expression)
             where TDataType : class;
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Inflatable.Interfaces
         /// <typeparam name="TDataType">Data type</typeparam>
         /// <param name="expression">Expression pointing to the property</param>
         /// <returns>the reference object</returns>
-        Reference<TClassType, TDataType> Reference<TDataType>(Expression<Func<TClassType, TDataType>> expression);
+        Reference<TClassType, TDataType?> Reference<TDataType>(Expression<Func<TClassType, TDataType?>> expression);
     }
 
     /// <summary>
@@ -242,14 +242,14 @@ namespace Inflatable.Interfaces
         /// Reduces this instance and removes duplicate properties
         /// </summary>
         /// <param name="logger">The logger.</param>
-        void Reduce(ILogger logger);
+        void Reduce(ILogger? logger);
 
         /// <summary>
         /// Reduces this instance based on parent mapping properties.
         /// </summary>
         /// <param name="parentMapping">The parent mapping.</param>
         /// <param name="logger">The logger.</param>
-        void Reduce(IMapping parentMapping, ILogger logger);
+        void Reduce(IMapping parentMapping, ILogger? logger);
 
         /// <summary>
         /// Sets the default query based on query type

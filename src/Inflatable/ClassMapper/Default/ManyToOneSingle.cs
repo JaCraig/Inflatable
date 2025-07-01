@@ -87,23 +87,23 @@ namespace Inflatable.ClassMapper.Default
             if (mappings is null)
                 return;
             var TempColumns = new List<IQueryColumnInfo>();
-            TempColumns.AddRange(ForeignMapping.SelectMany(TempMapping =>
+            TempColumns.AddRange(ForeignMapping.SelectMany(tempMapping =>
             {
-                return TempMapping?.IDProperties.ForEach(x =>
+                return tempMapping?.IDProperties.ForEach(x =>
                 {
                     return new ComplexColumnInfo<TClassType, TDataType>(
                         x.GetColumnInfo()[0],
-                        ColumnName + TempMapping.TableName + x.ColumnName,
+                        ColumnName + tempMapping.TableName + x.ColumnName,
                         CompiledExpression,
                         true,
                         ParentMapping.SchemaName,
                         ParentMapping.TableName
                     );
-                });
+                }) ?? [];
             }));
             var ActualParent = mappings.GetChildMappings<TClassType>().SelectMany(x => mappings.GetParentMapping(x.ObjectType)).FirstOrDefault(x => x.IDProperties.Count > 0);
-            TempColumns.AddRange(ActualParent.IDProperties.SelectMany(x => x.GetColumnInfo()));
-            Columns = TempColumns.ToArray();
+            TempColumns.AddRange(ActualParent?.IDProperties.SelectMany(x => x.GetColumnInfo()) ?? []);
+            Columns = [.. TempColumns];
         }
 
         /// <summary>
@@ -116,26 +116,25 @@ namespace Inflatable.ClassMapper.Default
         {
             if (mappings is null || sourceSpec is null)
                 return;
-            ForeignMapping = mappings.GetChildMappings<TDataType>()
+            ForeignMapping = [.. mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
-                                     .Distinct()
-                                     .ToList();
+                                     .Distinct()];
 
             var ParentMappings = mappings.GetChildMappings(ParentMapping.ObjectType).SelectMany(x => mappings.GetParentMapping(x.ObjectType)).Distinct();
             var ActualParent = ParentMappings.FirstOrDefault(x => x.IDProperties.Count > 0);
-            var ParentTable = sourceSpec.Tables.Find(x => x.Name == ActualParent.TableName);
+            var ParentTable = sourceSpec.Tables.Find(x => x.Name == ActualParent?.TableName);
             foreach (var TempMapping in ForeignMapping)
             {
                 var SetNullOnDelete = !ParentMappings.Contains(TempMapping);
                 foreach (var IDMapping in TempMapping.IDProperties)
                 {
-                    if (ParentTable.Columns.Any(x => x.Name == ColumnName + TempMapping.TableName + IDMapping.ColumnName))
+                    if (ParentTable?.Columns.Any(x => x.Name == ColumnName + TempMapping.TableName + IDMapping.ColumnName) == true)
                     {
                         continue;
                     }
 
-                    ParentTable.AddColumn<object>(ColumnName + TempMapping.TableName + IDMapping.ColumnName,
+                    ParentTable?.AddColumn<object>(ColumnName + TempMapping.TableName + IDMapping.ColumnName,
                                     IDMapping.PropertyType.To<DbType>(),
                                     IDMapping.MaxLength,
                                     true,

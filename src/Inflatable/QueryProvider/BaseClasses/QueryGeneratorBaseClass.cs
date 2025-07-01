@@ -118,7 +118,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="foreignMapping">The foreign mapping.</param>
         /// <param name="suffix">The suffix.</param>
         /// <returns>The column name</returns>
-        protected string? GetColumnName(IMapProperty mapProperty, IMapping foreignMapping, string suffix = "")
+        protected string? GetColumnName(IMapProperty mapProperty, IMapping? foreignMapping, string suffix = "")
         {
             return foreignMapping?.IDProperties.ToString(x => GetTableName(mapProperty.ParentMapping, suffix)
                                                                         + ".[" + foreignMapping.TableName
@@ -133,9 +133,9 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="foreignMapping">The foreign mapping.</param>
         /// <returns>The parent column name</returns>
-        protected string GetForeignColumnName(IMapping foreignMapping)
+        protected string GetForeignColumnName(IMapping? foreignMapping)
         {
-            return GetColumnName(foreignMapping?.IDProperties.First());
+            return GetColumnName(foreignMapping?.IDProperties[0]);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <returns>The parent parameter name</returns>
         protected string GetForeignParameterName(IMapping foreignMapping)
         {
-            return GetParameterName(foreignMapping?.IDProperties.First());
+            return GetParameterName(foreignMapping?.IDProperties[0]);
         }
 
         /// <summary>
@@ -180,16 +180,15 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <summary>
         /// Gets the type of the parameter.
         /// </summary>
-        /// <param name="autoIDProperty">The automatic identifier property.</param>
         /// <returns>The parameter type name</returns>
-        protected string GetParameterType(IAutoIDProperty autoIDProperty) => "BIGINT";
+        protected string GetParameterType() => "BIGINT";
 
         /// <summary>
         /// Gets the type of the parameter.
         /// </summary>
         /// <param name="iDProperty">The i d property.</param>
         /// <returns>The parameter type name</returns>
-        protected string GetParameterType(IIDProperty iDProperty) => iDProperty?.PropertyType.To<SqlDbType>().ToString().ToUpper(CultureInfo.InvariantCulture) ?? string.Empty;
+        protected string GetParameterType(IIDProperty iDProperty) => iDProperty?.PropertyType.To<SqlDbType>().ToString().ToUpper(CultureInfo.InvariantCulture) ?? "";
 
         /// <summary>
         /// Gets the name of the parent column.
@@ -232,7 +231,7 @@ namespace Inflatable.QueryProvider.BaseClasses
         protected string GetTableName(IMapping? parentMapping, string suffix = "")
         {
             if (parentMapping is null)
-                return string.Empty;
+                return "";
             return string.IsNullOrEmpty(suffix)
                 ? "[" + parentMapping.SchemaName + "].[" + parentMapping.TableName + "]"
                 : "[" + parentMapping.TableName + suffix + "]";
@@ -243,6 +242,6 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns>The name of the table.</returns>
-        protected string GetTableName(IManyToManyProperty property) => $"[{property?.ParentMapping.SchemaName}].[{property.TableName}]";
+        protected string GetTableName(IManyToManyProperty property) => $"[{property?.ParentMapping.SchemaName}].[{property?.TableName}]";
     }
 }

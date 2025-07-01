@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -20,14 +19,14 @@ namespace Inflatable.Tests.Schema
         public ManyToOneClassMappingTests(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            Mappings = new MappingManager(new IMapping[] {
+            Mappings = new MappingManager([
                 new ManyToOneOnePropertiesMapping(),
                 new ManyToOneManyPropertiesMapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
         }
@@ -58,7 +57,7 @@ namespace Inflatable.Tests.Schema
             Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "ManyToOneManyProperties_");
             Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "ManyToOneOneProperties_");
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(4, TestModel.GeneratedSchemaChanges.Count());
+            Assert.Equal(4, TestModel.GeneratedSchemaChanges.Length);
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ManyToOneOneProperties_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY,[BoolValue_] Bit NOT NULL,[ManyToOneManyProperties_ID_] Int)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ManyToOneManyProperties_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY,[BoolValue_] Bit NOT NULL)", TestModel.GeneratedSchemaChanges);

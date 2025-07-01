@@ -53,16 +53,16 @@ namespace Inflatable.Aspect
             IEnumerable<IEndMethodHelper> endMethodHelpers,
             ObjectPool<StringBuilder> objectPool)
         {
-            AssembliesUsing = new List<MetadataReference>();
-            IDFields = new List<IIDProperty>();
-            ReferenceFields = new List<IProperty>();
-            ManyToManyFields = new List<IManyToManyProperty>();
-            ManyToOneFields = new List<IManyToOneProperty>();
-            MapFields = new List<IMapProperty>();
+            AssembliesUsing = [];
+            IDFields = [];
+            ReferenceFields = [];
+            ManyToManyFields = [];
+            ManyToOneFields = [];
+            MapFields = [];
 
-            EndMethodHelpers = endMethodHelpers ?? Array.Empty<IEndMethodHelper>();
-            InterfaceImplementationHelpers = interfaceImplementationHelpers ?? Array.Empty<IInterfaceImplementationHelper>();
-            StartMethodHelpers = startMethodHelpers ?? Array.Empty<IStartMethodHelper>();
+            EndMethodHelpers = endMethodHelpers ?? [];
+            InterfaceImplementationHelpers = interfaceImplementationHelpers ?? [];
+            StartMethodHelpers = startMethodHelpers ?? [];
             ClassManager = classManager ?? throw new ArgumentNullException(nameof(classManager));
             ObjectPool = objectPool;
 
@@ -73,6 +73,11 @@ namespace Inflatable.Aspect
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(MulticastDelegate).Assembly.Location));
             AssembliesUsing.AddIfUnique((x, y) => x.Display == y.Display, MetadataReference.CreateFromFile(typeof(Task<>).Assembly.Location));
         }
+
+        /// <summary>
+        /// The exception caught constant
+        /// </summary>
+        private const string _ExceptionCaughtConst = "var Exception=CaughtException;";
 
         /// <summary>
         /// Set of assemblies that the aspect requires
@@ -106,7 +111,7 @@ namespace Inflatable.Aspect
         /// <summary>
         /// List of interfaces that need to be injected by this aspect
         /// </summary>
-        public ICollection<Type> InterfacesUsing { get; } = new Type[] { typeof(IORMObject) };
+        public ICollection<Type> InterfacesUsing { get; } = [typeof(IORMObject)];
 
         /// <summary>
         /// Gets or sets the many to many fields.
@@ -147,8 +152,8 @@ namespace Inflatable.Aspect
         /// <summary>
         /// Using statements that the aspect requires
         /// </summary>
-        public ICollection<string> Usings { get; } = new string[]
-        {
+        public ICollection<string> Usings { get; } =
+        [
             "Inflatable",
             "Inflatable.Sessions",
             "Inflatable.Aspect.Interfaces",
@@ -156,12 +161,7 @@ namespace Inflatable.Aspect
             "System.Collections.Generic",
             "System.ComponentModel",
             "System.Runtime.CompilerServices"
-        };
-
-        /// <summary>
-        /// The exception caught constant
-        /// </summary>
-        private const string ExceptionCaughtConst = "var Exception=CaughtException;";
+        ];
 
         /// <summary>
         /// Used to hook into the object once it has been created
@@ -169,13 +169,13 @@ namespace Inflatable.Aspect
         /// <param name="value">Object created by the system</param>
         public void Setup(object value)
         {
-            if (!(value is IORMObject TempObject))
+            if (value is not IORMObject TempObject)
                 return;
-            TempObject.PropertiesChanged0 = new List<string>();
-            TempObject.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+            TempObject.PropertiesChanged0 = [];
+            TempObject.PropertyChanged += (sender, e) =>
             {
-                var x = (IORMObject)sender;
-                x.PropertiesChanged0.Add(e.PropertyName);
+                var X = (IORMObject?)sender;
+                X?.PropertiesChanged0.Add(e.PropertyName ?? "");
             };
         }
 
@@ -184,7 +184,7 @@ namespace Inflatable.Aspect
         /// </summary>
         /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        public string SetupDefaultConstructor(Type baseType) => string.Empty;
+        public string SetupDefaultConstructor(Type baseType) => "";
 
         /// <summary>
         /// Used to insert code at the end of the method
@@ -196,11 +196,11 @@ namespace Inflatable.Aspect
         public string SetupEndMethod(MethodInfo method, Type baseType, string returnValueName)
         {
             if (method?.Name.StartsWith("get_", StringComparison.Ordinal) != true)
-                return string.Empty;
+                return "";
             var Builder = ObjectPool.Get();
             foreach (var (Source, ParentType) in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType))
-                .SelectMany(Source => Source.ParentTypes[baseType]
-                .Select(ParentType => (Source, ParentType))))
+                .SelectMany(source => source.ParentTypes[baseType]
+                .Select(parentType => (source, parentType))))
             {
                 var Mapping = Source.Mappings[ParentType];
                 foreach (var Helper in EndMethodHelpers)
@@ -220,7 +220,7 @@ namespace Inflatable.Aspect
         /// <param name="method">Overridding Method</param>
         /// <param name="baseType">Base type</param>
         /// <returns>The code to insert</returns>
-        public string SetupExceptionMethod(MethodInfo method, Type baseType) => ExceptionCaughtConst;
+        public string SetupExceptionMethod(MethodInfo method, Type baseType) => _ExceptionCaughtConst;
 
         /// <summary>
         /// Sets up the interfaces.
@@ -249,11 +249,11 @@ namespace Inflatable.Aspect
         {
             if (method?.Name.StartsWith("set_", StringComparison.Ordinal) != true)
             {
-                return string.Empty;
+                return "";
             }
 
             var Builder = ObjectPool.Get();
-            foreach (var (Source, ParentType) in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)).SelectMany(Source => Source.ParentTypes[baseType].Select(ParentType => (Source, ParentType))))
+            foreach (var (Source, ParentType) in ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(baseType)).SelectMany(source => source.ParentTypes[baseType].Select(parentType => (source, parentType))))
             {
                 var Mapping = Source.Mappings[ParentType];
                 foreach (var Helper in StartMethodHelpers)

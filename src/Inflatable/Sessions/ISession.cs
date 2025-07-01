@@ -132,7 +132,7 @@ namespace Inflatable.Sessions
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns></returns>
-        TData LoadProperty<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+        TData? LoadProperty<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
             where TData : class;
 
@@ -144,7 +144,7 @@ namespace Inflatable.Sessions
         /// <param name="objectToLoadProperty">The object to load property.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <returns></returns>
-        Task<TData> LoadPropertyAsync<TObject, TData>(TObject objectToLoadProperty, string propertyName)
+        Task<TData?> LoadPropertyAsync<TObject, TData>(TObject objectToLoadProperty, string propertyName)
             where TObject : class
             where TData : class;
 

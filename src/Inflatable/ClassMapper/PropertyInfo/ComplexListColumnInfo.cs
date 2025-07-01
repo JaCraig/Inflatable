@@ -43,7 +43,7 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="isForeign">if set to <c>true</c> [is foreign].</param>
         /// <param name="schemaName">Name of the schema.</param>
         /// <param name="tableName">Name of the table.</param>
-        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType>> compiledExpression, bool isForeign, string schemaName, string tableName)
+        public ComplexListColumnInfo(IQueryColumnInfo child, string columnName, Func<TClassType, IList<TDataType>?> compiledExpression, bool isForeign, string schemaName, string tableName)
         {
             Child = child;
             ColumnName = columnName;
@@ -69,7 +69,7 @@ namespace Inflatable.ClassMapper.Column
         /// The compiled expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        public Func<TClassType, IList<TDataType>> CompiledExpression { get; set; }
+        public Func<TClassType, IList<TDataType>?> CompiledExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is foreign.
@@ -124,7 +124,7 @@ namespace Inflatable.ClassMapper.Column
         /// <returns>The parameter version of the property</returns>
         public IParameter? GetAsParameter(object? objectValue)
         {
-            var ParamValue = objectValue is null ? null : (object)CompiledExpression((objectValue as TClassType)!).FirstOrDefault()!;
+            var ParamValue = objectValue is null ? null : (object?)CompiledExpression((objectValue as TClassType)!)?.FirstOrDefault()!;
             return GetAsParameter(objectValue, ParamValue);
         }
 
@@ -184,7 +184,7 @@ namespace Inflatable.ClassMapper.Column
         public bool IsDefault(object? @object)
         {
             return ReferenceEquals(@object, default(TClassType))
-                || IsDefault(@object, CompiledExpression((@object as TClassType)!).FirstOrDefault());
+                || IsDefault(@object, CompiledExpression((@object as TClassType)!)?.FirstOrDefault());
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace Inflatable.ClassMapper.Column
                 return;
             }
 
-            SetValue(objectToSet, CompiledExpression((objectToSet as TClassType)!).FirstOrDefault(), propertyValue);
+            SetValue(objectToSet, CompiledExpression((objectToSet as TClassType)!)?.FirstOrDefault(), propertyValue);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        private object? GetValue(TClassType? @object) => ReferenceEquals(@object, default(TClassType)) ? null : GetValue(CompiledExpression(@object).FirstOrDefault());
+        private object? GetValue(TClassType? @object) => ReferenceEquals(@object, default(TClassType)) ? null : GetValue(CompiledExpression(@object)?.FirstOrDefault());
 
         /// <summary>
         /// Gets the property's value from the object sent in

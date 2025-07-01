@@ -12,12 +12,12 @@ namespace Inflatable.Tests.LinqExpression
         [Fact]
         public void ElementsBetween()
         {
-            int start = 2;
-            int numberOfElements = 7;
+            const int Start = 2;
+            const int NumberOfElements = 7;
 
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            TestQuery = TestQuery.Skip(start).Take(numberOfElements);
+            TestQuery = TestQuery.Skip(Start).Take(NumberOfElements);
             var TempData = TestObject.Translate(TestQuery.Expression);
             Assert.Equal(2, TempData.Count);
             var Result = TempData[Mappings.Sources.First(x => x.Source.Name == "Default")];

@@ -19,7 +19,5 @@ namespace Inflatable.LinqExpression.Interfaces
     /// <summary>
     /// Query data interface
     /// </summary>
-    public interface IQueryData
-    {
-    }
+    public interface IQueryData;
 }

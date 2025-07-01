@@ -1,12 +1,10 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.LinqExpression;
 using Inflatable.QueryProvider;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.MockClasses;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using SQLHelperDB.HelperClasses;
-using System.Collections.Generic;
 using System.Data;
 using Xunit;
 
@@ -21,7 +19,7 @@ namespace Inflatable.Tests.LinqExpression
         [Fact]
         public void AddParameter()
         {
-            var TestObject = new QueryData<AllReferencesAndID>(new MappingSource(new List<IMapping>(), new MockDatabaseMappingForMockMapping(), Resolve<QueryProviderManager>(), GetLogger<MappingSource>(), ObjectPool));
+            var TestObject = new QueryData<AllReferencesAndID>(new MappingSource([], new MockDatabaseMappingForMockMapping(), Resolve<QueryProviderManager>(), GetLogger<MappingSource>(), ObjectPool));
             TestObject.Parameters.Add(new Parameter<int>("0", 1));
             _ = Assert.Single(TestObject.Parameters);
             Assert.Equal(DbType.Int32, TestObject.Parameters[0].DatabaseType);

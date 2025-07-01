@@ -60,8 +60,8 @@ namespace Inflatable.ClassMapper.BaseClasses
             ParentMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
             PropertyType = typeof(TDataType);
             TypeName = PropertyType.GetName();
-            ColumnName = string.Empty;
-            ForeignMapping = new List<IMapping>();
+            ColumnName = "";
+            ForeignMapping = [];
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is less than the second, false otherwise</returns>
         public static bool operator <(ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() < second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() < second.GetHashCode();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>true if the first and second item are the same, false otherwise</returns>
         public static bool operator ==(ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return ReferenceEquals(first, second) || (!(first is null) && !(second is null) && first.GetHashCode() == second.GetHashCode());
+            return ReferenceEquals(first, second) || (first is not null && second is not null && first.GetHashCode() == second.GetHashCode());
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <returns>True if the first item is greater than the second, false otherwise</returns>
         public static bool operator >(ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> first, ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> second)
         {
-            return !ReferenceEquals(first, second) && !(first is null) && !(second is null) && first.GetHashCode() > second.GetHashCode();
+            return !ReferenceEquals(first, second) && first is not null && second is not null && first.GetHashCode() > second.GetHashCode();
         }
 
         /// <summary>
@@ -210,13 +210,13 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj) => (obj is ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
+        public override bool Equals(object? obj) => (obj is ManyToOneOnePropertyBase<TClassType, TDataType, TReturnType> SecondObj) && this == SecondObj;
 
         /// <summary>
         /// Gets the column information.
         /// </summary>
         /// <returns>The column information.</returns>
-        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? Array.Empty<IQueryColumnInfo>();
+        public IQueryColumnInfo[] GetColumnInfo() => Columns ?? [];
 
         /// <summary>
         /// Returns the hash code for the property
@@ -227,9 +227,9 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
-        /// <param name="Object">Object to get the value from</param>
+        /// <param name="modelObject">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        public object? GetValue(object Object) => !(Object is TClassType TempObject) ? null : CompiledExpression(TempObject);
+        public object? GetValue(object modelObject) => modelObject is not TClassType TempObject ? null : CompiledExpression(TempObject);
 
         /// <summary>
         /// Loads the property using the query specified.

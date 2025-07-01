@@ -75,7 +75,7 @@ namespace Inflatable.ClassMapper
         /// Gets or sets the logger.
         /// </summary>
         /// <value>The logger.</value>
-        ILogger Logger { get; }
+        ILogger? Logger { get; }
 
         /// <summary>
         /// Gets the mappings.

@@ -45,7 +45,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
         public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
             if (aspect is null || objectPool is null)
-                return string.Empty;
+                return "";
             aspect.MapFields.Clear();
             StringBuilder Builder = objectPool.Get();
             foreach (ClassMapper.IMappingSource? Source in aspect.ClassManager.Sources.Where(x => x.ConcreteTypes.Contains(type)))
@@ -59,7 +59,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
                         if (aspect.MapFields.Any(y => y.Name == Property.Name))
                             continue;
                         aspect.MapFields.Add(Property);
-                        _ = Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";")
+                        _ = Builder.Append("private ").Append(Property.TypeName).Append(' ').Append(Property.InternalFieldName).AppendLine(";")
                             .Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");
                     }
                 }

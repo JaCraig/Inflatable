@@ -7,7 +7,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
 {
     /// <summary>
     /// </summary>
-    /// <seealso cref="Inflatable.Aspect.Interfaces.IInterfaceImplementationHelper"/>
+    /// <seealso cref="IInterfaceImplementationHelper"/>
     public class SetupIORMInitializationMethod : IInterfaceImplementationHelper
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
         public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
             if (objectPool is null)
-                return string.Empty;
+                return "";
             var Builder = objectPool.Get();
             Builder.AppendLine(@"public void InitializeORMObject0(ISession session)
 {

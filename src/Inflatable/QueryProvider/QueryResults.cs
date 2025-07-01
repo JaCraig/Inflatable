@@ -40,16 +40,19 @@ namespace Inflatable.QueryProvider
         /// <param name="values">The values.</param>
         /// <param name="session">The session.</param>
         /// <param name="aspectus">The aspectus.</param>
-        /// <exception cref="System.ArgumentNullException">session or query</exception>
+        /// <exception cref="ArgumentNullException">session or query</exception>
         /// <exception cref="ArgumentNullException">query</exception>
         public QueryResults(IQuery query, IEnumerable<Dynamo> values, ISession session, Aspectus.Aspectus aspectus)
         {
             Session = session ?? throw new ArgumentNullException(nameof(session));
-            Values = values?.ToList() ?? new List<Dynamo>();
+            Values = values?.ToList() ?? [];
             Query = query ?? throw new ArgumentNullException(nameof(query));
             Aspectus = aspectus;
         }
 
+        /// <summary>
+        /// Gets the current instance of the <see cref="Aspectus.Aspectus"/> class.
+        /// </summary>
         public Aspectus.Aspectus Aspectus { get; }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace Inflatable.QueryProvider
         /// <param name="inflatableOptions">The inflatable options.</param>
         public static void CacheValues(string keyName, List<QueryResults> results, ICache? cache, InflatableOptions inflatableOptions)
         {
-            var CacheOptions = new CacheEntryOptions { Size = 1, Tags = results.Select(x => x.Query.ReturnType.GetName()).ToArray() };
+            var CacheOptions = new CacheEntryOptions { Size = 1, Tags = [.. results.Select(x => x.Query.ReturnType.GetName())] };
             if (inflatableOptions.AbsoluteExpirationQueriesKeptInCache != default)
                 CacheOptions.AbsoluteExpirationRelativeToNow = inflatableOptions.AbsoluteExpirationQueriesKeptInCache;
             if (inflatableOptions.SlidingExpirationQueriesKeptInCache != default)
@@ -101,14 +104,14 @@ namespace Inflatable.QueryProvider
         /// <param name="cache">The cache.</param>
         /// <param name="results">The results.</param>
         /// <returns>The cached value</returns>
-        public static bool TryGetCached(string keyName, ICache? cache, out List<QueryResults> results)
+        public static bool TryGetCached(string keyName, ICache? cache, out List<QueryResults>? results)
         {
-            if (cache is null || !cache.TryGetValue(keyName, out List<QueryResults> value))
+            if (cache is null || !cache.TryGetValue(keyName, out List<QueryResults> Value))
             {
                 results = default;
                 return false;
             }
-            results = value;
+            results = Value;
             return true;
         }
 
@@ -127,8 +130,8 @@ namespace Inflatable.QueryProvider
         /// </summary>
         /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <returns>The resulting list of objects.</returns>
-        public IList<TObject> ConvertValues<TObject>()
-            where TObject : class => new ObservableList<TObject>(Values.ForEach(x => (TObject)ConvertValue(x)!));
+        public ObservableList<TObject> ConvertValues<TObject>()
+            where TObject : class => [.. Values.ForEach(x => (TObject)ConvertValue(x)!)];
 
         /// <summary>
         /// Copies the specified return value.
@@ -142,9 +145,9 @@ namespace Inflatable.QueryProvider
                 return;
             }
 
-            for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
+            for (int I = 0, ResultsValuesCount = results.Values.Count; I < ResultsValuesCount; I++)
             {
-                var Value = results.Values[i];
+                var Value = results.Values[I];
                 var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x)?.Equals(y.GetColumnInfo()[0].GetValue(Value)) == true));
                 if (MyValue != null)
                 {
@@ -170,9 +173,9 @@ namespace Inflatable.QueryProvider
                 Values.Add(results.Values);
                 return;
             }
-            for (int i = 0, resultsValuesCount = results.Values.Count; i < resultsValuesCount; i++)
+            for (int I = 0, ResultsValuesCount = results.Values.Count; I < ResultsValuesCount; I++)
             {
-                var Value = results.Values[i];
+                var Value = results.Values[I];
                 var MyValue = Values.Find(x => idProperties.All(y => y.GetColumnInfo()[0].GetValue(x)?.Equals(y.GetColumnInfo()[0].GetValue(Value)) == true));
                 if (MyValue is null)
                 {

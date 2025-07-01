@@ -19,19 +19,19 @@ namespace Inflatable.Tests.ClassMapper
         [Fact]
         public void Creation()
         {
-            var TestObject = new MappingManager(new IMapping[] {
+            var TestObject = new MappingManager([
                 new SimpleClassDataSource1Mapping(),
                 new SimpleClassDataSource2Mapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new MockDatabaseMapping(),
                 new SecondMockDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
 
-            Assert.Equal(2, TestObject.Sources.Count());
+            Assert.Equal(2, TestObject.Sources.Length);
             IMappingSource Source1 = TestObject.Sources.First(x => x.Source.GetType() == typeof(MockDatabaseMapping));
             IMappingSource Source2 = TestObject.Sources.First(x => x.Source.GetType() == typeof(SecondMockDatabaseMapping));
             _ = Assert.Single(Source1.Mappings);

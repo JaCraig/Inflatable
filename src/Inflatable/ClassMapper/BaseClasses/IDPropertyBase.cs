@@ -55,8 +55,8 @@ namespace Inflatable.ClassMapper.BaseClasses
             Name = expression.PropertyName();
             ColumnName = mapping.Prefix + Name + mapping.Suffix;
             CompiledExpression = expression.Compile();
-            Constraints = new List<string>();
-            ComputedColumnSpecification = string.Empty;
+            Constraints = [];
+            ComputedColumnSpecification = "";
             DefaultValue = DefaultDefaultValue;
             Expression = expression;
             SetAction = Expression.PropertySetter<TClassType, TDataType>()?.Compile() ?? DefaultSetAction;
@@ -70,6 +70,16 @@ namespace Inflatable.ClassMapper.BaseClasses
             _HashCode = Name.GetHashCode(StringComparison.Ordinal) * ParentMapping.GetHashCode() % int.MaxValue;
             _ToString = $"{PropertyType.GetName()} {ParentMapping}.{Name}";
         }
+
+        /// <summary>
+        /// The hash code
+        /// </summary>
+        private readonly int _HashCode;
+
+        /// <summary>
+        /// To string
+        /// </summary>
+        private readonly string _ToString;
 
         /// <summary>
         /// Gets a value indicating whether to [automatic increment].
@@ -183,16 +193,6 @@ namespace Inflatable.ClassMapper.BaseClasses
         protected Action<TClassType, TDataType> SetAction { get; set; }
 
         /// <summary>
-        /// The hash code
-        /// </summary>
-        private readonly int _HashCode;
-
-        /// <summary>
-        /// To string
-        /// </summary>
-        private readonly string _ToString;
-
-        /// <summary>
         /// != operator
         /// </summary>
         /// <param name="left">left item</param>
@@ -212,8 +212,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator <(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
             return !ReferenceEquals(left, right)
-                && !(left is null)
-                && !(right is null)
+                && left is not null
+                && right is not null
                 && left.CompareTo(right) < 0;
         }
 
@@ -226,8 +226,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator <=(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
             return ReferenceEquals(left, right)
-                || (!(left is null)
-                && !(right is null)
+                || (left is not null
+                && right is not null
                 && left.CompareTo(right) <= 0);
         }
 
@@ -240,8 +240,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator ==(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
             return ReferenceEquals(left, right)
-                || (!(left is null)
-                    && !(right is null)
+                || (left is not null
+                    && right is not null
                     && left.CompareTo(right) == 0);
         }
 
@@ -254,8 +254,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator >(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
             return !ReferenceEquals(left, right)
-                && !(left is null)
-                && !(right is null)
+                && left is not null
+                && right is not null
                 && left.CompareTo(right) > 0;
         }
 
@@ -268,8 +268,8 @@ namespace Inflatable.ClassMapper.BaseClasses
         public static bool operator >=(IDPropertyBase<TClassType, TDataType, TReturnType> left, IDPropertyBase<TClassType, TDataType, TReturnType> right)
         {
             return ReferenceEquals(left, right)
-                || (!(left is null)
-                && !(right is null)
+                || (left is not null
+                && right is not null
                 && left.CompareTo(right) >= 0);
         }
 
@@ -327,7 +327,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="other">Object to compare to</param>
         /// <returns>0 if they are equal, -1 if this is smaller, 1 if it is larger</returns>
-        public int CompareTo(object? other) => other is IDPropertyBase<TClassType, TDataType, TReturnType> objectBaseClass ? CompareTo(objectBaseClass) : 1;
+        public int CompareTo(object? other) => other is IDPropertyBase<TClassType, TDataType, TReturnType> ObjectBaseClass ? CompareTo(ObjectBaseClass) : 1;
 
         /// <summary>
         /// Converts this instance to the class specified
@@ -343,7 +343,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>True if they are equal, false otherwise</returns>
-        public override bool Equals(object obj) => (obj is IDPropertyBase<TClassType, TDataType, TReturnType> rightObj) && CompareTo(rightObj) == 0;
+        public override bool Equals(object? obj) => (obj is IDPropertyBase<TClassType, TDataType, TReturnType> RightObj) && CompareTo(RightObj) == 0;
 
         /// <summary>
         /// Gets the column information.
@@ -356,7 +356,7 @@ namespace Inflatable.ClassMapper.BaseClasses
                 SetColumnInfo(null);
             }
 
-            return Columns ?? Array.Empty<IQueryColumnInfo>();
+            return Columns ?? [];
         }
 
         /// <summary>
@@ -494,6 +494,7 @@ namespace Inflatable.ClassMapper.BaseClasses
         /// </summary>
         /// <param name="_">The class</param>
         /// <param name="__">The data</param>
-        private static void DefaultSetAction(TClassType _, TDataType __) { }
+        private static void DefaultSetAction(TClassType _, TDataType __)
+        { }
     }
 }

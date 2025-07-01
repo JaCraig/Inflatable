@@ -79,13 +79,13 @@ namespace Inflatable.ClassMapper.Interfaces
         /// Compiled version of the expression
         /// </summary>
         /// <value>The compiled expression.</value>
-        Func<TClassType, TDataType> CompiledExpression { get; }
+        Func<TClassType, TDataType?> CompiledExpression { get; }
 
         /// <summary>
         /// Expression pointing to the property
         /// </summary>
         /// <value>The expression.</value>
-        Expression<Func<TClassType, TDataType>> Expression { get; }
+        Expression<Func<TClassType, TDataType?>> Expression { get; }
     }
 
     /// <summary>
@@ -148,9 +148,9 @@ namespace Inflatable.ClassMapper.Interfaces
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
-        /// <param name="ModelObject">Object to get the value from</param>
+        /// <param name="modelObject">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        object? GetValue(object ModelObject);
+        object? GetValue(object modelObject);
 
         /// <summary>
         /// Sets up the property (used internally)

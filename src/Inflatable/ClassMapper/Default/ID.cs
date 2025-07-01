@@ -26,18 +26,18 @@ namespace Inflatable.ClassMapper.Default
     /// <summary>
     /// ID property
     /// </summary>
-    /// <typeparam name="ClassType">The type of the lass type.</typeparam>
-    /// <typeparam name="DataType">The type of the ata type.</typeparam>
+    /// <typeparam name="TClassType">The type of the lass type.</typeparam>
+    /// <typeparam name="TDataType">The type of the ata type.</typeparam>
     /// <seealso cref="IIDProperty"/>
-    public class ID<ClassType, DataType> : IDPropertyBase<ClassType, DataType, ID<ClassType, DataType>>, IIDProperty
-        where ClassType : class
+    public class ID<TClassType, TDataType> : IDPropertyBase<TClassType, TDataType, ID<TClassType, TDataType>>, IIDProperty
+        where TClassType : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ID{ClassType, DataType}"/> class.
         /// </summary>
         /// <param name="expression">Expression used to point to the property</param>
         /// <param name="mapping">Mapping the StringID is added to</param>
-        public ID(Expression<Func<ClassType, DataType>> expression, IMapping mapping) : base(expression, mapping)
+        public ID(Expression<Func<TClassType, TDataType>> expression, IMapping mapping) : base(expression, mapping)
         {
         }
 
@@ -49,8 +49,8 @@ namespace Inflatable.ClassMapper.Default
         /// <returns>The resulting property</returns>
         public override IIDProperty Convert<TResult>(IMapping mapping)
         {
-            var Result = new ExpressionTypeConverter<ClassType, DataType>(Expression).Convert<TResult>();
-            var ReturnObject = new ID<TResult, DataType>(Result, mapping);
+            var Result = new ExpressionTypeConverter<TClassType, TDataType>(Expression).Convert<TResult>();
+            var ReturnObject = new ID<TResult, TDataType>(Result, mapping);
             if (Index)
             {
                 ReturnObject.IsIndexed();
@@ -68,9 +68,9 @@ namespace Inflatable.ClassMapper.Default
 
             ReturnObject.WithColumnName(ColumnName);
             ReturnObject.WithComputedColumnSpecification(ComputedColumnSpecification);
-            for (int x = 0, ConstraintsCount = Constraints.Count; x < ConstraintsCount; x++)
+            for (int X = 0, ConstraintsCount = Constraints.Count; X < ConstraintsCount; X++)
             {
-                var Constraint = Constraints[x];
+                var Constraint = Constraints[X];
                 ReturnObject.WithConstraint(Constraint);
             }
 
@@ -100,9 +100,9 @@ namespace Inflatable.ClassMapper.Default
                 return;
             }
 
-            Columns = new Column.SimpleColumnInfo<ClassType, DataType>[]
-            {
-                new Column.SimpleColumnInfo<ClassType,DataType>(
+            Columns =
+            [
+                new Column.SimpleColumnInfo<TClassType,TDataType>(
                     ColumnName,
                     CompiledExpression,
                     ()=>default!,
@@ -114,7 +114,7 @@ namespace Inflatable.ClassMapper.Default
                     SetAction,
                     ParentMapping.TableName
                 )
-            };
+            ];
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -20,15 +19,15 @@ namespace Inflatable.Tests.Schema
         public MultipleDataSourcesSchemaGeneration(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            Mappings = new MappingManager(new IMapping[] {
+            Mappings = new MappingManager([
                 new SimpleClassDataSource1MappingWithDatabase(),
                 new SimpleClassDataSource2MappingWithDatabase()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping(),
                 new TestDatabase2Mapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
         }
@@ -58,7 +57,7 @@ namespace Inflatable.Tests.Schema
             _ = Assert.Single(TestModel.SourceSpec.Tables);
             Assert.Equal("SimpleClass_", TestModel.SourceSpec.Tables[0].Name);
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(2, TestModel.GeneratedSchemaChanges.Count());
+            Assert.Equal(2, TestModel.GeneratedSchemaChanges.Length);
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource1Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
 
@@ -70,7 +69,7 @@ namespace Inflatable.Tests.Schema
             _ = Assert.Single(TestModel.SourceSpec.Tables);
             Assert.Equal("SimpleClass_", TestModel.SourceSpec.Tables[0].Name);
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(2, TestModel.GeneratedSchemaChanges.Count());
+            Assert.Equal(2, TestModel.GeneratedSchemaChanges.Length);
             Assert.Contains("CREATE DATABASE [TestDatabase2]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource2Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
         }

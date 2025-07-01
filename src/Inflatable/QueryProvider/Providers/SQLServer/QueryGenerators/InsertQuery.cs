@@ -47,12 +47,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public InsertQuery(IMappingSource mappingInformation, ObjectPool<StringBuilder> objectPool)
             : base(mappingInformation, objectPool)
         {
-            if (!MappingInformation.TypeGraphs.ContainsKey(AssociatedType))
+            if (!MappingInformation.TypeGraphs.TryGetValue(AssociatedType, out Utils.Tree<Type>? TypeGraph))
             {
                 return;
             }
 
-            var TypeGraph = MappingInformation.TypeGraphs[AssociatedType];
             QueryDeclarationText = GenerateInsertQueryDeclarations();
             QueryText = GenerateInsertQuery(TypeGraph?.Root);
             var ParentMappings = MappingInformation.GetParentMapping(typeof(TMappedClass));
@@ -98,13 +97,13 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         public override IQuery[] GenerateDeclarations()
         {
             if (QueryDeclarationText is null)
-                return Array.Empty<IQuery>();
+                return [];
             var ReturnValue = new List<IQuery>();
-            for (var x = 0; x < QueryDeclarationText.Length; ++x)
+            for (var X = 0; X < QueryDeclarationText.Length; ++X)
             {
-                ReturnValue.Add(new Query(AssociatedType, CommandType.Text, QueryDeclarationText[x], QueryType));
+                ReturnValue.Add(new Query(AssociatedType, CommandType.Text, QueryDeclarationText[X], QueryType));
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
         }
 
         /// <summary>
@@ -112,7 +111,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject) => new IQuery[] { new Query(AssociatedType, CommandType.Text, QueryText ?? string.Empty, QueryType, GenerateParameters(queryObject)) };
+        public override IQuery[] GenerateQueries(TMappedClass queryObject) => [new Query(AssociatedType, CommandType.Text, QueryText ?? "", QueryType, GenerateParameters(queryObject))];
 
         /// <summary>
         /// Generates the insert query.
@@ -122,20 +121,20 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateInsertQuery(Utils.TreeNode<Type>? node)
         {
             if (node is null)
-                return string.Empty;
+                return "";
             var Builder = ObjectPool.Get();
             var ParameterList = ObjectPool.Get();
             var ValueList = ObjectPool.Get();
             var DeclareProperties = ObjectPool.Get();
             var SetProperties = ObjectPool.Get();
             var IDReturn = ObjectPool.Get();
-            var Splitter = string.Empty;
+            var Splitter = "";
             var Mapping = MappingInformation.Mappings[node.Data];
 
             //Generate parent queries
-            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+            for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
             {
-                var Parent = node.Nodes[x];
+                var Parent = node.Nodes[X];
                 Builder.AppendLine(GenerateInsertQuery(Parent));
             }
 
@@ -176,7 +175,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //ID Properties to pass to the next set of queries
             foreach (var IDProperty in Mapping.IDProperties)
             {
-                SetProperties.Append("SET ").Append(GetParentParameterName(IDProperty)).Append("=").Append(IDProperty.AutoIncrement ? "SCOPE_IDENTITY()" : GetParameterName(IDProperty)).AppendLine(";");
+                SetProperties.Append("SET ").Append(GetParentParameterName(IDProperty)).Append('=').Append(IDProperty.AutoIncrement ? "SCOPE_IDENTITY()" : GetParameterName(IDProperty)).AppendLine(";");
                 if (IDProperty.AutoIncrement)
                 {
                     IDReturn.AppendLineFormat("SELECT {0} AS [{1}];", GetParentParameterName(IDProperty), IDProperty.Name);
@@ -192,7 +191,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             //Build the actual queries
             if (node.Parent != null || Mapping.IDProperties.Any(x => x.AutoIncrement))
             {
-                Builder.Append(DeclareProperties.ToString());
+                Builder.Append(DeclareProperties);
             }
             if (Mapping.IDProperties.All(x => x.AutoIncrement) && Mapping.ReferenceProperties.Count == 0 && Mapping.AutoIDProperties.Count == 0)
             {
@@ -204,7 +203,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             }
             if (node.Parent != null || Mapping.IDProperties.Any(x => x.AutoIncrement))
             {
-                Builder.Append(SetProperties.ToString());
+                Builder.Append(SetProperties);
                 if (Mapping.IDProperties.Any(x => x.AutoIncrement))
                 {
                     Builder.Append(IDReturn);
@@ -233,9 +232,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 var TempParentMappings = MappingInformation.GetParentMapping(ChildMapping.ObjectType);
                 ParentMappings.AddIfUnique(TempParentMappings);
             }
-            for (int x = 0, ParentMappingsCount = ParentMappings.Count; x < ParentMappingsCount; x++)
+            for (int X = 0, ParentMappingsCount = ParentMappings.Count; X < ParentMappingsCount; X++)
             {
-                var ParentMapping = ParentMappings[x];
+                var ParentMapping = ParentMappings[X];
                 //ID Properties to pass to the next set of queries
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
@@ -245,11 +244,11 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                 //Auto ID properties to pass to the next set of queries
                 foreach (var AutoIDProperty in ParentMapping.AutoIDProperties)
                 {
-                    Builder.Add("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType(AutoIDProperty) + ";");
+                    Builder.Add("DECLARE " + GetParentParameterName(AutoIDProperty) + " AS " + GetParameterType() + ";");
                 }
             }
 
-            return Builder.ToArray();
+            return [.. Builder];
         }
 
         /// <summary>
@@ -260,8 +259,8 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private IParameter?[] GenerateParameters(TMappedClass queryObject)
         {
             var Parameters = IDProperties?.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)).ToList();
-            Parameters?.AddRange(ReferenceProperties?.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)));
-            return Parameters?.ToArray() ?? Array.Empty<IParameter>();
+            Parameters?.AddRange(ReferenceProperties?.ForEach(y => y.GetColumnInfo()[0].GetAsParameter(queryObject)) ?? []);
+            return Parameters?.ToArray() ?? [];
         }
     }
 }

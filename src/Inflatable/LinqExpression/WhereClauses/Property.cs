@@ -94,7 +94,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the parameters associated with the operator.
         /// </summary>
         /// <returns>A list of parameters associated with the operator.</returns>
-        public List<IParameter> GetParameters() => new List<IParameter>();
+        public List<IParameter> GetParameters() => [];
 
         /// <summary>
         /// Does a logical negation of the operator.

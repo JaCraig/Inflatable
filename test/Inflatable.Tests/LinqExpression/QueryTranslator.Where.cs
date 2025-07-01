@@ -116,7 +116,6 @@ namespace Inflatable.Tests.LinqExpression
         {
             var TestObject = new QueryTranslator<AllReferencesAndID>(Mappings, QueryProviders);
             IQueryable<AllReferencesAndID> TestQuery = new Query<AllReferencesAndID>(new DbContext<AllReferencesAndID>());
-            const int LocalVariable = 45;
             TestQuery = TestQuery.Where(x => x.StringValue1 == null)
                                  .Where(x => x.StringValue2 != null);
             var TempData = TestObject.Translate(TestQuery.Expression);

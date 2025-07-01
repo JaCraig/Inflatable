@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -12,7 +11,6 @@ using Inflatable.Tests.TestDatabases.MapProperties;
 using Inflatable.Tests.TestDatabases.SimpleTest;
 using Inflatable.Tests.TestDatabases.SimpleTestWithDatabase;
 using System.Data;
-using System.Linq;
 using Xunit;
 
 namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
@@ -26,16 +24,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void Creation()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                 new MockDatabaseMapping(),
-                new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new UpdateQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -47,16 +45,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateDeclarations()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new UpdateQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -70,16 +68,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQuery()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new BaseClass1Mapping(),
                 new ConcreteClass1Mapping(),
                 new ConcreteClass2Mapping(),
                 new ConcreteClass3Mapping(),
                 new IInterface1Mapping(),
                 new IInterface2Mapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
             var TestObject = new UpdateQuery<ConcreteClass1>(Mappings, ObjectPool);
@@ -99,16 +97,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapPropertiesNullValue()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new MapPropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
-            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().SetColumnInfo(Mappings);
+            Mappings.Mappings[typeof(MapProperties)].MapProperties[0].Setup(Mappings);
+            Mappings.Mappings[typeof(MapProperties)].MapProperties[0].SetColumnInfo(Mappings);
             var TestObject = new UpdateQuery<MapProperties>(Mappings, ObjectPool);
             Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);
@@ -124,16 +122,16 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
         [Fact]
         public void GenerateQueryWithMapPropertiesWithValue()
         {
-            var Mappings = new MappingSource(new IMapping[] {
+            var Mappings = new MappingSource([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new MapPropertiesMapping()
-            },
+            ],
                    new MockDatabaseMapping(),
-                   new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+                   new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
                GetLogger<MappingSource>(),
                ObjectPool);
-            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().Setup(Mappings);
-            Mappings.Mappings[typeof(MapProperties)].MapProperties.First().SetColumnInfo(Mappings);
+            Mappings.Mappings[typeof(MapProperties)].MapProperties[0].Setup(Mappings);
+            Mappings.Mappings[typeof(MapProperties)].MapProperties[0].SetColumnInfo(Mappings);
             var TestObject = new UpdateQuery<MapProperties>(Mappings, ObjectPool);
             Inflatable.QueryProvider.Interfaces.IQuery Result = TestObject.GenerateQueries(new MapProperties { ID = 10, BoolValue = true, MappedClass = new AllReferencesAndID { ID = 1 } })[0];
             Assert.Equal(CommandType.Text, Result.DatabaseCommandType);

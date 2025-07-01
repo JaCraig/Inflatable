@@ -46,7 +46,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
         public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
             if (aspect is null || objectPool is null)
-                return string.Empty;
+                return "";
             aspect.ManyToManyFields.Clear();
             aspect.ManyToOneFields.Clear();
             StringBuilder Builder = objectPool.Get();
@@ -75,7 +75,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
                         }
                         else
                         {
-                            _ = Builder.Append("private ").Append(Property.TypeName).Append(" ").Append(Property.InternalFieldName).AppendLine(";");
+                            _ = Builder.Append("private ").Append(Property.TypeName).Append(' ').Append(Property.InternalFieldName).AppendLine(";");
                         }
 
                         _ = Builder.Append("private bool ").Append(Property.InternalFieldName).AppendLine("Loaded;");

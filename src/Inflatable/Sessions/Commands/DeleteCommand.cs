@@ -42,7 +42,7 @@ namespace Inflatable.Sessions.Commands
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objectsToDelete">The objects to delete.</param>
-        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, params object[] objectsToDelete)
+        public DeleteCommand(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache? cache, params object[] objectsToDelete)
             : base(mappingManager, queryProviderManager, cache, objectsToDelete)
         {
         }
@@ -102,26 +102,28 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        /// <param name="ParentMappings">The parent mappings.</param>
-        private void CascadeManyToManyProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        /// <param name="parentMappings">The parent mappings.</param>
+        private void CascadeManyToManyProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> parentMappings)
         {
-            foreach (var ManyToManyProperty in ParentMappings.SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
+            foreach (var ManyToManyProperty in parentMappings.SelectMany(x => x.ManyToManyProperties).Where(x => x.Cascade))
             {
                 var ManyToManyValue = ManyToManyProperty.GetValue(@object);
                 if (ManyToManyValue != null)
                 {
-                    if (!(ManyToManyValue is IList ManyToManyValueList))
+                    if (ManyToManyValue is not IList ManyToManyValueList)
                         continue;
                     var FinalList = new List<object>();
-                    for (int x = 0, ManyToManyValueListCount = ManyToManyValueList.Count; x < ManyToManyValueListCount; ++x)
+                    for (int X = 0, ManyToManyValueListCount = ManyToManyValueList.Count; X < ManyToManyValueListCount; ++X)
                     {
-                        var Item = ManyToManyValueList[x];
+                        var Item = ManyToManyValueList[X];
+                        if (Item is null)
+                            continue;
                         FinalList.Add(Item);
                     }
                     DeleteJoins(@object, source, batch, ManyToManyProperty, ManyToManyValueList);
-                    for (int x = 0, FinalListCount = FinalList.Count; x < FinalListCount; ++x)
+                    for (int X = 0, FinalListCount = FinalList.Count; X < FinalListCount; ++X)
                     {
-                        var Item = FinalList[x];
+                        var Item = FinalList[X];
                         Delete(Item, source, batch, objectsSeen);
                     }
                 }
@@ -135,10 +137,10 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        /// <param name="ParentMappings">The parent mappings.</param>
-        private void CascadeManyToOneProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        /// <param name="parentMappings">The parent mappings.</param>
+        private void CascadeManyToOneProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> parentMappings)
         {
-            foreach (var ManyToOneProperty in ParentMappings.SelectMany(x => x.ManyToOneProperties).Where(x => x.Cascade))
+            foreach (var ManyToOneProperty in parentMappings.SelectMany(x => x.ManyToOneProperties).Where(x => x.Cascade))
             {
                 var ManyToOneValue = ManyToOneProperty.GetValue(@object);
                 if (ManyToOneValue != null)
@@ -146,14 +148,16 @@ namespace Inflatable.Sessions.Commands
                     if (ManyToOneValue is IList ManyToOneValueList)
                     {
                         var FinalList = new List<object>();
-                        for (int x = 0, ManyToManyValueListCount = ManyToOneValueList.Count; x < ManyToManyValueListCount; ++x)
+                        for (int X = 0, ManyToManyValueListCount = ManyToOneValueList.Count; X < ManyToManyValueListCount; ++X)
                         {
-                            var Item = ManyToOneValueList[x];
+                            var Item = ManyToOneValueList[X];
+                            if (Item is null)
+                                continue;
                             FinalList.Add(Item);
                         }
-                        for (int x = 0, FinalListCount = FinalList.Count; x < FinalListCount; ++x)
+                        for (int X = 0, FinalListCount = FinalList.Count; X < FinalListCount; ++X)
                         {
-                            var Item = FinalList[x];
+                            var Item = FinalList[X];
                             Delete(Item, source, batch, objectsSeen);
                         }
                     }
@@ -172,10 +176,10 @@ namespace Inflatable.Sessions.Commands
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
         /// <param name="objectsSeen">The objects seen.</param>
-        /// <param name="ParentMappings">The parent mappings.</param>
-        private void CascadeMapProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> ParentMappings)
+        /// <param name="parentMappings">The parent mappings.</param>
+        private void CascadeMapProperties(object @object, IMappingSource source, SQLHelper batch, IList<object> objectsSeen, IEnumerable<Inflatable.Interfaces.IMapping> parentMappings)
         {
-            foreach (var MapProperty in ParentMappings.SelectMany(x => x.MapProperties).Where(x => x.Cascade))
+            foreach (var MapProperty in parentMappings.SelectMany(x => x.MapProperties).Where(x => x.Cascade))
             {
                 Delete(MapProperty.GetValue(@object), source, batch, objectsSeen);
             }
@@ -185,15 +189,15 @@ namespace Inflatable.Sessions.Commands
         /// Creates the batch and gets the list of objects seen.
         /// </summary>
         /// <param name="source">The source.</param>
-        /// <param name="Batch">The batch.</param>
-        /// <param name="ObjectsSeen">The objects seen.</param>
-        private void CreateBatch(IMappingSource source, out SQLHelper Batch, out List<object> ObjectsSeen)
+        /// <param name="batch">The batch.</param>
+        /// <param name="objectsSeen">The objects seen.</param>
+        private void CreateBatch(IMappingSource source, out SQLHelper batch, out List<object> objectsSeen)
         {
-            Batch = QueryProviderManager.CreateBatch(source.Source);
-            ObjectsSeen = new List<object>();
-            for (int x = 0, ObjectsLength = Objects.Length; x < ObjectsLength; ++x)
+            batch = QueryProviderManager.CreateBatch(source.Source);
+            objectsSeen = [];
+            for (int X = 0, ObjectsLength = Objects.Length; X < ObjectsLength; ++X)
             {
-                Delete(Objects[x], source, Batch, ObjectsSeen);
+                Delete(Objects[X], source, batch, objectsSeen);
             }
         }
 
@@ -216,10 +220,10 @@ namespace Inflatable.Sessions.Commands
             objectsSeen.Add(@object);
             DeleteCascade(@object, source, batch, objectsSeen);
             var Generator = QueryProviderManager.CreateGenerator(@object.GetType(), source);
-            var Queries = Generator.GenerateQueries(QueryType.Delete, @object);
-            for (int x = 0, QueriesLength = Queries.Length; x < QueriesLength; x++)
+            var Queries = Generator?.GenerateQueries(QueryType.Delete, @object) ?? [];
+            for (int X = 0, QueriesLength = Queries.Length; X < QueriesLength; X++)
             {
-                var TempQuery = Queries[x];
+                var TempQuery = Queries[X];
                 batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
 
@@ -247,21 +251,21 @@ namespace Inflatable.Sessions.Commands
         /// <param name="object">The object.</param>
         /// <param name="source">The source.</param>
         /// <param name="batch">The batch.</param>
-        /// <param name="ManyToManyProperty">The many to many property.</param>
-        /// <param name="ManyToManyValueList">The many to many value list.</param>
-        private void DeleteJoins(object @object, IMappingSource source, SQLHelper batch, IManyToManyProperty ManyToManyProperty, IList ManyToManyValueList)
+        /// <param name="manyToManyProperty">The many to many property.</param>
+        /// <param name="manyToManyValueList">The many to many value list.</param>
+        private void DeleteJoins(object @object, IMappingSource source, SQLHelper batch, IManyToManyProperty manyToManyProperty, IList manyToManyValueList)
         {
-            if (ManyToManyProperty.DatabaseJoinsCascade)
+            if (manyToManyProperty.DatabaseJoinsCascade)
             {
                 return;
             }
 
-            ManyToManyValueList.Clear();
-            var LinksGenerator = QueryProviderManager.CreateGenerator(ManyToManyProperty.ParentMapping.ObjectType, source);
-            var TempQueries = LinksGenerator.GenerateQueries(QueryType.JoinsDelete, @object, ManyToManyProperty);
-            for (int x = 0, TempQueriesLength = TempQueries.Length; x < TempQueriesLength; ++x)
+            manyToManyValueList.Clear();
+            var LinksGenerator = QueryProviderManager.CreateGenerator(manyToManyProperty.ParentMapping.ObjectType, source);
+            var TempQueries = LinksGenerator?.GenerateQueries(QueryType.JoinsDelete, @object, manyToManyProperty) ?? [];
+            for (int X = 0, TempQueriesLength = TempQueries.Length; X < TempQueriesLength; ++X)
             {
-                var TempQuery = TempQueries[x];
+                var TempQuery = TempQueries[X];
                 batch.AddQuery(TempQuery.DatabaseCommandType, TempQuery.QueryString, TempQuery.Parameters!);
             }
         }

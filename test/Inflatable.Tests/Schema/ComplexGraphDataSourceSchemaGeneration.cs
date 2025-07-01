@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -20,18 +19,18 @@ namespace Inflatable.Tests.Schema
         public ComplexGraphDataSourceSchemaGeneration(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            Mappings = new MappingManager(new IMapping[] {
+            Mappings = new MappingManager([
                 new BaseClass1MappingWithDatabase(),
                 new ConcreteClass1MappingWithDatabase(),
                 new ConcreteClass2MappingWithDatabase(),
                 new ConcreteClass3MappingWithDatabase(),
                 new IInterface1MappingWithDatabase(),
                 new IInterface2MappingWithDatabase()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
         }
@@ -65,7 +64,7 @@ namespace Inflatable.Tests.Schema
             Assert.Contains("ConcreteClass3_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Contains("IInterface1_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(12, TestModel.GeneratedSchemaChanges.Count());
+            Assert.Equal(12, TestModel.GeneratedSchemaChanges.Length);
             Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ConcreteClass2_]([ID_] BigInt PRIMARY KEY IDENTITY,[InterfaceValue_] Int NOT NULL,[BaseClass1_ID_] BigInt NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[IInterface1_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY)", TestModel.GeneratedSchemaChanges);

@@ -38,8 +38,8 @@ namespace Inflatable.ClassMapper
         /// <param name="mappings">The mappings.</param>
         /// <param name="sources">The sources.</param>
         /// <param name="queryProvider">The query provider.</param>
-        /// <param name="logger">The logger.</param>
         /// <param name="objectPool">The object pool.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">logger</exception>
         public MappingManager(
             IEnumerable<IMapping> mappings,
@@ -50,7 +50,7 @@ namespace Inflatable.ClassMapper
         {
             Logger = logger;
             ObjectPool = objectPool ?? throw new ArgumentNullException(nameof(objectPool));
-            mappings ??= Array.Empty<IMapping>();
+            mappings ??= [];
 
             var Debug = Logger?.IsEnabled(LogLevel.Debug) ?? false;
 
@@ -61,29 +61,34 @@ namespace Inflatable.ClassMapper
                 TempSourceMappings.Add(Item.DatabaseConfigType, Item);
             }
             var FinalList = new ConcurrentBag<IMappingSource>();
-            TempSourceMappings.Keys.ForEachParallel(Key =>
+            TempSourceMappings.Keys.ForEachParallel(key =>
             {
-                FinalList.Add(new MappingSource(TempSourceMappings[Key],
-                                                sources.FirstOrDefault(x => x.GetType() == Key),
+                FinalList.Add(new MappingSource(TempSourceMappings[key],
+                                                sources.FirstOrDefault(x => x.GetType() == key),
                                                 queryProvider,
                                                 Logger,
                                                 ObjectPool));
             });
-            Sources = FinalList.OrderBy(x => x.Order).ToArray();
-            WriteSources = Sources.Where(x => x.CanWrite).ToArray();
-            ReadSources = Sources.Where(x => x.CanRead).ToArray();
+            Sources = [.. FinalList.OrderBy(x => x.Order)];
+            WriteSources = [.. Sources.Where(x => x.CanWrite)];
+            ReadSources = [.. Sources.Where(x => x.CanRead)];
             if (Debug)
             {
                 var Builder = ObjectPool.Get();
                 Builder.AppendLine("Final Mappings:");
-                for (var i = 0; i < Sources.Length; i++)
+                for (var I = 0; I < Sources.Length; I++)
                 {
-                    Builder.AppendLine(Sources[i].ToString());
+                    Builder.AppendLine(Sources[I].ToString());
                 }
-                Logger?.LogDebug("{0}", Builder.ToString());
+                Logger?.LogDebug("{mappings}", Builder.ToString());
                 ObjectPool.Return(Builder);
             }
         }
+
+        /// <summary>
+        /// To string value
+        /// </summary>
+        private string? _ToString;
 
         /// <summary>
         /// Gets or sets the logger.
@@ -116,11 +121,6 @@ namespace Inflatable.ClassMapper
         public IMappingSource[] WriteSources { get; set; }
 
         /// <summary>
-        /// To string value
-        /// </summary>
-        private string? _ToString;
-
-        /// <summary>
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
@@ -129,9 +129,9 @@ namespace Inflatable.ClassMapper
             if (string.IsNullOrEmpty(_ToString))
             {
                 var Builder = ObjectPool.Get();
-                for (var i = 0; i < Sources.Length; i++)
+                for (var I = 0; I < Sources.Length; I++)
                 {
-                    Builder.AppendLine(Sources[i].ToString());
+                    Builder.AppendLine(Sources[I].ToString());
                 }
                 _ToString = Builder.ToString();
                 ObjectPool.Return(Builder);

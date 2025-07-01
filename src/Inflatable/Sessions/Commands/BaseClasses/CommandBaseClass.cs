@@ -40,10 +40,10 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// <param name="queryProviderManager">The query provider manager.</param>
         /// <param name="cache">The cache.</param>
         /// <param name="objects">The objects.</param>
-        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)
+        protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache? cache, object[] objects)
         {
             QueryProviderManager = queryProviderManager;
-            Objects = (objects ?? Array.Empty<object>()).Where(x => x != null).ToArray();
+            Objects = [.. (objects ?? []).Where(x => x is not null)];
             MappingManager = mappingManager;
             Cache = cache;
         }
@@ -52,7 +52,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Gets the cache.
         /// </summary>
         /// <value>The cache.</value>
-        public ICache Cache { get; }
+        public ICache? Cache { get; }
 
         /// <summary>
         /// Gets the type of the command.
@@ -109,7 +109,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
                 return false;
             }
 
-            if (!(command is CommandBaseClass TempCommand))
+            if (command is not CommandBaseClass TempCommand)
             {
                 return false;
             }
@@ -117,7 +117,7 @@ namespace Inflatable.Sessions.Commands.BaseClasses
             var Values = new List<object>();
             Values.AddRange(Objects);
             Values.AddRange(TempCommand.Objects);
-            Objects = Values.ToArray();
+            Objects = [.. Values];
             return true;
         }
 
@@ -132,6 +132,8 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         protected static bool CanExecute(object @object, IMappingSource source)
         {
             var TempType = GetActualType(@object);
+            if (TempType is null)
+                return false;
             return source.Mappings.ContainsKey(TempType);
         }
 
@@ -186,9 +188,11 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// Removes the items from cache.
         /// </summary>
         /// <param name="object">The object.</param>
-        protected void RemoveItemsFromCache(object @object)
+        protected void RemoveItemsFromCache(object? @object)
         {
             var TempType = GetActualType(@object);
+            if (TempType is null)
+                return;
             QueryResults.RemoveCacheTag(TempType.GetName(), Cache);
         }
 
@@ -197,13 +201,11 @@ namespace Inflatable.Sessions.Commands.BaseClasses
         /// </summary>
         /// <param name="object">The object.</param>
         /// <returns>The actual object type</returns>
-        private static Type GetActualType(object @object)
+        private static Type? GetActualType(object? @object)
         {
-            var TempType = @object.GetType();
-            if (TempType.Namespace.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal))
-            {
-                TempType = TempType.BaseType;
-            }
+            var TempType = @object?.GetType();
+            if (TempType?.Namespace?.StartsWith("AspectusGeneratedTypes", StringComparison.Ordinal) ?? false)
+                return TempType.BaseType;
 
             return TempType;
         }

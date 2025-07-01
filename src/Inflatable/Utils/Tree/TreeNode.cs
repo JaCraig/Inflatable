@@ -35,7 +35,7 @@ namespace Inflatable.Utils
         {
             Data = data;
             Parent = parent;
-            Nodes = new List<TreeNode<TData>>();
+            Nodes = [];
         }
 
         /// <summary>
@@ -110,6 +110,6 @@ namespace Inflatable.Utils
         /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string"/> that represents this instance.</returns>
-        public override string ToString() => Data?.ToString() ?? string.Empty;
+        public override string ToString() => Data?.ToString() ?? "";
     }
 }

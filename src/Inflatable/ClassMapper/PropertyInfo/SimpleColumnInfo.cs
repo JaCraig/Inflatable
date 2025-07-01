@@ -157,7 +157,7 @@ namespace Inflatable.ClassMapper.Column
             var ParamValue = GetValue(objectValue);
             if (Equals(ParamValue, DefaultValue()))
             {
-                ParamValue = IsNullable ? null : DefaultValue() as object;
+                ParamValue = IsNullable ? null : DefaultValue();
             }
 
             if (PropertyType == typeof(string))
@@ -178,7 +178,7 @@ namespace Inflatable.ClassMapper.Column
             var ParamValue = GetValue(objectValue);
             if (Equals(ParamValue, DefaultValue()))
             {
-                ParamValue = IsNullable ? null : DefaultValue() as object;
+                ParamValue = IsNullable ? null : DefaultValue();
             }
 
             if (PropertyType == typeof(string))
@@ -224,7 +224,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="object">Object</param>
         /// <returns>True if it is, false otherwise.</returns>
-        public bool IsDefault(object @object) => ReferenceEquals(@object, default(TClassType)) || Equals(GetValue(@object), DefaultValue());
+        public bool IsDefault(object? @object) => ReferenceEquals(@object, default(TClassType)) || Equals(GetValue(@object), DefaultValue());
 
         /// <summary>
         /// Determines whether the specified object is default.
@@ -239,7 +239,7 @@ namespace Inflatable.ClassMapper.Column
         /// </summary>
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object propertyValue)
+        public void SetValue(object? objectToSet, object? propertyValue)
         {
             var TempObject = objectToSet as TClassType;
             if (ReferenceEquals(TempObject, default(TClassType)))
@@ -248,7 +248,7 @@ namespace Inflatable.ClassMapper.Column
             }
 
             var TempPropertyValue = propertyValue is null ? default : (TDataType)propertyValue;
-            SetAction(TempObject, TempPropertyValue);
+            SetAction(TempObject, TempPropertyValue!);
         }
 
         /// <summary>
@@ -257,13 +257,13 @@ namespace Inflatable.ClassMapper.Column
         /// <param name="objectToSet">The object to set.</param>
         /// <param name="paramValue">The parameter value.</param>
         /// <param name="propertyValue">The property value.</param>
-        public void SetValue(object objectToSet, object paramValue, object propertyValue) => SetValue(objectToSet, propertyValue);
+        public void SetValue(object? objectToSet, object? paramValue, object? propertyValue) => SetValue(objectToSet, propertyValue);
 
         /// <summary>
         /// Gets the property's value from the object sent in
         /// </summary>
         /// <param name="object">Object to get the value from</param>
         /// <returns>The value of the property</returns>
-        private object? GetValue(TClassType? @object) => ReferenceEquals(@object, default(TClassType)) ? null : (object?)CompiledExpression(@object);
+        private object? GetValue(TClassType? @object) => ReferenceEquals(@object, default(TClassType)) ? null : CompiledExpression(@object);
     }
 }

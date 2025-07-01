@@ -4,6 +4,156 @@
         <name>TestApp</name>
     </assembly>
     <members>
+        <member name="T:TestApp.Models.ComplexClass">
+            <summary>
+            Represents a complex class that inherits from <see cref="T:TestApp.Models.ComplexClassBase"/>.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClass.ManyToOneProperty">
+            <summary>
+            Gets or sets the collection of related <see cref="T:TestApp.Models.IComplexClass2"/> instances.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClass.Value1">
+            <summary>
+            Gets or sets the value for this complex class. Maximum length is 400 characters.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.ComplexClass2">
+            <summary>
+            Represents a complex data model with a date, identifier, and string value.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClass2.DateValue">
+            <summary>
+            Gets or sets the date value associated with this instance.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClass2.ID">
+            <summary>
+            Gets or sets the unique identifier for this instance.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClass2.StringVal">
+            <summary>
+            Gets or sets the string value.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.ComplexClassBase">
+            <summary>
+            Represents the abstract base class for complex classes, implementing <see cref="T:TestApp.Models.ICompexClass"/>.
+            </summary>
+        </member>
+        <member name="M:TestApp.Models.ComplexClassBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestApp.Models.ComplexClassBase"/> class.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClassBase.ID">
+            <summary>
+            Gets or sets the unique identifier for the model.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClassBase.Value2">
+            <summary>
+            Gets or sets the secondary integer value.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ComplexClassBase.Value3">
+            <summary>
+            Gets or sets the third value associated with the complex class.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.ICompexClass">
+            <summary>
+            Represents a complex model with an additional <see cref="P:TestApp.Models.ICompexClass.Value3"/> property.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.ICompexClass.Value3">
+            <summary>
+            Gets or sets the third value associated with the complex class.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.IComplexClass2">
+            <summary>
+            Represents a complex model with a date value.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.IComplexClass2.DateValue">
+            <summary>
+            Gets or sets the date value associated with the model.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.IModel">
+            <summary>
+            Represents a model with a unique identifier.
+            </summary>
+        </member>
+        <member name="P:TestApp.Models.IModel.ID">
+            <summary>
+            Gets or sets the unique identifier for the model.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.Mappings.ComplexClass2Mapping">
+            <summary>
+            Represents the mapping configuration for the <see cref="T:TestApp.Models.ComplexClass2"/> entity to the <see
+            cref="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping"/> database.
+            </summary>
+        </member>
+        <member name="M:TestApp.Models.Mappings.ComplexClass2Mapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestApp.Models.Mappings.ComplexClass2Mapping"/> class. Configures
+            the mapping for the <see cref="P:TestApp.Models.ComplexClass2.StringVal"/> property as a reference.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.Mappings.ComplexClassMapping">
+            <summary>
+            Represents the mapping configuration for the <see cref="T:TestApp.Models.ComplexClass"/> entity within the
+            <see cref="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping"/> database context.
+            </summary>
+        </member>
+        <member name="M:TestApp.Models.Mappings.ComplexClassMapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestApp.Models.Mappings.ComplexClassMapping"/> class. Configures
+            the entity relationships and reference properties.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.Mappings.IComplexClass2Mapping">
+            <summary>
+            Provides mapping configuration for <see cref="T:TestApp.Models.IComplexClass2"/> to the <see
+            cref="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping"/> database.
+            </summary>
+        </member>
+        <member name="M:TestApp.Models.Mappings.IComplexClass2Mapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestApp.Models.Mappings.IComplexClass2Mapping"/> class and sets up
+            the mapping for the <see cref="P:TestApp.Models.IComplexClass2.DateValue"/> property.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.Mappings.IComplexClassMapping">
+            <summary>
+            Represents the mapping configuration for the <see cref="T:TestApp.Models.ICompexClass"/> entity to the <see
+            cref="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping"/> database context.
+            </summary>
+        </member>
+        <member name="M:TestApp.Models.Mappings.IComplexClassMapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestApp.Models.Mappings.IComplexClassMapping"/> class. Configures
+            the mapping for the <see cref="P:TestApp.Models.ICompexClass.Value3"/> property as a reference.
+            </summary>
+        </member>
+        <member name="T:TestApp.Models.Mappings.IModelMapping">
+            <summary>
+            Provides the mapping configuration for the <see cref="T:TestApp.Models.IModel"/> entity to the <see
+            cref="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping"/> database.
+            </summary>
+        </member>
+        <member name="M:TestApp.Models.Mappings.IModelMapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestApp.Models.Mappings.IModelMapping"/> class. Configures the ID
+            property as an auto-incremented primary key.
+            </summary>
+        </member>
         <member name="T:TestApp.Models.SimpleClass">
             <summary>
             
@@ -213,6 +363,65 @@
             <summary>
             The simple test example
             </summary>
+        </member>
+        <member name="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping">
+            <summary>
+            Represents the database mapping configuration for the test database.
+            </summary>
+        </member>
+        <member name="P:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping.Name">
+            <summary>
+            Gets the name associated with the database/connection string.
+            </summary>
+        </member>
+        <member name="P:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping.Order">
+            <summary>
+            Gets the order that this database should be in.
+            </summary>
+        </member>
+        <member name="P:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping.Provider">
+            <summary>
+            Gets the database provider factory.
+            </summary>
+        </member>
+        <member name="P:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping.SourceOptions">
+            <summary>
+            Gets the source options for the database.
+            </summary>
+        </member>
+        <member name="T:Inflatable.Benchmarks.Models.Mappings.SimpleClassMapping">
+            <summary>
+            Mapping class for <see cref="T:TestApp.Models.SimpleClass"/> to <see cref="T:Inflatable.Benchmarks.Models.Database.TestDatabaseMapping"/>. Configures
+            property mappings and database schema details.
+            </summary>
+        </member>
+        <member name="M:Inflatable.Benchmarks.Models.Mappings.SimpleClassMapping.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Inflatable.Benchmarks.Models.Mappings.SimpleClassMapping"/> class. Sets up
+            property mappings for <see cref="T:TestApp.Models.SimpleClass"/>.
+            </summary>
+        </member>
+        <member name="T:InflatableBenchmarks.Benchmarks.Modules.ConfigurationModule">
+            <summary>
+            Module responsible for configuring application settings and registering them with the
+            dependency injection container.
+            </summary>
+        </member>
+        <member name="P:InflatableBenchmarks.Benchmarks.Modules.ConfigurationModule.Order">
+            <summary>
+            Gets the order in which the module should be loaded.
+            </summary>
+        </member>
+        <member name="P:InflatableBenchmarks.Benchmarks.Modules.ConfigurationModule.ConnectionString">
+            <summary>
+            Gets the default connection string for the application.
+            </summary>
+        </member>
+        <member name="M:InflatableBenchmarks.Benchmarks.Modules.ConfigurationModule.Load(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Loads the configuration settings into the provided service collection.
+            </summary>
+            <param name="bootstrapper">The service collection to which configuration will be added.</param>
         </member>
         <member name="T:InflatableBenchmarks.Benchmarks.Modules.LoggingModule">
             <summary>

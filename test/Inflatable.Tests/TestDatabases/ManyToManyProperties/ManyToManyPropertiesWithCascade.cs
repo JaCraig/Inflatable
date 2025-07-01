@@ -8,7 +8,7 @@ namespace Inflatable.Tests.TestDatabases.ManyToManyProperties
     {
         public ManyToManyPropertiesWithCascade()
         {
-            ManyToManyClass = new List<AllReferencesAndID>();
+            ManyToManyClass = [];
         }
 
         [BoolGenerator]

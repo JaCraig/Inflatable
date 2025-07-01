@@ -13,7 +13,7 @@ namespace Inflatable.Benchmarks.Models.Database
 
         public DbProviderFactory Provider => SqlClientFactory.Instance;
 
-        public Options SourceOptions => new Options()
+        public Options SourceOptions => new()
         {
             Optimize = true,
             Access = Enums.SourceAccess.Read | Enums.SourceAccess.Write,

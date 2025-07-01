@@ -1,7 +1,6 @@
 ﻿using BigBook;
 using DragonHoard.Core;
 using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -27,21 +26,21 @@ namespace Inflatable.Tests.Sessions
         public SessionWithManyToManyProperties(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            InternalMappingManager = new MappingManager(new IMapping[] {
+            InternalMappingManager = new MappingManager([
                 new AllReferencesAndIDMappingWithDatabase(),
                 new ManyToManyPropertiesWithCascadeMapping(),
                 new ManyToManyPropertiesMapping(),
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
             InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
 
             var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
+            InternalQueryProviderManager = new QueryProviderManager([TempQueryProvider], GetLogger<QueryProviderManager>());
 
             CacheManager = Resolve<Cache>();
             CacheManager.GetOrAddCache("Inflatable").Compact(1);
@@ -60,7 +59,7 @@ namespace Inflatable.Tests.Sessions
             ISession TempSession = Resolve<ISession>();
             _ = await TempSession.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
-            ManyToManyPropertiesWithCascade[] Results = DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToArray();
+            ManyToManyPropertiesWithCascade[] Results = [.. DbContext<ManyToManyPropertiesWithCascade>.CreateQuery()];
             Assert.Equal(3, Results.Length);
             _ = await TempSession.Delete(DbContext<ManyToManyPropertiesWithCascade>.CreateQuery().ToList().ToArray()).ExecuteAsync();
         }
@@ -141,7 +140,7 @@ namespace Inflatable.Tests.Sessions
             };
             Result1.ManyToManyClass.Add(new AllReferencesAndID
             {
-                ByteArrayValue = new byte[] { 1, 2, 3, 4 },
+                ByteArrayValue = [1, 2, 3, 4],
                 ByteValue = 34,
                 CharValue = 'a',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -152,7 +151,7 @@ namespace Inflatable.Tests.Sessions
             };
             Result2.ManyToManyClass.Add(new AllReferencesAndID
             {
-                ByteArrayValue = new byte[] { 5, 6, 7, 8 },
+                ByteArrayValue = [5, 6, 7, 8],
                 ByteValue = 34,
                 CharValue = 'b',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -163,7 +162,7 @@ namespace Inflatable.Tests.Sessions
             };
             Result3.ManyToManyClass.Add(new AllReferencesAndID
             {
-                ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                ByteArrayValue = [9, 10, 11, 12],
                 ByteValue = 34,
                 CharValue = 'c',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -215,17 +214,17 @@ namespace Inflatable.Tests.Sessions
             _ = await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
             IEnumerable<ManyToManyPropertiesWithCascade> Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
-            ManyToManyPropertiesWithCascade[] UpdatedResults = Results.ForEach(x =>
+            ManyToManyPropertiesWithCascade[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToManyClass.Add(new AllReferencesAndID
                 {
-                    ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                    ByteArrayValue = [9, 10, 11, 12],
                     ByteValue = 34,
                     CharValue = 'c',
                     DateTimeValue = new DateTime(2000, 1, 1)
                 });
-            }).ToArray();
+            })];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToManyPropertiesWithCascade>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertiesWithCascade_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -242,18 +241,18 @@ namespace Inflatable.Tests.Sessions
             _ = await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
             IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
-            ManyToManyProperties[] UpdatedResults = Results.ForEach(x =>
+            ManyToManyProperties[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToManyClass.Add(new AllReferencesAndID
                 {
-                    ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                    ByteArrayValue = [9, 10, 11, 12],
                     ByteValue = 34,
                     CharValue = 'c',
                     DateTimeValue = new DateTime(2000, 1, 1)
                 });
                 var Result = AsyncHelper.RunSync(async () => await TestObject.Save(x.ManyToManyClass).ExecuteAsync());
-            }).ToArray();
+            })];
             _ = await Assert.ThrowsAsync<SqlException>(() => TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -268,11 +267,11 @@ namespace Inflatable.Tests.Sessions
             _ = await TestObject.Delete(DbContext<AllReferencesAndID>.CreateQuery().ToList().ToArray()).ExecuteAsync();
             await SetupDataAsync();
             IEnumerable<ManyToManyProperties> Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
-            ManyToManyProperties[] UpdatedResults = Results.ForEach(x =>
+            ManyToManyProperties[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.ManyToManyClass.Clear();
-            }).ToArray();
+            })];
             Assert.Equal(6, await TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<ManyToManyProperties>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyProperties_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -305,7 +304,7 @@ namespace Inflatable.Tests.Sessions
             };
             Result.ManyToManyClass.Add(new AllReferencesAndID
             {
-                ByteArrayValue = new byte[] { 9, 10, 11, 12 },
+                ByteArrayValue = [9, 10, 11, 12],
                 ByteValue = 34,
                 CharValue = 'c',
                 DateTimeValue = new DateTime(2000, 1, 1)
@@ -329,8 +328,8 @@ namespace Inflatable.Tests.Sessions
             {
                 new() {
                     BoolValue=true,
-                    ManyToManyClass=new List<AllReferencesAndID>()
-                    {
+                    ManyToManyClass=
+                    [
                         new() {
                             BoolValue=true,
                             ByteValue=1,
@@ -352,12 +351,12 @@ namespace Inflatable.Tests.Sessions
                             UIntValue=5342,
                             UShortValue=1234
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToManyClass=new List<AllReferencesAndID>()
-                    {
+                    ManyToManyClass=
+                    [
                         new() {
                             BoolValue=true,
                             ByteValue=1,
@@ -379,12 +378,12 @@ namespace Inflatable.Tests.Sessions
                             UIntValue=5342,
                             UShortValue=1234
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToManyClass=new List<AllReferencesAndID>()
-                    {
+                    ManyToManyClass=
+                    [
                         new() {
                             BoolValue=true,
                             ByteValue=1,
@@ -406,15 +405,15 @@ namespace Inflatable.Tests.Sessions
                             UIntValue=5342,
                             UShortValue=1234
                         }
-                    }
+                    ]
                 },
             };
             var InitialData2 = new ManyToManyPropertiesWithCascade[]
             {
                 new() {
                     BoolValue=true,
-                    ManyToManyClass=new List<AllReferencesAndID>()
-                    {
+                    ManyToManyClass=
+                    [
                         new() {
                             BoolValue=true,
                             ByteValue=1,
@@ -436,12 +435,12 @@ namespace Inflatable.Tests.Sessions
                             UIntValue=5342,
                             UShortValue=1234
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToManyClass=new List<AllReferencesAndID>()
-                    {
+                    ManyToManyClass=
+                    [
                         new() {
                             BoolValue=true,
                             ByteValue=1,
@@ -463,12 +462,12 @@ namespace Inflatable.Tests.Sessions
                             UIntValue=5342,
                             UShortValue=1234
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    ManyToManyClass=new List<AllReferencesAndID>()
-                    {
+                    ManyToManyClass=
+                    [
                         new() {
                             BoolValue=true,
                             ByteValue=1,
@@ -490,7 +489,7 @@ namespace Inflatable.Tests.Sessions
                             UIntValue=5342,
                             UShortValue=1234
                         }
-                    }
+                    ]
                 },
             };
             _ = await Session.Save(InitialData.SelectMany(x => x.ManyToManyClass).ToArray()).ExecuteAsync().ConfigureAwait(false);

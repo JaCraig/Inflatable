@@ -31,7 +31,7 @@ namespace Inflatable.LinqExpression.Select
         /// </summary>
         public ColumnProjector()
         {
-            FoundProperties = new List<PropertyInfo>();
+            FoundProperties = [];
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Inflatable.LinqExpression.Select
         /// <returns>The resulting properties</returns>
         public IEnumerable<PropertyInfo> ProjectColumns(Expression expression)
         {
-            FoundProperties = new List<PropertyInfo>();
+            FoundProperties = [];
             Visit(expression);
             return FoundProperties;
         }

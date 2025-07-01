@@ -15,8 +15,8 @@ namespace Inflatable.Tests.QueryProvider
                 { QueryType.Delete, new Query(typeof(object),CommandType.Text, "ASDF", QueryType.Delete) }
             };
             Assert.Single(TestObject);
-            Assert.Equal(1, TestObject.Keys.Count);
-            Assert.Equal(1, TestObject.Values.Count);
+            Assert.Single(TestObject.Keys);
+            Assert.Single(TestObject.Values);
         }
 
         [Fact]

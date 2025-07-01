@@ -36,7 +36,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// <param name="value">The value.</param>
         /// <param name="methodType">Type of the method.</param>
         /// <exception cref="ArgumentNullException">value or property</exception>
-        public LikeOperator(IOperator property, IOperator value, string methodType)
+        public LikeOperator(IOperator? property, IOperator? value, string methodType)
         {
             Value = value ?? throw new ArgumentNullException(nameof(value));
             Property = property ?? throw new ArgumentNullException(nameof(property));
@@ -95,8 +95,8 @@ namespace Inflatable.LinqExpression.WhereClauses
         public List<IParameter> GetParameters()
         {
             var ReturnValue = new List<IParameter>();
-            ReturnValue.AddRange(Property?.GetParameters());
-            ReturnValue.AddRange(Value?.GetParameters());
+            ReturnValue.AddRange(Property?.GetParameters() ?? []);
+            ReturnValue.AddRange(Value?.GetParameters() ?? []);
             return ReturnValue;
         }
 

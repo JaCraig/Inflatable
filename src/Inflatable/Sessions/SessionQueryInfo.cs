@@ -24,15 +24,15 @@ namespace Inflatable.Sessions
             ParentMappings = parentMappings;
             AssociatedMapping = System.Array.Find(ParentMappings, x => x.IDProperties.Count > 0);
             Source = source;
-            IDProperties = ParentMappings.SelectMany(x => x.IDProperties).ToArray();
-            IDColumnInfo = IDProperties.SelectMany(x => x.GetColumnInfo()).ToArray();
+            IDProperties = [.. ParentMappings.SelectMany(x => x.IDProperties)];
+            IDColumnInfo = [.. IDProperties.SelectMany(x => x.GetColumnInfo())];
         }
 
         /// <summary>
         /// Gets or sets the associated mapping.
         /// </summary>
         /// <value>The associated mapping.</value>
-        public IMapping AssociatedMapping { get; set; }
+        public IMapping? AssociatedMapping { get; set; }
 
         /// <summary>
         /// Gets or sets the child mappings.

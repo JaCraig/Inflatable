@@ -14,7 +14,7 @@ namespace Inflatable.Tests.TestDatabases.ManyToOneProperties
     {
         public ManyToOneManyFromComplexClass()
         {
-            ManyToOneClass = new List<AllReferencesAndID>();
+            ManyToOneClass = [];
         }
 
         [BoolGenerator]

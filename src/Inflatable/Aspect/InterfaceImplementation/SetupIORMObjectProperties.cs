@@ -45,7 +45,7 @@ namespace Inflatable.Aspect.InterfaceImplementation
         public string Setup(Type type, ORMAspect aspect, ObjectPool<StringBuilder> objectPool)
         {
             if (objectPool is null)
-                return string.Empty;
+                return "";
             var Builder = objectPool.Get();
             Builder.AppendLine("public ISession Session0{ get; set; }")
                 .AppendLine("public IList<string> PropertiesChanged0{ get; set; }");

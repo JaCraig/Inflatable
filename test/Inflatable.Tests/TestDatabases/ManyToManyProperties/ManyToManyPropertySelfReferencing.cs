@@ -7,7 +7,7 @@ namespace Inflatable.Tests.TestDatabases.ManyToManyProperties
     {
         public ManyToManyPropertySelfReferencing()
         {
-            Children = new List<ManyToManyPropertySelfReferencing>();
+            Children = [];
         }
 
         [BoolGenerator]

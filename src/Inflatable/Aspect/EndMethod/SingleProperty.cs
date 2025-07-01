@@ -40,7 +40,7 @@ namespace Inflatable.Aspect.EndMethod
         {
             if (mapping is null)
                 return;
-            var Property = mapping.MapProperties.Find(x => x.Name == method.Name.Replace("get_", string.Empty, StringComparison.Ordinal));
+            var Property = mapping.MapProperties.Find(x => x.Name == method.Name.Replace("get_", "", StringComparison.Ordinal));
             if (Property is null)
             {
                 return;

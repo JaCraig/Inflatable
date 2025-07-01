@@ -8,31 +8,31 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 {
     public class ComplexListColumnInfoTests
     {
-        public static TheoryData<ManyToManyProperties, object> ParameterData = new TheoryData<ManyToManyProperties, object>
+        public static TheoryData<ManyToManyProperties, object> ParameterData = new()
         {
-            { new ManyToManyProperties{ManyToManyClass=new AllReferencesAndID[]{new AllReferencesAndID(),new AllReferencesAndID() } },null },
+            { new ManyToManyProperties{ManyToManyClass=[new AllReferencesAndID(),new AllReferencesAndID()] },null },
             { new ManyToManyProperties(), null },
-            { new ManyToManyProperties{ID=2,ManyToManyClass=new AllReferencesAndID[]{ new AllReferencesAndID() { ID = 1 } } }, 1L },
+            { new ManyToManyProperties{ID=2,ManyToManyClass=[new AllReferencesAndID() { ID = 1 }] }, 1L },
             { null, null }
         };
 
-        public static TheoryData<ManyToManyProperties, long, object> SetValueData = new TheoryData<ManyToManyProperties, long, object>
+        public static TheoryData<ManyToManyProperties, long, object> SetValueData = new()
         {
-            { new ManyToManyProperties{ManyToManyClass=new AllReferencesAndID[]{new AllReferencesAndID() } },10L, 10L },
-            { new ManyToManyProperties{ID=2,ManyToManyClass=new AllReferencesAndID[]{new AllReferencesAndID{ID=1 } } },10L, 10L },
+            { new ManyToManyProperties{ManyToManyClass=[new AllReferencesAndID()] },10L, 10L },
+            { new ManyToManyProperties{ID=2,ManyToManyClass=[new AllReferencesAndID{ID=1 }] },10L, 10L },
             { null,10L, null },
             { new ManyToManyProperties(),10L,null },
         };
 
-        public static TheoryData<ManyToManyProperties, object> ValueData = new TheoryData<ManyToManyProperties, object>
+        public static TheoryData<ManyToManyProperties, object> ValueData = new()
         {
-            { new ManyToManyProperties{ManyToManyClass=new AllReferencesAndID[]{new AllReferencesAndID() } }, 0L },
-            { new ManyToManyProperties{ID=2,ManyToManyClass=new AllReferencesAndID[]{new AllReferencesAndID{ID=1 } } }, 1L },
+            { new ManyToManyProperties{ManyToManyClass=[new AllReferencesAndID()] }, 0L },
+            { new ManyToManyProperties{ID=2,ManyToManyClass=[new AllReferencesAndID{ID=1 }] }, 1L },
             { null, null },
             { new ManyToManyProperties(),null },
         };
 
-        private readonly ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID> TestObject = new ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID>(
+        private readonly ComplexListColumnInfo<ManyToManyProperties, AllReferencesAndID> _TestObject = new(
             new SimpleColumnInfo<AllReferencesAndID, long>
             (
                  "ID_",
@@ -55,19 +55,19 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
         [Fact]
         public void Creation()
         {
-            Assert.NotNull(TestObject);
-            Assert.Equal("ManyToManyClass_ID_", TestObject.ColumnName);
-            Assert.Equal("ID", TestObject.PropertyName);
-            Assert.Equal(typeof(long), TestObject.PropertyType);
-            Assert.Equal("dbo", TestObject.SchemaName);
-            Assert.Equal("ManyToManyProperties_", TestObject.TableName);
+            Assert.NotNull(_TestObject);
+            Assert.Equal("ManyToManyClass_ID_", _TestObject.ColumnName);
+            Assert.Equal("ID", _TestObject.PropertyName);
+            Assert.Equal(typeof(long), _TestObject.PropertyType);
+            Assert.Equal("dbo", _TestObject.SchemaName);
+            Assert.Equal("ManyToManyProperties_", _TestObject.TableName);
         }
 
         [Theory]
         [MemberData(nameof(ParameterData))]
         public void GetAsParameter(ManyToManyProperties inputObject, object expectedResult)
         {
-            var Result = TestObject.GetAsParameter(inputObject);
+            var Result = _TestObject.GetAsParameter(inputObject);
             Assert.Equal(DbType.Int64, Result.DatabaseType);
             Assert.Equal(ParameterDirection.Input, Result.Direction);
             Assert.Equal("ManyToManyClass_ID_", Result.ID);
@@ -77,23 +77,23 @@ namespace Inflatable.Tests.ClassMapper.PropertyInfo
 
         [Theory]
         [MemberData(nameof(ValueData))]
-        public void GetValue(ManyToManyProperties inputObject, object expectedResult) => Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
+        public void GetValue(ManyToManyProperties inputObject, object expectedResult) => Assert.Equal(expectedResult, _TestObject.GetValue(inputObject));
 
         [Fact]
         public void IsDefault()
         {
-            Assert.True(TestObject.IsDefault(new ManyToManyProperties { ManyToManyClass = new AllReferencesAndID[] { new AllReferencesAndID() } }));
-            Assert.False(TestObject.IsDefault(new ManyToManyProperties { ManyToManyClass = new AllReferencesAndID[] { new AllReferencesAndID { ID = 1 } } }));
-            Assert.True(TestObject.IsDefault(null));
-            Assert.True(TestObject.IsDefault(new ManyToManyProperties()));
+            Assert.True(_TestObject.IsDefault(new ManyToManyProperties { ManyToManyClass = [new AllReferencesAndID()] }));
+            Assert.False(_TestObject.IsDefault(new ManyToManyProperties { ManyToManyClass = [new AllReferencesAndID { ID = 1 }] }));
+            Assert.True(_TestObject.IsDefault(null));
+            Assert.True(_TestObject.IsDefault(new ManyToManyProperties()));
         }
 
         [Theory]
         [MemberData(nameof(SetValueData))]
         public void SetValue(ManyToManyProperties inputObject, long newValue, object expectedResult)
         {
-            TestObject.SetValue(inputObject, newValue);
-            Assert.Equal(expectedResult, TestObject.GetValue(inputObject));
+            _TestObject.SetValue(inputObject, newValue);
+            Assert.Equal(expectedResult, _TestObject.GetValue(inputObject));
         }
     }
 }

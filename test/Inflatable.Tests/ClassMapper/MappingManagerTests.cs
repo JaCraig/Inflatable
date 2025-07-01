@@ -1,5 +1,4 @@
 ﻿using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Tests.BaseClasses;
@@ -19,16 +18,16 @@ namespace Inflatable.Tests.ClassMapper
         [Fact]
         public void Creation()
         {
-            var TestObject = new MappingManager(new[] {
+            var TestObject = new MappingManager([
                 new AllReferencesAndIDMappingNoDatabase()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new MockDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
-            IMappingSource TestSource = TestObject.Sources.First();
+            IMappingSource TestSource = TestObject.Sources[0];
             _ = Assert.Single(TestObject.Sources);
             _ = Assert.Single(TestSource.Mappings);
             Assert.Equal(typeof(AllReferencesAndID), TestSource.Mappings.First().Key);

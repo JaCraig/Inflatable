@@ -19,6 +19,7 @@ using Inflatable.Interfaces;
 using SQLHelperDB.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Inflatable.LinqExpression.WhereClauses.Interfaces
 {
@@ -67,6 +68,7 @@ namespace Inflatable.LinqExpression.WhereClauses.Interfaces
         /// Optimizes the operator based on the mapping source.
         /// </summary>
         /// <param name="mappingSource">The mapping source.</param>
+        [return: NotNullIfNotNull(nameof(mappingSource))]
         IOperator? Optimize(IMappingSource mappingSource);
 
         /// <summary>

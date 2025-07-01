@@ -47,13 +47,13 @@ namespace Inflatable.QueryProvider.BaseClasses
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        public abstract IQuery[] GenerateQueries(TObject queryObject, IClassProperty property);
+        public abstract IQuery[] GenerateQueries(TObject queryObject, IClassProperty? property);
 
         /// <summary>
         /// Generates the query.
         /// </summary>
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TObject queryObject) => new IQuery[] { new Query(AssociatedType, System.Data.CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateQueries(TObject queryObject) => [new Query(AssociatedType, System.Data.CommandType.Text, "", QueryType)];
     }
 }

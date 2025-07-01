@@ -30,12 +30,12 @@ namespace Inflatable.ClassMapper.TypeGraph
         /// Find concrete types
         /// </summary>
         /// <returns>The concrete types of the mapping tree</returns>
-        public static Type[] FindConcreteTypes(IDictionary<Type, Tree<Type>?> typeTrees)
+        public static Type[] FindConcreteTypes(Dictionary<Type, Tree<Type>?> typeTrees)
         {
             return typeTrees is null
-                ? Array.Empty<Type>()
-                : typeTrees.Keys.Where(KeyToCheck => !typeTrees.Keys.Any(x => x != KeyToCheck
-                                                   && typeTrees[x]?.ContainsNode(KeyToCheck, (i, j) => i == j) == true)).ToArray();
+                ? []
+                : [.. typeTrees.Keys.Where(keyToCheck => !typeTrees.Keys.Any(x => x != keyToCheck
+                                                   && typeTrees[x]?.ContainsNode(keyToCheck, (i, j) => i == j) == true))];
         }
     }
 }

@@ -112,7 +112,7 @@ namespace Inflatable.LinqExpression.WhereClauses
         /// Gets the parameters associated with the operator.
         /// </summary>
         /// <returns>A list of parameters associated with the operator.</returns>
-        public List<IParameter> GetParameters() => InternalOperator is null ? new List<IParameter>() : InternalOperator.GetParameters();
+        public List<IParameter> GetParameters() => InternalOperator is null ? [] : InternalOperator.GetParameters();
 
         /// <summary>
         /// Does a logical negation of the operator.

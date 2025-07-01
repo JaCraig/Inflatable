@@ -57,11 +57,11 @@ namespace Inflatable.Tests.Sessions
             };
             _ = AsyncHelper.RunSync(() => TempSession.Save(TempData).ExecuteAsync());
 
-            BaseClass1[] TestObject = DbContext<BaseClass1>.CreateQuery().Where(x => x.BaseClassValue1 > 2).ToArray();
+            BaseClass1[] TestObject = [.. DbContext<BaseClass1>.CreateQuery().Where(x => x.BaseClassValue1 > 2)];
 
             var ResultCount = AsyncHelper.RunSync(() => TempSession.Delete(TestObject).ExecuteAsync());
             Assert.Equal(2, ResultCount);
-            TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
+            TestObject = [.. DbContext<BaseClass1>.CreateQuery()];
             Assert.Equal(4, TestObject.Length);
             Assert.Equal(2, TestObject.OfType<ConcreteClass1>().Count());
             Assert.Equal(2, TestObject.OfType<ConcreteClass2>().Count());
@@ -107,7 +107,7 @@ namespace Inflatable.Tests.Sessions
             };
             _ = await TempSession.Save(TempData).ExecuteAsync();
 
-            BaseClass1[] TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
+            BaseClass1[] TestObject = [.. DbContext<BaseClass1>.CreateQuery()];
             Assert.Equal(6, TestObject.Length);
             Assert.Equal(3, TestObject.OfType<ConcreteClass1>().Count());
             Assert.Equal(3, TestObject.OfType<ConcreteClass2>().Count());
@@ -154,11 +154,11 @@ namespace Inflatable.Tests.Sessions
             };
             _ = await TempSession.Save(TempData).ExecuteAsync();
 
-            BaseClass1[] TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
+            BaseClass1[] TestObject = [.. DbContext<BaseClass1>.CreateQuery()];
             _ = TestObject.ForEach(x => x.BaseClassValue1 = 10);
             var ResultCount = await TempSession.Save(TestObject).ExecuteAsync();
             Assert.Equal(12, ResultCount);
-            TestObject = DbContext<BaseClass1>.CreateQuery().ToArray();
+            TestObject = [.. DbContext<BaseClass1>.CreateQuery()];
             Assert.Equal(6, TestObject.Length);
             Assert.Equal(3, TestObject.OfType<ConcreteClass1>().Count());
             Assert.Equal(3, TestObject.OfType<ConcreteClass2>().Count());

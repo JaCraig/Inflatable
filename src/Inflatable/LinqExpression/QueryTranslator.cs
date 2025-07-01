@@ -48,7 +48,7 @@ namespace Inflatable.LinqExpression
         {
             MappingManager = mappingManager ?? throw new ArgumentNullException(nameof(mappingManager));
             QueryProviderManager = queryProviderManager ?? throw new ArgumentNullException(nameof(queryProviderManager));
-            Builders = new Dictionary<IMappingSource, QueryData<TObject>>();
+            Builders = [];
             foreach (var Source in MappingManager.ReadSources.Where(x => x.GetChildMappings(typeof(TObject)).Any()))
             {
                 Builders.Add(Source, new QueryData<TObject>(Source));
@@ -107,18 +107,18 @@ namespace Inflatable.LinqExpression
         /// original expression.
         /// </returns>
         /// <exception cref="NotSupportedException"></exception>
-        protected override Expression? VisitMethodCall(MethodCallExpression node)
+        protected override Expression VisitMethodCall(MethodCallExpression? node)
         {
             if (node is null)
-                return node;
+                return node!;
             if (node.Method.DeclaringType == typeof(Queryable))
             {
                 if (node.Method.Name == "Where")
                 {
                     node = (MethodCallExpression)Evaluator.PartialEval(node);
                     Visit(node.Arguments[0]);
-                    var lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                    var CurrentClause = new WhereVisitor<TObject>(Count).WhereProjection(lambda.Body);
+                    var Lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var CurrentClause = new WhereVisitor<TObject>(Count).WhereProjection(Lambda.Body);
                     ++Count;
                     foreach (var Source in Builders.Keys)
                     {
@@ -129,8 +129,8 @@ namespace Inflatable.LinqExpression
                 if (node.Method.Name == "Select")
                 {
                     Visit(node.Arguments[0]);
-                    var lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                    var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
+                    var Lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var Columns = new ColumnProjector().ProjectColumns(Lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
                         var ParentMappings = Source.GetChildMappings(typeof(TObject))
@@ -152,8 +152,8 @@ namespace Inflatable.LinqExpression
                     || node.Method.Name == "ThenByDescending")
                 {
                     Visit(node.Arguments[0]);
-                    var lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
-                    var Columns = new ColumnProjector().ProjectColumns(lambda.Body);
+                    var Lambda = (LambdaExpression)StripQuotes(node.Arguments[1]);
+                    var Columns = new ColumnProjector().ProjectColumns(Lambda.Body);
                     foreach (var Source in Builders.Keys)
                     {
                         var ParentMappings = Source.GetChildMappings(typeof(TObject))

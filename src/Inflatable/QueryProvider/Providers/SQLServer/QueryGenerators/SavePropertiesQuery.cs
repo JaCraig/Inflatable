@@ -53,9 +53,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                                              .SelectMany(x => MappingInformation.GetParentMapping(x.ObjectType))
                                              .Distinct()
                                              .SelectMany(x => x.IDProperties);
-            Queries = new ListMapping<string, QueryGeneratorData>();
+            Queries = [];
             SetupQueries();
         }
+
+        /// <summary>
+        /// The lock object
+        /// </summary>
+        private static readonly object _LockObject = new();
 
         /// <summary>
         /// Gets the type of the query.
@@ -76,15 +81,10 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private ListMapping<string, QueryGeneratorData> Queries { get; }
 
         /// <summary>
-        /// The lock object
-        /// </summary>
-        private static readonly object LockObject = new object();
-
-        /// <summary>
         /// Generates the declarations needed for the query.
         /// </summary>
         /// <returns>The resulting declarations.</returns>
-        public override IQuery[] GenerateDeclarations() => new IQuery[] { new Query(AssociatedType, CommandType.Text, string.Empty, QueryType) };
+        public override IQuery[] GenerateDeclarations() => [new Query(AssociatedType, CommandType.Text, "", QueryType)];
 
         /// <summary>
         /// Generates the query.
@@ -92,7 +92,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="queryObject">The object to generate the queries from.</param>
         /// <param name="property">The property.</param>
         /// <returns>The resulting query</returns>
-        public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty property)
+        public override IQuery[] GenerateQueries(TMappedClass queryObject, IClassProperty? property)
         {
             return property switch
             {
@@ -104,7 +104,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
                 IManyToOneProperty ManyToOne => ManyToOneProperty(ManyToOne, queryObject),
 
-                _ => Array.Empty<IQuery>(),
+                _ => [],
             };
         }
 
@@ -118,9 +118,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var ColumnInfos = property.GetColumnInfo();
             var ReturnValues = new IParameter?[ColumnInfos.Length];
-            for (var x = 0; x < ColumnInfos.Length; ++x)
+            for (var X = 0; X < ColumnInfos.Length; ++X)
             {
-                ReturnValues[x] = ColumnInfos[x].GetAsParameter(queryObject);
+                ReturnValues[X] = ColumnInfos[X].GetAsParameter(queryObject);
             }
             return ReturnValues;
         }
@@ -136,9 +136,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             var ColumnInfos = property.GetColumnInfo();
             var ReturnValues = new IParameter?[ColumnInfos.Length];
-            for (var x = 0; x < ColumnInfos.Length; ++x)
+            for (var X = 0; X < ColumnInfos.Length; ++X)
             {
-                ReturnValues[x] = ColumnInfos[x].GetAsParameter(queryObject, propertyItem);
+                ReturnValues[X] = ColumnInfos[X].GetAsParameter(queryObject, propertyItem);
             }
             return ReturnValues;
         }
@@ -151,15 +151,15 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         private string GenerateFromClause(Utils.TreeNode<Type>? node)
         {
             if (node is null)
-                return string.Empty;
+                return "";
             var Result = ObjectPool.Get();
             var Mapping = MappingInformation.Mappings[node.Data];
-            for (int x = 0, nodeNodesCount = node.Nodes.Count; x < nodeNodesCount; x++)
+            for (int X = 0, NodeNodesCount = node.Nodes.Count; X < NodeNodesCount; X++)
             {
-                var ParentNode = node.Nodes[x];
+                var ParentNode = node.Nodes[X];
                 var ParentMapping = MappingInformation.Mappings[ParentNode.Data];
                 var TempIDProperties = ObjectPool.Get();
-                var Separator = string.Empty;
+                var Separator = "";
                 foreach (var IDProperty in ParentMapping.IDProperties)
                 {
                     TempIDProperties.AppendFormat("{0}{1}={2}", Separator, GetParentColumnName(Mapping, IDProperty), GetColumnName(IDProperty));
@@ -193,7 +193,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var WhereList = ObjectPool.Get();
             var ParametersList = ObjectPool.Get();
             var FromList = ObjectPool.Get();
-            var Splitter2 = string.Empty;
+            var Splitter2 = "";
             foreach (var ForeignID in foreignIDProperties.Distinct())
             {
                 ParametersList
@@ -213,7 +213,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     .Append(ForeignID.ColumnName);
                 Splitter2 = ", ";
             }
-            Splitter2 = string.Empty;
+            Splitter2 = "";
             foreach (var IDProperty in IDProperties)
             {
                 WhereList.Append(Splitter2).Append(GetColumnName(IDProperty)).Append(" = ").Append(GetParameterName(IDProperty));
@@ -243,23 +243,23 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
             var PropertyNames = ObjectPool.Get();
             var PropertyValues = ObjectPool.Get();
             var ParametersList = ObjectPool.Get();
-            var Splitter = string.Empty;
+            var Splitter = "";
             foreach (var ForeignID in foreignIDProperties.Distinct())
             {
-                PropertyNames.Append(Splitter).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(ForeignID.ParentMapping.TableName).Append(ForeignID.ColumnName).Append("]");
-                PropertyValues.Append(Splitter).Append("@").Append(ForeignID.ParentMapping.TableName).Append(ForeignID.ColumnName);
+                PropertyNames.Append(Splitter).Append('[').Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(ForeignID.ParentMapping.TableName).Append(ForeignID.ColumnName).Append(']');
+                PropertyValues.Append(Splitter).Append('@').Append(ForeignID.ParentMapping.TableName).Append(ForeignID.ColumnName);
                 Splitter = ", ";
             }
-            var Prefix = string.Empty;
-            if (IDProperties.Any(x => property.ForeignMapping.Any(TempMapping => x.ParentMapping == TempMapping)))
+            var Prefix = "";
+            if (IDProperties.Any(x => property.ForeignMapping.Any(tempMapping => x.ParentMapping == tempMapping)))
             {
                 Prefix = "Parent_";
             }
 
             foreach (var IDProperty in IDProperties)
             {
-                PropertyNames.Append(Splitter).Append("[").Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append("]");
-                PropertyValues.Append(Splitter).Append("@").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
+                PropertyNames.Append(Splitter).Append('[').Append(property.ParentMapping.SchemaName).Append("].[").Append(property.TableName).Append("].[").Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName).Append(']');
+                PropertyValues.Append(Splitter).Append('@').Append(Prefix).Append(IDProperty.ParentMapping.TableName).Append(IDProperty.ColumnName);
                 Splitter = ", ";
             }
             Builder.AppendFormat("INSERT INTO {0}({1}) VALUES ({2});", GetTableName(property), PropertyNames, PropertyValues);
@@ -326,16 +326,16 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     StringBuilder parametersList,
                     StringBuilder fromList)
         {
-            var Splitter = string.Empty;
+            var Splitter = "";
             foreach (var ForeignIDs in manyToOne.GetColumnInfo().Where(x => x.IsForeign).Distinct())
             {
-                parametersList.Append(Splitter).Append("[").Append(ForeignIDs.SchemaName).Append("].[").Append(ForeignIDs.TableName).Append("].[").Append(ForeignIDs.ColumnName).Append("] = @").Append(ForeignIDs.ColumnName);
+                parametersList.Append(Splitter).Append('[').Append(ForeignIDs.SchemaName).Append("].[").Append(ForeignIDs.TableName).Append("].[").Append(ForeignIDs.ColumnName).Append("] = @").Append(ForeignIDs.ColumnName);
                 Splitter = ", ";
             }
-            Splitter = string.Empty;
+            Splitter = "";
             foreach (var ForeignIDs in manyToOne.GetColumnInfo().Where(x => !x.IsForeign))
             {
-                whereList.Append(Splitter).Append("[").Append(ForeignIDs.SchemaName).Append("].[").Append(ForeignIDs.TableName).Append("].[").Append(ForeignIDs.ColumnName).Append("] = @").Append(ForeignIDs.ColumnName);
+                whereList.Append(Splitter).Append('[').Append(ForeignIDs.SchemaName).Append("].[").Append(ForeignIDs.TableName).Append("].[").Append(ForeignIDs.ColumnName).Append("] = @").Append(ForeignIDs.ColumnName);
                 Splitter = " AND ";
             }
             fromList.Append(GetTableName(foreignMapping));
@@ -354,12 +354,12 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         /// <param name="fromList">From list.</param>
         private void GenerateJoinSaveQuerySingle(IEnumerable<IIDProperty> foreignIDProperties,
                     IManyToOneProperty manyToOne,
-                    IMapping parentMapping,
+                    IMapping? parentMapping,
                     StringBuilder whereList,
                     StringBuilder parametersList,
                     StringBuilder fromList)
         {
-            var Splitter = string.Empty;
+            var Splitter = "";
             foreach (var ForeignID in foreignIDProperties.Distinct())
             {
                 parametersList.Append(Splitter).Append(GetTableName(parentMapping)
@@ -373,14 +373,14 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 ).Append(ForeignID.ColumnName);
                 Splitter = ", ";
             }
-            Splitter = string.Empty;
+            Splitter = "";
             foreach (var IDProperty in IDProperties)
             {
                 whereList.Append(Splitter).Append(GetColumnName(IDProperty)).Append(" = ").Append(GetParameterName(IDProperty));
                 Splitter = " AND ";
             }
             fromList.Append(GetTableName(parentMapping))
-                .Append(GenerateFromClause(MappingInformation.TypeGraphs[parentMapping.ObjectType]?.Root));
+                .Append(GenerateFromClause(MappingInformation.TypeGraphs[parentMapping?.ObjectType!]?.Root));
         }
 
         /// <summary>
@@ -393,7 +393,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (!Queries.ContainsKey(property.Name))
             {
-                lock (LockObject)
+                lock (_LockObject)
                 {
                     if (!Queries.ContainsKey(property.Name))
                     {
@@ -413,9 +413,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     }
                 }
             }
-            if (!(property.GetValue(queryObject) is IEnumerable ItemList))
+            if (property.GetValue(queryObject) is not IEnumerable ItemList)
             {
-                return Array.Empty<IQuery>();
+                return [];
             }
 
             var ReturnValue = new List<IQuery>();
@@ -430,7 +430,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                         GenerateParameters(queryObject, property, Item)));
                 }
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
         }
 
         /// <summary>
@@ -443,7 +443,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
         {
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                lock (LockObject)
+                lock (_LockObject)
                 {
                     if (!Queries.ContainsKey(manyToOne.Name))
                     {
@@ -463,9 +463,9 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     }
                 }
             }
-            if (!(manyToOne.GetValue(queryObject) is IEnumerable ItemList))
+            if (manyToOne.GetValue(queryObject) is not IEnumerable ItemList)
             {
-                return Array.Empty<IQuery>();
+                return [];
             }
 
             var ReturnValue = new List<IQuery>();
@@ -480,7 +480,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                         GenerateParameters(queryObject, manyToOne, Item)));
                 }
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
         }
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(manyToOne.Name))
             {
-                lock (LockObject)
+                lock (_LockObject)
                 {
                     if (!Queries.ContainsKey(manyToOne.Name))
                     {
@@ -525,7 +525,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     QueryType,
                     GenerateParameters(queryObject, manyToOne, ItemValue)));
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
         }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
 
             if (!Queries.ContainsKey(mapProperty.Name))
             {
-                lock (LockObject)
+                lock (_LockObject)
                 {
                     if (!Queries.ContainsKey(mapProperty.Name))
                     {
@@ -570,7 +570,7 @@ namespace Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators
                     QueryType,
                     GenerateParameters(queryObject, mapProperty)));
             }
-            return ReturnValue.ToArray();
+            return [.. ReturnValue];
         }
 
         /// <summary>

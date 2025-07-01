@@ -110,7 +110,7 @@ namespace Inflatable.ClassMapper.Default
                                          .Distinct()
                                          .SelectMany(x => x.IDProperties)
                                          .SelectMany(x => x.GetColumnInfo()));
-            Columns = TempColumns.ToArray();
+            Columns = [.. TempColumns];
         }
 
         /// <summary>
@@ -121,11 +121,10 @@ namespace Inflatable.ClassMapper.Default
         {
             if (mappings is null)
                 return;
-            ForeignMapping = mappings.GetChildMappings<TDataType>()
+            ForeignMapping = [.. mappings.GetChildMappings<TDataType>()
                                      .SelectMany(x => mappings.GetParentMapping(x.ObjectType))
                                      .Where(x => x.IDProperties.Count > 0)
-                                     .Distinct()
-                                     .ToList();
+                                     .Distinct()];
             if (ForeignMapping is null)
             {
                 throw new ArgumentException($"Foreign key IDs could not be found for {typeof(TClassType).Name}.{Name}");

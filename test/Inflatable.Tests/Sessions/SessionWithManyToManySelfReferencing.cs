@@ -1,7 +1,6 @@
 ﻿using BigBook;
 using DragonHoard.Core;
 using Inflatable.ClassMapper;
-using Inflatable.Interfaces;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Providers.SQLServer;
 using Inflatable.Schema;
@@ -26,19 +25,19 @@ namespace Inflatable.Tests.Sessions
         public SessionWithManyToManyPropertiesSelfReferencing(SetupFixture setupFixture)
             : base(setupFixture)
         {
-            InternalMappingManager = new MappingManager(new IMapping[] {
+            InternalMappingManager = new MappingManager([
                 new ManyToManyPropertySelfReferencingMapping()
-            },
-            new IDatabase[]{
+            ],
+            [
                 new TestDatabaseMapping()
-            },
-            new QueryProviderManager(new[] { new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelper>()) }, GetLogger<QueryProviderManager>()),
+            ],
+            new QueryProviderManager([new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelper>())], GetLogger<QueryProviderManager>()),
             ObjectPool,
             GetLogger<MappingManager>());
             InternalSchemaManager = new SchemaManager(InternalMappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
 
-            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelperDB.SQLHelper>());
-            InternalQueryProviderManager = new QueryProviderManager(new[] { TempQueryProvider }, GetLogger<QueryProviderManager>());
+            var TempQueryProvider = new SQLServerQueryProvider(Configuration, ObjectPool, GetLogger<SQLHelper>());
+            InternalQueryProviderManager = new QueryProviderManager([TempQueryProvider], GetLogger<QueryProviderManager>());
 
             CacheManager = Resolve<Cache>();
             CacheManager.GetOrAddCache("Inflatable").Compact(1);
@@ -57,7 +56,7 @@ namespace Inflatable.Tests.Sessions
             _ = Resolve<ISession>();
 
             await SetupDataAsync();
-            ManyToManyPropertySelfReferencing[] Results = DbContext<ManyToManyPropertySelfReferencing>.CreateQuery().ToArray();
+            ManyToManyPropertySelfReferencing[] Results = [.. DbContext<ManyToManyPropertySelfReferencing>.CreateQuery()];
             Assert.Equal(6, Results.Length);
         }
 
@@ -184,7 +183,7 @@ namespace Inflatable.Tests.Sessions
 
             await SetupDataAsync();
             IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
-            ManyToManyPropertySelfReferencing[] UpdatedResults = Results.ForEach(x =>
+            ManyToManyPropertySelfReferencing[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 _ = x.Children.ForEach(y => y.BoolValue = false);
@@ -192,7 +191,7 @@ namespace Inflatable.Tests.Sessions
                 {
                     BoolValue = false
                 });
-            }).ToArray();
+            })];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -207,7 +206,7 @@ namespace Inflatable.Tests.Sessions
 
             await SetupDataAsync();
             IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
-            ManyToManyPropertySelfReferencing[] UpdatedResults = Results.ForEach(x =>
+            ManyToManyPropertySelfReferencing[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.Children.Add(new ManyToManyPropertySelfReferencing
@@ -215,7 +214,7 @@ namespace Inflatable.Tests.Sessions
                     BoolValue = true
                 });
                 var Result = AsyncHelper.RunSync(async () => await TestObject.Save(x.Children).ExecuteAsync());
-            }).ToArray();
+            })];
             _ = await TestObject.Save(UpdatedResults).ExecuteAsync();
             Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.False(Results.All(x => !x.BoolValue));
@@ -230,11 +229,11 @@ namespace Inflatable.Tests.Sessions
 
             await SetupDataAsync();
             IEnumerable<ManyToManyPropertySelfReferencing> Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
-            ManyToManyPropertySelfReferencing[] UpdatedResults = Results.ForEach(x =>
+            ManyToManyPropertySelfReferencing[] UpdatedResults = [.. Results.ForEach(x =>
             {
                 x.BoolValue = false;
                 x.Children.Clear();
-            }).ToArray();
+            })];
             Assert.Equal(9, await TestObject.Save(UpdatedResults).ExecuteAsync());
             Results = await TestObject.ExecuteAsync<ManyToManyPropertySelfReferencing>("SELECT ID_ as [ID],BoolValue_ as [BoolValue] FROM ManyToManyPropertySelfReferencing_", CommandType.Text, "Default");
             Assert.True(Results.All(x => !x.BoolValue));
@@ -291,30 +290,30 @@ namespace Inflatable.Tests.Sessions
             {
                 new() {
                     BoolValue=true,
-                    Children=new List<ManyToManyPropertySelfReferencing>
-                    {
+                    Children=
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    Children=new List<ManyToManyPropertySelfReferencing>
-                    {
+                    Children=
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 },
                 new() {
                     BoolValue=true,
-                    Children=new List<ManyToManyPropertySelfReferencing>
-                    {
+                    Children=
+                    [
                         new() {
                             BoolValue=true
                         }
-                    }
+                    ]
                 }
             };
             _ = await Session.Save(InitialData).ExecuteAsync().ConfigureAwait(false);

@@ -16,9 +16,7 @@ namespace Inflatable.Tests.BaseClasses
     /// </summary>
     /// <seealso cref="ICollectionFixture{SetupFixture}"/>
     [CollectionDefinition("Test collection")]
-    public class SetupCollection : ICollectionFixture<SetupFixture>
-    {
-    }
+    public class SetupCollection : ICollectionFixture<SetupFixture>;
 
     /// <summary>
     /// Setup fixture
@@ -32,7 +30,7 @@ namespace Inflatable.Tests.BaseClasses
             _ = SchemaManager;
         }
 
-        private readonly object LockObject = new();
+        private readonly object _LockObject = new();
         public SQLHelper Helper => Resolve<SQLHelper>();
         public ServiceProvider Provider { get; set; }
         public SchemaManager SchemaManager => Resolve<SchemaManager>();
@@ -48,18 +46,19 @@ namespace Inflatable.Tests.BaseClasses
                     .AddQuery(CommandType.Text, "ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping")
                     .ExecuteScalarAsync<int>());
             }
-            catch (Exception ex)
+            catch (Exception Ex)
             {
                 // Log the exception if needed
-                Console.WriteLine($"Error during database cleanup: {ex.Message}");
+                Console.WriteLine($"Error during database cleanup: {Ex.Message}");
             }
+            GC.SuppressFinalize(this);
         }
 
         public void InitProvider()
         {
             if (Provider is null)
             {
-                lock (LockObject)
+                lock (_LockObject)
                 {
                     if (Provider is null)
                     {
