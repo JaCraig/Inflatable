@@ -427,7 +427,7 @@
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "Inflatable.ClassMapper.BaseClasses.PropertyBase<ClassType, DataType, ReturnType>",
+      "Title": "Inflatable.ClassMapper.BaseClasses.PropertyBase<TClassType, TDataType, TReturnType>",
       "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.BaseClasses.PropertyBase-3.yml\" sourcestartlinenumber=\"1\">Property base class</p>\n"
     },
     {
@@ -567,7 +567,7 @@
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "Inflatable.ClassMapper.Default.ID<ClassType, DataType>",
+      "Title": "Inflatable.ClassMapper.Default.ID<TClassType, TDataType>",
       "Summary": "<p sourcefile=\"api/Inflatable.ClassMapper.Default.ID-2.yml\" sourcestartlinenumber=\"1\">ID property</p>\n"
     },
     {

@@ -176,7 +176,7 @@ Class LinqQueryGenerator&lt;TMappedClass&gt;  <a class="header-action link-secon
       <a class="xref" href="Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.html#Inflatable_QueryProvider_BaseClasses_QueryGeneratorBaseClass_1_GetParameterName_Inflatable_ClassMapper_Interfaces_IProperty_">QueryGeneratorBaseClass&lt;TMappedClass&gt;.GetParameterName(IProperty)</a>
     </div>
     <div>
-      <a class="xref" href="Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.html#Inflatable_QueryProvider_BaseClasses_QueryGeneratorBaseClass_1_GetParameterType_Inflatable_ClassMapper_Interfaces_IAutoIDProperty_">QueryGeneratorBaseClass&lt;TMappedClass&gt;.GetParameterType(IAutoIDProperty)</a>
+      <a class="xref" href="Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.html#Inflatable_QueryProvider_BaseClasses_QueryGeneratorBaseClass_1_GetParameterType">QueryGeneratorBaseClass&lt;TMappedClass&gt;.GetParameterType()</a>
     </div>
     <div>
       <a class="xref" href="Inflatable.QueryProvider.BaseClasses.QueryGeneratorBaseClass-1.html#Inflatable_QueryProvider_BaseClasses_QueryGeneratorBaseClass_1_GetParameterType_Inflatable_ClassMapper_Interfaces_IIDProperty_">QueryGeneratorBaseClass&lt;TMappedClass&gt;.GetParameterType(IIDProperty)</a>
@@ -235,7 +235,7 @@ Class LinqQueryGenerator&lt;TMappedClass&gt;  <a class="header-action link-secon
 
   <h3 id="Inflatable_QueryProvider_Providers_SQLServer_QueryGenerators_LinqQueryGenerator_1__ctor_Inflatable_ClassMapper_IMappingSource_Microsoft_Extensions_ObjectPool_ObjectPool_System_Text_StringBuilder__" data-uid="Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator`1.#ctor(Inflatable.ClassMapper.IMappingSource,Microsoft.Extensions.ObjectPool.ObjectPool{System.Text.StringBuilder})">
   LinqQueryGenerator(IMappingSource, ObjectPool&lt;StringBuilder&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator-1.html">LinqQueryGenerator&lt;TMappedClass&gt;</a> class.</p>
@@ -252,7 +252,8 @@ Class LinqQueryGenerator&lt;TMappedClass&gt;  <a class="header-action link-secon
     <dd><p>The mapping information.</p>
 </dd>
     <dt><code>objectPool</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.objectpool.objectpool-1">ObjectPool</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.stringbuilder">StringBuilder</a>&gt;</dt>
-    <dd></dd>
+    <dd><p>The object pool.</p>
+</dd>
   </dl>
 
 
@@ -280,7 +281,7 @@ Class LinqQueryGenerator&lt;TMappedClass&gt;  <a class="header-action link-secon
 
   <h3 id="Inflatable_QueryProvider_Providers_SQLServer_QueryGenerators_LinqQueryGenerator_1_QueryType" data-uid="Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator`1.QueryType">
   QueryType
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L58"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the type of the query.</p>
@@ -317,7 +318,7 @@ Class LinqQueryGenerator&lt;TMappedClass&gt;  <a class="header-action link-secon
 
   <h3 id="Inflatable_QueryProvider_Providers_SQLServer_QueryGenerators_LinqQueryGenerator_1_GenerateDeclarations" data-uid="Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator`1.GenerateDeclarations">
   GenerateDeclarations()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L64"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Generates the declarations needed for the query.</p>
@@ -350,7 +351,7 @@ Class LinqQueryGenerator&lt;TMappedClass&gt;  <a class="header-action link-secon
 
   <h3 id="Inflatable_QueryProvider_Providers_SQLServer_QueryGenerators_LinqQueryGenerator_1_GenerateQueries_Inflatable_LinqExpression_QueryData__0__" data-uid="Inflatable.QueryProvider.Providers.SQLServer.QueryGenerators.LinqQueryGenerator`1.GenerateQueries(Inflatable.LinqExpression.QueryData{`0})">
   GenerateQueries(QueryData&lt;TMappedClass&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/Providers/SQLServer/QueryGenerators/LinqQueryGenerator.cs/#L71"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Generates the query.</p>

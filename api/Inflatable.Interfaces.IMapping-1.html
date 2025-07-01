@@ -218,7 +218,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <a id="Inflatable_Interfaces_IMapping_1_ID_" data-uid="Inflatable.Interfaces.IMapping`1.ID*"></a>
 
   <h3 id="Inflatable_Interfaces_IMapping_1_ID__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.Interfaces.IMapping`1.ID``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
-  ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt;)
+  ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -227,7 +227,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ID&lt;TClassType, TDataType&gt; ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt; expression)</code></pre>
+    <pre><code class="lang-csharp hljs">ID&lt;TClassType, TDataType?&gt; ID&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt; expression)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -263,7 +263,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <a id="Inflatable_Interfaces_IMapping_1_ManyToMany_" data-uid="Inflatable.Interfaces.IMapping`1.ManyToMany*"></a>
 
   <h3 id="Inflatable_Interfaces_IMapping_1_ManyToMany__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____" data-uid="Inflatable.Interfaces.IMapping`1.ManyToMany``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">
-  ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;)
+  ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -272,7 +272,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ManyToMany&lt;TClassType, TDataType&gt; ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression) where TDataType : class</code></pre>
+    <pre><code class="lang-csharp hljs">ManyToMany&lt;TClassType, TDataType&gt; ManyToMany&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt; expression) where TDataType : class</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -308,7 +308,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <a id="Inflatable_Interfaces_IMapping_1_ManyToOne_" data-uid="Inflatable.Interfaces.IMapping`1.ManyToOne*"></a>
 
   <h3 id="Inflatable_Interfaces_IMapping_1_ManyToOne__1_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList___0____" data-uid="Inflatable.Interfaces.IMapping`1.ManyToOne``1(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{``0}}})">
-  ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;)
+  ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -317,7 +317,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ManyToOneMany&lt;TClassType, TDataType&gt; ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression) where TDataType : class</code></pre>
+    <pre><code class="lang-csharp hljs">ManyToOneMany&lt;TClassType, TDataType&gt; ManyToOne&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt; expression) where TDataType : class</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -443,7 +443,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <a id="Inflatable_Interfaces_IMapping_1_Reference_" data-uid="Inflatable.Interfaces.IMapping`1.Reference*"></a>
 
   <h3 id="Inflatable_Interfaces_IMapping_1_Reference__1_System_Linq_Expressions_Expression_System_Func__0___0___" data-uid="Inflatable.Interfaces.IMapping`1.Reference``1(System.Linq.Expressions.Expression{System.Func{`0,``0}})">
-  Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt;)
+  Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Interfaces/IMapping.cs/#L88"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -452,7 +452,7 @@ Interface IMapping&lt;TClassType&gt;  <a class="header-action link-secondary" ti
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Reference&lt;TClassType, TDataType&gt; Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType&gt;&gt; expression)</code></pre>
+    <pre><code class="lang-csharp hljs">Reference&lt;TClassType, TDataType?&gt; Reference&lt;TDataType&gt;(Expression&lt;Func&lt;TClassType, TDataType?&gt;&gt; expression)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>

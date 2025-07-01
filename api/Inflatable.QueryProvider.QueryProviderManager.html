@@ -156,7 +156,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
   <a id="Inflatable_QueryProvider_QueryProviderManager__ctor_" data-uid="Inflatable.QueryProvider.QueryProviderManager.#ctor*"></a>
 
   <h3 id="Inflatable_QueryProvider_QueryProviderManager__ctor_System_Collections_Generic_IEnumerable_Inflatable_QueryProvider_Interfaces_IQueryProvider__Microsoft_Extensions_Logging_ILogger_Inflatable_QueryProvider_QueryProviderManager__" data-uid="Inflatable.QueryProvider.QueryProviderManager.#ctor(System.Collections.Generic.IEnumerable{Inflatable.QueryProvider.Interfaces.IQueryProvider},Microsoft.Extensions.Logging.ILogger{Inflatable.QueryProvider.QueryProviderManager})">
-  QueryProviderManager(IEnumerable&lt;IQueryProvider&gt;, ILogger&lt;QueryProviderManager&gt;)
+  QueryProviderManager(IEnumerable&lt;IQueryProvider&gt;, ILogger&lt;QueryProviderManager&gt;?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -165,7 +165,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public QueryProviderManager(IEnumerable&lt;IQueryProvider&gt; providers, ILogger&lt;QueryProviderManager&gt; logger = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public QueryProviderManager(IEnumerable&lt;IQueryProvider&gt; providers, ILogger&lt;QueryProviderManager&gt;? logger = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -203,7 +203,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
 
   <h3 id="Inflatable_QueryProvider_QueryProviderManager_Logger" data-uid="Inflatable.QueryProvider.QueryProviderManager.Logger">
   Logger
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the logger.</p>
@@ -211,7 +211,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ILogger Logger { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ILogger? Logger { get; }</code></pre>
   </div>
 
 
@@ -236,7 +236,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
 
   <h3 id="Inflatable_QueryProvider_QueryProviderManager_Providers" data-uid="Inflatable.QueryProvider.QueryProviderManager.Providers">
   Providers
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L79"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the providers.</p>
@@ -273,7 +273,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
 
   <h3 id="Inflatable_QueryProvider_QueryProviderManager_CreateBatch_Inflatable_Interfaces_IDatabase_" data-uid="Inflatable.QueryProvider.QueryProviderManager.CreateBatch(Inflatable.Interfaces.IDatabase)">
   CreateBatch(IDatabase)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L106"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a batch.</p>
@@ -320,8 +320,8 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
   <a id="Inflatable_QueryProvider_QueryProviderManager_CreateGenerator_" data-uid="Inflatable.QueryProvider.QueryProviderManager.CreateGenerator*"></a>
 
   <h3 id="Inflatable_QueryProvider_QueryProviderManager_CreateGenerator_System_Type_Inflatable_ClassMapper_IMappingSource_" data-uid="Inflatable.QueryProvider.QueryProviderManager.CreateGenerator(System.Type,Inflatable.ClassMapper.IMappingSource)">
-  CreateGenerator(Type, IMappingSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  CreateGenerator(Type?, IMappingSource)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L160"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a query generator.</p>
@@ -329,7 +329,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IGenerator? CreateGenerator(Type type, IMappingSource mappingInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">public IGenerator? CreateGenerator(Type? type, IMappingSource mappingInfo)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -363,7 +363,7 @@ Class QueryProviderManager  <a class="header-action link-secondary" title="View 
 
   <h3 id="Inflatable_QueryProvider_QueryProviderManager_CreateGenerator__1_Inflatable_ClassMapper_IMappingSource_" data-uid="Inflatable.QueryProvider.QueryProviderManager.CreateGenerator``1(Inflatable.ClassMapper.IMappingSource)">
   CreateGenerator&lt;TMappedClass&gt;(IMappingSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L136"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/QueryProvider/QueryProviderManager.cs/#L134"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Creates a query generator.</p>

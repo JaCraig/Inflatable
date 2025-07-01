@@ -153,7 +153,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
   <a id="Inflatable_ClassMapper_MappingSource__ctor_" data-uid="Inflatable.ClassMapper.MappingSource.#ctor*"></a>
 
   <h3 id="Inflatable_ClassMapper_MappingSource__ctor_System_Collections_Generic_IEnumerable_Inflatable_Interfaces_IMapping__Inflatable_Interfaces_IDatabase_Inflatable_QueryProvider_QueryProviderManager_Microsoft_Extensions_Logging_ILogger_Microsoft_Extensions_ObjectPool_ObjectPool_System_Text_StringBuilder__" data-uid="Inflatable.ClassMapper.MappingSource.#ctor(System.Collections.Generic.IEnumerable{Inflatable.Interfaces.IMapping},Inflatable.Interfaces.IDatabase,Inflatable.QueryProvider.QueryProviderManager,Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.ObjectPool.ObjectPool{System.Text.StringBuilder})">
-  MappingSource(IEnumerable&lt;IMapping&gt;, IDatabase, QueryProviderManager, ILogger?, ObjectPool&lt;StringBuilder&gt;)
+  MappingSource(IEnumerable&lt;IMapping&gt;, IDatabase?, QueryProviderManager, ILogger?, ObjectPool&lt;StringBuilder&gt;)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L47"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -162,7 +162,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MappingSource(IEnumerable&lt;IMapping&gt; mappings, IDatabase source, QueryProviderManager queryProvider, ILogger? logger, ObjectPool&lt;StringBuilder&gt; objectPool)</code></pre>
+    <pre><code class="lang-csharp hljs">public MappingSource(IEnumerable&lt;IMapping&gt; mappings, IDatabase? source, QueryProviderManager queryProvider, ILogger? logger, ObjectPool&lt;StringBuilder&gt; objectPool)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -209,7 +209,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_ApplyAnalysis" data-uid="Inflatable.ClassMapper.MappingSource.ApplyAnalysis">
   ApplyAnalysis
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L108"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether to [apply analysis].</p>
@@ -242,7 +242,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_CanRead" data-uid="Inflatable.ClassMapper.MappingSource.CanRead">
   CanRead
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L114"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance can be read.</p>
@@ -275,7 +275,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_CanWrite" data-uid="Inflatable.ClassMapper.MappingSource.CanWrite">
   CanWrite
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L120"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether this instance can be written to.</p>
@@ -308,7 +308,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_ChildTypes" data-uid="Inflatable.ClassMapper.MappingSource.ChildTypes">
   ChildTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L126"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the child types.</p>
@@ -341,7 +341,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_ConcreteTypes" data-uid="Inflatable.ClassMapper.MappingSource.ConcreteTypes">
   ConcreteTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L122"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L132"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the concrete types.</p>
@@ -374,7 +374,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_GenerateAnalysis" data-uid="Inflatable.ClassMapper.MappingSource.GenerateAnalysis">
   GenerateAnalysis
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L128"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L138"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether to [generate analysis].</p>
@@ -407,7 +407,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_GenerateSchema" data-uid="Inflatable.ClassMapper.MappingSource.GenerateSchema">
   GenerateSchema
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L134"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L144"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether to [generate schema].</p>
@@ -440,7 +440,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_Logger" data-uid="Inflatable.ClassMapper.MappingSource.Logger">
   Logger
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L139"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L149"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Logger for the system</p>
@@ -472,7 +472,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_Mappings" data-uid="Inflatable.ClassMapper.MappingSource.Mappings">
   Mappings
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L155"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the mappings.</p>
@@ -505,7 +505,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_ObjectPool" data-uid="Inflatable.ClassMapper.MappingSource.ObjectPool">
   ObjectPool
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L161"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the ObjectPool.</p>
@@ -538,7 +538,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_Optimize" data-uid="Inflatable.ClassMapper.MappingSource.Optimize">
   Optimize
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L157"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L167"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether to [optimize].</p>
@@ -571,7 +571,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_Order" data-uid="Inflatable.ClassMapper.MappingSource.Order">
   Order
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L162"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L172"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Order that the source is used</p>
@@ -603,7 +603,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_ParentTypes" data-uid="Inflatable.ClassMapper.MappingSource.ParentTypes">
   ParentTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L178"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the parent types.</p>
@@ -636,7 +636,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_QueryProvider" data-uid="Inflatable.ClassMapper.MappingSource.QueryProvider">
   QueryProvider
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L184"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the query provider.</p>
@@ -669,7 +669,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_Source" data-uid="Inflatable.ClassMapper.MappingSource.Source">
   Source
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L189"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Source info</p>
@@ -701,7 +701,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_TypeGraphs" data-uid="Inflatable.ClassMapper.MappingSource.TypeGraphs">
   TypeGraphs
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L195"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets or sets the type graph.</p>
@@ -734,7 +734,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_UpdateSchema" data-uid="Inflatable.ClassMapper.MappingSource.UpdateSchema">
   UpdateSchema
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L191"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L201"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a value indicating whether to [update schema].</p>
@@ -770,7 +770,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
   <a id="Inflatable_ClassMapper_MappingSource_Equals_" data-uid="Inflatable.ClassMapper.MappingSource.Equals*"></a>
 
   <h3 id="Inflatable_ClassMapper_MappingSource_Equals_System_Object_" data-uid="Inflatable.ClassMapper.MappingSource.Equals(System.Object)">
-  Equals(object)
+  Equals(object?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L210"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -779,7 +779,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -809,7 +809,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
   <a id="Inflatable_ClassMapper_MappingSource_GetChildMappings_" data-uid="Inflatable.ClassMapper.MappingSource.GetChildMappings*"></a>
 
   <h3 id="Inflatable_ClassMapper_MappingSource_GetChildMappings_System_Type_" data-uid="Inflatable.ClassMapper.MappingSource.GetChildMappings(System.Type)">
-  GetChildMappings(Type)
+  GetChildMappings(Type?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L227"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -818,7 +818,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IMapping&gt; GetChildMappings(Type objectType)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IMapping&gt; GetChildMappings(Type? objectType)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -888,7 +888,7 @@ Class MappingSource  <a class="header-action link-secondary" title="View source"
 
   <h3 id="Inflatable_ClassMapper_MappingSource_GetHashCode" data-uid="Inflatable.ClassMapper.MappingSource.GetHashCode">
   GetHashCode()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L251"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L254"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a hash code for this instance.</p>
@@ -921,8 +921,8 @@ structures like a hash table.</p>
   <a id="Inflatable_ClassMapper_MappingSource_GetParentMapping_" data-uid="Inflatable.ClassMapper.MappingSource.GetParentMapping*"></a>
 
   <h3 id="Inflatable_ClassMapper_MappingSource_GetParentMapping_System_Type_" data-uid="Inflatable.ClassMapper.MappingSource.GetParentMapping(System.Type)">
-  GetParentMapping(Type)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  GetParentMapping(Type?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L271"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the parent mappings.</p>
@@ -930,7 +930,7 @@ structures like a hash table.</p>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IMapping&gt; GetParentMapping(Type objectType)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IMapping&gt; GetParentMapping(Type? objectType)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -961,7 +961,7 @@ structures like a hash table.</p>
 
   <h3 id="Inflatable_ClassMapper_MappingSource_GetParentMapping__1" data-uid="Inflatable.ClassMapper.MappingSource.GetParentMapping``1">
   GetParentMapping&lt;TObject&gt;()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L258"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L261"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the parent mappings.</p>
@@ -1000,7 +1000,7 @@ structures like a hash table.</p>
 
   <h3 id="Inflatable_ClassMapper_MappingSource_ToString" data-uid="Inflatable.ClassMapper.MappingSource.ToString">
   ToString()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L289"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/MappingSource.cs/#L294"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Returns a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> that represents this instance.</p>

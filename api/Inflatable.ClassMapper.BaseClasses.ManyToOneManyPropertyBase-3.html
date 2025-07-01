@@ -177,7 +177,7 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <a id="Inflatable_ClassMapper_BaseClasses_ManyToOneManyPropertyBase_3__ctor_" data-uid="Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase`3.#ctor*"></a>
 
   <h3 id="Inflatable_ClassMapper_BaseClasses_ManyToOneManyPropertyBase_3__ctor_System_Linq_Expressions_Expression_System_Func__0_System_Collections_Generic_IList__1____Inflatable_Interfaces_IMapping_" data-uid="Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase`3.#ctor(System.Linq.Expressions.Expression{System.Func{`0,System.Collections.Generic.IList{`1}}},Inflatable.Interfaces.IMapping)">
-  ManyToOneManyPropertyBase(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt;, IMapping)
+  ManyToOneManyPropertyBase(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt;, IMapping)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/ManyToOneManyPropertyBase.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -186,7 +186,7 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected ManyToOneManyPropertyBase(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; expression, IMapping mapping)</code></pre>
+    <pre><code class="lang-csharp hljs">protected ManyToOneManyPropertyBase(Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt; expression, IMapping mapping)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -325,7 +325,7 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Func&lt;TClassType, IList&lt;TDataType&gt;&gt; CompiledExpression { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Func&lt;TClassType, IList&lt;TDataType&gt;?&gt; CompiledExpression { get; }</code></pre>
   </div>
 
 
@@ -358,7 +358,7 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;&gt;&gt; Expression { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Expression&lt;Func&lt;TClassType, IList&lt;TDataType&gt;?&gt;&gt; Expression { get; }</code></pre>
   </div>
 
 
@@ -728,7 +728,7 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <a id="Inflatable_ClassMapper_BaseClasses_ManyToOneManyPropertyBase_3_Equals_" data-uid="Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase`3.Equals*"></a>
 
   <h3 id="Inflatable_ClassMapper_BaseClasses_ManyToOneManyPropertyBase_3_Equals_System_Object_" data-uid="Inflatable.ClassMapper.BaseClasses.ManyToOneManyPropertyBase`3.Equals(System.Object)">
-  Equals(object)
+  Equals(object?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/ClassMapper/BaseClasses/ManyToOneManyPropertyBase.cs/#L216"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -737,7 +737,7 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool Equals(object? obj)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -842,12 +842,12 @@ Class ManyToOneManyPropertyBase&lt;TClassType, TDataType, TReturnType&gt;  <a cl
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public object? GetValue(object Object)</code></pre>
+    <pre><code class="lang-csharp hljs">public object? GetValue(object modelObject)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>Object</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dt><code>modelObject</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
     <dd><p>Object to get the value from</p>
 </dd>
   </dl>

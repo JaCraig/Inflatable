@@ -609,7 +609,7 @@ Interface ISession  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;TData&gt; LoadPropertyAsync&lt;TObject, TData&gt;(TObject objectToLoadProperty, string propertyName) where TObject : class where TData : class</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;TData?&gt; LoadPropertyAsync&lt;TObject, TData&gt;(TObject objectToLoadProperty, string propertyName) where TObject : class where TData : class</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -659,7 +659,7 @@ Interface ISession  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">TData LoadProperty&lt;TObject, TData&gt;(TObject objectToLoadProperty, string propertyName) where TObject : class where TData : class</code></pre>
+    <pre><code class="lang-csharp hljs">TData? LoadProperty&lt;TObject, TData&gt;(TObject objectToLoadProperty, string propertyName) where TObject : class where TData : class</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>

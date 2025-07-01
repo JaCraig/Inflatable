@@ -169,7 +169,7 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
   <a id="Inflatable_Sessions_Commands_BaseClasses_CommandBaseClass__ctor_" data-uid="Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.#ctor*"></a>
 
   <h3 id="Inflatable_Sessions_Commands_BaseClasses_CommandBaseClass__ctor_Inflatable_ClassMapper_MappingManager_Inflatable_QueryProvider_QueryProviderManager_DragonHoard_Core_Interfaces_ICache_System_Object___" data-uid="Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.#ctor(Inflatable.ClassMapper.MappingManager,Inflatable.QueryProvider.QueryProviderManager,DragonHoard.Core.Interfaces.ICache,System.Object[])">
-  CommandBaseClass(MappingManager, QueryProviderManager, ICache, object[])
+  CommandBaseClass(MappingManager, QueryProviderManager, ICache?, object[])
   <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L43"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -178,7 +178,7 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache cache, object[] objects)</code></pre>
+    <pre><code class="lang-csharp hljs">protected CommandBaseClass(MappingManager mappingManager, QueryProviderManager queryProviderManager, ICache? cache, object[] objects)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -224,7 +224,7 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ICache Cache { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ICache? Cache { get; }</code></pre>
   </div>
 
 
@@ -427,7 +427,7 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Inflatable_Sessions_Commands_BaseClasses_CommandBaseClass_CompareObjects_System_Object_System_Object_Inflatable_ClassMapper_IMappingSource_" data-uid="Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.CompareObjects(System.Object,System.Object,Inflatable.ClassMapper.IMappingSource)">
   CompareObjects(object, object, IMappingSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L145"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L147"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Compares the objects.</p>
@@ -588,8 +588,8 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
   <a id="Inflatable_Sessions_Commands_BaseClasses_CommandBaseClass_RemoveItemsFromCache_" data-uid="Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.RemoveItemsFromCache*"></a>
 
   <h3 id="Inflatable_Sessions_Commands_BaseClasses_CommandBaseClass_RemoveItemsFromCache_System_Object_" data-uid="Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.RemoveItemsFromCache(System.Object)">
-  RemoveItemsFromCache(object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  RemoveItemsFromCache(object?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L191"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Removes the items from cache.</p>
@@ -597,7 +597,7 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RemoveItemsFromCache(object @object)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void RemoveItemsFromCache(object? @object)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -622,7 +622,7 @@ Class CommandBaseClass  <a class="header-action link-secondary" title="View sour
 
   <h3 id="Inflatable_Sessions_Commands_BaseClasses_CommandBaseClass_WasObjectSeen_System_Object_System_Collections_Generic_IList_System_Object__Inflatable_ClassMapper_IMappingSource_" data-uid="Inflatable.Sessions.Commands.BaseClasses.CommandBaseClass.WasObjectSeen(System.Object,System.Collections.Generic.IList{System.Object},Inflatable.ClassMapper.IMappingSource)">
   WasObjectSeen(object, IList&lt;object&gt;, IMappingSource)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/JaCraig/Inflatable/blob/master/src/Inflatable/Sessions/Commands/BaseClasses/CommandBaseClass.cs/#L185"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Determines if the object was seen before.</p>
