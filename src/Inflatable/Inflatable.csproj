@@ -64,7 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DragonHoard.InMemory" Version="2.2.5" />
+    <PackageReference Include="DragonHoard.InMemory" Version="2.2.6" />
     <PackageReference Include="Holmes" Version="5.0.111" />
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.102" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.102">
