@@ -65,13 +65,13 @@
 
   <ItemGroup>
     <PackageReference Include="DragonHoard.InMemory" Version="2.2.6" />
-    <PackageReference Include="Holmes" Version="5.0.112" />
+    <PackageReference Include="Holmes" Version="5.0.114" />
 	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.102" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.102">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Data.Modeler" Version="5.0.106" />
+    <PackageReference Include="Data.Modeler" Version="5.0.107" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="Valkyrie" Version="5.0.11" />
     <PackageReference Include="Mirage" Version="5.0.11" />
