@@ -58,35 +58,11 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
             Assert.Equal("DECLARE @ConcreteClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
 
-            Assert.Equal(@"INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;
-SET @IInterface1_ID_Temp=SCOPE_IDENTITY();
-SELECT @IInterface1_ID_Temp AS [ID];
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);\r\nSET @BaseClass1_ID_Temp=SCOPE_IDENTITY();\r\n\r\nINSERT INTO [dbo].[ConcreteClass1_]([dbo].[ConcreteClass1_].[Value1_],[dbo].[ConcreteClass1_].[BaseClass1_ID_]) VALUES (@Value1,@BaseClass1_ID_Temp);\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Insert, new ConcreteClass1())[0].QueryString));
 
-INSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);
-SET @BaseClass1_ID_Temp=SCOPE_IDENTITY();
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("UPDATE [dbo].[BaseClass1_]\r\nSET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1\r\nFROM [dbo].[BaseClass1_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n\r\nUPDATE [dbo].[ConcreteClass1_]\r\nSET [dbo].[ConcreteClass1_].[Value1_]=@Value1\r\nFROM [dbo].[ConcreteClass1_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Update, new ConcreteClass1())[0].QueryString));
 
-INSERT INTO [dbo].[ConcreteClass1_]([dbo].[ConcreteClass1_].[Value1_],[dbo].[ConcreteClass1_].[BaseClass1_ID_]) VALUES (@Value1,@BaseClass1_ID_Temp);
-", Result.GenerateQueries(QueryType.Insert, new ConcreteClass1())[0].QueryString);
-
-            Assert.Equal(@"UPDATE [dbo].[BaseClass1_]
-SET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1
-FROM [dbo].[BaseClass1_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@ID;
-
-UPDATE [dbo].[ConcreteClass1_]
-SET [dbo].[ConcreteClass1_].[Value1_]=@Value1
-FROM [dbo].[ConcreteClass1_]
-INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@ID;
-", Result.GenerateQueries(QueryType.Update, new ConcreteClass1())[0].QueryString);
-
-            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass1_].[Value1_] AS [Value1]
-FROM [dbo].[ConcreteClass1_]
-INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass1())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass1_].[Value1_] AS [Value1]\r\nFROM [dbo].[ConcreteClass1_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nORDER BY [dbo].[IInterface1_].[ID_];"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass1())[0].QueryString));
         }
 
         [Fact]
@@ -111,35 +87,11 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
             Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
             Assert.Equal("DECLARE @ConcreteClass2_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
 
-            Assert.Equal(@"INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;
-SET @IInterface1_ID_Temp=SCOPE_IDENTITY();
-SELECT @IInterface1_ID_Temp AS [ID];
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);\r\nSET @BaseClass1_ID_Temp=SCOPE_IDENTITY();\r\n\r\nINSERT INTO [dbo].[ConcreteClass2_]([dbo].[ConcreteClass2_].[InterfaceValue_],[dbo].[ConcreteClass2_].[BaseClass1_ID_]) VALUES (@InterfaceValue,@BaseClass1_ID_Temp);\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Insert, new ConcreteClass2())[0].QueryString));
 
-INSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);
-SET @BaseClass1_ID_Temp=SCOPE_IDENTITY();
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("UPDATE [dbo].[BaseClass1_]\r\nSET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1\r\nFROM [dbo].[BaseClass1_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n\r\nUPDATE [dbo].[ConcreteClass2_]\r\nSET [dbo].[ConcreteClass2_].[InterfaceValue_]=@InterfaceValue\r\nFROM [dbo].[ConcreteClass2_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Update, new ConcreteClass2())[0].QueryString));
 
-INSERT INTO [dbo].[ConcreteClass2_]([dbo].[ConcreteClass2_].[InterfaceValue_],[dbo].[ConcreteClass2_].[BaseClass1_ID_]) VALUES (@InterfaceValue,@BaseClass1_ID_Temp);
-", Result.GenerateQueries(QueryType.Insert, new ConcreteClass2())[0].QueryString);
-
-            Assert.Equal(@"UPDATE [dbo].[BaseClass1_]
-SET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1
-FROM [dbo].[BaseClass1_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@ID;
-
-UPDATE [dbo].[ConcreteClass2_]
-SET [dbo].[ConcreteClass2_].[InterfaceValue_]=@InterfaceValue
-FROM [dbo].[ConcreteClass2_]
-INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@ID;
-", Result.GenerateQueries(QueryType.Update, new ConcreteClass2())[0].QueryString);
-
-            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass2_].[InterfaceValue_] AS [InterfaceValue]
-FROM [dbo].[ConcreteClass2_]
-INNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass2())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[BaseClass1_].[BaseClassValue1_] AS [BaseClassValue1],[dbo].[ConcreteClass2_].[InterfaceValue_] AS [InterfaceValue]\r\nFROM [dbo].[ConcreteClass2_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass2_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nORDER BY [dbo].[IInterface1_].[ID_];"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass2())[0].QueryString));
         }
 
         [Fact]
@@ -164,24 +116,11 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
             Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
             Assert.Equal("DECLARE @ConcreteClass3_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);
 
-            Assert.Equal(@"INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;
-SET @IInterface1_ID_Temp=SCOPE_IDENTITY();
-SELECT @IInterface1_ID_Temp AS [ID];
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[ConcreteClass3_]([dbo].[ConcreteClass3_].[MyUniqueProperty_],[dbo].[ConcreteClass3_].[IInterface1_ID_]) VALUES (@MyUniqueProperty,@IInterface1_ID_Temp);\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Insert, new ConcreteClass3())[0].QueryString));
 
-INSERT INTO [dbo].[ConcreteClass3_]([dbo].[ConcreteClass3_].[MyUniqueProperty_],[dbo].[ConcreteClass3_].[IInterface1_ID_]) VALUES (@MyUniqueProperty,@IInterface1_ID_Temp);
-", Result.GenerateQueries(QueryType.Insert, new ConcreteClass3())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("UPDATE [dbo].[ConcreteClass3_]\r\nSET [dbo].[ConcreteClass3_].[MyUniqueProperty_]=@MyUniqueProperty\r\nFROM [dbo].[ConcreteClass3_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Update, new ConcreteClass3())[0].QueryString));
 
-            Assert.Equal(@"UPDATE [dbo].[ConcreteClass3_]
-SET [dbo].[ConcreteClass3_].[MyUniqueProperty_]=@MyUniqueProperty
-FROM [dbo].[ConcreteClass3_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-WHERE [dbo].[IInterface1_].[ID_]=@ID;
-", Result.GenerateQueries(QueryType.Update, new ConcreteClass3())[0].QueryString);
-
-            Assert.Equal(@"SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[ConcreteClass3_].[MyUniqueProperty_] AS [MyUniqueProperty]
-FROM [dbo].[ConcreteClass3_]
-INNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]
-ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass3())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("SELECT [dbo].[IInterface1_].[ID_] AS [ID],[dbo].[ConcreteClass3_].[MyUniqueProperty_] AS [MyUniqueProperty]\r\nFROM [dbo].[ConcreteClass3_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[ConcreteClass3_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nORDER BY [dbo].[IInterface1_].[ID_];"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.LinqQuery, new ConcreteClass3())[0].QueryString));
         }
     }
 }
