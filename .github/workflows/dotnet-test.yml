@@ -66,19 +66,6 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
-      - name: Wait for SQL Server
-        shell: bash
-        run: |
-          for i in {1..60}; do
-            if timeout 1 bash -c "</dev/tcp/$SQL_HOST/$SQL_PORT" 2>/dev/null; then
-              echo "SQL Server port is reachable."
-              exit 0
-            fi
-            sleep 2
-          done
-          echo "SQL Server did not become reachable in time."
-          exit 1
-
       - name: Cache NuGet packages
         uses: actions/cache@v4
         with:
