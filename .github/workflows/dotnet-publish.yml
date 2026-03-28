@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        image: mcr.microsoft.com/mssql/server:2025-latest
         env:
           ACCEPT_EULA: "Y"
           MSSQL_PID: "Developer"
@@ -66,7 +66,7 @@ jobs:
         ports:
           - 1433:1433
         options: >-
-          --health-cmd "bash -c '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q \"SELECT 1\"'"
+          --health-cmd "bash -c '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$SA_PASSWORD\" -Q \"SELECT 1\"'"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
@@ -76,14 +76,6 @@ jobs:
         dotnet-version: ["${{ inputs.dotnet-version || '10.0.x' }}"]
 
     steps:
-      - name: Wait for SQL Server
-        run: |
-          for i in {1..30}; do
-            /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${{ secrets.INFLATABLE_SQL_PASSWORD }}" -Q "SELECT 1" && break
-            echo "SQL Server not ready yet..."
-            sleep 2
-          done
-
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
