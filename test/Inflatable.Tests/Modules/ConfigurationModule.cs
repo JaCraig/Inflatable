@@ -1,4 +1,5 @@
 ﻿using Canister.Interfaces;
+using Inflatable.Tests.BaseClasses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ namespace Inflatable.Tests.Modules
     {
         public int Order => 1;
 
-        protected static string ConnectionString => "Data Source=localhost;Initial Catalog=TestDatabase;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
+        protected static string ConnectionString => TestConnectionStrings.Default;
 
-        protected static string ConnectionString2 => "Data Source=localhost;Initial Catalog=TestDatabase2;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
+        protected static string ConnectionString2 => TestConnectionStrings.Default2;
 
-        protected static string MockDatabaseConnectionString => "Data Source=localhost;Initial Catalog=MockDatabase;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
-        protected static string MockDatabaseForMockMappingConnectionString => "Data Source=localhost;Initial Catalog=MockDatabaseForMockMapping;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
+        protected static string MockDatabaseConnectionString => TestConnectionStrings.MockDatabase;
+        protected static string MockDatabaseForMockMappingConnectionString => TestConnectionStrings.MockDatabaseForMockMapping;
 
         public void Load(IServiceCollection bootstrapper)
         {

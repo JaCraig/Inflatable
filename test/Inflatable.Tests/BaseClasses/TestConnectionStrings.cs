@@ -1,0 +1,36 @@
+using System;
+
+namespace Inflatable.Tests.BaseClasses
+{
+    internal static class TestConnectionStrings
+    {
+        private const string SqlUser = "sa";
+
+        public static string Default => Build("TestDatabase");
+
+        public static string Default2 => Build("TestDatabase2");
+
+        public static string MockDatabase => Build("MockDatabase");
+
+        public static string MockDatabaseForMockMapping => Build("MockDatabaseForMockMapping");
+
+        public static string Master => Build("master");
+
+        private static string Build(string databaseName)
+        {
+            var sqlPassword = Environment.GetEnvironmentVariable("INFLATABLE_SQL_PASSWORD");
+            if (string.IsNullOrWhiteSpace(sqlPassword))
+            {
+                return $"Data Source=localhost;Initial Catalog={databaseName};Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
+            }
+
+            var sqlServer = Environment.GetEnvironmentVariable("INFLATABLE_SQL_SERVER");
+            if (string.IsNullOrWhiteSpace(sqlServer))
+            {
+                sqlServer = "127.0.0.1,1433";
+            }
+
+            return $"Server={sqlServer};Database={databaseName};User ID={SqlUser};Password={sqlPassword};Encrypt=False;TrustServerCertificate=True;Pooling=false";
+        }
+    }
+}

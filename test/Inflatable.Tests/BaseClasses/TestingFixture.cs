@@ -31,7 +31,7 @@ namespace Inflatable.Tests.BaseClasses
         public Sherlock Sherlock => Resolve<Sherlock>();
         protected static readonly object TestRunLock = new();
         protected static string DatabaseName = "TestDatabase";
-        protected static string MasterString = "Data Source=localhost;Initial Catalog=master;Integrated Security=SSPI;Pooling=false;TrustServerCertificate=True";
+        protected static string MasterString = TestConnectionStrings.Master;
 
         public void Dispose()
         {
