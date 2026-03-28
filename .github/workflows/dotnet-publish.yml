@@ -58,18 +58,13 @@ jobs:
     runs-on: ubuntu-latest
     services:
       sqlserver:
-        image: mcr.microsoft.com/mssql/server:2025-latest
+        image: mcr.microsoft.com/mssql/server:2022-latest
         env:
           ACCEPT_EULA: "Y"
           MSSQL_PID: "Developer"
           SA_PASSWORD: "${{ secrets.INFLATABLE_SQL_PASSWORD }}"
         ports:
           - 1433:1433
-        options: >-
-          --health-cmd "bash -c '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$SA_PASSWORD\" -Q \"SELECT 1\"'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
 
     strategy:
       matrix:
@@ -85,6 +80,20 @@ jobs:
         uses: actions/setup-dotnet@v5.2.0
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Wait for SQL Server
+        shell: bash
+        run: |
+          for i in {1..60}; do
+            if timeout 1 bash -c "</dev/tcp/$SQL_HOST/$SQL_PORT" 2>/dev/null; then
+              echo "SQL Server port is reachable."
+              exit 0
+            fi
+            echo "Waiting for SQL Server... attempt $i"
+            sleep 2
+          done
+          echo "SQL Server did not become reachable in time."
+          exit 1
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
