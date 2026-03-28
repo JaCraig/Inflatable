@@ -1,4 +1,4 @@
-﻿using Inflatable.ClassMapper;
+using Inflatable.ClassMapper;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -100,7 +100,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("BaseClassValue1", Result.Parameters[2].ID);
             Assert.Equal(2, Result.Parameters[1].InternalValue);
             Assert.Equal("Value1", Result.Parameters[1].ID);
-            Assert.Equal("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);\r\nSET @BaseClass1_ID_Temp=SCOPE_IDENTITY();\r\n\r\nINSERT INTO [dbo].[ConcreteClass1_]([dbo].[ConcreteClass1_].[Value1_],[dbo].[ConcreteClass1_].[BaseClass1_ID_]) VALUES (@Value1,@BaseClass1_ID_Temp);\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("INSERT INTO [dbo].[IInterface1_] DEFAULT VALUES;\r\nSET @IInterface1_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @IInterface1_ID_Temp AS [ID];\r\n\r\nINSERT INTO [dbo].[BaseClass1_]([dbo].[BaseClass1_].[BaseClassValue1_],[dbo].[BaseClass1_].[IInterface1_ID_]) VALUES (@BaseClassValue1,@IInterface1_ID_Temp);\r\nSET @BaseClass1_ID_Temp=SCOPE_IDENTITY();\r\n\r\nINSERT INTO [dbo].[ConcreteClass1_]([dbo].[ConcreteClass1_].[Value1_],[dbo].[ConcreteClass1_].[BaseClass1_ID_]) VALUES (@Value1,@BaseClass1_ID_Temp);\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Insert, Result.QueryType);
         }
 
@@ -124,7 +124,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.True((bool)Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Insert, Result.QueryType);
         }
 
@@ -148,7 +148,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.True((bool)Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("INSERT INTO [dbo].[MapProperties_]([dbo].[MapProperties_].[BoolValue_]) VALUES (@BoolValue);\r\nSET @MapProperties_ID_Temp=SCOPE_IDENTITY();\r\nSELECT @MapProperties_ID_Temp AS [ID];\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Insert, Result.QueryType);
         }
     }

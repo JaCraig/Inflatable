@@ -1,4 +1,4 @@
-﻿using Inflatable.ClassMapper;
+using Inflatable.ClassMapper;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -83,7 +83,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             _ = Assert.Single(Result.Parameters);
             Assert.Equal(10, Result.Parameters[0].InternalValue);
             Assert.Equal("ID", Result.Parameters[0].ID);
-            Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Delete, Result.QueryType);
         }
     }

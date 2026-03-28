@@ -1,4 +1,4 @@
-﻿using Inflatable.ClassMapper;
+using Inflatable.ClassMapper;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -52,7 +52,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass1>(Mappings, ObjectPool);
-            Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass1())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Delete, new ConcreteClass1())[0].QueryString));
 
             Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[2].QueryString);
             Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
@@ -105,7 +105,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
             GetLogger<MappingSource>(),
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass2>(Mappings, ObjectPool);
-            Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass2())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Delete, new ConcreteClass2())[0].QueryString));
 
             Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[2].QueryString);
             Assert.Equal("DECLARE @BaseClass1_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
@@ -159,7 +159,7 @@ ORDER BY [dbo].[IInterface1_].[ID_];", Result.GenerateQueries(QueryType.LinqQuer
             ObjectPool);
             var Result = new SQLServerGenerator<ConcreteClass3>(Mappings, ObjectPool);
 
-            Assert.Equal("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.GenerateQueries(QueryType.Delete, new ConcreteClass3())[0].QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("DELETE FROM [dbo].[IInterface1_] WHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.GenerateQueries(QueryType.Delete, new ConcreteClass3())[0].QueryString));
 
             Assert.Equal("DECLARE @IInterface1_ID_Temp AS INT;", Result.GenerateDeclarations(QueryType.Insert)[1].QueryString);
             Assert.Equal("DECLARE @ConcreteClass3_ID_Temp AS BIGINT;", Result.GenerateDeclarations(QueryType.Insert)[0].QueryString);

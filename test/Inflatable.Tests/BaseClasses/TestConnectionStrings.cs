@@ -16,6 +16,19 @@ namespace Inflatable.Tests.BaseClasses
 
         public static string Master => Build("master");
 
+        public static string NormalizeLineEndings(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            return value
+                .Replace("\r\n", "\n", StringComparison.Ordinal)
+                .Replace("\r", "\n", StringComparison.Ordinal)
+                .Replace("\n", Environment.NewLine, StringComparison.Ordinal);
+        }
+
         private static string Build(string databaseName)
         {
             var sqlPassword = Environment.GetEnvironmentVariable("INFLATABLE_SQL_PASSWORD");

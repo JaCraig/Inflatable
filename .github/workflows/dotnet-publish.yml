@@ -65,12 +65,25 @@ jobs:
           SA_PASSWORD: "${{ secrets.INFLATABLE_SQL_PASSWORD }}"
         ports:
           - 1433:1433
+        options: >-
+          --health-cmd "bash -c '/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${{ secrets.INFLATABLE_SQL_PASSWORD }} -Q \"SELECT 1\"'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
 
     strategy:
       matrix:
         dotnet-version: ["${{ inputs.dotnet-version || '10.0.x' }}"]
 
     steps:
+      - name: Wait for SQL Server
+        run: |
+          for i in {1..30}; do
+            /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${{ secrets.INFLATABLE_SQL_PASSWORD }}" -Q "SELECT 1" && break
+            echo "SQL Server not ready yet..."
+            sleep 2
+          done
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0

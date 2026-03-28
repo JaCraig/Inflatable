@@ -1,4 +1,4 @@
-﻿using Inflatable.ClassMapper;
+using Inflatable.ClassMapper;
 using Inflatable.QueryProvider;
 using Inflatable.QueryProvider.Enums;
 using Inflatable.QueryProvider.Providers.SQLServer;
@@ -90,7 +90,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("BaseClassValue1", Result.Parameters[2].ID);
             Assert.Equal(2, Result.Parameters[1].InternalValue);
             Assert.Equal("Value1", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[BaseClass1_]\r\nSET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1\r\nFROM [dbo].[BaseClass1_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n\r\nUPDATE [dbo].[ConcreteClass1_]\r\nSET [dbo].[ConcreteClass1_].[Value1_]=@Value1\r\nFROM [dbo].[ConcreteClass1_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("UPDATE [dbo].[BaseClass1_]\r\nSET [dbo].[BaseClass1_].[BaseClassValue1_]=@BaseClassValue1\r\nFROM [dbo].[BaseClass1_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n\r\nUPDATE [dbo].[ConcreteClass1_]\r\nSET [dbo].[ConcreteClass1_].[Value1_]=@Value1\r\nFROM [dbo].[ConcreteClass1_]\r\nINNER JOIN [dbo].[BaseClass1_] ON [dbo].[ConcreteClass1_].[BaseClass1_ID_]=[dbo].[BaseClass1_].[ID_]\r\nINNER JOIN [dbo].[IInterface1_] ON [dbo].[BaseClass1_].[IInterface1_ID_]=[dbo].[IInterface1_].[ID_]\r\nWHERE [dbo].[IInterface1_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Update, Result.QueryType);
         }
 
@@ -115,7 +115,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.True((bool)Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Update, Result.QueryType);
         }
 
@@ -140,7 +140,7 @@ namespace Inflatable.Tests.QueryProvider.Providers.SQLServer.QueryGenerators
             Assert.Equal("ID", Result.Parameters[0].ID);
             Assert.True((bool)Result.Parameters[1].InternalValue);
             Assert.Equal("BoolValue", Result.Parameters[1].ID);
-            Assert.Equal("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n", Result.QueryString);
+            Assert.Equal(TestConnectionStrings.NormalizeLineEndings("UPDATE [dbo].[MapProperties_]\r\nSET [dbo].[MapProperties_].[BoolValue_]=@BoolValue\r\nFROM [dbo].[MapProperties_]\r\nWHERE [dbo].[MapProperties_].[ID_]=@ID;\r\n"), TestConnectionStrings.NormalizeLineEndings(Result.QueryString));
             Assert.Equal(QueryType.Update, Result.QueryType);
         }
     }
