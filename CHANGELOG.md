@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="5.0.173"></a>
+## [5.0.173](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.173) (2026-03-29)
+
+### Bug Fixes
+
+* **workflows:** set default SQL password in dotnet-test workflow ([aad8a79](https://www.github.com/JaCraig/Inflatable/commit/aad8a79f8e623230f768bfb0fc78478b9eab3ce9))
+
 <a name="5.0.172"></a>
 ## [5.0.172](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.172) (2026-03-29)
 
