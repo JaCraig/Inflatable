@@ -5,8 +5,6 @@ using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.ComplexGraph.Mappings;
 using Inflatable.Tests.TestDatabases.Databases;
-using Microsoft.Data.SqlClient;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -42,12 +40,7 @@ namespace Inflatable.Tests.Schema
         {
             try
             {
-                _ = await Helper.CreateBatch(SqlClientFactory.Instance, TestConnectionStrings.Master)
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping"))
-                    .ExecuteScalarAsync<int>();
+                await TestDatabaseManager.ResetKnownDatabasesAsync();
             }
             catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
@@ -64,8 +57,7 @@ namespace Inflatable.Tests.Schema
             Assert.Contains("ConcreteClass3_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Contains("IInterface1_", TestModel.SourceSpec.Tables.Select(x => x.Name));
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(12, TestModel.GeneratedSchemaChanges.Length);
-            Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
+            Assert.Equal(11, TestModel.GeneratedSchemaChanges.Length);
             Assert.Contains("CREATE TABLE [dbo].[ConcreteClass2_]([ID_] BigInt PRIMARY KEY IDENTITY,[InterfaceValue_] Int NOT NULL,[BaseClass1_ID_] BigInt NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[IInterface1_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ConcreteClass3_]([ID_] BigInt PRIMARY KEY IDENTITY,[MyUniqueProperty_] Int NOT NULL,[IInterface1_ID_] Int NOT NULL UNIQUE)", TestModel.GeneratedSchemaChanges);

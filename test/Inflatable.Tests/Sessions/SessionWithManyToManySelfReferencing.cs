@@ -9,7 +9,6 @@ using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties;
 using Inflatable.Tests.TestDatabases.ManyToManyProperties.Mappings;
-using Microsoft.Data.SqlClient;
 using SQLHelperDB;
 using System.Collections.Generic;
 using System.Data;
@@ -101,12 +100,7 @@ namespace Inflatable.Tests.Sessions
         {
             try
             {
-                _ = await Helper.CreateBatch(SqlClientFactory.Instance, TestConnectionStrings.Master)
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping"))
-                    .ExecuteScalarAsync<int>();
+                await TestDatabaseManager.ResetKnownDatabasesAsync();
             }
             catch { }
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
@@ -253,12 +247,7 @@ namespace Inflatable.Tests.Sessions
         {
             try
             {
-                _ = await Helper.CreateBatch(SqlClientFactory.Instance, TestConnectionStrings.Master)
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping"))
-                    .ExecuteScalarAsync<int>();
+                await TestDatabaseManager.ResetKnownDatabasesAsync();
             }
             catch { }
             _ = new SchemaManager(MappingManager, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());

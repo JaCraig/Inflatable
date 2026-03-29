@@ -10,11 +10,10 @@ namespace Inflatable.Tests.BaseClasses
 
         public static string Default2 => Build("TestDatabase2");
 
+        public static string Master => Build("master");
         public static string MockDatabase => Build("MockDatabase");
 
         public static string MockDatabaseForMockMapping => Build("MockDatabaseForMockMapping");
-
-        public static string Master => Build("master");
 
         public static string NormalizeLineEndings(string value)
         {
@@ -43,7 +42,7 @@ namespace Inflatable.Tests.BaseClasses
                 sqlServer = "127.0.0.1,1433";
             }
 
-            return $"Server={sqlServer};Database={databaseName};User ID={SqlUser};Password={sqlPassword};Encrypt=False;TrustServerCertificate=True;Pooling=false";
+            return $"Server={sqlServer};Database={databaseName};User ID={SqlUser};Password={sqlPassword};TrustServerCertificate=True";
         }
     }
 }

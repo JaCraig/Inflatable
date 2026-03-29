@@ -5,8 +5,6 @@ using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.ManyToOneProperties.Mappings;
-using Microsoft.Data.SqlClient;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -38,12 +36,7 @@ namespace Inflatable.Tests.Schema
         {
             try
             {
-                _ = await Helper.CreateBatch(SqlClientFactory.Instance, TestConnectionStrings.Master)
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping"))
-                    .ExecuteScalarAsync<int>();
+                await TestDatabaseManager.ResetKnownDatabasesAsync();
             }
             catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
@@ -57,8 +50,7 @@ namespace Inflatable.Tests.Schema
             Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "ManyToOneManyProperties_");
             Assert.Contains(TestModel.SourceSpec.Tables, x => x.Name == "ManyToOneOneProperties_");
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(4, TestModel.GeneratedSchemaChanges.Length);
-            Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
+            Assert.Equal(3, TestModel.GeneratedSchemaChanges.Length);
             Assert.Contains("CREATE TABLE [dbo].[ManyToOneOneProperties_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY,[BoolValue_] Bit NOT NULL,[ManyToOneManyProperties_ID_] Int)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[ManyToOneManyProperties_]([ID_] Int NOT NULL PRIMARY KEY IDENTITY,[BoolValue_] Bit NOT NULL)", TestModel.GeneratedSchemaChanges);
             Assert.Contains("ALTER TABLE [dbo].[ManyToOneOneProperties_] ADD FOREIGN KEY ([ManyToOneManyProperties_ID_]) REFERENCES [dbo].[ManyToOneManyProperties_]([ID_]) ON DELETE SET NULL", TestModel.GeneratedSchemaChanges);

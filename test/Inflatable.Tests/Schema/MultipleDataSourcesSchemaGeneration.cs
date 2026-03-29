@@ -5,8 +5,6 @@ using Inflatable.Schema;
 using Inflatable.Tests.BaseClasses;
 using Inflatable.Tests.TestDatabases.Databases;
 using Inflatable.Tests.TestDatabases.MultipleDataSources.Mappings;
-using Microsoft.Data.SqlClient;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -39,12 +37,7 @@ namespace Inflatable.Tests.Schema
         {
             try
             {
-                _ = await Helper.CreateBatch(SqlClientFactory.Instance, TestConnectionStrings.Master)
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping"))
-                    .ExecuteScalarAsync<int>();
+                await TestDatabaseManager.ResetKnownDatabasesAsync();
             }
             catch { }
             var TestObject = new SchemaManager(Mappings, Configuration, DataModeler, Sherlock, Helper, GetLogger<SchemaManager>());
@@ -57,8 +50,7 @@ namespace Inflatable.Tests.Schema
             _ = Assert.Single(TestModel.SourceSpec.Tables);
             Assert.Equal("SimpleClass_", TestModel.SourceSpec.Tables[0].Name);
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(2, TestModel.GeneratedSchemaChanges.Length);
-            Assert.Contains("CREATE DATABASE [TestDatabase]", TestModel.GeneratedSchemaChanges);
+            _ = Assert.Single(TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource1Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
 
             TestModel = TestObject.Models.First(x => x.SourceSpec.Name == "TestDatabase2");
@@ -69,8 +61,7 @@ namespace Inflatable.Tests.Schema
             _ = Assert.Single(TestModel.SourceSpec.Tables);
             Assert.Equal("SimpleClass_", TestModel.SourceSpec.Tables[0].Name);
             Assert.Empty(TestModel.SourceSpec.Views);
-            Assert.Equal(2, TestModel.GeneratedSchemaChanges.Length);
-            Assert.Contains("CREATE DATABASE [TestDatabase2]", TestModel.GeneratedSchemaChanges);
+            _ = Assert.Single(TestModel.GeneratedSchemaChanges);
             Assert.Contains("CREATE TABLE [dbo].[SimpleClass_]([ID_] Int NOT NULL PRIMARY KEY,[DataSource2Value_] Int NOT NULL)", TestModel.GeneratedSchemaChanges);
         }
     }

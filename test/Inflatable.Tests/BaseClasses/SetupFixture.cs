@@ -1,12 +1,10 @@
 using BigBook;
 using Inflatable.Schema;
 using Inflatable.Sessions;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using SQLHelperDB;
 using System;
-using System.Data;
 using Xunit;
 
 namespace Inflatable.Tests.BaseClasses
@@ -39,17 +37,14 @@ namespace Inflatable.Tests.BaseClasses
         {
             try
             {
-                _ = AsyncHelper.RunSync(() => Helper.CreateBatch(SqlClientFactory.Instance, TestConnectionStrings.Master)
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase SET ONLINE\r\nDROP DATABASE TestDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE TestDatabase2 SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE TestDatabase2 SET ONLINE\r\nDROP DATABASE TestDatabase2"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabase SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabase SET ONLINE\r\nDROP DATABASE MockDatabase"))
-                    .AddQuery(CommandType.Text, TestConnectionStrings.NormalizeLineEndings("ALTER DATABASE MockDatabaseForMockMapping SET OFFLINE WITH ROLLBACK IMMEDIATE\r\nALTER DATABASE MockDatabaseForMockMapping SET ONLINE\r\nDROP DATABASE MockDatabaseForMockMapping"))
-                    .ExecuteScalarAsync<int>());
+                AsyncHelper.RunSync(TestDatabaseManager.ResetKnownDatabasesAsync);
             }
             catch (Exception Ex)
             {
                 // Log the exception if needed
                 Console.WriteLine($"Error during database cleanup: {Ex.Message}");
+                // Log line number and stack trace for debugging
+                Console.WriteLine($"Stack Trace: {Ex.StackTrace}");
             }
             GC.SuppressFinalize(this);
         }
