@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="5.0.172"></a>
+## [5.0.172](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.172) (2026-03-29)
+
+### Bug Fixes
+
+* **workflows:** adjust concurrency settings in dotnet-publish workflow ([a077a7f](https://www.github.com/JaCraig/Inflatable/commit/a077a7ff8bdef1332045f8c4a905e7067f4e70d6))
+
+### Other
+
+* Merge branch 'master' of https://github.com/JaCraig/Inflatable ([986032a](https://www.github.com/JaCraig/Inflatable/commit/986032ac86981c064434058bce7d1c0d99422190))
+
 <a name="5.0.171"></a>
 ## [5.0.171](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.171) (2026-03-29)
 
