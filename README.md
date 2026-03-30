@@ -1,6 +1,6 @@
 # Inflatable
 
-[![Build status](https://ci.appveyor.com/api/projects/status/nr3ltljg4rkfwnph?svg=true)](https://ci.appveyor.com/project/JaCraig/inflatable)
+[![.NET Publish](https://github.com/JaCraig/Inflatable/actions/workflows/dotnet-publish.yml/badge.svg)](https://github.com/JaCraig/Inflatable/actions/workflows/dotnet-publish.yml)
 
 Inflatable is a feature-rich ORM (Object-Relational Mapping) library for .NET applications. It provides seamless integration with your data access layer, allowing you to interact with your database using a convenient and expressive API.
 
