@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="5.0.174"></a>
+## [5.0.174](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.174) (2026-03-31)
+
+### Bug Fixes
+
+* Bump the dependencies group with 3 updates ([0986ba0](https://www.github.com/JaCraig/Inflatable/commit/0986ba0cb45b940dd410b9fccf1f1b6a5e98e519))
+
+### Other
+
+* Merge pull request #415 from JaCraig/dependabot/github_actions/dependencies-97f38a5d32 ([cfa6fa7](https://www.github.com/JaCraig/Inflatable/commit/cfa6fa73f87d415b8811e430d05572abf1c0ef0f))
+* Merge pull request #416 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-253ac99707 ([b9e8dbb](https://www.github.com/JaCraig/Inflatable/commit/b9e8dbbfd7d057017a95a1398f53a9ad6d170e42))
+* Merge pull request #417 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-253ac99707 ([97cab09](https://www.github.com/JaCraig/Inflatable/commit/97cab0991a4ecd351b8bed6b12308768aed92a65))
+* Merge pull request #418 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-253ac99707 ([b8b1337](https://www.github.com/JaCraig/Inflatable/commit/b8b13370f2a1c161c86b4c39a774ef02eafb960b))
+* Merge pull request #420 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-2026207942 ([a86f4e0](https://www.github.com/JaCraig/Inflatable/commit/a86f4e00d1f95252f30d7a486d5c898b976cebf6))
+* Bump actions/cache from 4 to 5 in the dependencies group ([0b6e142](https://www.github.com/JaCraig/Inflatable/commit/0b6e142ccd2739b5160c5f0d1ab7237ed6f638c4))
+* Bump the dependencies group with 4 updates ([9cdbd6f](https://www.github.com/JaCraig/Inflatable/commit/9cdbd6f0b058c3fdaeb748558ffb92ed2cc881fe))
+* Bump the dependencies group with 4 updates ([39934a6](https://www.github.com/JaCraig/Inflatable/commit/39934a698f2cef65d16bdc115705409be91619a4))
+* Bump the dependencies group with 4 updates ([e2edab8](https://www.github.com/JaCraig/Inflatable/commit/e2edab8ce8def4a4db6b6ab2621921274cd7a513))
+* Change build status badge to GitHub Actions ([33446e0](https://www.github.com/JaCraig/Inflatable/commit/33446e0be33cceb7f46538b6660f2b2ea97f2d02))
+
 <a name="5.0.173"></a>
 ## [5.0.173](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.173) (2026-03-29)
 
