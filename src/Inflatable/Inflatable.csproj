@@ -73,8 +73,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Data.Modeler" Version="5.0.132" />
-    <PackageReference Include="Valkyrie" Version="5.0.17" />
-    <PackageReference Include="Mirage" Version="5.1.2" />
+    <PackageReference Include="Valkyrie" Version="5.0.18" />
+    <PackageReference Include="Mirage" Version="5.1.3" />
   </ItemGroup>
   <Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
     <Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
