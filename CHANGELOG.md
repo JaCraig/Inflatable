@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="5.0.183"></a>
+## [5.0.183](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.183) (2026-04-22)
+
+### Bug Fixes
+
+* Bump the dependencies group with 6 updates ([f50592e](https://www.github.com/JaCraig/Inflatable/commit/f50592eeeeda9e2b48cf402cde05c7e2d1a7203b))
+
+### Other
+
+* Merge pull request #434 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-6050760948 ([0bb6487](https://www.github.com/JaCraig/Inflatable/commit/0bb6487095cec5b4693da83bee6ca15e615861d4))
+
 <a name="5.0.182"></a>
 ## [5.0.182](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.182) (2026-04-21)
 
