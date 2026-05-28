@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="5.0.196"></a>
+## [5.0.196](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.196) (2026-05-28)
+
+### Bug Fixes
+
+* **workflows:** update token usage in workflows ([44bf7b9](https://www.github.com/JaCraig/Inflatable/commit/44bf7b9fd5749ae09d7e165282f1397b930e7589))
+
+### Other
+
+* Merge pull request #454 from JaCraig/dependabot/github_actions/dependencies-669470734f ([62d42cc](https://www.github.com/JaCraig/Inflatable/commit/62d42cc78c38ad761b70827affc18cb71c8cfbf7))
+* Bump ad-m/github-push-action in the dependencies group ([a267406](https://www.github.com/JaCraig/Inflatable/commit/a2674067a8e2a53130517e2c4bcbf2fb6866d07b))
+
 <a name="5.0.195"></a>
 ## [5.0.195](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.195) (2026-05-21)
 
