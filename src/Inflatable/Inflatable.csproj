@@ -72,7 +72,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Data.Modeler" Version="5.0.148" />
+    <PackageReference Include="Data.Modeler" Version="5.0.149" />
     <PackageReference Include="Valkyrie" Version="5.0.30" />
     <PackageReference Include="Mirage" Version="5.1.16" />
   </ItemGroup>
