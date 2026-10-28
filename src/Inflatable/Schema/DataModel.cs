@@ -38,6 +38,25 @@ namespace Inflatable.Schema
     public class DataModel
     {
         /// <summary>
+        /// The default schemas
+        /// </summary>
+        private static readonly string[] _DefaultSchemas = [
+            "dbo",
+            "guest",
+            "INFORMATION_SCHEMA",
+            "sys",
+            "db_owner",
+            "db_accessadmin",
+            "db_securityadmin",
+            "db_ddladmin",
+            "db_backupoperator",
+            "db_datareader",
+            "db_datawriter",
+            "db_denydatareader",
+            "db_denydatawriter"
+        ];
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataModel"/> class.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -60,25 +79,6 @@ namespace Inflatable.Schema
             GeneratedSchemaChanges = AsyncHelper.RunSync(() => GenerateSchemaAsync(source, logger, dataModeler, SourceConnection, SourceSpec));
             AsyncHelper.RunSync(() => AnalyzeSchemaAsync(sherlock, logger, source, SourceConnection, batch));
         }
-
-        /// <summary>
-        /// The default schemas
-        /// </summary>
-        private static readonly string[] _DefaultSchemas = [
-            "dbo",
-            "guest",
-            "INFORMATION_SCHEMA",
-            "sys",
-            "db_owner",
-            "db_accessadmin",
-            "db_securityadmin",
-            "db_ddladmin",
-            "db_backupoperator",
-            "db_datareader",
-            "db_datawriter",
-            "db_denydatareader",
-            "db_denydatawriter"
-        ];
 
         /// <summary>
         /// Gets the generated schema changes.
@@ -110,7 +110,7 @@ namespace Inflatable.Schema
 
             logger?.LogInformation("Analyzing {databaseName} for suggestions.", sourceConnection.DatabaseName);
             System.Collections.Generic.IEnumerable<Finding>? Results = await sherlock.AnalyzeAsync(sourceConnection).ConfigureAwait(false);
-            _ = batch.CreateBatch();
+            var BatchCopy = batch.Copy().CreateBatch();
             foreach (Finding? Result in Results)
             {
                 logger?.LogInformation("Finding: {resultText}", Result.Text);
@@ -118,13 +118,13 @@ namespace Inflatable.Schema
                 logger?.LogInformation("Suggested Fix: {resultFix}", Result.Fix);
                 if (source.ApplyAnalysis && string.IsNullOrEmpty(Result.Fix))
                 {
-                    _ = batch.AddQuery(CommandType.Text, Result.Fix);
+                    _ = BatchCopy.AddQuery(CommandType.Text, Result.Fix);
                 }
             }
             if (source.ApplyAnalysis)
             {
                 logger?.LogInformation("Applying fixes for {databaseName}.", sourceConnection.DatabaseName);
-                _ = await batch.ExecuteScalarAsync<int>().ConfigureAwait(false);
+                _ = await BatchCopy.ExecuteScalarAsync<int>().ConfigureAwait(false);
             }
         }
 
