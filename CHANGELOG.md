@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="5.0.201"></a>
+## [5.0.201](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.201) (2026-10-28)
+
+### Bug Fixes
+
+* Bump the dependencies group with 1 update ([e2fda97](https://www.github.com/JaCraig/Inflatable/commit/e2fda97590b7d173c744bfeec18589428f390984))
+* Bump the dependencies group with 2 updates ([edd9a1c](https://www.github.com/JaCraig/Inflatable/commit/edd9a1c83ecc9162450d416bb5be5857e91c9cf8))
+* Bump the dependencies group with 2 updates ([d9f7d8c](https://www.github.com/JaCraig/Inflatable/commit/d9f7d8c0ad79a1d99638623812b7f9d681dd0fa7))
+* Bump the dependencies group with 2 updates ([bd83e50](https://www.github.com/JaCraig/Inflatable/commit/bd83e50234dad32f7e9d6b2e6c97b87e3e78fa13))
+* Bump versionize from 2.6.0 to 2.7.0 ([33d4a98](https://www.github.com/JaCraig/Inflatable/commit/33d4a9817140cfe6016afc873ee061809b0a2d68))
+* **modeler:** update dependencies and schema fixes ([1b464f1](https://www.github.com/JaCraig/Inflatable/commit/1b464f1fa95ff6f237ddb9ad5e373ff0b62cdb4d))
+
+### Other
+
+* Merge pull request #482 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-e9f78aafb4 ([b805c14](https://www.github.com/JaCraig/Inflatable/commit/b805c14d6c349653c51f98f1c3ac6e583a8c19fe))
+* Merge pull request #483 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-72c809fbb3 ([921da4f](https://www.github.com/JaCraig/Inflatable/commit/921da4f64bb79c183533dc02711934fcc7ebb7fb))
+* Merge pull request #484 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-bf5e2351af ([6a3ab17](https://www.github.com/JaCraig/Inflatable/commit/6a3ab1790447ba6bf8b096b97d0a12a3b94719d9))
+* Merge pull request #485 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-bf5e2351af ([1d24633](https://www.github.com/JaCraig/Inflatable/commit/1d246338930af3dc57efaff9cd2e8997e2891bd3))
+* Merge pull request #486 from JaCraig/dependabot/nuget/dot-config/dependencies-87dec4854d ([1e74a59](https://www.github.com/JaCraig/Inflatable/commit/1e74a59c98da44b18181c34e9c3886d7955cfa49))
+* Merge pull request #487 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-39d8d9731f ([0dfb20d](https://www.github.com/JaCraig/Inflatable/commit/0dfb20d1912c6195fe383c132e16951d9cb64f84))
+* Merge pull request #488 from JaCraig/dependabot/nuget/TestApp/dependencies-aa7ec6e521 ([120617d](https://www.github.com/JaCraig/Inflatable/commit/120617dc35d0dfbc49b88f2ef401ac94ed92762a))
+* Merge pull request #489 from JaCraig/dependabot/nuget/test/Inflatable.Tests/dependencies-116125561d ([0bb006d](https://www.github.com/JaCraig/Inflatable/commit/0bb006d81fe115b6cd4fb7bdc2fe652a5b3f796a))
+* Merge pull request #490 from JaCraig/dependabot/nuget/test/Inflatable.Tests/dependencies-8af17d2a0f ([2695e89](https://www.github.com/JaCraig/Inflatable/commit/2695e89d0cb6bae252964b77480aa66de0627a96))
+* Merge pull request #491 from JaCraig/dependabot/nuget/test/Inflatable.Tests/dependencies-9d0a37c85b ([4a6de2d](https://www.github.com/JaCraig/Inflatable/commit/4a6de2d6281ee0fbec3ee266b3ea99ec8e5033e9))
+* Merge pull request #492 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-c1ede9f7c1 ([7d64b06](https://www.github.com/JaCraig/Inflatable/commit/7d64b06963905291bcb41b54685e1e68d1532b2c))
+* Merge pull request #493 from JaCraig/dependabot/nuget/TestApp/dependencies-143903598a ([de3a06b](https://www.github.com/JaCraig/Inflatable/commit/de3a06bbbec9122ff72d9bfbb5ff9a1840f3ac5a))
+* Merge pull request #494 from JaCraig/dependabot/nuget/test/Inflatable.Tests/dependencies-299e22fb01 ([97455a7](https://www.github.com/JaCraig/Inflatable/commit/97455a79d31a8a592965df00a34496ed64a59c5e))
+* Merge pull request #495 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-de8406bfa8 ([bdb019e](https://www.github.com/JaCraig/Inflatable/commit/bdb019e1fc19bacf2c35c66ed4686149d8a5260e))
+* Bump the dependencies group with 1 update ([6d77d1a](https://www.github.com/JaCraig/Inflatable/commit/6d77d1a37b8902182616b031826858cb25ca0af6))
+* Bump the dependencies group with 1 update ([b4fb4a7](https://www.github.com/JaCraig/Inflatable/commit/b4fb4a7b44eca0dd240d73fb3814e80a51353282))
+* Bump the dependencies group with 1 update ([a6d4f58](https://www.github.com/JaCraig/Inflatable/commit/a6d4f5809cfa4f34262748fe83ef7229fc244648))
+* Bump the dependencies group with 1 update ([de92c88](https://www.github.com/JaCraig/Inflatable/commit/de92c880a50d248d572610bae69211eb99c19397))
+* Bump the dependencies group with 1 update ([e036f50](https://www.github.com/JaCraig/Inflatable/commit/e036f50fa01cc6c8431ff4429a1ee4ad0a8d87a3))
+* Bump the dependencies group with 1 update ([c9c8a87](https://www.github.com/JaCraig/Inflatable/commit/c9c8a87d0b113a0ef36d110c04eebd23e6b3b66d))
+* Bump the dependencies group with 2 updates ([71c79fa](https://www.github.com/JaCraig/Inflatable/commit/71c79faf7a4de2b3f2965f7fc672577e85fbde33))
+* Bump the dependencies group with 2 updates ([d2d384b](https://www.github.com/JaCraig/Inflatable/commit/d2d384b2e09e5b3084c951dc1c2917dd0b2e1eb9))
+* Bump the dependencies group with 3 updates ([b9121cf](https://www.github.com/JaCraig/Inflatable/commit/b9121cf324d01f45f38c8a4ba7b1f51298d24eb1))
+
 <a name="5.0.200"></a>
 ## [5.0.200](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.200) (2026-08-17)
 
