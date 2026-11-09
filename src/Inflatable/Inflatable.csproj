@@ -66,15 +66,15 @@
 
   <ItemGroup>
     <PackageReference Include="DragonHoard.InMemory" Version="2.4.5" />
-    <PackageReference Include="Holmes" Version="5.1.14" />
+    <PackageReference Include="Holmes" Version="5.1.15" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.403" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="10.0.403">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Data.Modeler" Version="5.0.153" />
-    <PackageReference Include="Valkyrie" Version="5.0.31" />
-    <PackageReference Include="Mirage" Version="5.1.17" />
+    <PackageReference Include="Data.Modeler" Version="5.0.157" />
+    <PackageReference Include="Valkyrie" Version="5.0.32" />
+    <PackageReference Include="Mirage" Version="5.1.18" />
   </ItemGroup>
   <Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
     <Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
