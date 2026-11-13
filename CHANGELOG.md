@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="6.0.0"></a>
+## [6.0.0](https://www.github.com/JaCraig/Inflatable/releases/tag/v6.0.0) (2026-11-13)
+
+### Features
+
+* **dependencies:** update .NET SDK and package versions ([5217851](https://www.github.com/JaCraig/Inflatable/commit/5217851ce1dabefbc8e7caaa5d19256a4d92a12d))
+
+### Breaking Changes
+
+* **dependencies:** update .NET SDK and package versions ([5217851](https://www.github.com/JaCraig/Inflatable/commit/5217851ce1dabefbc8e7caaa5d19256a4d92a12d))
+
+### Other
+
+* Merge pull request #498 from JaCraig/dependabot/github_actions/dependencies-39799580c0 ([20ee4aa](https://www.github.com/JaCraig/Inflatable/commit/20ee4aa05ac1debe47bcb891a8b271698f30cb2f))
+* Merge pull request #499 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-0a664d3e1f ([4390670](https://www.github.com/JaCraig/Inflatable/commit/4390670403b38407f2b0fe3647fe1a15a3de76b0))
+* Merge pull request #500 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-0a664d3e1f ([01754d4](https://www.github.com/JaCraig/Inflatable/commit/01754d4ccc65fff27532bdc253987c4498d3c9a5))
+* Merge pull request #501 from JaCraig/dependabot/nuget/src/Inflatable/dependencies-0a664d3e1f ([ddf25f2](https://www.github.com/JaCraig/Inflatable/commit/ddf25f299ed92e6a88c45da8d0defd1a60606301))
+* Bump actions/setup-dotnet ([ed697a8](https://www.github.com/JaCraig/Inflatable/commit/ed697a81dbdd200be44bb621e3a3ea49fe802ce1))
+* Bump the dependencies group with 4 updates ([44a60ea](https://www.github.com/JaCraig/Inflatable/commit/44a60eac54608fab46b03d5c1d66baa76cbff3d5))
+* Bump the dependencies group with 4 updates ([1aba490](https://www.github.com/JaCraig/Inflatable/commit/1aba49040e239bc84023e0388ac9fdf04cfe237e))
+* Bump the dependencies group with 4 updates ([4ee3895](https://www.github.com/JaCraig/Inflatable/commit/4ee3895bb516a6741c6c83b6c3643ae718d98a00))
+
 <a name="5.0.202"></a>
 ## [5.0.202](https://www.github.com/JaCraig/Inflatable/releases/tag/v5.0.202) (2026-11-08)
 
